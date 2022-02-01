@@ -14,7 +14,7 @@ with open('coord.xyz', 'w') as f:
     # write a row to the csv file
     writer.writerow(["$coord"])
 
-df.to_csv('coord.xyz',mode = 'a',index = False)
+df.to_csv('coord.xyz',mode = 'a',sep ='\t',index = False)
 
 with open('coord.xyz', 'a') as f:
     # create the csv writer
