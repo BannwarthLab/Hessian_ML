@@ -2,9 +2,6 @@ import pandas as pd
 import numpy as np
 import csv
 
-
-
-
 df = pd.DataFrame([0.000000,0.00000,1.100000,'n'],
                   [0.000000,0.00000,0.00000,'n']).T
                   
