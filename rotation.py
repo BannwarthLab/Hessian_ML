@@ -5,14 +5,19 @@ import csv
 
 
 
-df = pd.DataFrame(['N',0.000000,0.00000,1.100000],
-                  ['N',0.000000,0.00000,0.00000]).T
+df = pd.DataFrame([0.000000,0.00000,1.100000,'n'],
+                  [0.000000,0.00000,0.00000,'n']).T
                   
 with open('coord.xyz', 'w') as f:
     # create the csv writer
     writer = csv.writer(f)
-    print(len(df))
     # write a row to the csv file
-    writer.writerow(f'{len(df)}')
+    writer.writerow(["$coord"])
 
 df.to_csv('coord.xyz',mode = 'a',index = False)
+
+with open('coord.xyz', 'a') as f:
+    # create the csv writer
+    writer = csv.writer(f)
+    # write a row to the csv file
+    writer.writerow(["$end"])
