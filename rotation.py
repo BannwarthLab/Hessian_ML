@@ -1,20 +1,20 @@
+from doctest import DocFileCase
+from email import header
 import pandas as pd
 import numpy as np
 import csv
 
-df = pd.DataFrame([0.000000,0.00000,1.100000,'n'],
-                  [0.000000,0.00000,0.00000,'n']).T
-                  
-with open('coord.xyz', 'w') as f:
-    # create the csv writer
-    writer = csv.writer(f)
-    # write a row to the csv file
-    writer.writerow(["$coord"])
+df = pd.read_csv('coord.xyz',sep = '\t',header = 2)
 
-df.to_csv('coord.xyz',mode = 'a',sep ='\t',index = False)
+data = df.to_numpy()
+print(df)
 
-with open('coord.xyz', 'a') as f:
-    # create the csv writer
-    writer = csv.writer(f)
-    # write a row to the csv file
-    writer.writerow(["$end"])
+alp = np.pi
+
+vec = [1.0,0.,3.]
+
+a = [[np.cos(alp),-np.sin(alp),0.],
+     [np.sin(alp),np.cos(alp),0.],
+     [0.,0.,1]]
+
+print(np.matmul(a,vec))
