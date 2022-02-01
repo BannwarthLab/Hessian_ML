@@ -8,7 +8,7 @@ import csv
 df = pd.DataFrame(['N',0.000000,0.00000,1.100000],
                   ['N',0.000000,0.00000,0.00000]).T
                   
-with open('out.xyz', 'w') as f:
+with open('coord.xyz', 'w') as f:
     # create the csv writer
     writer = csv.writer(f)
     print(len(df))
