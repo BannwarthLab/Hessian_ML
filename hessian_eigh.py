@@ -81,6 +81,7 @@ hessian_mass = mass_weighted_hessian(hessian,coord['atoms'])
 
 lamb, Q = linalg.eigh(hessian_mass)
 freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+
 print(f"frequenz:","\n",freq,"\n")
 
 df_out = pd.DataFrame({'Eigenvalues' : freq})

@@ -6,9 +6,6 @@ from email.errors import HeaderMissingRequiredValue
 from posixpath import split
 import pandas as pd
 import numpy as np
-import csv
-import mass_dict
-from scipy import linalg
 
 
 def euler_rotation_matrix(alpha,beta,gamma):
