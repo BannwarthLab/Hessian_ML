@@ -58,15 +58,6 @@ def mass_weighted_hessian(hessian, atoms):
 
      return hessian
 
-def rescale_mass_weighted_vectors(matrix, masses):
-
-    masses_in_au = masses*mass_unit_in_au
-    for k in range(len(matrix)):
-        for l in range(len(matrix[0])):
-            matrix[k,l] =( masses_in_au[k]*masses_in_au[l])**(-1/2)*matrix[k,l]
-            
-            
-    return matrix
 
 LineList = []
 with open ('hessian','r') as fd:
@@ -76,7 +67,6 @@ with open ('hessian','r') as fd:
 
 
 coord = pd.read_csv('coord.xyz',sep = '\s+',skiprows = 2,header = None)
-
 coord.columns= ['atoms','x','y','z']
 
 hessian = np.zeros([len(coord['atoms'])*3,len(coord['atoms'])*3])
@@ -90,6 +80,8 @@ for k in range(len(hessian[1,:])):
 hessian_mass = mass_weighted_hessian(hessian,coord['atoms'])
 
 lamb, Q = linalg.eigh(hessian_mass)
+freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+print(f"frequenz:","\n",freq,"\n")
 
-print(f"frequenz:","\n",(np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light)),"\n")
-
+df_out = pd.DataFrame({'Eigenvalues' : freq})
+df_out.to_csv('out.txt')
