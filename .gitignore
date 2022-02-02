@@ -2,3 +2,4 @@
 venv
 num_freq.py
 hessian
+tests/

@@ -60,13 +60,13 @@ def mass_weighted_hessian(hessian, atoms):
 
 
 LineList = []
-with open ('hessian','r') as fd:
+with open ('tests/hessian_benzol','r') as fd:
      Lines = [line.rstrip('\n') for line in fd]
      for line in Lines[1:]:
            LineList += line.split()
 
 
-coord = pd.read_csv('coord.xyz',sep = '\s+',skiprows = 2,header = None)
+coord = pd.read_csv('tests/benzol.xyz',sep = '\s+',skiprows = 2,header = None)
 coord.columns= ['atoms','x','y','z']
 
 hessian = np.zeros([len(coord['atoms'])*3,len(coord['atoms'])*3])
@@ -85,4 +85,4 @@ freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 print(f"frequenz:","\n",freq,"\n")
 
 df_out = pd.DataFrame({'Eigenvalues' : freq})
-df_out.to_csv('out.txt')
+df_out.to_csv('tests/out_benzol.txt',sep = '\t')

@@ -48,9 +48,22 @@ def euler_rotation_matrix(alpha,beta,gamma):
                             
     return rot_matrix
 
+input_path = 'tests/benzol.xyz'
 
-df = pd.read_csv('coord.xyz',sep = '\s+',skiprows = 1)
+output_path = 'tests/coord_translation_benzol.xyz'
 
+with open(input_path) as myfile:
+    head = [next(myfile) for x in range(2)]
+
+
+coord = pd.read_csv(input_path,sep = '\s+',skiprows = 2,header = None)
+coord.columns= ['atoms','x','y','z']
+
+coord['x'] = coord['x']+3
+
+
+with open (input_path,'r') as fd:
+     Lines = [line.rstrip('\n') for line in fd]
 
 alpha = 0
 beta = 0
@@ -67,3 +80,10 @@ vec_new = vec
 for i in range(len(vec_new)):
      vec_new[i,:] = vec[i,:] - M
 
+f = open(output_path,"w")
+
+f.write(head[0])
+f.write(head[1])
+f.close()
+
+coord.to_csv(output_path, mode ='a',sep = '\t',header = None , index = False)
