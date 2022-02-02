@@ -1,2 +1,4 @@
 *.xyz
 venv
+num_freq.py
+hessian
