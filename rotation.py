@@ -7,8 +7,8 @@ from posixpath import split
 import pandas as pd
 import numpy as np
 import csv
+import mass_dict
 from scipy import linalg
-
 
 
 def euler_rotation_matrix(alpha,beta,gamma):
@@ -55,28 +55,9 @@ def euler_rotation_matrix(alpha,beta,gamma):
 df = pd.read_csv('coord.xyz',sep = '\s+',skiprows = 1)
 
 
-LineList = []
-with open ('hessian','r') as fd:
-     Lines = [line.rstrip('\n') for line in fd]
-     for line in Lines[1:]:
-           LineList += line.split()
-
-
-print(len(LineList))
-hessian = np.zeros([9,9])
-k = 0
-for i in range(9):
-     for j in range(9):
-          hessian[i,j] = float(LineList[k])
-          k+=1
-
-#lamb, Q = linalg.eigh(hessian)
-
-print(lamb)
 alpha = 0
 beta = 0
 gamma = 0
-
 
 R = euler_rotation_matrix(alpha,beta,gamma)
 
