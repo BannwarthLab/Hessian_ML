@@ -111,6 +111,11 @@ coord,head = import_coord(input_path_coord)
 
 hessian = import_hess(input_path_hess,coord)
 
+shift = [14,2,19]
+print(coord)
+coord.iloc[:,1:] = coord.iloc[:,1:].add(shift)
+print(coord)
+
 s = center_charge(coord)
 
 for i in range(len(coord.iloc[:,1])):
@@ -121,6 +126,8 @@ R = np.array([ [-1.0,0.0,0.0],
                [0.0,1.0,0.0]])
 
 coord = coord_rot(coord,R)
+
+print(coord)
 
 P = rotM_hess(R)
 
