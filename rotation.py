@@ -1,14 +1,17 @@
 from cmath import pi
+from configparser import InterpolationSyntaxError
 from distutils.errors import LinkError
 from doctest import DocFileCase
 from email import header
 from email.errors import HeaderMissingRequiredValue
 from operator import matmul
 from posixpath import split
+from xml.dom import INDEX_SIZE_ERR
 from xml.etree import ElementInclude
 import pandas as pd
 import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
+from scipy import linalg
 
 def euler_rotation_matrix(alpha,beta,gamma):
     """
@@ -61,6 +64,16 @@ def center_charge(coord):
      C = d/charge_sum
      return C
 
+def center_mass(coord):
+     d = np.zeros(3)
+     mass_sum = 0
+     for i in range(len(coord['atoms'])):
+          mass = elements_dict[coord.loc[i,'atoms']]
+          d+= mass*coord.iloc[i,1:]
+          mass_sum += mass
+     M = d/mass_sum
+     return M
+     
 def import_hess(file,coord):
      LineList = []
      with open (file,'r') as fd:
@@ -85,12 +98,14 @@ def import_coord(file):
      return coord,head
 
 
-def vec_trans(vec,trans):
-     return vec - trans
+def vec_trans(coord,trans):
+     for i in range(len(coord.iloc[:,1])): 
+          coord.iloc[i,1:] = coord.iloc[i,1:] - trans
+     return coord
 
 def coord_rot(coord,rotM):
      for i in range(len(coord.iloc[:,1])):
-          coord.iloc[i,1:] = matmul(matmul(rotM,coord.iloc[i,1:]),rotM)
+          coord.iloc[i,1:] = matmul(rotM,coord.iloc[i,1:])
      return coord
 
 def rotM_hess(R):
@@ -99,52 +114,55 @@ def rotM_hess(R):
           P[3*i:3*(i+1),3*i:3*(i+1)] = R
      return P
 
-input_path_coord = 'tests/coord.xyz'
+file_path = 'tests/benzol/'
+input_path_coord = f'{file_path}'+'coord_translation_benzol.xyz'
+output_path_coord = f'{file_path}'+'trans_benzol_self.xyz'
 
-output_path_coord = 'tests/coord_rot.xyz'
-
-input_path_hess = 'tests/hessian_h2o'
-output_path = 'tests/out_h2o_rot.txt'
-
+input_path_hess = f'{file_path}'+'hessian_translation_benzol'
+output_path = f'{file_path}'+'delete'
 
 coord,head = import_coord(input_path_coord)
 
 hessian = import_hess(input_path_hess,coord)
 
-shift = [14,2,19]
-print(coord)
-coord.iloc[:,1:] = coord.iloc[:,1:].add(shift)
-print(coord)
+#shift = [14,2,19]
+#print(coord)
+#coord.iloc[:,1:] = coord.iloc[:,1:].add(shift)
+#print(coord)
 
-s = center_charge(coord)
+s = center_mass(coord)
 
-for i in range(len(coord.iloc[:,1])):
-     coord.iloc[i,1:] = vec_trans(coord.iloc[i,1:],s)
+coord = vec_trans(coord,s)
 
-R = np.array([ [-1.0,0.0,0.0],
-               [0.0,-0.0,1.0],
+empt = np.array([[-1,0.,0.],
+               [0.,-0.0,1.0],
                [0.0,1.0,0.0]])
 
-coord = coord_rot(coord,R)
+R = np.array([[0.869654,0.493638,0.004820],
+               [0.493585,-0.869650,0.009063],
+               [0.008666,-0.005503,-0.999947]])
+
+trafo_coord = import_coord(f'{file_path}'+'benzol_rot.xyz')[0]
+trafo_hess =  import_hess(f'{file_path}'+'hessian_translation_benzol_rot',trafo_coord)
 
 print(coord)
+print(trafo_coord)
 
 P = rotM_hess(R)
 
 rot_hess = matmul(matmul(P,hessian),P)
 
-trafo_coord = import_coord('tests/new.xyz')[0]
-trafo_hess =  import_hess('tests/hessian_h2o_rot',trafo_coord)
-
 hes1 = rot_hess
 hes2 = trafo_hess
 for i in range(len(hes1[:,1])):
      for j in range(len(hes1[1,:])):
-          if round(hes1[i,j],4) != round(hes2[i,j],4):
-               print(i,j,round(hes1[i,j],4), round(hes2[i,j],4))
+          if round(hes1[i,j],3) != round(hes2[i,j],3):
+               break
+               #print(i,j,round(hes1[i,j],3), round(hes2[i,j],3))
 
 
 f = open(output_path_coord,"w")
+
 
 f.write(head[0])
 f.write(head[1])
