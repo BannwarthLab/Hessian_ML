@@ -13,6 +13,12 @@ import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
 from scipy import linalg
 
+bohr2angs = 0.52917721067
+speed_of_light = 2.9979e10   # in cm/s
+mass_unit_in_au = 1.66054e-27 / 9.1094e-31
+atomic_time_unit = 2.4189e-17   # E_h / hbar
+
+
 def euler_rotation_matrix(alpha,beta,gamma):
     """
     Covert a quaternion into a full three-dimensional rotation matrix.
@@ -87,6 +93,7 @@ def import_hess(file,coord):
           for l in range(len(hess[:,1])):
                hess[k,l] = float(LineList[i])
                i+=1
+     hess = np.float64(hess)
      return hess
 
 def import_coord(file):
@@ -113,6 +120,19 @@ def rotM_hess(R):
      for i in range(len(coord['atoms'])):
           P[3*i:3*(i+1),3*i:3*(i+1)] = R
      return P
+
+def mass_weighted_hessian(hessian, atoms):
+     for k in range(len(hessian[1,:])):
+        for l in range(len(hessian[:,1])):
+          n = k//3
+          m = l//3
+
+          mass_n = elements_dict[atoms[n]]
+          mass_m = elements_dict[atoms[m]]
+
+          hessian[k,l] =  1/np.sqrt(mass_n*mass_m*mass_unit_in_au**2)*hessian[k,l]
+
+     return hessian
 
 file_path = 'tests/benzol/'
 input_path_coord = f'{file_path}'+'benzol.xyz'
@@ -159,16 +179,31 @@ hes2 = rot_hess
 count = 0
 for i in range(len(hes1[:,1])):
      for j in range(len(hes1[1,:])):
-          if round(hes1[i,j],3) != round(hes2[i,j],3):
+          if abs(round(hes1[i,j],3)) != abs(round(hes2[i,j],3)):
                count += 1
-               #print(i,j,round(hes1[i,j],3), round(hes2[i,j],3))
+               #print(i,j,hes1[i,j], hes2[i,j])
 
-print(len(hes1)**2)
-print(count)
 
-print(hessian[0:4,0:4])
-print(hes2[0:4,0:4])
 
+hessian_mass = mass_weighted_hessian(hessian,coord['atoms'])
+
+lamb, Q = linalg.eigh(hessian_mass)
+
+freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+
+print(freq)
+
+df_out = pd.DataFrame({'Eigenvalues_hessian_self' : freq})
+df_out.to_csv(output_path,sep = '\t')
+
+hessian_mass = mass_weighted_hessian(trafo_hess,trafo_coord['atoms'])
+
+lamb, Q = linalg.eigh(hessian_mass)
+
+freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+
+print(freq1)
+print(freq-freq1)
 f = open(output_path_coord,"w")
 
 f.write(head[0])
