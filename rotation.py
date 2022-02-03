@@ -3,41 +3,12 @@ from distutils.errors import LinkError
 from doctest import DocFileCase
 from email import header
 from email.errors import HeaderMissingRequiredValue
+from operator import matmul
 from posixpath import split
 from xml.etree import ElementInclude
 import pandas as pd
 import numpy as np
-
-
-elements_dict = {'H' : 1.008,'HE' : 4.003, 'LI' : 6.941, 'BE' : 9.012,\
-                 'B' : 10.811, 'C' : 12.011, 'N' : 14.007, 'O' : 15.999,\
-                 'F' : 18.998, 'NE' : 20.180, 'NA' : 22.990, 'MG' : 24.305,\
-                 'AL' : 26.982, 'SI' : 28.086, 'P' : 30.974, 'S' : 32.066,\
-                 'CL' : 35.453, 'AR' : 39.948, 'K' : 39.098, 'CA' : 40.078,\
-                 'SC' : 44.956, 'TI' : 47.867, 'V' : 50.942, 'CR' : 51.996,\
-                 'MN' : 54.938, 'FE' : 55.845, 'CO' : 58.933, 'NI' : 58.693,\
-                 'CU' : 63.546, 'ZN' : 65.38, 'GA' : 69.723, 'GE' : 72.631,\
-                 'AS' : 74.922, 'SE' : 78.971, 'BR' : 79.904, 'KR' : 84.798,\
-                 'RB' : 84.468, 'SR' : 87.62, 'Y' : 88.906, 'ZR' : 91.224,\
-                 'NB' : 92.906, 'MO' : 95.95, 'TC' : 98.907, 'RU' : 101.07,\
-                 'RH' : 102.906, 'PD' : 106.42, 'AG' : 107.868, 'CD' : 112.414,\
-                 'IN' : 114.818, 'SN' : 118.711, 'SB' : 121.760, 'TE' : 126.7,\
-                 'I' : 126.904, 'XE' : 131.294, 'CS' : 132.905, 'BA' : 137.328,\
-                 'LA' : 138.905, 'CE' : 140.116, 'PR' : 140.908, 'ND' : 144.243,\
-                 'PM' : 144.913, 'SM' : 150.36, 'EU' : 151.964, 'GD' : 157.25,\
-                 'TB' : 158.925, 'DY': 162.500, 'HO' : 164.930, 'ER' : 167.259,\
-                 'TM' : 168.934, 'YB' : 173.055, 'LU' : 174.967, 'HF' : 178.49,\
-                 'TA' : 180.948, 'W' : 183.84, 'RE' : 186.207, 'OS' : 190.23,\
-                 'IR' : 192.217, 'PT' : 195.085, 'AU' : 196.967, 'HG' : 200.592,\
-                 'TL' : 204.383, 'PB' : 207.2, 'BI' : 208.980, 'PO' : 208.982,\
-                 'AT' : 209.987, 'RN' : 222.081, 'FR' : 223.020, 'RA' : 226.025,\
-                 'AC' : 227.028, 'TH' : 232.038, 'PA' : 231.036, 'U' : 238.029,\
-                 'NP' : 237, 'PU' : 244, 'AM' : 243, 'CM' : 247, 'BK' : 247,\
-                 'CT' : 251, 'ES' : 252, 'FM' : 257, 'MD' : 258, 'NO' : 259,\
-                 'LR' : 262, 'RF' : 261, 'DB' : 262, 'SG' : 266, 'BH' : 264,\
-                 'HS' : 269, 'MT' : 268, 'DS' : 271, 'RG' : 272, 'CN' : 285,\
-                 'NH' : 284, 'FL' : 289, 'MC' : 288, 'LV' : 292, 'TS' : 294,\
-                 'OG' : 294}
+from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
 
 def euler_rotation_matrix(alpha,beta,gamma):
     """
@@ -78,52 +49,98 @@ def euler_rotation_matrix(alpha,beta,gamma):
                            [r20, r21, r22]])
                             
     return rot_matrix
+#R = euler_rotation_matrix(alpha,beta,gamma)
 
-input_path = 'tests/benzol.xyz'
+def center_charge(coord):
+     d = np.zeros(3)
+     charge_sum = 0
+     for i in range(len(coord['atoms'])):
+          charge = ELEMENTS2Z[coord.loc[i,'atoms']]
+          d += charge*coord.iloc[i,1:]
+          charge_sum += charge
+     C = d/charge_sum
+     return C
 
-output_path = 'tests/coord_benzol_shifted.xyz'
+def import_hess(file,coord):
+     LineList = []
+     with open (file,'r') as fd:
+          Lines = [line.rstrip('\n') for line in fd]
+          for line in Lines[1:]:
+               LineList += line.split()
 
-with open(input_path) as myfile:
-    head = [next(myfile) for x in range(2)]
+     hess = np.zeros([len(coord['atoms'])*3,len(coord['atoms'])*3])
+     i = 0
+     for k in range(len(hess[1,:])):
+          for l in range(len(hess[:,1])):
+               hess[k,l] = float(LineList[i])
+               i+=1
+     return hess
+
+def import_coord(file):
+     with open(file) as myfile:
+          head = [next(myfile) for x in range(2)]
+
+     coord = pd.read_csv(file,sep = '\s+',skiprows = 2,header = None)
+     coord.columns= ['atoms','x','y','z']
+     return coord,head
 
 
-coord = pd.read_csv(input_path,sep = '\s+',skiprows = 2,header = None)
-coord.columns= ['atoms','x','y','z']
+def vec_trans(vec,trans):
+     return vec - trans
 
-d = np.zeros(3)
-mass_all = 0
-for i in range(len(coord['atoms'])):
-     mass = elements_dict[coord.loc[i,'atoms']]
-     d += mass*coord.iloc[i,1:]
-     mass_all += mass
-s = d/mass_all
+def coord_rot(coord,rotM):
+     for i in range(len(coord.iloc[:,1])):
+          coord.iloc[i,1:] = matmul(matmul(rotM,coord.iloc[i,1:]),rotM)
+     return coord
 
-print(s)
+def rotM_hess(R):
+     P = np.zeros([3*len(coord['atoms']),3*len(coord['atoms'])])
+     for i in range(len(coord['atoms'])):
+          P[3*i:3*(i+1),3*i:3*(i+1)] = R
+     return P
+
+input_path_coord = 'tests/coord.xyz'
+
+output_path_coord = 'tests/coord_rot.xyz'
+
+input_path_hess = 'tests/hessian_h2o'
+output_path = 'tests/out_h2o_rot.txt'
 
 
+coord,head = import_coord(input_path_coord)
 
-with open (input_path,'r') as fd:
-     Lines = [line.rstrip('\n') for line in fd]
+hessian = import_hess(input_path_hess,coord)
 
-alpha = 0
-beta = 0
-gamma = 0
+s = center_charge(coord)
 
-R = euler_rotation_matrix(alpha,beta,gamma)
+for i in range(len(coord.iloc[:,1])):
+     coord.iloc[i,1:] = vec_trans(coord.iloc[i,1:],s)
 
-vec = np.array([[1.0,2.0,3.0],
-               [1.0,2.0,3.0]])
+R = np.array([ [-1.0,0.0,0.0],
+               [0.0,-0.0,1.0],
+               [0.0,1.0,0.0]])
 
-M = 1/2*(vec[0,:]+ vec[1,:])
+coord = coord_rot(coord,R)
 
-vec_new = vec
-for i in range(len(vec_new)):
-     vec_new[i,:] = vec[i,:] - M
+P = rotM_hess(R)
 
-f = open(output_path,"w")
+rot_hess = matmul(matmul(P,hessian),P)
+
+trafo_coord = import_coord('tests/new.xyz')[0]
+trafo_hess =  import_hess('tests/hessian_h2o_rot',trafo_coord)
+
+hes1 = rot_hess
+hes2 = trafo_hess
+for i in range(len(hes1[:,1])):
+     for j in range(len(hes1[1,:])):
+          if round(hes1[i,j],4) != round(hes2[i,j],4):
+               print(i,j,round(hes1[i,j],4), round(hes2[i,j],4))
+
+
+f = open(output_path_coord,"w")
 
 f.write(head[0])
 f.write(head[1])
 f.close()
 
-coord.to_csv(output_path, mode ='a',sep = '\t',header = None , index = False)
+coord.to_csv(output_path_coord, mode ='a',sep = '\t',header = None , index = False)

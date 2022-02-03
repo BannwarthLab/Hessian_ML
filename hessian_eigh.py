@@ -4,10 +4,11 @@ from doctest import DocFileCase
 from email import header
 from email.errors import HeaderMissingRequiredValue
 from posixpath import split
+from tracemalloc import start
 import pandas as pd
 import numpy as np
 import csv
-import mass_dict
+import mass_charge_dict
 from scipy import linalg
 
 bohr2angs = 0.52917721067
@@ -58,9 +59,9 @@ def mass_weighted_hessian(hessian, atoms):
 
      return hessian
 
-input_path_hess = 'tests/hessian_benzol_translation'
-input_path_coord = 'tests/coord_translation_benzol.xyz'
-output_path = 'tests/out_benzol_translation.txt'
+input_path_hess = 'tests/hessian_h2o'
+input_path_coord = 'tests/coord.xyz'
+output_path = 'tests/out_h2o_rot.txt'
 
 LineList = []
 with open (input_path_hess,'r') as fd:
@@ -73,19 +74,30 @@ coord = pd.read_csv(input_path_coord,sep = '\s+',skiprows = 2,header = None)
 coord.columns= ['atoms','x','y','z']
 
 hessian = np.zeros([len(coord['atoms'])*3,len(coord['atoms'])*3])
-
 i = 0
 for k in range(len(hessian[1,:])):
      for l in range(len(hessian[:,1])):
           hessian[k,l] = float(LineList[i])
           i+=1
 
+
+np.savetxt('hessian_h2o_rot_adj',hessian)
 hessian_mass = mass_weighted_hessian(hessian,coord['atoms'])
 
 lamb, Q = linalg.eigh(hessian_mass)
+
 freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 
-print(f"frequenz:","\n",freq,"\n")
+#print(f"frequenz:","\n",freq,"\n")
 
 df_out = pd.DataFrame({'Eigenvalues' : freq})
 df_out.to_csv(output_path,sep = '\t')
+
+
+hes1 = np.genfromtxt('hessian_h2o_adj')
+hes2 = np.genfromtxt('hessian_h2o_rot_adj')
+print(start)
+for i in range(len(hes1[:,1])):
+     for j in range(len(hes1[1,:])):
+          if round(hes1[i,j],3) != round(hes2[i,j],3):
+               print(i,j,round(hes1[i,j],3), round(hes2[i,j],3))
