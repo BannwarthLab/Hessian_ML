@@ -115,20 +115,22 @@ def rotM_hess(R):
      return P
 
 file_path = 'tests/benzol/'
-input_path_coord = f'{file_path}'+'coord_translation_benzol.xyz'
-output_path_coord = f'{file_path}'+'trans_benzol_self.xyz'
+input_path_coord = f'{file_path}'+'benzol.xyz'
+output_path_coord = f'{file_path}'+'benzol_rot.xyz'
 
-input_path_hess = f'{file_path}'+'hessian_translation_benzol'
-output_path = f'{file_path}'+'delete'
+input_path_hess = f'{file_path}'+'hessian_benzol'
+output_path = f'{file_path}'+'hessian_benzol_out'
 
 coord,head = import_coord(input_path_coord)
 
 hessian = import_hess(input_path_hess,coord)
 
-#shift = [14,2,19]
-#print(coord)
-#coord.iloc[:,1:] = coord.iloc[:,1:].add(shift)
-#print(coord)
+'''
+shift = [14,2,19]
+print(coord)
+coord.iloc[:,1:] = coord.iloc[:,1:].add(shift)
+print(coord)
+'''
 
 s = center_mass(coord)
 
@@ -138,31 +140,36 @@ empt = np.array([[-1,0.,0.],
                [0.,-0.0,1.0],
                [0.0,1.0,0.0]])
 
-R = np.array([[0.869654,0.493638,0.004820],
-               [0.493585,-0.869650,0.009063],
-               [0.008666,-0.005503,-0.999947]])
+R = np.array([[0.869654,0.493585,0.008666],
+               [0.493638,-0.869650,-0.005503],
+               [0.004820,0.009063,-0.999947]])
 
-trafo_coord = import_coord(f'{file_path}'+'benzol_rot.xyz')[0]
-trafo_hess =  import_hess(f'{file_path}'+'hessian_translation_benzol_rot',trafo_coord)
+coord = coord_rot(coord,R)
 
-print(coord)
-print(trafo_coord)
+
+trafo_coord = import_coord(f'{file_path}'+'benzol_trafo.xyz')[0]
+trafo_hess =  import_hess(f'{file_path}'+'hessian_trafo',trafo_coord)
 
 P = rotM_hess(R)
 
 rot_hess = matmul(matmul(P,hessian),P)
 
-hes1 = rot_hess
-hes2 = trafo_hess
+hes1 = trafo_hess
+hes2 = rot_hess
+count = 0
 for i in range(len(hes1[:,1])):
      for j in range(len(hes1[1,:])):
           if round(hes1[i,j],3) != round(hes2[i,j],3):
-               break
+               count += 1
                #print(i,j,round(hes1[i,j],3), round(hes2[i,j],3))
 
+print(len(hes1)**2)
+print(count)
+
+print(hessian[0:4,0:4])
+print(hes2[0:4,0:4])
 
 f = open(output_path_coord,"w")
-
 
 f.write(head[0])
 f.write(head[1])
