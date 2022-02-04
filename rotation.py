@@ -232,8 +232,8 @@ R = np.array([[0.869654,0.493585,0.008666],
 print(np.dot(eig_vec[0],eig_vec[1]))
 
 eig_vec, rot = check_eig_vec(eig_vec,coord)
-
 eig_vec= matmul(eig_vec,rot)
+
 
 print(eig_vec)
 
