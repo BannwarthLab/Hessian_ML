@@ -1,4 +1,5 @@
 from cmath import pi
+from code import interact
 from configparser import InterpolationSyntaxError
 from distutils.errors import LinkError
 from doctest import DocFileCase
@@ -134,12 +135,55 @@ def mass_weighted_hessian(hessian, atoms):
 
      return hessian
 
-file_path = 'tests/benzol/'
-input_path_coord = f'{file_path}'+'benzol.xyz'
-output_path_coord = f'{file_path}'+'benzol_rot.xyz'
 
-input_path_hess = f'{file_path}'+'hessian_benzol'
-output_path = f'{file_path}'+'hessian_benzol_out'
+def inert_tensor(coord):
+     inert_t = np.zeros([3,3])
+     m = 0
+     for i in range(len(coord.iloc[:,1])):
+          mi = elements_dict[coord.iloc[i,0]]
+          xi = coord.iloc[i,1]
+          yi = coord.iloc[i,2]
+          zi = coord.iloc[i,3]
+          m += mi
+
+          txx = mi*(yi**2 + zi**2)
+          txy = -mi*xi*yi
+          txz = -mi*xi*zi
+          tyy = mi*(xi**2 + zi**2)
+          txz = -mi*xi*zi
+          tyz = -mi*yi*zi
+          tzz = mi*(yi**2 + xi**2)
+
+          inert_t += np.array([[ txx ,txy  , txz ],
+                               [ txy ,tyy , tyz ],
+                               [ txz, tyz, tzz ]])
+
+     return inert_t/m/bohr2angs**2
+
+
+def check_eig_vec(eig_vec):
+     if np.cross(eig_vec[0],eig_vec[1]) <= 0.:
+          for i in range(3):
+               eig_vec[2,i] = -eig_vec[2,i]
+
+     rot = np.identity(3)
+
+     coord_check = coord_rot(coord,eig_vec)
+     if len(coord_check.iloc[:,1]) > 1:
+
+          temp = coord_check.iloc[0,1:]
+
+          if (temp[0]*temp[1]*temp[2]> 0.0):
+               for i in range(3):
+                    if (temp[i] < 0):
+                         rot[i,i] = -rot[i,i]
+     return eig_vec,rot
+file_path = 'tests/'
+input_path_coord = f'{file_path}'+'coord.xyz'
+output_path_coord = f'{file_path}'+'delete.xyz'
+
+input_path_hess = f'{file_path}'+'hessian'
+output_path = f'{file_path}'+'delete'
 
 coord,head = import_coord(input_path_coord)
 
@@ -156,6 +200,23 @@ s = center_mass(coord)
 
 coord = vec_trans(coord,s)
 
+I = inert_tensor(coord)
+"""
+I = [[0.121048,0.,0.],
+     [0., 0.232615 ,0.],
+     [0.,0., 0.353663]]
+"""
+
+eig_val,eig_vec = linalg.eigh(I)
+
+"""
+eig_vec = np.array([[-1,0.,0.],
+               [0.,-0.0,1.0],
+               [0.0,1.0,0.0]])
+"""
+
+I = matmul(matmul(eig_vec,I),eig_vec)
+
 empt = np.array([[-1,0.,0.],
                [0.,-0.0,1.0],
                [0.0,1.0,0.0]])
@@ -164,13 +225,21 @@ R = np.array([[0.869654,0.493585,0.008666],
                [0.493638,-0.869650,-0.005503],
                [0.004820,0.009063,-0.999947]])
 
-coord = coord_rot(coord,R)
+eig_vec, rot = check_eig_vec(eig_vec)
 
 
-trafo_coord = import_coord(f'{file_path}'+'benzol_trafo.xyz')[0]
-trafo_hess =  import_hess(f'{file_path}'+'hessian_trafo',trafo_coord)
+eig_vec= matmul(eig_vec,rot)
 
-P = rotM_hess(R)
+print(eig_vec)
+
+coord = coord_rot(coord,eig_vec)
+
+trafo_coord = import_coord(f'{file_path}'+'new.xyz')[0]
+trafo_hess =  import_hess(f'{file_path}'+'hessian_benzol',trafo_coord)
+
+#print(coord)
+#print(trafo_coord)
+P = rotM_hess(I)
 
 rot_hess = matmul(matmul(P,hessian),P)
 
@@ -191,9 +260,7 @@ lamb, Q = linalg.eigh(hessian_mass)
 
 freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 
-print(freq)
-
-df_out = pd.DataFrame({'Eigenvalues_hessian_self' : freq})
+df_out = pd.DataFrame({'Eigenvalues_hessian_self_h2o' : freq})
 df_out.to_csv(output_path,sep = '\t')
 
 hessian_mass = mass_weighted_hessian(trafo_hess,trafo_coord['atoms'])
@@ -202,8 +269,6 @@ lamb, Q = linalg.eigh(hessian_mass)
 
 freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 
-print(freq1)
-print(freq-freq1)
 f = open(output_path_coord,"w")
 
 f.write(head[0])
