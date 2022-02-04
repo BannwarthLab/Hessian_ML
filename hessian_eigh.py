@@ -99,5 +99,5 @@ hes2 = np.genfromtxt('hessian_h2o_rot_adj')
 print(start)
 for i in range(len(hes1[:,1])):
      for j in range(len(hes1[1,:])):
-          if round(hes1[i,j],3) != round(hes2[i,j],3):
-               print(i,j,round(hes1[i,j],3), round(hes2[i,j],3))
+          if round(hes1[i,j],-2) != round(hes2[i,j],-2):
+               print(i,j,round(hes1[i,j],-2), round(hes2[i,j],-2))

@@ -161,14 +161,15 @@ def inert_tensor(coord):
      return inert_t/m/bohr2angs**2
 
 
-def check_eig_vec(eig_vec):
-     if np.cross(eig_vec[0],eig_vec[1]) <= 0.:
+def check_eig_vec(eig_vec,coord):
+     if np.dot(eig_vec[0],eig_vec[1]) < 0.:
+          print('true')
           for i in range(3):
                eig_vec[2,i] = -eig_vec[2,i]
 
      rot = np.identity(3)
-
      coord_check = coord_rot(coord,eig_vec)
+
      if len(coord_check.iloc[:,1]) > 1:
 
           temp = coord_check.iloc[0,1:]
@@ -176,8 +177,9 @@ def check_eig_vec(eig_vec):
           if (temp[0]*temp[1]*temp[2]> 0.0):
                for i in range(3):
                     if (temp[i] < 0):
-                         rot[i,i] = -rot[i,i]
+                         rot[i,i] = -1
      return eig_vec,rot
+
 file_path = 'tests/'
 input_path_coord = f'{file_path}'+'coord.xyz'
 output_path_coord = f'{file_path}'+'delete.xyz'
@@ -225,8 +227,11 @@ R = np.array([[0.869654,0.493585,0.008666],
                [0.493638,-0.869650,-0.005503],
                [0.004820,0.009063,-0.999947]])
 
-eig_vec, rot = check_eig_vec(eig_vec)
 
+
+print(np.dot(eig_vec[0],eig_vec[1]))
+
+eig_vec, rot = check_eig_vec(eig_vec,coord)
 
 eig_vec= matmul(eig_vec,rot)
 
@@ -237,8 +242,10 @@ coord = coord_rot(coord,eig_vec)
 trafo_coord = import_coord(f'{file_path}'+'new.xyz')[0]
 trafo_hess =  import_hess(f'{file_path}'+'hessian_benzol',trafo_coord)
 
-#print(coord)
-#print(trafo_coord)
+print(coord)
+
+print(trafo_coord)
+
 P = rotM_hess(I)
 
 rot_hess = matmul(matmul(P,hessian),P)
