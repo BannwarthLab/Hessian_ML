@@ -61,34 +61,34 @@ def euler_rotation_matrix(alpha,beta,gamma):
     return rot_matrix
 #R = euler_rotation_matrix(alpha,beta,gamma)
 
-def center_charge(coord):
+def center_charge(coord_var):
      d = np.zeros(3)
      charge_sum = 0
-     for i in range(len(coord['atoms'])):
+     for i in range(len(coord_var['atoms'])):
           charge = ELEMENTS2Z[coord.loc[i,'atoms']]
-          d += charge*coord.iloc[i,1:]
+          d += charge*coord_var.iloc[i,1:]
           charge_sum += charge
      C = d/charge_sum
      return C
 
-def center_mass(coord):
+def center_mass(coord_var):
      d = np.zeros(3)
      mass_sum = 0
-     for i in range(len(coord['atoms'])):
-          mass = elements_dict[coord.loc[i,'atoms']]
-          d+= mass*coord.iloc[i,1:]
+     for i in range(len(coord_var['atoms'])):
+          mass = elements_dict[coord_var.loc[i,'atoms']]
+          d+= mass*coord_var.iloc[i,1:]
           mass_sum += mass
      M = d/mass_sum
      return M
      
-def import_hess(file,coord):
+def import_hess(file,coord_var):
      LineList = []
      with open (file,'r') as fd:
           Lines = [line.rstrip('\n') for line in fd]
           for line in Lines[1:]:
                LineList += line.split()
 
-     hess = np.zeros([len(coord['atoms'])*3,len(coord['atoms'])*3])
+     hess = np.zeros([len(coord_var['atoms'])*3,len(coord_var['atoms'])*3])
      i = 0
      for k in range(len(hess[1,:])):
           for l in range(len(hess[:,1])):
@@ -101,24 +101,24 @@ def import_coord(file):
      with open(file) as myfile:
           head = [next(myfile) for x in range(2)]
 
-     coord = pd.read_csv(file,sep = '\s+',skiprows = 2,header = None)
-     coord.columns= ['atoms','x','y','z']
-     return coord,head
+     coord_var = pd.read_csv(file,sep = '\s+',skiprows = 2,header = None)
+     coord_var.columns= ['atoms','x','y','z']
+     return coord_var,head
 
 
-def vec_trans(coord,trans):
-     for i in range(len(coord.iloc[:,1])): 
-          coord.iloc[i,1:] = coord.iloc[i,1:] - trans
-     return coord
+def vec_trans(coord_var,trans):
+     for i in range(len(coord_var.iloc[:,1])): 
+          coord_var.iloc[i,1:] = coord_var.iloc[i,1:] - trans
+     return coord_var
 
-def coord_rot(coord,rotM):
-     for i in range(len(coord.iloc[:,1])):
-          coord.iloc[i,1:] = matmul(rotM,coord.iloc[i,1:])
-     return coord
+def coord_rot(coord_var,rotM):
+     for i in range(len(coord_var.iloc[:,1])):
+          coord_var.iloc[i,1:] = matmul(rotM,coord_var.iloc[i,1:])
+     return coord_var
 
-def rotM_hess(R):
-     P = np.zeros([3*len(coord['atoms']),3*len(coord['atoms'])])
-     for i in range(len(coord['atoms'])):
+def rotM_hess(R,coord_var):
+     P = np.zeros([3*len(coord_var['atoms']),3*len(coord_var['atoms'])])
+     for i in range(len(coord_var['atoms'])):
           P[3*i:3*(i+1),3*i:3*(i+1)] = R
      return P
 
@@ -136,14 +136,14 @@ def mass_weighted_hessian(hessian, atoms):
      return hessian
 
 
-def inert_tensor(coord):
+def inert_tensor(coord_var):
      inert_t = np.zeros([3,3])
      m = 0
-     for i in range(len(coord.iloc[:,1])):
-          mi = elements_dict[coord.iloc[i,0]]
-          xi = coord.iloc[i,1]
-          yi = coord.iloc[i,2]
-          zi = coord.iloc[i,3]
+     for i in range(len(coord_var.iloc[:,1])):
+          mi = elements_dict[coord_var.iloc[i,0]]
+          xi = coord_var.iloc[i,1]
+          yi = coord_var.iloc[i,2]
+          zi = coord_var.iloc[i,3]
           m += mi
 
           txx = mi*(yi**2 + zi**2)
@@ -161,30 +161,30 @@ def inert_tensor(coord):
      return inert_t/m/bohr2angs**2
 
 
-def check_eig_vec(eig_vec,coord):
+def check_eig_vec(eig_vec,coord_check):
+
      if np.dot(eig_vec[0],eig_vec[1]) < 0.:
           print('true')
           for i in range(3):
-               eig_vec[2,i] = -eig_vec[2,i]
+               eig_vec[i,2] = -eig_vec[i,2]
 
      rot = np.identity(3)
-     coord_check = coord_rot(coord,eig_vec)
-
+     coord_check = coord_rot(coord_check,eig_vec)
      if len(coord_check.iloc[:,1]) > 1:
 
           temp = coord_check.iloc[0,1:]
-
+          
           if (temp[0]*temp[1]*temp[2]> 0.0):
                for i in range(3):
                     if (temp[i] < 0):
                          rot[i,i] = -1
      return eig_vec,rot
 
-file_path = 'tests/'
-input_path_coord = f'{file_path}'+'coord.xyz'
+file_path = 'tests/benzol/'
+input_path_coord = f'{file_path}'+'benzol.xyz'
 output_path_coord = f'{file_path}'+'delete.xyz'
 
-input_path_hess = f'{file_path}'+'hessian'
+input_path_hess = f'{file_path}'+'hessian_benzol'
 output_path = f'{file_path}'+'delete'
 
 coord,head = import_coord(input_path_coord)
@@ -227,26 +227,30 @@ R = np.array([[0.869654,0.493585,0.008666],
                [0.493638,-0.869650,-0.005503],
                [0.004820,0.009063,-0.999947]])
 
+rot = np.array([[1,0.,0.],
+               [0.,1.0,0.0],
+               [0.0,0.0,-1.0]])
+               
+#print(np.dot(eig_vec[0],eig_vec[1]))
 
+print(eig_vec)
+eig_vec, rot = check_eig_vec(eig_vec,coord.copy())
 
-print(np.dot(eig_vec[0],eig_vec[1]))
-
-eig_vec, rot = check_eig_vec(eig_vec,coord)
 eig_vec= matmul(eig_vec,rot)
-
 
 print(eig_vec)
 
+
 coord = coord_rot(coord,eig_vec)
 
-trafo_coord = import_coord(f'{file_path}'+'new.xyz')[0]
+trafo_coord = import_coord(f'{file_path}'+'benzol_trafo.xyz')[0]
 trafo_hess =  import_hess(f'{file_path}'+'hessian_benzol',trafo_coord)
 
-print(coord)
+#print(coord)
 
-print(trafo_coord)
+#print(trafo_coord)
 
-P = rotM_hess(I)
+P = rotM_hess(I,coord)
 
 rot_hess = matmul(matmul(P,hessian),P)
 
