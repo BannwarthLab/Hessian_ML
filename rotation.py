@@ -20,6 +20,11 @@ speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
 atomic_time_unit = 2.4189e-17   # E_h / hbar
 
+def angle_two_vec(a,b):
+     cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
+     angle = np.arccos(np.clip(cosangle,-1,1))
+     return angle
+
 def center_charge(coord_var):
      d = np.zeros(3)
      charge_sum = 0
@@ -40,11 +45,12 @@ def center_mass(coord_var):
      M = d/mass_sum
      return M
      
-def check_eig_vec(eig_vec,coord_check):
+def check_eig_vec(eig_vec):
      if linalg.det(eig_vec) < 0.:
           for i in range(3):
-               eig_vec[i,2] = -eig_vec[i,2]
+               eig_vec[2,i] = -eig_vec[2,i]
      return eig_vec
+
 
 def coord_rot(coord_var,rotM):
      for i in range(len(coord_var.iloc[:,1])):
@@ -91,6 +97,14 @@ def euler_rotation_matrix(alpha,beta,gamma):
                             
     return rot_matrix
 #R = euler_rotation_matrix(alpha,beta,gamma)
+
+def eig_vec_rot(eig_vec):
+     for i in range(2):
+          max_abs_val = max(eig_vec[i].min(), eig_vec[i].max(), key=abs)
+          if max_abs_val < 0:
+               eig_vec[i] = -eig_vec[i]
+               eig_vec[i+1] = -eig_vec[i+1]
+     return eig_vec
 
 def import_coord(file):
      with open(file) as myfile:
@@ -169,22 +183,42 @@ def vec_trans(coord_var,trans):
      return coord_var
 
 
+if True:
+     file_path = 'tests/'
+     input_path_coord = f'{file_path}'+'coord_h2o.xyz'
+     output_path_coord = f'{file_path}'+'coord_h2o_rot.xyz'
+
+     input_path_hess = f'{file_path}'+'hessian_h2o'
+     output_path = f'{file_path}'+'hessian_h2o_rot'
+
+     trafo_coord = import_coord(f'{file_path}'+'new.xyz')[0]
+     trafo_hess =  import_hess(f'{file_path}'+'hessian_h2o_trafo',trafo_coord)
+else:
+     file_path = 'tests/benzol/'
+     input_path_coord = f'{file_path}'+'benzol.xyz'
+     output_path_coord = f'{file_path}'+'benzol_rot.xyz'
+
+     input_path_hess = f'{file_path}'+'hessian_benzol'
+     output_path = f'{file_path}'+'hessian_benzol_rot'
+     
+     trafo_coord = import_coord(f'{file_path}'+'benzol_trafo.xyz')[0]
+     trafo_hess =  import_hess(f'{file_path}'+'hessian_trafo',trafo_coord)
+
 ########## Import
 # 
-file_path = 'tests/benzol/'
-input_path_coord = f'{file_path}'+'benzol.xyz'
-output_path_coord = f'{file_path}'+'delete.xyz'
-
-input_path_hess = f'{file_path}'+'hessian_benzol'
-output_path = f'{file_path}'+'delete'
 
 coord,head = import_coord(input_path_coord)
 
 hessian = import_hess(input_path_hess,coord)
+
 #
 ###########
 
-########### Rotation of coordinates and hessian
+R = np.array([[0.869654,0.493585,0.008666],
+               [0.493638,-0.869650,-0.005503],
+               [0.004820,0.009063,-0.999947]])
+
+########### Rotation of coordinates and hessian into intermediate position
 # Calculating center of mass 
 s = center_mass(coord) 
 
@@ -198,13 +232,18 @@ I = inert_tensor(coord)
 eig_val,eig_vec = linalg.eigh(I)
 
 # Check if the coordinate system is right-handed --> important for chirality
-eig_vec = check_eig_vec(eig_vec,coord.copy())
+
+eig_vec = check_eig_vec(eig_vec)
+# Rotating eigenvectors, so that highest values are positive
+
+eig_vec = eig_vec_rot(eig_vec)
 
 # Rotation of the coordinates
 coord = coord_rot(coord,np.transpose(eig_vec))
 
 # Construction of the rotation matrix of the hessian and the rotation
 P = rotM_hess(R,coord)
+
 rot_hess = matmul(matmul(P,(hessian)),np.transpose(P))
 
 # Calculating the mass weighted hessian and frequencies
@@ -214,6 +253,61 @@ lamb, Q = linalg.eigh(hessian_mass)
 
 freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 ############
+
+############ Translation and Rotation of the coordinates into end position
+
+# Translation in the center of the bonding
+
+coord_end = coord.copy()
+
+axis = np.identity(3)
+
+# Translation
+print('Start')
+vec = np.array([1,1,0])
+
+
+beta = angle_two_vec(vec,axis[2])
+alpha = angle_two_vec(vec,axis[0])
+
+R_euler = euler_rotation_matrix(beta,beta,0)
+
+beta = angle_two_vec(vec,axis[2])
+
+print(matmul(vec,R_euler))
+
+
+for i in range(1):#(len(coord_end.iloc[:,1])):
+     for j in range(2):#(len(coord_end.iloc[:,1])):
+          if i < j:
+
+               T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+               print(f'Atoms: {coord_end.iloc[i,0]} and {coord_end.iloc[j,0]}')
+
+               coord_end = vec_trans(coord_end,T)
+               #Rotation
+
+               vec = np.zeros(3)
+
+               vec  = (coord_end.iloc[i,1:] - coord_end.iloc[j,1:]).astype('float64')
+
+               beta = angle_two_vec(vec.T,axis[2])
+
+               LL = np.cross(vec,axis[2])
+               
+               alpha = angle_two_vec(LL,axis[1])
+
+               R_euler = euler_rotation_matrix(alpha,beta,0)
+
+               coord_end = coord_rot(coord_end,R_euler)
+
+               print(coord_end)
+               
+            
+
+              
+############
+
 
 ############ Output
 # Save the Frequencies
@@ -234,14 +328,8 @@ coord.to_csv(output_path_coord, mode ='a',sep = '\t',header = None , index = Fal
 
 ############ For tests
 #
+'''
 
-R = np.array([[0.869654,0.493585,0.008666],
-               [0.493638,-0.869650,-0.005503],
-               [0.004820,0.009063,-0.999947]])
-
-
-trafo_coord = import_coord(f'{file_path}'+'benzol_trafo.xyz')[0]
-trafo_hess =  import_hess(f'{file_path}'+'hessian_trafo',trafo_coord)
 
 hes1 = rot_hess
 hes2 = trafo_hess
@@ -251,9 +339,8 @@ for i in range(len(hes1[:,1])):
      for j in range(len(hes1[1,:])):
           if round(hes1[i,j],4) != round(hes2[i,j],4):
                count += 1
-               print(i,j,round_it(hes1[i,j],3), round_it(hes2[i,j],3))
+               #print(i,j,round_it(hes1[i,j],3), round_it(hes2[i,j],3))
 
-print(count)
 
 
 
@@ -263,15 +350,11 @@ hes1 = hessian_mass_trafo
 
 hes2 = hessian_mass
 
-print(np.max(hes1))
-
 lamb, Q = linalg.eigh(hessian_mass_trafo)
 
 freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 
 
-
-'''
 shift = [14,2,19]
 print(coord)
 coord.iloc[:,1:] = coord.iloc[:,1:].add(shift)

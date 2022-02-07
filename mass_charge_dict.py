@@ -64,7 +64,7 @@ for keys in ELEMENTS2Z.keys():
     Z2ELEMENTS[str(ELEMENTS2Z[keys])] = keys
 
 
-elements_dict = {'H' : 1.008,'HE' : 4.003, 'LI' : 6.941, 'BE' : 9.012,\
+elements_dict = {'H' : 1.0079,'HE' : 4.003, 'LI' : 6.941, 'BE' : 9.012,\
                  'B' : 10.811, 'C' : 12.011, 'N' : 14.007, 'O' : 15.999,\
                  'F' : 18.998, 'NE' : 20.180, 'NA' : 22.990, 'MG' : 24.305,\
                  'AL' : 26.982, 'SI' : 28.086, 'P' : 30.974, 'S' : 32.066,\
