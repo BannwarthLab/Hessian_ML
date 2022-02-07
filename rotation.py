@@ -183,7 +183,7 @@ def vec_trans(coord_var,trans):
      return coord_var
 
 
-if True:
+if False:
      file_path = 'tests/'
      input_path_coord = f'{file_path}'+'coord_h2o.xyz'
      output_path_coord = f'{file_path}'+'coord_h2o_rot.xyz'
@@ -258,30 +258,19 @@ freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 
 # Translation in the center of the bonding
 
-coord_end = coord.copy()
 
 axis = np.identity(3)
 
 # Translation
 print('Start')
-vec = np.array([1,1,0])
 
-
-beta = angle_two_vec(vec,axis[2])
-alpha = angle_two_vec(vec,axis[0])
-
-R_euler = euler_rotation_matrix(beta,beta,0)
-
-beta = angle_two_vec(vec,axis[2])
-
-print(matmul(vec,R_euler))
-
-
-for i in range(1):#(len(coord_end.iloc[:,1])):
-     for j in range(2):#(len(coord_end.iloc[:,1])):
+for i in [0,1,2,3]:#range(len(coord.iloc[:,1])):
+     for j in [0,1,2,3,4]:#range(len(coord.iloc[:,1])):
           if i < j:
+               coord_end = coord.copy()
 
                T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+
                print(f'Atoms: {coord_end.iloc[i,0]} and {coord_end.iloc[j,0]}')
 
                coord_end = vec_trans(coord_end,T)
@@ -289,20 +278,24 @@ for i in range(1):#(len(coord_end.iloc[:,1])):
 
                vec = np.zeros(3)
 
-               vec  = (coord_end.iloc[i,1:] - coord_end.iloc[j,1:]).astype('float64')
+               vec  = (coord_end.iloc[i,1:]).astype('float64')
 
-               beta = angle_two_vec(vec.T,axis[2])
+               beta = angle_two_vec(vec,axis[2])
 
-               LL = np.cross(vec,axis[2])
+               LL = np.cross(axis[2],vec)
                
                alpha = angle_two_vec(LL,axis[1])
+               print(alpha)
+               print(LL)
 
                R_euler = euler_rotation_matrix(alpha,beta,0)
 
-               coord_end = coord_rot(coord_end,R_euler)
+               coord_end = coord_rot(coord_end,np.transpose(R_euler))
 
-               print(coord_end)
-               
+               vec  = np.array(coord_end.iloc[i,1:]).astype('float64')
+
+               print(vec)
+            
             
 
               
