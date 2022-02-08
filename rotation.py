@@ -1,12 +1,4 @@
-from cmath import pi
-from code import interact
-from configparser import InterpolationSyntaxError
-from distutils.errors import LinkError
-from doctest import DocFileCase
-from email import header
-from email.errors import HeaderMissingRequiredValue
 from operator import matmul
-from posixpath import split
 from xml.dom import INDEX_SIZE_ERR
 from xml.etree import ElementInclude
 import pandas as pd
@@ -99,7 +91,7 @@ def euler_rotation_matrix(alpha,beta,gamma):
 #R = euler_rotation_matrix(alpha,beta,gamma)
 
 def eig_vec_rot(eig_vec):
-     for i in range(2):
+     for i in [0,1]:
           max_abs_val = max(eig_vec[i].min(), eig_vec[i].max(), key=abs)
           if max_abs_val < 0:
                eig_vec[i] = -eig_vec[i]
@@ -183,26 +175,26 @@ def vec_trans(coord_var,trans):
      return coord_var
 
 
-if False:
-     file_path = 'tests/'
-     input_path_coord = f'{file_path}'+'coord_h2o.xyz'
-     output_path_coord = f'{file_path}'+'coord_h2o_rot.xyz'
+if True:
+     file_path = 'tests/h2o/'
+     input_path_coord = f'{file_path}'+'h2o.xyz'
+     output_path_coord = f'{file_path}'+'h2o_oh.xyz'
 
-     input_path_hess = f'{file_path}'+'hessian_h2o'
-     output_path = f'{file_path}'+'hessian_h2o_rot'
+     input_path_hess = f'{file_path}'+'h2o_hess'
+     output_path = f'{file_path}'+'rot_h2o_hess'
 
-     trafo_coord = import_coord(f'{file_path}'+'new.xyz')[0]
-     trafo_hess =  import_hess(f'{file_path}'+'hessian_h2o_trafo',trafo_coord)
+     trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
+     trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
 else:
      file_path = 'tests/benzol/'
      input_path_coord = f'{file_path}'+'benzol.xyz'
-     output_path_coord = f'{file_path}'+'benzol_rot.xyz'
+     output_path_coord = f'{file_path}'+'benzol_CC.xyz'
 
-     input_path_hess = f'{file_path}'+'hessian_benzol'
-     output_path = f'{file_path}'+'hessian_benzol_rot'
+     input_path_hess = f'{file_path}'+'benzol_hess'
+     output_path = f'{file_path}'+'rot_benzol_hess'
      
-     trafo_coord = import_coord(f'{file_path}'+'benzol_trafo.xyz')[0]
-     trafo_hess =  import_hess(f'{file_path}'+'hessian_trafo',trafo_coord)
+     trafo_coord = import_coord(f'{file_path}'+'benzol_CC.xyz')[0]
+     trafo_hess =  import_hess(f'{file_path}'+'benzol_CC_hess',trafo_coord)
 
 ########## Import
 # 
@@ -214,10 +206,19 @@ hessian = import_hess(input_path_hess,coord)
 #
 ###########
 
-R = np.array([[0.869654,0.493585,0.008666],
-               [0.493638,-0.869650,-0.005503],
-               [0.004820,0.009063,-0.999947]])
+#   Rotation Matrix:
+#       0.869654     0.493638     0.004820
+#       0.493585    -0.869650     0.009063
+#       0.008666    -0.005503    -0.999947
 
+R = np.array([ [0.869654  ,   0.493638  ,   0.004820],
+               [0.493585,    -0.869650    , 0.009063],
+               [0.008666  ,  -0.005503    ,-0.999947]])
+
+
+R = np.array([[-1,0.,0.],
+               [0.,-0.0,1.0],
+               [0.0,1.0,0.0]])
 ########### Rotation of coordinates and hessian into intermediate position
 # Calculating center of mass 
 s = center_mass(coord) 
@@ -234,25 +235,33 @@ eig_val,eig_vec = linalg.eigh(I)
 # Check if the coordinate system is right-handed --> important for chirality
 
 eig_vec = check_eig_vec(eig_vec)
+
 # Rotating eigenvectors, so that highest values are positive
 
 eig_vec = eig_vec_rot(eig_vec)
 
-# Rotation of the coordinates
-coord = coord_rot(coord,np.transpose(eig_vec))
+# Rotation of the coordinatess
+coord = coord_rot(coord,eig_vec.copy())
 
 # Construction of the rotation matrix of the hessian and the rotation
-P = rotM_hess(R,coord)
+P = rotM_hess(eig_vec.copy(),coord)
 
-rot_hess = matmul(matmul(P,(hessian)),np.transpose(P))
+rot_hess = matmul(matmul(P,hessian.copy()),np.transpose(P))
 
 # Calculating the mass weighted hessian and frequencies
-hessian_mass = mass_weighted_hessian(hessian,coord['atoms'])
+hessian_mass = mass_weighted_hessian(rot_hess.copy(),coord['atoms'])
 
 lamb, Q = linalg.eigh(hessian_mass)
 
 freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 ############
+
+
+###
+df_out = pd.DataFrame(rot_hess)
+df_out.to_csv(output_path,sep = '\t')
+###
+
 
 ############ Translation and Rotation of the coordinates into end position
 
@@ -260,44 +269,115 @@ freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 
 
 axis = np.identity(3)
-
-# Translation
 print('Start')
 
-for i in [0,1,2,3]:#range(len(coord.iloc[:,1])):
-     for j in [0,1,2,3,4]:#range(len(coord.iloc[:,1])):
-          if i < j:
-               coord_end = coord.copy()
+H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3]) 
 
+for i in range(len(coord.iloc[:,1])):
+     for j in range(len(coord.iloc[:,1])):
+          coord_end = coord.copy()
+          if i == j:
+               a =2
+               #T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+
+               #coord_end = vec_trans(coord_end,T)
+
+               #H_euler[3*i:3*i+3,3*j:3*j+3] = hessian[3*i:3*i+3,3*j:3*j+3]
+
+          elif i < j:
+               # Translation
                T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
 
                print(f'Atoms: {coord_end.iloc[i,0]} and {coord_end.iloc[j,0]}')
 
+
+
                coord_end = vec_trans(coord_end,T)
-               #Rotation
-
+               # Rotation
                vec = np.zeros(3)
-
                vec  = (coord_end.iloc[i,1:]).astype('float64')
 
                beta = angle_two_vec(vec,axis[2])
 
                LL = np.cross(axis[2],vec)
+               #LL = np.cross(vec,axis[2])
+
                
                alpha = angle_two_vec(LL,axis[1])
-               print(alpha)
-               print(LL)
+
+               #if np.dot(vec,np.cross(axis[1],LL)[2]) < 0.:
+               #     alpha = np.pi + alpha
+               #    beta = np.pi + beta
+               #   print('yes')
 
                R_euler = euler_rotation_matrix(alpha,beta,0)
 
+               print(R_euler)
+
+               #eig_vec_rot(R_euler)
+
+               R = np.array([[ 0.000000 , -0.000000 , 1.000000],
+                             [ 0.607833 ,  0.794065 , 0.000000],
+                             [-0.794065 ,  0.607833 , 0.000000]])
+                         
+
                coord_end = coord_rot(coord_end,np.transpose(R_euler))
 
-               vec  = np.array(coord_end.iloc[i,1:]).astype('float64')
+               print(coord_end)
 
-               print(vec)
-            
-            
+               """
+               s_end = center_mass(coord_end)
 
+               coord_end = vec_trans(coord_end.copy(),s_end)
+
+               I_end = inert_tensor(coord_end)
+
+               eig_val,eig_vec_end = linalg.eigh(I_end)
+
+               #check_eig_vec(eig_vec_end)
+
+               #eig_vec_rot(eig_vec_end)
+               """
+               
+               i0 = 3*i
+               i3 = 3*i + 3
+               j0 = 3*j 
+               j3 = 3*j + 3
+
+               #Ph = rotM_hess(R_euler,coord_end)
+
+               #H_euler = matmul(matmul(Ph,rot_hess),np.transpose(Ph))
+
+               rot_hess_ij = rot_hess[i0:i3,j0:j3].copy()
+
+               H_euler[i0:i3,j0:j3] = matmul(matmul(np.transpose(R_euler),rot_hess_ij),(R_euler))
+
+               H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
+
+               print(H_euler[i0:i3,j0:j3])
+
+               print(trafo_hess[i0:i3,j0:j3])
+
+               coord_save = coord_end.copy()
+
+
+# -0.0482709677   0.0000134249  0.0000826599 
+# -0.0000146129  -0.0961939722  0.0395004333
+#  0.0000811338  -0.0394967983 -0.3326545804 
+
+# -0.0482816600   0.0008710819  -0.0006293365
+#  0.0008429957  -0.0961787538   0.0394983713
+#  0.0007930118  -0.0394863365  -0.3326545889
+
+#       0.000000    -0.000000     1.000000
+#      0.607833     0.794065     0.000000
+#     -0.794065     0.607833     0.000000
+
+
+np.savetxt('heuler.txt',H_euler)         
+#np.savetxt('tests/h2o/P_matrix.txt',Ph)
+
+np.savetxt('tests/h2o/hess_test.txt',H_euler)
               
 ############
 
@@ -305,7 +385,8 @@ for i in [0,1,2,3]:#range(len(coord.iloc[:,1])):
 ############ Output
 # Save the Frequencies
 df_out = pd.DataFrame({'Eigenvalues_hessian_self_h2o' : freq})
-df_out.to_csv(output_path,sep = '\t')
+df_out.to_csv(file_path+'freq',sep = '\t')
+
 
 
 # 
@@ -315,7 +396,7 @@ f.write(head[0])
 f.write(head[1])
 f.close()
 
-coord.to_csv(output_path_coord, mode ='a',sep = '\t',header = None , index = False)
+coord_save.to_csv(output_path_coord, mode ='a',sep = '\t',header = None , index = False)
 ############
 
 
@@ -378,9 +459,11 @@ eig_vec = np.array([[-1,0.,0.],
                [0.0,1.0,0.0]])
 """
 
+"""
 empt = np.array([[-1,0.,0.],
                [0.,-0.0,1.0],
                [0.0,1.0,0.0]])
+"""
 
 """
 Check if first coord is all positive
