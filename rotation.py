@@ -160,6 +160,7 @@ def mass_weighted_hessian(hessian, atoms):
      return hessian
 
 
+
 def round_it(x, sig):
     return round(x, sig-int(floor(log10(abs(x))))-1)
 
@@ -290,8 +291,6 @@ for i in range(len(coord.iloc[:,1])):
 
                print(f'Atoms: {coord_end.iloc[i,0]} and {coord_end.iloc[j,0]}')
 
-
-
                coord_end = vec_trans(coord_end,T)
                # Rotation
                vec = np.zeros(3)
@@ -299,32 +298,43 @@ for i in range(len(coord.iloc[:,1])):
 
                beta = angle_two_vec(vec,axis[2])
 
-               LL = np.cross(axis[2],vec)
-               #LL = np.cross(vec,axis[2])
+               LL = np.cross(vec,axis[2])
 
-               
                alpha = angle_two_vec(LL,axis[1])
-
-               #if np.dot(vec,np.cross(axis[1],LL)[2]) < 0.:
-               #     alpha = np.pi + alpha
-               #    beta = np.pi + beta
-               #   print('yes')
 
                R_euler = euler_rotation_matrix(alpha,beta,0)
 
-               print(R_euler)
-
-               #eig_vec_rot(R_euler)
-
-               R = np.array([[ 0.000000 , -0.000000 , 1.000000],
-                             [ 0.607833 ,  0.794065 , 0.000000],
-                             [-0.794065 ,  0.607833 , 0.000000]])
-                         
-
                coord_end = coord_rot(coord_end,np.transpose(R_euler))
 
+               print('Rotation by Euler angles')
                print(coord_end)
 
+               coord_list = [0,1,2]
+               i1 = coord_list.index(i)
+               i2 = coord_list.index(j)
+
+               coord_list.pop(i1)
+               coord_list.pop(i2-1)
+
+               i3 = coord_list[0]
+
+               np.array([0.,0.,0.])
+               vec = np.zeros(3)
+               # calculating angle to rotate around z-axis
+               vec =  (coord_end.iloc[i3,1:]).astype('float64')
+               vec[2] = 0
+               angle = angle_two_vec(vec,axis[0])
+               angle = angle +np.pi*0.321
+
+
+               R_z = np.array([[np.cos(angle),-np.sin(angle),0],
+                              [np.sin(angle),np.cos(angle),0],
+                              [0,0,1]])
+               
+               coord_rot(coord_end,R_z)
+
+               print('Rotation by z-axis')
+               print(coord_end)
                """
                s_end = center_mass(coord_end)
 
@@ -349,16 +359,32 @@ for i in range(len(coord.iloc[:,1])):
                #H_euler = matmul(matmul(Ph,rot_hess),np.transpose(Ph))
 
                rot_hess_ij = rot_hess[i0:i3,j0:j3].copy()
+               R_euler = np.transpose(R_euler)
 
-               H_euler[i0:i3,j0:j3] = matmul(matmul(np.transpose(R_euler),rot_hess_ij),(R_euler))
-
-               H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
+               H_euler[i0:i3,j0:j3] = matmul(matmul(R_euler,rot_hess_ij),(np.transpose(R_euler)))
 
                print(H_euler[i0:i3,j0:j3])
 
-               print(trafo_hess[i0:i3,j0:j3])
+               H_euler[i0:i3,j0:j3] = matmul(matmul(R_z,H_euler[i0:i3,j0:j3]),np.transpose(R_z))
 
+               print(H_euler[i0:i3,j0:j3])
+
+               H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
+
+               #print('The transformed hess from rotated to O-H')
+               #print(H_euler[i0:i3,j0:j3])
+               #print('The xtb hess from rotated to O-H')
+               #print(trafo_hess[i0:i3,j0:j3])
+               
                coord_save = coord_end.copy()
+
+               f = open(output_path_coord[:-4]+f'{i,j}.xyz',"w")
+
+               f.write(head[0])
+               f.write(head[1])
+               f.close()
+
+               coord_save.to_csv(output_path_coord[:-4]+f'{i,j}.xyz', mode ='a',sep = '\t',header = None , index = False)
 
 
 # -0.0482709677   0.0000134249  0.0000826599 
@@ -390,6 +416,7 @@ df_out.to_csv(file_path+'freq',sep = '\t')
 
 
 # 
+"""
 f = open(output_path_coord,"w")
 
 f.write(head[0])
@@ -397,6 +424,7 @@ f.write(head[1])
 f.close()
 
 coord_save.to_csv(output_path_coord, mode ='a',sep = '\t',header = None , index = False)
+"""
 ############
 
 
