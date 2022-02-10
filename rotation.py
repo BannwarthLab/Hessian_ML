@@ -1,3 +1,4 @@
+from calendar import c
 from operator import matmul
 from xml.dom import INDEX_SIZE_ERR
 from xml.etree import ElementInclude
@@ -5,8 +6,9 @@ import pandas as pd
 import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
 from scipy import linalg
+from scipy.spatial.transform import Rotation as rot_trafo
 from math import log10 , floor
-
+import os
 bohr2angs = 0.52917721067
 speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
@@ -49,46 +51,21 @@ def coord_rot(coord_var,rotM):
           coord_var.iloc[i,1:] = matmul(rotM,coord_var.iloc[i,1:])
      return coord_var
 
-def euler_rotation_matrix(alpha,beta,gamma):
-    """
-    Covert a quaternion into a full three-dimensional rotation matrix.
- 
-    Input
-    :param Q: A 4 element array representing the quaternion (q0,q1,q2,q3) 
- 
-    Output
-    :return: A 3x3 element matrix representing the full 3D rotation matrix. 
-             This rotation matrix converts a point in the local reference 
-             frame to a point in the global reference frame.
-    """
-    q0 = np.cos(1/2*beta)*np.cos(1/2*(gamma+alpha))
-    q1 = np.sin(1/2*beta)*np.sin(1/2*(gamma-alpha))
-    q2 = np.sin(1/2*beta)*np.cos(1/2*(gamma-alpha))
-    q3 = np.cos(1/2*beta)*np.sin(1/2*(gamma+alpha))
-    # Extract the values from Q
-     
-    # First row of the rotation matrix
-    r00 = 2 * (q0 * q0 + q1 * q1) - 1
-    r01 = 2 * (q1 * q2 - q0 * q3)
-    r02 = 2 * (q1 * q3 + q0 * q2)
-     
-    # Second row of the rotation matrix
-    r10 = 2 * (q1 * q2 + q0 * q3)
-    r11 = 2 * (q0 * q0 + q2 * q2) - 1
-    r12 = 2 * (q2 * q3 - q0 * q1)
-     
-    # Third row of the rotation matrix
-    r20 = 2 * (q1 * q3 - q0 * q2)
-    r21 = 2 * (q2 * q3 + q0 * q1)
-    r22 = 2 * (q0 * q0 + q3 * q3) - 1
-     
-    # 3x3 rotation matrix
-    rot_matrix = np.array([[r00, r01, r02],
-                           [r10, r11, r12],
-                           [r20, r21, r22]])
-                            
-    return rot_matrix
+
 #R = euler_rotation_matrix(alpha,beta,gamma)
+
+
+def rot_Z(alpha):
+     R = np.array([[np.cos(alpha), -np.sin(alpha), 0],
+                   [np.sin(alpha),  np.cos(alpha), 0],
+                   [0,          0,                 1]])
+     return R
+
+def rot_X(alpha):
+     R = np.array([[1,             0,              0],
+                   [0, np.cos(alpha), -np.sin(alpha)],
+                   [0, np.sin(alpha), np.cos(alpha)]])
+     return R 
 
 def eig_vec_rot(eig_vec):
      for i in [0,1]:
@@ -105,6 +82,11 @@ def import_coord(file):
      coord_var = pd.read_csv(file,sep = '\s+',skiprows = 2,header = None)
      coord_var.columns= ['atoms','x','y','z']
      return coord_var,head
+
+def import_dipm(file):
+     coord_var = pd.read_csv(file,sep = ',')
+     #coord_var.columns= ['atoms','x','y','z']
+     return coord_var
 
 def import_hess(file,coord_var):
      LineList = []
@@ -172,20 +154,31 @@ def rotM_hess(R,coord_var):
 
 def vec_trans(coord_var,trans):
      for i in range(len(coord_var.iloc[:,1])): 
-          coord_var.iloc[i,1:] = coord_var.iloc[i,1:] - trans
+          coord_var.iloc[i,1:] = np.array(coord_var.iloc[i,1:]) - np.array(trans)
      return coord_var
 
 
 if True:
      file_path = 'tests/h2o/'
      input_path_coord = f'{file_path}'+'h2o.xyz'
-     output_path_coord = f'{file_path}'+'h2o_oh.xyz'
+     output_path_coord = f'{file_path}'
 
      input_path_hess = f'{file_path}'+'h2o_hess'
      output_path = f'{file_path}'+'rot_h2o_hess'
 
+     input_path_dipm = f'{file_path}'+'xyz_dipm.csv'
+
      trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
      trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
+elif False:
+     file_path = 'tests/bromocyanoacetamide/'
+     input_path_coord = f'{file_path}'+'coord.xyz'
+     output_path_coord = f'{file_path}'+'coord.xyz'
+
+     input_path_hess = f'{file_path}'+'hessian'
+     output_path = f'{file_path}'+'hessian_rot'
+
+     input_path_dipm = f'{file_path}'+'xyz_dipm.csv'
 else:
      file_path = 'tests/benzol/'
      input_path_coord = f'{file_path}'+'benzol.xyz'
@@ -193,7 +186,9 @@ else:
 
      input_path_hess = f'{file_path}'+'benzol_hess'
      output_path = f'{file_path}'+'rot_benzol_hess'
-     
+
+     input_path_dipm = f'{file_path}'+'xyz_dipm.csv'
+
      trafo_coord = import_coord(f'{file_path}'+'benzol_CC.xyz')[0]
      trafo_hess =  import_hess(f'{file_path}'+'benzol_CC_hess',trafo_coord)
 
@@ -203,7 +198,9 @@ else:
 coord,head = import_coord(input_path_coord)
 
 hessian = import_hess(input_path_hess,coord)
+dipm = import_dipm(input_path_dipm)
 
+dipm = dipm.iloc[:,:-3]
 #
 ###########
 
@@ -223,10 +220,10 @@ R = np.array([[-1,0.,0.],
 ########### Rotation of coordinates and hessian into intermediate position
 # Calculating center of mass 
 s = center_mass(coord) 
-
 # Translation of coordinate system
-coord = vec_trans(coord,s)
+vec_trans(coord,s)
 
+#vec_trans(dipm,s)
 # Calculating moment of inertia
 I = inert_tensor(coord)
 
@@ -241,8 +238,10 @@ eig_vec = check_eig_vec(eig_vec)
 
 eig_vec = eig_vec_rot(eig_vec)
 
-# Rotation of the coordinatess
+# Rotation of the coordinates and atomic dipole moments
 coord = coord_rot(coord,eig_vec.copy())
+
+dipm = coord_rot(dipm,eig_vec.copy())
 
 # Construction of the rotation matrix of the hessian and the rotation
 P = rotM_hess(eig_vec.copy(),coord)
@@ -274,117 +273,113 @@ print('Start')
 
 H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3]) 
 
-for i in range(len(coord.iloc[:,1])):
-     for j in range(len(coord.iloc[:,1])):
+for i in [0]:#range(len(coord.iloc[:,1])):
+     for j in [1,2]:#range(len(coord.iloc[:,1])):
           coord_end = coord.copy()
-          if i == j:
-               a =2
-               #T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+          if i <= j: #eigentlich <=
+                    # Translation
+                    print(f'Atoms: {coord_end.iloc[i,0]} {i} and {coord_end.iloc[j,0]} {j}')
 
-               #coord_end = vec_trans(coord_end,T)
+                    T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+                    vec_trans(coord_end,T)
 
-               #H_euler[3*i:3*i+3,3*j:3*j+3] = hessian[3*i:3*i+3,3*j:3*j+3]
+                    vec_z = np.zeros(3)
+                    vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]
 
-          elif i < j:
-               # Translation
-               T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+                    if i < j:
+                         vec_z  = (coord_end.iloc[i,1:]).astype('float64')
+                         beta = angle_two_vec(vec_z,axis[2])
+                         LL = np.cross(vec_z,axis[2])
+                         alpha = angle_two_vec(LL,axis[0])
+                         vec_x = np.cross(vec_z,vec_dipm)
+                         vec_y = np.cross(vec_z,vec_x)
 
-               print(f'Atoms: {coord_end.iloc[i,0]} and {coord_end.iloc[j,0]}')
+                         gamma = angle_two_vec(LL,vec_x)
 
-               coord_end = vec_trans(coord_end,T)
-               # Rotation
-               vec = np.zeros(3)
-               vec  = (coord_end.iloc[i,1:]).astype('float64')
-
-               beta = angle_two_vec(vec,axis[2])
-
-               LL = np.cross(vec,axis[2])
-
-               alpha = angle_two_vec(LL,axis[1])
-
-               R_euler = euler_rotation_matrix(alpha,beta,0)
-
-               coord_end = coord_rot(coord_end,np.transpose(R_euler))
-
-               print('Rotation by Euler angles')
-               print(coord_end)
-
-               coord_list = [0,1,2]
-               i1 = coord_list.index(i)
-               i2 = coord_list.index(j)
-
-               coord_list.pop(i1)
-               coord_list.pop(i2-1)
-
-               i3 = coord_list[0]
-
-               np.array([0.,0.,0.])
-               vec = np.zeros(3)
-               # calculating angle to rotate around z-axis
-               vec =  (coord_end.iloc[i3,1:]).astype('float64')
-               vec[2] = 0
-               angle = angle_two_vec(vec,axis[0])
-               angle = angle +np.pi*0.321
+                         if np.cross(vec_z,axis[1])[2]<0.:
+                              alpha = 2*np.pi - alpha
+                         
+                         if np.cross(vec_z,vec_x)[2] < 0.:
+                              gamma = 2*np.pi - gamma
 
 
-               R_z = np.array([[np.cos(angle),-np.sin(angle),0],
-                              [np.sin(angle),np.cos(angle),0],
-                              [0,0,1]])
-               
-               coord_rot(coord_end,R_z)
 
-               print('Rotation by z-axis')
-               print(coord_end)
-               """
-               s_end = center_mass(coord_end)
+                         # Rotation
+                    elif i == j:
+                         vec_z[2] = 1
+                         beta = 0
+                         alpha = 0
+                         LL = axis[0]
+                         vec_x = np.cross(vec_z,vec_dipm)
+                         vec_y = np.cross(vec_z,vec_x)
 
-               coord_end = vec_trans(coord_end.copy(),s_end)
+                         gamma = angle_two_vec(LL,vec_x)
 
-               I_end = inert_tensor(coord_end)
+                         if np.cross(vec_z,axis[1])[2]<0.:
+                              alpha = 2*np.pi - alpha
+                         
+                         if vec_x[1]>= 0. :
+                              gamma = 2*np.pi - gamma
 
-               eig_val,eig_vec_end = linalg.eigh(I_end)
+                    R_euler = matmul(matmul(rot_Z(gamma),rot_X(beta)),rot_Z(alpha))
 
-               #check_eig_vec(eig_vec_end)
+                    if matmul(R_euler,vec_x)[0] < 0:
+                         vec_x_norm = matmul(R_euler,vec_x)
+                         vec_x_norm = vec_x_norm/linalg.norm(vec_x_norm)
+                         r = rot_trafo.from_quat([0.,vec_x_norm[0],vec_x_norm[1],vec_x_norm[2]])
+                         print(vec_x_norm)
+                         R_z = r.as_matrix()
+                         R_euler = matmul(R_z,R_euler)
+                         
+                    coord_rot(coord_end,R_euler)
 
-               #eig_vec_rot(eig_vec_end)
-               """
-               
-               i0 = 3*i
-               i3 = 3*i + 3
-               j0 = 3*j 
-               j3 = 3*j + 3
+                    vec_x = matmul(R_euler,vec_x)
 
-               #Ph = rotM_hess(R_euler,coord_end)
 
-               #H_euler = matmul(matmul(Ph,rot_hess),np.transpose(Ph))
+                    if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
+                         print(vec_x)
+                         print('Error in vec_x')
 
-               rot_hess_ij = rot_hess[i0:i3,j0:j3].copy()
-               R_euler = np.transpose(R_euler)
+                    if coord_end.iloc[i,1] > 1e-8 or coord_end.iloc[i,2] > 1e-8:
+                         print('Error in coord i') 
 
-               H_euler[i0:i3,j0:j3] = matmul(matmul(R_euler,rot_hess_ij),(np.transpose(R_euler)))
+                    if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
+                         print('Error in coord j') 
 
-               print(H_euler[i0:i3,j0:j3])
+                    print(coord_end)
+                    print(vec_x)
 
-               H_euler[i0:i3,j0:j3] = matmul(matmul(R_z,H_euler[i0:i3,j0:j3]),np.transpose(R_z))
+                    i0 = 3*i
+                    i3 = 3*i + 3
+                    j0 = 3*j 
+                    j3 = 3*j + 3
 
-               print(H_euler[i0:i3,j0:j3])
+                    rot_hess_ij = rot_hess[i0:i3,j0:j3].copy()
 
-               H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
+                    H_euler[i0:i3,j0:j3] = matmul(matmul(R_euler,rot_hess_ij),(np.transpose(R_euler)))
 
-               #print('The transformed hess from rotated to O-H')
-               #print(H_euler[i0:i3,j0:j3])
-               #print('The xtb hess from rotated to O-H')
-               #print(trafo_hess[i0:i3,j0:j3])
-               
-               coord_save = coord_end.copy()
+                    #print(H_euler[i0:i3,j0:j3])
 
-               f = open(output_path_coord[:-4]+f'{i,j}.xyz',"w")
+                    H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
 
-               f.write(head[0])
-               f.write(head[1])
-               f.close()
+                    #print('The transformed hess from rotated to O-H')
+                    print(H_euler[i0:i3,j0:j3])
+                    #print('The xtb hess from rotated to O-H')
+                    #print(trafo_hess[i0:i3,j0:j3])
 
-               coord_save.to_csv(output_path_coord[:-4]+f'{i,j}.xyz', mode ='a',sep = '\t',header = None , index = False)
+                    coord_save = coord_end.copy()
+                    directory = ''#f'{i,j}{coord_end.iloc[i,0]}{coord_end.iloc[j,0]}'
+
+                    folder_path = os.path.join(file_path,directory)
+
+                    #os.mkdir(folder_path)
+                    f = open(folder_path + f'{i,j}.xyz',"w")
+
+                    f.write(head[0])
+                    f.write(head[1])
+                    f.close()
+
+                    coord_save.to_csv(folder_path +f'{i,j}.xyz', mode ='a',sep = '\t',header = None , index = False)
 
 
 # -0.0482709677   0.0000134249  0.0000826599 
