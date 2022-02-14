@@ -366,6 +366,7 @@ for i in range(len(coord.iloc[:,1])):
 
                     rot_hess_ij = rot_hess[i0:i3,j0:j3].copy()
 
+                    print(rot_hess_ij)
                     H_euler[i0:i3,j0:j3] = matmul(matmul(R_euler,rot_hess_ij),(np.transpose(R_euler)))
 
                     H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
@@ -375,11 +376,12 @@ for i in range(len(coord.iloc[:,1])):
                     directory = f'atoms_{i}_{j}{coord_end.iloc[i,0]}{coord_end.iloc[j,0]}/'
                     apf_path = os.path.join(apf,directory)
 
-
                     if os.path.exists(apf_path):
                          shutil.rmtree(apf_path)
 
                     os.mkdir(apf_path)
+
+                    np.savetxt(apf_path+'R_inert_apf.txt',R_euler)
                     np.savetxt(apf_path + 'hessian.txt',H_euler)
                     f = open(apf_path + f'coord.xyz',"w")
 

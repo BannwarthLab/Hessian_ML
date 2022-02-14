@@ -156,12 +156,43 @@ def vec_trans(coord_var,trans):
           coord_var.iloc[i,1:] = np.array(coord_var.iloc[i,1:]) - np.array(trans)
      return coord_var
 
-
-
 file_path = 'tests/benzol2/'
+
 init_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
+coord,head = import_coord(init_path_coord)
 
+P = np.genfromtxt(file_path+'P_init_inert')
+
+apf = file_path + 'apf_coord/'
+
+H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3]) 
+for i in range(len(coord.iloc[:,1])):
+     for j in range(len(coord.iloc[:,1])):
+          if i <= j :
+               directory = f'atoms_{i}_{j}{coord.iloc[i,0]}{coord.iloc[j,0]}/'
+
+               R_euler = np.genfromtxt(apf+directory+'R_inert_apf.txt')
+
+               i0 = 3*i
+               i3 = 3*i + 3
+               j0 = 3*j 
+               j3 = 3*j + 3
+
+               H_euler[i0:i3,j0:j3] =matmul(matmul(np.transpose(R_euler),np.genfromtxt(apf+directory+'hessian.txt')[i0:i3,j0:j3]),R_euler)#import_hess(apf+directory+'hessian').iloc[i0:i3,j0:j3]
+               if i != j:
+                    H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
+
+H_euler = matmul(matmul(np.transpose(P),H_euler),P)
+np.savetxt(file_path+'hessian_ML',H_euler)
+
+H = import_hess(file_path +'init_coord/'+'hessian',coord)
+count = 0
+for i in range(len(H[0,:])):
+     for j in range(len(H[0,:])):
+          if round(H[i,j],10)!= round(H_euler[i,j],10):
+               count += 1 
+print(count)
 
 
 
