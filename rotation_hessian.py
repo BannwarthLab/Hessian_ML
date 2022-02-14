@@ -161,9 +161,7 @@ def vec_trans(coord_var,trans):
 file_path = 'tests/benzol2/'
 init_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
-init_path_hess  = f'{file_path}'+'init_coord/'+'hessian'
 
-iinit_path_dipm = f'{file_path}'+'init_coord/'+'xyz_dipm.csv'
 
 
 
