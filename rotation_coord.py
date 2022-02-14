@@ -1,6 +1,4 @@
-from calendar import c
 from operator import matmul
-from xml.dom import INDEX_SIZE_ERR
 from xml.etree import ElementInclude
 import pandas as pd
 import numpy as np
@@ -9,6 +7,7 @@ from scipy import linalg
 from scipy.spatial.transform import Rotation as rot_trafo
 from math import log10 , floor
 import os
+import shutil
 bohr2angs = 0.52917721067
 speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
@@ -158,7 +157,7 @@ def vec_trans(coord_var,trans):
      return coord_var
 
 
-if True:
+if False:
      file_path = 'tests/h2o/'
      input_path_coord = f'{file_path}'+'h2o.xyz'
      output_path_coord = f'{file_path}'
@@ -170,15 +169,13 @@ if True:
 
      trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
      trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
-elif False:
-     file_path = 'tests/bromocyanoacetamide/'
-     input_path_coord = f'{file_path}'+'coord.xyz'
-     output_path_coord = f'{file_path}'+'coord.xyz'
+elif True:
+     file_path = 'tests/benzol2/'
+     input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
-     input_path_hess = f'{file_path}'+'hessian'
-     output_path = f'{file_path}'+'hessian_rot'
+     input_path_hess = f'{file_path}'+'init_coord/'+'hessian'
 
-     input_path_dipm = f'{file_path}'+'xyz_dipm.csv'
+     input_path_dipm = f'{file_path}'+'init_coord/'+'xyz_dipm.csv'
 else:
      file_path = 'tests/benzol/'
      input_path_coord = f'{file_path}'+'benzol.xyz'
@@ -196,27 +193,12 @@ else:
 # 
 
 coord,head = import_coord(input_path_coord)
-
 hessian = import_hess(input_path_hess,coord)
 dipm = import_dipm(input_path_dipm)
 
 dipm = dipm.iloc[:,:-3]
 #
 ###########
-
-#   Rotation Matrix:
-#       0.869654     0.493638     0.004820
-#       0.493585    -0.869650     0.009063
-#       0.008666    -0.005503    -0.999947
-
-R = np.array([ [0.869654  ,   0.493638  ,   0.004820],
-               [0.493585,    -0.869650    , 0.009063],
-               [0.008666  ,  -0.005503    ,-0.999947]])
-
-
-R = np.array([[-1,0.,0.],
-               [0.,-0.0,1.0],
-               [0.0,1.0,0.0]])
 ########### Rotation of coordinates and hessian into intermediate position
 # Calculating center of mass 
 s = center_mass(coord) 
@@ -257,11 +239,25 @@ freq = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 ############
 
 
-###
-df_out = pd.DataFrame(rot_hess)
-df_out.to_csv(output_path,sep = '\t')
-###
+### Saves the coordinates and hessian in the inertia moment axis
+#
+file_path_inert_CS = f'{file_path}' + 'inert_coord/'
+if os.path.exists(file_path_inert_CS):
+     shutil.rmtree(file_path_inert_CS)
+os.mkdir(file_path_inert_CS)
 
+df_out = pd.DataFrame(rot_hess)
+df_out.to_csv(file_path_inert_CS+'hessian',sep = '\t')
+
+f = open(file_path_inert_CS + f'coord.xyz',"w")
+
+f.write(head[0])
+f.write(head[1])
+f.close()
+coord.to_csv(file_path_inert_CS +'coord.xyz', mode ='a',sep = '\t',header = None , index = False)
+
+np.savetxt(f'{file_path}'+'P_init_inert',P)
+###
 
 ############ Translation and Rotation of the coordinates into end position
 
@@ -271,13 +267,20 @@ df_out.to_csv(output_path,sep = '\t')
 axis = np.identity(3)
 print('Start')
 
-H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3]) 
+apf = file_path + 'apf_coord/'
 
-for i in [0]:#range(len(coord.iloc[:,1])):
-     for j in [1,2]:#range(len(coord.iloc[:,1])):
+if os.path.exists(apf):
+     shutil.rmtree(apf)
+os.mkdir(apf)
+
+
+for i in range(len(coord.iloc[:,1])):
+     for j in range(len(coord.iloc[:,1])):
           coord_end = coord.copy()
-          if i <= j: #eigentlich <=
-                    # Translation
+          if i <= j: 
+                    H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3]) 
+
+                    #Translation
                     print(f'Atoms: {coord_end.iloc[i,0]} {i} and {coord_end.iloc[j,0]} {j}')
 
                     T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
@@ -285,56 +288,63 @@ for i in [0]:#range(len(coord.iloc[:,1])):
 
                     vec_z = np.zeros(3)
                     vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]
-
+                    #Rotation for i < j 
                     if i < j:
+                         #Atom pair focussed coordinate system
                          vec_z  = (coord_end.iloc[i,1:]).astype('float64')
-                         beta = angle_two_vec(vec_z,axis[2])
+                         vec_x = np.cross(vec_z,vec_dipm)
+                         vec_y = np.cross(vec_z,vec_x)
+                         #Euler angles
                          LL = np.cross(vec_z,axis[2])
                          alpha = angle_two_vec(LL,axis[0])
+                         beta = angle_two_vec(vec_z,axis[2])
+                         gamma = angle_two_vec(LL,vec_x)
+
+                         #Find right rotation angle
+                         if linalg.det(np.array([axis[0],axis[2],LL]))<0.:
+                              alpha = 2*np.pi - alpha
+                         
+                         if linalg.det(np.array([LL,vec_x,vec_z])) > 0.:
+                              gamma = 2*np.pi - gamma
+                         
+                    # Rotation for i = j
+                    elif i == j:
+                         #Atom pair focussed coordinate system
+                         vec_z[2] = 1
                          vec_x = np.cross(vec_z,vec_dipm)
                          vec_y = np.cross(vec_z,vec_x)
 
-                         gamma = angle_two_vec(LL,vec_x)
-
-                         if np.cross(vec_z,axis[1])[2]<0.:
-                              alpha = 2*np.pi - alpha
-                         
-                         if np.cross(vec_z,vec_x)[2] < 0.:
-                              gamma = 2*np.pi - gamma
-
-
-
-                         # Rotation
-                    elif i == j:
-                         vec_z[2] = 1
+                         #Euler angles
+                         LL = axis[0]
                          beta = 0
                          alpha = 0
-                         LL = axis[0]
-                         vec_x = np.cross(vec_z,vec_dipm)
-                         vec_y = np.cross(vec_z,vec_x)
-
                          gamma = angle_two_vec(LL,vec_x)
-
-                         if np.cross(vec_z,axis[1])[2]<0.:
-                              alpha = 2*np.pi - alpha
                          
+                         #Find right rotation angle
                          if vec_x[1]>= 0. :
                               gamma = 2*np.pi - gamma
 
+                    #Euler Rotationmatrix
+
                     R_euler = matmul(matmul(rot_Z(gamma),rot_X(beta)),rot_Z(alpha))
 
-                    if matmul(R_euler,vec_x)[0] < 0:
-                         vec_x_norm = matmul(R_euler,vec_x)
-                         vec_x_norm = vec_x_norm/linalg.norm(vec_x_norm)
-                         r = rot_trafo.from_quat([0.,vec_x_norm[0],vec_x_norm[1],vec_x_norm[2]])
-                         print(vec_x_norm)
-                         R_z = r.as_matrix()
+                    #Rotation by 180 ° if dipole moment is negative in x
+
+                    if matmul(R_euler,vec_x)[0] < 0.:
+                         vec_z_norm = matmul(R_euler,vec_z)
+                         vec_z_norm = vec_z_norm/linalg.norm(vec_z_norm)
+                         R_z = rot_Z(np.pi)
                          R_euler = matmul(R_z,R_euler)
-                         
+
+                    #Apply the euler rotation matrix on the coordinates                         
                     coord_rot(coord_end,R_euler)
 
+                    #Apply the euler rotation matrix on the new x axis for verification reasons
                     vec_x = matmul(R_euler,vec_x)
 
+                    #Check for Errors in dipole moment or the coordinates
+                    if vec_x[0] < 0.:
+                         print(f'Error in vec_x[0] in {i,j}')
 
                     if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
                          print(vec_x)
@@ -346,8 +356,8 @@ for i in [0]:#range(len(coord.iloc[:,1])):
                     if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
                          print('Error in coord j') 
 
-                    print(coord_end)
-                    print(vec_x)
+
+                    #Generate the final hessian
 
                     i0 = 3*i
                     i3 = 3*i + 3
@@ -358,28 +368,25 @@ for i in [0]:#range(len(coord.iloc[:,1])):
 
                     H_euler[i0:i3,j0:j3] = matmul(matmul(R_euler,rot_hess_ij),(np.transpose(R_euler)))
 
-                    #print(H_euler[i0:i3,j0:j3])
-
                     H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
 
-                    #print('The transformed hess from rotated to O-H')
-                    print(H_euler[i0:i3,j0:j3])
-                    #print('The xtb hess from rotated to O-H')
-                    #print(trafo_hess[i0:i3,j0:j3])
-
                     coord_save = coord_end.copy()
-                    directory = ''#f'{i,j}{coord_end.iloc[i,0]}{coord_end.iloc[j,0]}'
 
-                    folder_path = os.path.join(file_path,directory)
+                    directory = f'atoms_{i}_{j}{coord_end.iloc[i,0]}{coord_end.iloc[j,0]}/'
+                    apf_path = os.path.join(apf,directory)
 
-                    #os.mkdir(folder_path)
-                    f = open(folder_path + f'{i,j}.xyz',"w")
+
+                    if os.path.exists(apf_path):
+                         shutil.rmtree(apf_path)
+
+                    os.mkdir(apf_path)
+                    np.savetxt(apf_path + 'hessian.txt',H_euler)
+                    f = open(apf_path + f'coord.xyz',"w")
 
                     f.write(head[0])
                     f.write(head[1])
                     f.close()
-
-                    coord_save.to_csv(folder_path +f'{i,j}.xyz', mode ='a',sep = '\t',header = None , index = False)
+                    coord_save.to_csv(apf_path +'coord.xyz', mode ='a',sep = '\t',header = None , index = False)
 
 
 # -0.0482709677   0.0000134249  0.0000826599 
@@ -395,18 +402,16 @@ for i in [0]:#range(len(coord.iloc[:,1])):
 #     -0.794065     0.607833     0.000000
 
 
-np.savetxt('heuler.txt',H_euler)         
+#np.savetxt('heuler.txt',H_euler)         
 #np.savetxt('tests/h2o/P_matrix.txt',Ph)
 
-np.savetxt('tests/h2o/hess_test.txt',H_euler)
+#np.savetxt('tests/h2o/hess_test.txt',H_euler)
               
 ############
 
 
 ############ Output
 # Save the Frequencies
-df_out = pd.DataFrame({'Eigenvalues_hessian_self_h2o' : freq})
-df_out.to_csv(file_path+'freq',sep = '\t')
 
 
 
