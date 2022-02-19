@@ -273,7 +273,6 @@ if os.path.exists(apf):
      shutil.rmtree(apf)
 os.mkdir(apf)
 
-
 for i in range(len(coord.iloc[:,1])):
      for j in range(len(coord.iloc[:,1])):
           coord_end = coord.copy()

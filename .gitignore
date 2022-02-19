@@ -4,3 +4,4 @@ num_freq.py
 hessian
 tests/
 *.txt
+*.csv

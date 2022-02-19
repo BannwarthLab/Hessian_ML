@@ -50,10 +50,6 @@ def coord_rot(coord_var,rotM):
           coord_var.iloc[i,1:] = matmul(rotM,coord_var.iloc[i,1:])
      return coord_var
 
-
-#R = euler_rotation_matrix(alpha,beta,gamma)
-
-
 def rot_Z(alpha):
      R = np.array([[np.cos(alpha), -np.sin(alpha), 0],
                    [np.sin(alpha),  np.cos(alpha), 0],
@@ -140,8 +136,6 @@ def mass_weighted_hessian(hessian, atoms):
 
      return hessian
 
-
-
 def round_it(x, sig):
     return round(x, sig-int(floor(log10(abs(x))))-1)
 
@@ -156,23 +150,43 @@ def vec_trans(coord_var,trans):
           coord_var.iloc[i,1:] = np.array(coord_var.iloc[i,1:]) - np.array(trans)
      return coord_var
 
+#############################
+#File Path
 file_path = 'tests/benzol2/'
 
 init_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
+#
+#############################
+#Import Files
 coord,head = import_coord(init_path_coord)
-
 P = np.genfromtxt(file_path+'P_init_inert')
-
+ml_feature = pd.read_csv('ml_feature.csv')
+#
+##############################
+#Extract features which need to be transformed
+dipm_atom = ml_feature[['dipm_atom_x','dipm_atom_y','dipm_atom_z']]
+delta_dipm = ml_feature[['dipm_delta_x','dipm_delta_y','dipm_delta_z']]
+qm_atom  = ml_feature[['qm_atom_x','qm_atom_y','qm_atom_z']]
+qm_delta = ml_feature[['qm_delta_x','qm_delta_y', ' qm_delta_z']]
+delta_dipm_mu = ml_feature[['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']]
+delta_qm_mu = ml_feature[['delta qm only mull x',' delta qm only mull y',' delta qm only mull z']]
+delta_qm_Z = ml_feature[['delta qm only Z x','delta qm only Z y',' delta qm only Z z']]
+#
+#############################
+coord_rot(dipm_atom,P)
+#
 apf = file_path + 'apf_coord/'
+H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3])
 
-H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3]) 
 for i in range(len(coord.iloc[:,1])):
      for j in range(len(coord.iloc[:,1])):
           if i <= j :
                directory = f'atoms_{i}_{j}{coord.iloc[i,0]}{coord.iloc[j,0]}/'
 
                R_euler = np.genfromtxt(apf+directory+'R_inert_apf.txt')
+
+               
 
                i0 = 3*i
                i3 = 3*i + 3
@@ -185,14 +199,16 @@ for i in range(len(coord.iloc[:,1])):
 
 H_euler = matmul(matmul(np.transpose(P),H_euler),P)
 np.savetxt(file_path+'hessian_ML',H_euler)
-
-H = import_hess(file_path +'init_coord/'+'hessian',coord)
-count = 0
-for i in range(len(H[0,:])):
-     for j in range(len(H[0,:])):
-          if round(H[i,j],10)!= round(H_euler[i,j],10):
-               count += 1 
-print(count)
+#
+#############################
+#
+#H = import_hess(file_path +'init_coord/'+'hessian',coord)
+#count = 0
+#for i in range(len(H[0,:])):
+#     for j in range(len(H[0,:])):
+#          if round(H[i,j],10)!= round(H_euler[i,j],10):
+#               count += 1 
+#print(count)
 
 
 
