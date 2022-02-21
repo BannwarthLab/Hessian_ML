@@ -1,13 +1,11 @@
-from operator import matmul
-from xml.etree import ElementInclude
-import pandas as pd
-import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
 from scipy import linalg
 from scipy.spatial.transform import Rotation as rot_trafo
 from math import log10 , floor
-import os
-import shutil
+import numpy as np
+from operator import matmul
+import pandas as pd
+
 bohr2angs = 0.52917721067
 speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
@@ -22,7 +20,7 @@ def center_charge(coord_var):
      d = np.zeros(3)
      charge_sum = 0
      for i in range(len(coord_var['atoms'])):
-          charge = ELEMENTS2Z[coord.loc[i,'atoms']]
+          charge = ELEMENTS2Z[coord_var.loc[i,'atoms']]
           d += charge*coord_var.iloc[i,1:]
           charge_sum += charge
      C = d/charge_sum
@@ -136,6 +134,16 @@ def mass_weighted_hessian(hessian, atoms):
 
      return hessian
 
+     
+def qm_matrix(qm_atom):
+     temp = np.array(qm_atom)
+
+     qm_matrix = np.array([[temp[0],temp[3],temp[4]],
+                          [temp[3],temp[1],temp[5]],
+                          [temp[4],temp[5],temp[2]]])
+
+     return qm_matrix
+
 def round_it(x, sig):
     return round(x, sig-int(floor(log10(abs(x))))-1)
 
@@ -154,55 +162,3 @@ def vector_rot(coord_var,rotM):
      for i in range(len(coord_var.iloc[:,1])):
           coord_var.iloc[i,:] = matmul(rotM,coord_var.iloc[i,:])
      return coord_var
-
-#############################
-#File Path
-file_path = 'tests/benzol2/'
-
-init_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
-
-#
-#############################
-#Import Files
-coord,head = import_coord(init_path_coord)
-P = np.genfromtxt(file_path+'P_init_inert')
-
-
-
-#
-apf = file_path + 'apf_coord/'
-H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3])
-
-for i in range(len(coord.iloc[:,1])):
-     for j in range(len(coord.iloc[:,1])):
-          if i <= j :
-               directory = f'atoms_{i}_{j}{coord.iloc[i,0]}{coord.iloc[j,0]}/'
-
-               R_euler = np.genfromtxt(apf+directory+'R_inert_apf.txt')
-
-               
-
-               i0 = 3*i
-               i3 = 3*i + 3
-               j0 = 3*j 
-               j3 = 3*j + 3
-
-               H_euler[i0:i3,j0:j3] =matmul(matmul(np.transpose(R_euler),np.genfromtxt(apf+directory+'hessian.txt')[i0:i3,j0:j3]),R_euler)#import_hess(apf+directory+'hessian').iloc[i0:i3,j0:j3]
-               if i != j:
-                    H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
-
-H_euler = matmul(matmul(np.transpose(P),H_euler),P)
-np.savetxt(file_path+'hessian_ML',H_euler)
-#
-#############################
-#
-#H = import_hess(file_path +'init_coord/'+'hessian',coord)
-#count = 0
-#for i in range(len(H[0,:])):
-#     for j in range(len(H[0,:])):
-#          if round(H[i,j],10)!= round(H_euler[i,j],10):
-#               count += 1 
-#print(count)
-
-
-
