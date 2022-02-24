@@ -142,7 +142,7 @@ for file in range(len(file_path)):
 
 #X = preprocessing.normalize(X,norm ='l2')
 
-file_num = 2
+file_num = 5
 split_i = Nat*9*file_num
 split_j = Nat*9*file_num + Nat*9
 
@@ -285,7 +285,7 @@ freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 print(freq1)
 
 #hess_test = matmul(matmul(np.transpose(P),Hessian_Coll[5]),P)
-hess_test = Hessian_Coll[2]
+hess_test = Hessian_Coll[5]
 hessian_mass = mass_weighted_hessian(hess_test,coord['atoms'])
 lamb, Q = linalg.eigh(hessian_mass)
 
