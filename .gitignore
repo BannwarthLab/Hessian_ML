@@ -5,3 +5,6 @@ hessian
 tests/
 *.txt
 *.csv
+h2/
+*.png
+*.svg
