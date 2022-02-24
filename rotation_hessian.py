@@ -180,8 +180,6 @@ for i in range(len(coord.iloc[:,1])):
 
                R_euler = np.genfromtxt(apf+directory+'R_inert_apf.txt')
 
-               
-
                i0 = 3*i
                i3 = 3*i + 3
                j0 = 3*j 

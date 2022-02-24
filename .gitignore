@@ -6,5 +6,8 @@ tests/
 *.txt
 *.csv
 h2/
+h2_2/
+N2/
+O2/
 *.png
 *.svg
