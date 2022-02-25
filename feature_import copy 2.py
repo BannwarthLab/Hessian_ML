@@ -22,6 +22,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import  Matern ,RBF
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GroupShuffleSplit
 
 def box_plot(X,y,thresh,file):
     def comp_var_r2(X,y):
@@ -51,7 +52,8 @@ def box_plot(X,y,thresh,file):
 
 #############################
 #Init File Import for Information
-file_path = glob.glob('h2_2/H2_*/') + glob.glob('N2/N2_*/') + glob.glob('O2/O2_*/')
+#
+file_path = glob.glob('tests/h2/H2_*/') + glob.glob('tests/N2/N2_*/') + glob.glob('tests/O2/O2_*/') +glob.glob('tests/F2/F2_*/')
 init_path_coord = f'{file_path[0]}'+'coord.xyz'
 coord,head = import_coord(init_path_coord)
 Nat = len(coord.iloc[:,0])
@@ -127,38 +129,36 @@ for file in range(len(file_path)):
 X = np.zeros([len(file_path)*Nat*(3)**2,43])
 y = np.zeros(len(file_path)*Nat*(3)**2)
 k = 0
+grps_diag = y.copy()
+l = 0
 for file in range(len(file_path)):
     for A in range(Nat):
         for i in range(3):
             for j in range(3):
                 xyz = np.array([0,0,0])
+                grps_diag[k] = int(l)
                 xyz[i] += 1
                 xyz[j] += 1
                 X[k,0:3] = xyz
                 X[k,3:]  = Feature_Coll[file,A]
                 y[k] = Hessian_Coll[file,i+3*A,j+3*A]
                 k+=1
-
+        l+=1
 
 #X = preprocessing.normalize(X,norm ='l2')
 
-file_num = 5
-split_i = Nat*9*file_num
-split_j = Nat*9*file_num + Nat*9
 
-X_train = np.append(X[:split_i] , X[split_j:],axis = 0)
+gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state=42)
+idx = list(gss.split(X, y, grps_diag))
+train_idx = idx[0][0]
+test_idx =  idx[0][1]
+X_train = X[train_idx]
+X_test = X[test_idx]
+y_train = y[train_idx]
+y_test = y[test_idx]
 
-X_test = X[split_i:split_j]
-
-y_train = np.append(y[:split_i] , y[split_j:],axis = 0)
-
-y_test =  y[split_i:split_j]
-
-#X_test,y_train,y_test  #  = train_test_split(X, y, test_size=0.25 ,random_state=42)
-
-regr_diag = RandomForestRegressor(n_estimators = 100,random_state=42,bootstrap=False)
+regr_diag = RandomForestRegressor( n_estimators = 100,random_state=42,bootstrap=False)
 #regr_diag = GaussianProcessRegressor(kernel = Matern() ,random_state=42)
-
 
 regr_diag.fit(X_train, y_train)
 
@@ -189,33 +189,40 @@ fig.set_figwidth(15)
 plt.show()
 
 """
-
-X_non_diag = np.zeros([len(file_path)*Nat**2*(3)**2,203])
-y_non_diag = np.zeros(len(file_path*Nat**2*(3)**2))
-
+non_diag_len = (Nat**2-Nat)*3**2
+X_non_diag = np.zeros([len(file_path)*non_diag_len,203])
+y_non_diag = np.zeros(len(file_path)*non_diag_len)
+grps_non_diag = y_non_diag.copy()
+l = 0
 k = 0
 for file in range(len(file_path)):
     for A in range(Nat):
         for B in range(Nat):
-            for i in range(3):
-                for j in range(3):
-                        #if A < B:
-                        #print('i,j=',i,j)
-                        #print('A,B=',A,B)
-                        xyz = np.array([0,0,0])
-                        xyz[i] += 1
-                        xyz[j] += 1
+            if A != B:
+                for i in range(3):
+                    for j in range(3):
+                            #if A < B:
+                            #print('i,j=',i,j)
+                            #print('A,B=',A,B)
+                            grps_non_diag[k] = int(l)
+                            xyz = np.array([0,0,0])
+                            xyz[i] += 1
+                            xyz[j] += 1
 
-                        X_non_diag[k,0:3] = xyz
-                        X_non_diag[k,3:43] = Feature_Coll[file,A]
-                        X_non_diag[k,43:83]= Feature_Coll[file,B]
-                        X_non_diag[k,83:123]= (Feature_Coll[file,A] +Feature_Coll[file,B])/2
-                        X_non_diag[k,123:163]= (Feature_Coll[file,B]*Feature_Coll[file,A])
-                        X_non_diag[k,163:203]= np.abs(Feature_Coll[file,B] -Feature_Coll[file,A])
+                            X_non_diag[k,0:3] = xyz
+                            X_non_diag[k,3:43] = Feature_Coll[file,A]
+                            X_non_diag[k,43:83]= Feature_Coll[file,B]
+                            X_non_diag[k,83:123]= (Feature_Coll[file,A] +Feature_Coll[file,B])/2
+                            X_non_diag[k,123:163]= (Feature_Coll[file,B]*Feature_Coll[file,A])
+                            X_non_diag[k,163:203]= np.abs(Feature_Coll[file,B] -Feature_Coll[file,A])
 
 
-                        y_non_diag[k] = Hessian_Coll[file,i+3*A,j+3*B]
-                        k+=1
+                            y_non_diag[k] = Hessian_Coll[file,i+3*A,j+3*B]
+                            k+=1
+                l += 1
+
+
+
 '''
 for k in range(3*Nat):
     for l in range(3*Nat):
@@ -227,46 +234,45 @@ for k in range(3*Nat):
             print('C,D=',C,D)
 '''
 #X_non_diag_train, X_non_diag_test, y_non_diag_train, y_non_diag_test = train_test_split(X_non_diag, y_non_diag, test_size=0.25 ,random_state=42)
-#X_non_diag = preprocessing.normalize(X_non_diag,norm ='l2')
 
-split_i = Nat*9*file_num
-split_j = Nat*9*file_num + Nat*9
+#gss_non_diag = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state=42)
+#idx_non_diag = list(gss_non_diag.split(X_non_diag, y_non_diag, grps_non_diag))
+#train_idx = idx_non_diag[0][0]
+#test_idx =  idx_non_diag[0][1]
 
-X_non_diag_test = X_non_diag[split_i:split_j]
-X_non_diag_train = np.append(X_non_diag[:split_i],X_non_diag[split_j:],axis = 0)
+X_non_diag_train = X_non_diag[train_idx]
+X_non_diag_test = X_non_diag[test_idx]
 
+y_non_diag_train = y_non_diag[train_idx]
+y_non_diag_test = y_non_diag[test_idx]
 
-y_non_diag_test = y_non_diag[split_i:split_j]
-y_non_diag_train = np.append(y_non_diag[:split_i],y_non_diag[split_j:],axis = 0)
-
-regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=42)
+regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=42, bootstrap=False)
 #regr_non_diag = GaussianProcessRegressor(kernel = Matern(),random_state=42)
 
 regr_non_diag.fit(X_non_diag_train, y_non_diag_train)
-
-
-
 
 hess_non_diag_pred = regr_non_diag.predict(X_non_diag_test)
 hess_diag_pred = regr_diag.predict(X_test)
 
 print('Score of non diag model:',regr_non_diag.score(X_non_diag_test,y_non_diag_test))
 
+num = 18*8
+file_num = test_idx[num]//18
+
 hess_diag = np.zeros([3,3])
-k = 0
+hess_non_diag = np.zeros([3,3])
+
+k= int(num//9*9)
 for i in range(3):
     for j in range(3):
+
         hess_diag[i,j] = hess_diag_pred[k]
+        hess_non_diag[i,j] = hess_non_diag_pred[k]
+
         k += 1
 
-hess_non_diag = np.zeros([3,3])
-k = 0
-for i in range(3):
-    for j in range(3):
-        hess_non_diag[i,j] = hess_non_diag_pred[k]
-        k +=1
-
 hess = np.zeros([6,6])
+
 
 hess[0:3,0:3] = hess_diag
 hess[3:6,3:6] = hess_diag
@@ -274,21 +280,23 @@ hess[0:3,3:6] = hess_non_diag
 hess[3:6,0:3] = hess_non_diag
 
 
+#P = np.genfromtxt('h2_2/P_init_inert')
 
-P = np.genfromtxt('h2_2/P_init_inert')
+init_path_coord = f'{file_path[file_num//2]}'+'coord.xyz'
+coord,head = import_coord(init_path_coord)
 
-hess_pred = matmul(matmul(np.transpose(P),hess),P)
-
+#hess_pred = matmul(matmul(np.transpose(P),hess),P)
 hessian_mass = mass_weighted_hessian(hess,coord['atoms'])
 lamb, Q = linalg.eigh(hessian_mass)
 freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
-print(freq1)
 
+print(freq1)
 #hess_test = matmul(matmul(np.transpose(P),Hessian_Coll[5]),P)
-hess_test = Hessian_Coll[5]
+
+hess_test =Hessian_Coll[file_num]
 hessian_mass = mass_weighted_hessian(hess_test,coord['atoms'])
 lamb, Q = linalg.eigh(hessian_mass)
-
 freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+
 print(freq1)
 
