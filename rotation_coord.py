@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
 from scipy import linalg
-from scipy.spatial.transform import Rotation as rot_trafo
 from math import log10 , floor
 import os
 import shutil
@@ -170,7 +169,7 @@ if False:
      trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
      trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
 elif True:
-     file_path = 'tests/h2/'
+     file_path = ''
      input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
      input_path_hess = f'{file_path}'+'init_coord/'+'hessian'
@@ -265,6 +264,7 @@ np.savetxt(f'{file_path}'+'P_init_inert',P)
 
 
 axis = np.identity(3)
+
 print('Start')
 
 apf = file_path + 'apf_coord/'
@@ -381,7 +381,7 @@ for i in range(len(coord.iloc[:,1])):
                     os.mkdir(apf_path)
 
                     np.savetxt(apf_path+'R_inert_apf.txt',R_euler)
-                    np.savetxt(apf_path + 'hessian.txt',H_euler)
+                    #np.savetxt(apf_path + 'hessian.txt',H_euler)
                     f = open(apf_path + f'coord.xyz',"w")
 
                     f.write(head[0])

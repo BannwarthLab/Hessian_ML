@@ -4,10 +4,8 @@ import pandas as pd
 import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
 from scipy import linalg
-from scipy.spatial.transform import Rotation as rot_trafo
 from math import log10 , floor
-import os
-import shutil
+
 bohr2angs = 0.52917721067
 speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
@@ -157,7 +155,7 @@ def vector_rot(coord_var,rotM):
 
 #############################
 #File Path
-file_path = 'tests/benzol2/'
+file_path = ''
 
 init_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
@@ -168,8 +166,6 @@ coord,head = import_coord(init_path_coord)
 P = np.genfromtxt(file_path+'P_init_inert')
 
 
-
-#
 apf = file_path + 'apf_coord/'
 H_euler = np.zeros([len(coord.iloc[:,1])*3,len(coord.iloc[:,1])*3])
 
@@ -184,7 +180,8 @@ for i in range(len(coord.iloc[:,1])):
                i3 = 3*i + 3
                j0 = 3*j 
                j3 = 3*j + 3
-
+               #############################
+               #Actual rotation of the matrix
                H_euler[i0:i3,j0:j3] =matmul(matmul(np.transpose(R_euler),np.genfromtxt(apf+directory+'hessian.txt')[i0:i3,j0:j3]),R_euler)#import_hess(apf+directory+'hessian').iloc[i0:i3,j0:j3]
                if i != j:
                     H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])

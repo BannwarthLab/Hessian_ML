@@ -1,11 +1,6 @@
-from calendar import c
-from msilib.schema import Feature
-from turtle import shape
-
 from sklearn import preprocessing
 from functions import *
 from operator import matmul
-from xml.etree import ElementInclude
 import pandas as pd
 import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
@@ -23,6 +18,61 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import  Matern ,RBF
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GroupShuffleSplit
+
+def import_mol():
+    init_path_coord = f'{file_path[file]}'+'coord.xyz'
+    print(f'Features of {file_path[file]}')
+    #############################
+    #Import Files
+    coord,head = import_coord(init_path_coord)
+    Nat = len(coord.iloc[:,0])
+    ml_feature = pd.read_csv(f'{file_path[file]}' +'ml_feature.csv')
+    hessian = import_hess(f'{file_path[file]}' + 'hessian',coord)
+
+    ##############################
+    #Extract features
+
+    CN = ml_feature.loc[:,('coordination number','delta coordination number')]
+
+    charges = ml_feature.loc[:,('atomic partial charges','delta partial charges')]
+
+    dipm = ml_feature.loc[:,('dipm_atom_x','dipm_atom_y','dipm_atom_z',
+                            'dipm_delta_x','dipm_delta_y','dipm_delta_z',
+                            'delta dipm only mull x','delta dipm only mull y','delta dipm only mull z')]
+
+    qm = ml_feature.loc[:,('delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz',
+                        'delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz')]
+
+    energy_based = ml_feature.loc[:,('response (a.u.)','gap (eV)','chem.pot (eV)','HOAO (eV)','LUAO (eV)',
+                                    'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
+                                    'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext')]
+
+    ##############################
+    #Extract features which need to be transformed
+
+    qm_atom = ml_feature.loc[:,('qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_zx','qm_delta_yz')]
+    qm_delta = ml_feature.loc[:,('qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_zx','qm_delta_yz')]
+
+    #############################
+    #Transform to vector by QM x I
+    qm_atom_mat = np.zeros([len(coord),3])
+    qm_delta_mat = np.zeros([len(coord),3])
+    
+    I = np.array([1,1,1])
+
+    
+    for k in range(len(qm_atom.iloc[:,0])):
+        qm_atom_mat[k,:] = matmul(qm_matrix(qm_atom.iloc[k,:]),I)
+        qm_delta_mat[k,:] = matmul(qm_matrix(qm_delta.iloc[k,:]),I)
+
+
+    qm_atom_mat_df = pd.DataFrame(qm_atom_mat,columns = ['qm_x','qm_y','qm_z'])
+    qm_delta_mat_df = pd.DataFrame(qm_delta_mat,columns = ['qm_delta_x','qm_delta_y','qm_delta_z'])
+
+    col_name = (CN.columns.values.tolist() + dipm.columns.values.tolist() + qm_atom_mat_df.columns.values.tolist()+ qm_delta_mat_df.columns.values.tolist() + qm.columns.values.tolist() + energy_based.columns.values.tolist())
+
+    X_df = pd.concat([CN,dipm,qm_atom_mat_df,qm_delta_mat_df,qm,energy_based],axis =1)
+    return X_df ,col_name, hessian
 
 def box_plot(X,y,thresh,file):
     def comp_var_r2(X,y):
@@ -256,7 +306,7 @@ hess_diag_pred = regr_diag.predict(X_test)
 
 print('Score of non diag model:',regr_non_diag.score(X_non_diag_test,y_non_diag_test))
 
-num = 18*8
+num = 18*7
 file_num = test_idx[num]//18
 
 hess_diag = np.zeros([3,3])
@@ -282,7 +332,7 @@ hess[3:6,0:3] = hess_non_diag
 
 #P = np.genfromtxt('h2_2/P_init_inert')
 
-init_path_coord = f'{file_path[file_num//2]}'+'coord.xyz'
+init_path_coord = f'{file_path[file_num]}'+'coord.xyz'
 coord,head = import_coord(init_path_coord)
 
 #hess_pred = matmul(matmul(np.transpose(P),hess),P)
@@ -293,6 +343,7 @@ freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 print(freq1)
 #hess_test = matmul(matmul(np.transpose(P),Hessian_Coll[5]),P)
 
+print(file_path[file_num])
 hess_test =Hessian_Coll[file_num]
 hessian_mass = mass_weighted_hessian(hess_test,coord['atoms'])
 lamb, Q = linalg.eigh(hessian_mass)
