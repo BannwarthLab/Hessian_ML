@@ -13,7 +13,7 @@ mass_unit_in_au = 1.66054e-27 / 9.1094e-31
 atomic_time_unit = 2.4189e-17   # E_h / hbar
 
 def angle_two_vec(a,b):
-     cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
+     cosangle = np.dot(a,b)
      angle = np.arccos(np.clip(cosangle,-1,1))
      return angle
 
@@ -169,7 +169,7 @@ if False:
      trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
      trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
 elif True:
-     file_path = ''
+     file_path = 'tests/HF/HF_0.95/'
      input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
      input_path_hess = f'{file_path}'+'init_coord/'+'hessian'
