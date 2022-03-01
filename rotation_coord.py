@@ -169,7 +169,7 @@ if False:
      trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
      trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
 elif True:
-     file_path = ''
+     file_path = 'tests/benzol2/'
      input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
      input_path_hess = f'{file_path}'+'init_coord/'+'hessian'
@@ -365,7 +365,6 @@ for i in range(len(coord.iloc[:,1])):
 
                     rot_hess_ij = rot_hess[i0:i3,j0:j3].copy()
 
-                    print(rot_hess_ij)
                     H_euler[i0:i3,j0:j3] = matmul(matmul(R_euler,rot_hess_ij),(np.transpose(R_euler)))
 
                     H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
@@ -384,10 +383,11 @@ for i in range(len(coord.iloc[:,1])):
                     #np.savetxt(apf_path + 'hessian.txt',H_euler)
                     f = open(apf_path + f'coord.xyz',"w")
 
+                    print(coord_save)
                     f.write(head[0])
                     f.write(head[1])
                     f.close()
-                    coord_save.to_csv(apf_path +'coord.xyz', mode ='a',sep = '\t',header = None , index = False)
+                    coord_save.to_csv(apf_path +'coord.xyz', mode ='a',sep = '\t',header = None , index = False, float_format='{:10.8f}'.format)
 
 
 # -0.0482709677   0.0000134249  0.0000826599 
