@@ -77,23 +77,46 @@ def diag_features(X_df,Hessian_Coll,apf_list,file_path):
             l+=1
     return X,y,grps_diag
 
-def import_files(file_path):
+def import_files(file_path_mol):
     #############################
     #Import Files
+    file_path = glob.glob(os.path.join(file_path_mol,'apf_coord/atoms_*'))
+
     feature_path = file_path.copy()
     coord_path = file_path.copy()
+    info_path = file_path.copy()
     hess_path = file_path.copy()
     for file in range(len(file_path)):
         feature_path[file] = os.path.join(file_path[file],'ml_feature.csv')
         coord_path[file] = os.path.join(file_path[file],'coord.xyz')
         hess_path[file] = os.path.join(file_path[file], 'hessian')
+        info_path[file] = os.path.join(file_path[file], 'atoms.txt')
 
     #ml_feature = pd.concat(pd.concat([pd.DataFrame(data = {'file':[1]}),pd.read_csv(f)],axis =1 ) for f in feature_path)
     ml_feature = pd.DataFrame()
+    hessian_df = pd.DataFrame()
     for f in range(len(feature_path)):
-        temp = pd.read_csv(feature_path[f])
-        temp.insert(0,'file',f)
+        A,B = np.genfromtxt(info_path[f], delimiter =',')
+        
+        if A == B:
+            temp = pd.read_csv(feature_path[f]).iloc[[A]]
+        elif A != B:  
+            temp = pd.read_csv(feature_path[f]).iloc[[A,B]]
+
+        temp.insert(0,'apf',f)
         ml_feature = pd.concat([ml_feature,temp])
+
+        coord,head = import_coord(coord_path[f])
+        hessian = import_hess(hess_path[f],coord)
+
+        k = 0
+        temp_hesssian_df = pd.DataFrame(columns=['xx','xy','xz','yx','yy','yz','zx','zy','zz'],index = [f])
+        for i in range(3):
+            for j in range(3):
+                temp_hesssian_df.iloc[0,k] =  hessian[3*int(A)+i,3*int(B)+j]
+                k+=1
+
+        hessian_df = pd.concat([hessian_df,temp_hesssian_df],axis =0)
 
     ml_feature = ml_feature.reset_index()
     N_tot = len(ml_feature)
@@ -110,7 +133,7 @@ def import_files(file_path):
 
     ##############################
     #Extract features
-    file = ml_feature.loc[:,['index','file']]
+    file = ml_feature.loc[:,['index','apf']]
 
     CN = ml_feature.loc[:,('coordination number','delta coordination number')]
     charges = ml_feature.loc[:,('atomic partial charges','delta partial charges')]
@@ -151,4 +174,4 @@ def import_files(file_path):
     #Generate the Feature DataFrame
     X_df = pd.concat([file,CN,dipm,qm_atom_mat_df,qm_delta_mat_df,qm,energy_based],axis =1)
 
-    return X_df,Hessian_Coll,col_name
+    return X_df,Hessian_Coll,col_name,hessian_df

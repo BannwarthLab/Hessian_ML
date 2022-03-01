@@ -169,7 +169,7 @@ if False:
      trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
      trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
 elif True:
-     file_path = ''
+     file_path = 'tests/benzol2/'
      input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
      input_path_hess = f'{file_path}'+'init_coord/'+'hessian'
@@ -383,7 +383,8 @@ for i in range(len(coord.iloc[:,1])):
                     #np.savetxt(apf_path + 'hessian.txt',H_euler)
                     f = open(apf_path + f'coord.xyz',"w")
 
-                    print(coord_save)
+                    np.savetxt(apf_path + 'atoms.txt',[i,j])
+
                     f.write(head[0])
                     f.write(head[1])
                     f.close()

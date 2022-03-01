@@ -1,6 +1,7 @@
 from msilib.schema import Feature
 from pyparsing import col
 from sklearn import preprocessing
+from sklearn.cluster import k_means
 from functions import *
 from operator import matmul
 import pandas as pd
@@ -25,36 +26,118 @@ from ml_functions import *
 #############################
 #Init File Import for Information
 #
-file_path = glob.glob('tests/h2/H2_*/') + glob.glob('tests/N2/N2_*/') + glob.glob('tests/O2/O2_*/') +glob.glob('tests/F2/F2_*/')
+ #+ glob.glob('tests/h2/H2_*/')# + glob.glob('tests/N2/N2_*/') + glob.glob('tests/O2/O2_*/') +glob.glob('tests/F2/F2_*/')
 
-X_df,Hessian_Coll,col_name = import_files(file_path)
+molecules = ['h2']
 
-apf_list = [0,1]
+for mol in range(len(molecules)):
+    file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
+    X_df = pd.DataFrame()
+    for file in range(len(file_path)):
+        temp,Hessian_Coll,col_name,y_df = import_files(file_path[file])
+        temp.insert(1, 'variation', file)
+        temp.insert(1, 'molecule', mol)
+
+        X_df = pd.concat([X_df,temp],axis = 1)
 
 ###############################
 #Generating features for diagonal hessian matrix blocks
+X_diag_prep = np.empty([2,40])
+y_diag_prep = np.empty([2,9])
 
-X,y,grps_diag = diag_features(X_df,Hessian_Coll,apf_list,file_path)
+X_non_diag_prep = np.empty([1,200])
+y_non_diag_prep = np.empty([1,9])
+
+
+k = 0 
+l = 0
+for mol in range(len(molecules)):
+    file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
+    for var in range(len(file_path)):
+        temp =  X_df.loc[(X_df['variation'] == var) & (X_df['molecule'] == mol)]
+        apf_len = temp['apf'].max()
+        for apf in range(apf_len+1):
+            X_df_apf = X_df.loc[(X_df['variation'] == var) & (X_df['molecule'] == mol) & (X_df['apf'] == apf)]
+            if len(X_df_apf) == 1:
+                X_diag_prep[k] = X_df_apf.iloc[0,-40:]
+                y_diag_prep[k] = np.array(y_df.iloc[k+l]) 
+                k+=1
+            elif len(X_df_apf) ==2:
+                X_non_diag_prep[l,:40] = X_df_apf.iloc[0,-40:]
+                X_non_diag_prep[l,40:80] = X_df_apf.iloc[1,-40:]
+                X_non_diag_prep[l,80:120] = (X_df_apf.iloc[0,-40:] + X_df_apf.iloc[1,-40:])/2
+                X_non_diag_prep[l,120:160] = X_df_apf.iloc[0,-40:] * X_df_apf.iloc[1,-40:]
+                X_non_diag_prep[l,160:200] = np.abs(X_df_apf.iloc[0,-40:] - X_df_apf.iloc[1,-40:])
+                y_non_diag_prep[l,:] = np.array(y_df.iloc[l+k]) 
+                l+=1
+
+
+
+N_tot = len(X_df)
+X_diag = np.zeros([2*9,43])
+y_diag = np.zeros(2*9)
+grps_diag = y_diag.copy()
+k = 0
+l = 0
+for A in range(len(X_diag_prep)):
+    m = 0
+    for i in range(3):
+        for j in range(3):
+            xyz = np.array([0,0,0])
+            grps_diag[k] = int(l)
+            xyz[i] += 1
+            xyz[j] += 1
+            X_diag[l,0:3] = xyz
+            X_diag[l,3:]  = X_diag_prep[k,:]
+            y_diag[l] = y_diag_prep[A,m]
+            l += 1
+            m += 1
+    k += 1
+
+
+X_non_diag = np.zeros([1*9,203])
+y_non_diag = np.zeros(1*9)
+grps_non_diag = y_non_diag.copy()
+
+k = 0
+l = 0
+for A in range(len(X_non_diag_prep)):
+    m = 0
+    for i in range(3):
+        for j in range(3):
+            xyz = np.array([0,0,0])
+            xyz[i] += 1
+            xyz[j] += 1
+            X_non_diag[l,0:3] = xyz
+            X_non_diag[l,3:]  = X_non_diag_prep[k,:]
+            y_non_diag[l] = y_non_diag_prep[A,m]
+            l += 1
+            m += 1
+    k += 1
+
+
+
+
 
 #############################
 #Generate features for non diagonal Hessian matrix blocks
 
-X_non_diag,y_non_diag = non_diag_features(X_df,Hessian_Coll,apf_list,file_path)
+#X_non_diag,y_non_diag = non_diag_features(X_df,Hessian_Coll,apf_list,file_path)
 
 #############################
 #Separation into Training and Test data
 
 gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state=42)
-idx = list(gss.split(X, y, grps_diag))
+idx = list(gss.split(X_diag, y_diag, grps_diag))
 
 train_idx = idx[0][0]
 test_idx =  idx[0][1]
 
-X_train = X[train_idx]
-X_test = X[test_idx]
+X_train = X_diag[train_idx]
+X_test = X_diag[test_idx]
 
-y_train = y[train_idx]
-y_test = y[test_idx]
+y_train = y_diag[train_idx]
+y_test = y_diag[test_idx]
 
 
 #############################
@@ -66,10 +149,11 @@ regr_diag.fit(X_train, y_train)
 
 #############################
 #Results and Plots of diagonal hessian matrix blocks
+
 print('Score of diag model:',regr_diag.score(X_test,y_test))
 importances = regr_diag.feature_importances_
 
-ticks = np.array(range(len(X[0])))
+ticks = np.array(range(len(X_diag[0])))
 
 fig ,ax = plt.subplots()
 
@@ -85,6 +169,10 @@ plt.savefig('diag_r2_coefficents.svg')
 
 #############################
 #Separation into Training and Test data
+idx = list(gss.split(X_non_diag, y_non_diag, grps_non_diag))
+
+train_idx = idx[0][0]
+test_idx =  idx[0][1]
 
 X_non_diag_train = X_non_diag[train_idx]
 X_non_diag_test = X_non_diag[test_idx]
