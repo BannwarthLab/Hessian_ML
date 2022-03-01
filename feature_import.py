@@ -1,6 +1,8 @@
+from msilib.schema import Feature
+from pyparsing import col
+from sklearn import preprocessing
 from functions import *
 from operator import matmul
-from xml.etree import ElementInclude
 import pandas as pd
 import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
@@ -11,181 +13,177 @@ import glob as glob
 import time as time
 from scipy.stats import linregress 
 import matplotlib.pyplot as plt
-
+import os
 
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import  Matern ,RBF
 from sklearn.model_selection import train_test_split
-
-def box_plot(X,y,thresh,file):
-    def comp_var_r2(X,y):
-        variances = np.var(X, axis=0)
-
-        from scipy.stats import linregress 
-
-        lin_regs = [linregress(xs, ys) for xs, ys in zip(X.T, [y for i in range(X.shape[1])])]
-        rvalues = np.array([ccc.rvalue for ccc in lin_regs])
-        return variances,rvalues
-
-    variances, rvalues = comp_var_r2(X,y)
-
-    #ax.plot(variances, label='Variance', c='black')
-    plt.bar(np.array(range(len(X[0]))),rvalues ** 2, color='orange')
-
-    #ax.legend(ncol=1, fontsize=10)
-    #ax.set_ylim(-0.02, 1.0)
-    plt.xlabel('Features')
-    plt.ylabel('R² coefficient')
-    #ax.set_xticks( np.array(range(len(X[0]))))
-    #ax.set_xticklabels(list,rotation=90)
-    #print(np.where(rvalues**2 > thresh))
-    plt.savefig(file)
-    plt.show()
-    return
+from sklearn.model_selection import GroupShuffleSplit
+from ml_functions import *
 
 #############################
 #Init File Import for Information
-file_path = glob.glob('h2/H2_*/')
-init_path_coord = f'{file_path[0]}'+'coord.xyz'
-coord,head = import_coord(init_path_coord)
-Nat = len(coord.iloc[:,0])
+#
+file_path = glob.glob('tests/h2/H2_*/') + glob.glob('tests/N2/N2_*/') + glob.glob('tests/O2/O2_*/') +glob.glob('tests/F2/F2_*/')
+
+X_df,Hessian_Coll,col_name = import_files(file_path)
+
+apf_list = [0,1]
+
+###############################
+#Generating features for diagonal hessian matrix blocks
+
+X,y,grps_diag = diag_features(X_df,Hessian_Coll,apf_list,file_path)
+
 #############################
-#Import Files
-num = 0
-rvals = np.zeros([41,6])
+#Generate features for non diagonal Hessian matrix blocks
 
-for x in range(3):
-    for c in range(3):
-        if x <= c :
+X_non_diag,y_non_diag = non_diag_features(X_df,Hessian_Coll,apf_list,file_path)
 
-            X_all = np.zeros([len(file_path)*1**2,201])
-            y_all = np.empty(len(file_path)*1**2)
-            X_pred = np.array([])
+#############################
+#Separation into Training and Test data
 
-            for i in range(Nat):       
-                for j in range(Nat):
-                    if i == j:                    
-                        for file in range(len(file_path)):
-                            init_path_coord = f'{file_path[file]}'+'coord.xyz'
-                            print(f'Features of {file_path[file]}')
-                            #############################
-                            #Import Files
-                            coord,head = import_coord(init_path_coord)
-                            Nat = len(coord.iloc[:,0])
-                            ml_feature = pd.read_csv(f'{file_path[file]}' +'ml_feature.csv')
-                            hessian = import_hess(f'{file_path[file]}' + 'hessian',coord)
+gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state=42)
+idx = list(gss.split(X, y, grps_diag))
 
-                            ##############################
-                            #Extract features
+train_idx = idx[0][0]
+test_idx =  idx[0][1]
 
-                            CN = ml_feature.loc[:,('coordination number','delta coordination number')]
+X_train = X[train_idx]
+X_test = X[test_idx]
 
-                            charges = ml_feature.loc[:,('atomic partial charges','delta partial charges')]
-
-                            dipm = ml_feature.loc[:,('dipm_atom_x','dipm_atom_y','dipm_atom_z',
-                                                    'dipm_delta_x','dipm_delta_y','dipm_delta_z',
-                                                    'delta dipm only mull x','delta dipm only mull y','delta dipm only mull z')]
-
-                            qm = ml_feature.loc[:,('delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz',
-                                                'delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz')]
-
-                            energy_based = ml_feature.loc[:,('response (a.u.)','gap (eV)','chem.pot (eV)','HOAO (eV)','LUAO (eV)',
-                                                            'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
-                                                            'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext')]
-
-                            ##############################
-                            #Extract features which need to be transformed
-
-                            qm_atom = ml_feature.loc[:,('qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_zx','qm_delta_yz')]
-                            qm_delta = ml_feature.loc[:,('qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_zx','qm_delta_yz')]
-
-                            #############################
-                            #Transform to vector by QM x I
-                            qm_atom_mat = np.zeros([len(coord),3])
-                            qm_delta_mat = np.zeros([len(coord),3])
-
-                            I = np.array([1,1,1])
-
-                            
-                            for k in range(len(qm_atom.iloc[:,0])):
-                                qm_atom_mat[k,:] = matmul(qm_matrix(qm_atom.iloc[k,:]),I)
-                                qm_delta_mat[k,:] = matmul(qm_matrix(qm_delta.iloc[k,:]),I)
-                                
-                            qm_atom_mat_df = pd.DataFrame(qm_atom_mat,columns = ['qm_x','qm_y','qm_z'])
-                            qm_delta_mat_df = pd.DataFrame(qm_delta_mat,columns = ['qm_delta_x','qm_delta_y','qm_delta_z'])
-
-                            #############################
-                            #
-                            R_ij = (coord.iloc[i,3] - coord.iloc[j,3])
-                            X_i = CN.iloc[i,:]
-                            X_i = np.append(X_i,dipm.iloc[i,:])
-                            X_i = np.append(X_i,qm_atom_mat_df.iloc[i,:])
-                            X_i = np.append(X_i,qm_delta_mat_df.iloc[i,:])
-                            X_i = np.append(X_i,qm.iloc[i,:])
-                            X_i = np.append(X_i,energy_based.iloc[i,:])
-
-                            col_name = (CN.columns.values.tolist() + dipm.columns.values.tolist() + qm_atom_mat_df.columns.values.tolist()+ qm_delta_mat_df.columns.values.tolist() + qm.columns.values.tolist() + energy_based.columns.values.tolist())
-
-                            X_i_df = pd.DataFrame(X_i,col_name)
-
-                            X_j = CN.iloc[j,:]
-                            X_j = np.append(X_j,dipm.iloc[j,:])
-                            X_j = np.append(X_j,qm_atom_mat_df.iloc[j,:])
-                            X_j = np.append(X_j,qm_delta_mat_df.iloc[j,:])
-                            X_j = np.append(X_j,qm.iloc[j,:])
-                            X_j = np.append(X_j,energy_based.iloc[j,:])
-
-                            X_j_df = pd.DataFrame(X_j,col_name)
-
-                            X_arith_mean = (X_i + X_j)/2
-                            X_prod = X_i * X_j
-                            X_abs_diff = np.abs(X_i - X_j)
-
-                            X = R_ij
-                            X = np.append(X,X_i)
-                            X = np.append(X,X_j)
-                            X = np.append(X,X_arith_mean)
-                            X = np.append(X,X_prod)
-                            X = np.append(X,X_abs_diff)
-
-                            X_df = pd.DataFrame(X,[['R_ij']+ col_name *5 ])
-
-                            y = hessian[x,c]
-                            X_all[file,:] = X #file*Nat**2+
-                            y_all[file] = y #file*Nat**2+
+y_train = y[train_idx]
+y_test = y[test_idx]
 
 
+#############################
+# Training and Prediction via ML
+regr_diag = RandomForestRegressor( n_estimators = 100,random_state=42,bootstrap=False)
+#regr_diag = GaussianProcessRegressor(kernel = Matern() ,random_state=42)
 
-                        X_corr = X_all[:,:len(col_name)+1]
+regr_diag.fit(X_train, y_train)
 
-                        for val in range(len(X_corr[0])):
-                            rvals[val,num] = (linregress(X_corr[:,val],y_all).rvalue)**2
-                            #ax.plot(variances, label='Variance', c='black')
+#############################
+#Results and Plots of diagonal hessian matrix blocks
+print('Score of diag model:',regr_diag.score(X_test,y_test))
+importances = regr_diag.feature_importances_
 
+ticks = np.array(range(len(X[0])))
 
-            num += 1
+fig ,ax = plt.subplots()
 
-
-
-
-
-list = ['R_ij'] + col_name
-
-fig, ax = plt.subplots()
-
-#ax.plot(variances, label='Variance', c='black')
-color_list = ['orange','blue','red','green','yellow','goldenrod']
-for r_i in range(6):
-    ax.bar(np.array(range(len(X_corr[0])))+r_i*0.20,rvals[:,1],  alpha=1.0, width=0.40, color=color_list[r_i])
-#ax.legend(ncol=1, fontsize=10)
-#ax.set_ylim(-0.02, 1.0)
+ax.bar(ticks ,importances,alpha=1.0, width=0.15, color='orange')
 ax.set_xlabel('Features')
 ax.set_ylabel('R² coefficient')
-ax.set_xticks( np.array(range(len(X_corr[0]))))
-ax.set_xticklabels(list,rotation=90)
-#print(np.where(rvalues**2 > thresh))
+ax.set_xticks(ticks )
+ax.set_xticklabels(['x','y','z']+col_name,rotation=90)
 plt.gcf().subplots_adjust(bottom=0.45)
 fig.set_figwidth(15)
-plt.show()
+plt.savefig('diag_r2_coefficents.png')
+plt.savefig('diag_r2_coefficents.svg')
+
+#############################
+#Separation into Training and Test data
+
+X_non_diag_train = X_non_diag[train_idx]
+X_non_diag_test = X_non_diag[test_idx]
+
+y_non_diag_train = y_non_diag[train_idx]
+y_non_diag_test = y_non_diag[test_idx]
+
+#############################
+#Training and Prediction via ML
+
+regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=42, bootstrap=False)
+#regr_non_diag = GaussianProcessRegressor(kernel = Matern(),random_state=42)
+
+regr_non_diag.fit(X_non_diag_train, y_non_diag_train)
+
+hess_non_diag_pred = regr_non_diag.predict(X_non_diag_test)
+hess_diag_pred = regr_diag.predict(X_test)
+
+#############################
+#Results and Plots of prediction of non diagonal hessian matrix blocks
+print('Score of non diag model:',regr_non_diag.score(X_non_diag_test,y_non_diag_test))
+
+importances = regr_non_diag.feature_importances_
+
+ticks = np.array(range(43))
+
+fig ,ax = plt.subplots()
+
+ax.bar(ticks[:3] ,importances[:3],alpha=1.0, width=0.15, color='black')
+ax.bar(ticks[3:]-0.3 ,importances[3:43],alpha=1.0, width=0.15, label = 'atom A',color='green')
+ax.bar(ticks[3:]-0.15 ,importances[43:83],alpha=1.0, width=0.15, label = 'atom B',color='orange')
+ax.bar(ticks[3:] ,importances[83:123],alpha=1.0, width=0.15, label = 'arithmetic mean',color='blue')
+ax.bar(ticks[3:]+0.15 ,importances[123:163],alpha=1.0, width=0.15, label = 'product',color='lime')
+ax.bar(ticks[3:]+0.3 ,importances[163:203],alpha=1.0, width=0.15, label = 'absolute difference',color='red')
+
+ax.legend()
+ax.set_xlabel('Features')
+ax.set_ylabel('R² coefficient')
+ax.set_xticks(ticks )
+ax.set_xticklabels(['x','y','z'] + col_name,rotation=90)
+plt.gcf().subplots_adjust(bottom=0.45)
+fig.set_figwidth(15)
+plt.savefig('non_diag_r2_coefficents.png')
+plt.savefig('non_diag_r2_coefficents.svg')
 
 
-                
+#############################
+#Transformation of the hessian blocks into a full hessian to compute the frequencies
+test_path = ['tests/h2/H2_0.25/']
+df_HF,hess_HF,col_name_hf = import_files(test_path)
+X_diag_HF,y_diag_HF,grps_hf = diag_features(df_HF,hess_HF,apf_list,test_path)
+X_non_diag_HF,y_non_diag_HF = non_diag_features(df_HF,hess_HF,apf_list,test_path)
+
+diag_pred_HF = regr_diag.predict(X_diag_HF)
+non_diag_pred_HF = regr_non_diag.predict(X_non_diag_HF)
+
+
+num = 0#18*7
+file_num = 0#test_idx[num]//18
+
+hess_diag = np.zeros([3,3])
+hess_non_diag = np.zeros([3,3])
+
+k= int(num//9*9)
+for i in range(3):
+    for j in range(3):
+
+        hess_diag[i,j] = diag_pred_HF[k]
+        hess_non_diag[i,j] = non_diag_pred_HF[k]
+
+        k += 1
+
+hess = np.zeros([6,6])
+
+
+hess[0:3,0:3] = hess_diag
+hess[3:6,3:6] = hess_diag
+hess[0:3,3:6] = hess_non_diag
+hess[3:6,0:3] = hess_non_diag
+
+
+#P = np.genfromtxt('h2_2/P_init_inert')
+
+init_path_coord = f'{file_path[file_num]}'+'coord.xyz'
+coord,head = import_coord(init_path_coord)
+
+#hess_pred = matmul(matmul(np.transpose(P),hess),P)
+hessian_mass = mass_weighted_hessian(hess,coord['atoms'])
+lamb, Q = linalg.eigh(hessian_mass)
+freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+
+print(freq1)
+#hess_test = matmul(matmul(np.transpose(P),Hessian_Coll[5]),P)
+
+print(file_path[file_num])
+hess_test =hess_HF[file_num]
+hessian_mass = mass_weighted_hessian(hess_test,coord['atoms'])
+lamb, Q = linalg.eigh(hessian_mass)
+freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+
+print(freq1)
+
