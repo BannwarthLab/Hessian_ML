@@ -169,7 +169,7 @@ if False:
      trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
      trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
 elif True:
-     file_path = 'tests/HF/HF_0.95/'
+     file_path = ''
      input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
      input_path_hess = f'{file_path}'+'init_coord/'+'hessian'
