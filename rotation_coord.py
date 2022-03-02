@@ -13,8 +13,9 @@ mass_unit_in_au = 1.66054e-27 / 9.1094e-31
 atomic_time_unit = 2.4189e-17   # E_h / hbar
 
 def angle_two_vec(a,b):
-     cosangle = np.dot(a,b)
-     angle = np.arccos(np.clip(cosangle,-1,1))
+     cosangle = np.dot(a,b)/ (linalg.norm(a) * linalg.norm(b))
+     np.nan_to_num(cosangle)
+     angle = np.arccos(np.clip(cosangle,-1,1)) 
      return angle
 
 def center_charge(coord_var):
