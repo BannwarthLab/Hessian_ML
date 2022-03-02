@@ -28,28 +28,42 @@ from ml_functions import *
 #
  #+ glob.glob('tests/h2/H2_*/')# + glob.glob('tests/N2/N2_*/') + glob.glob('tests/O2/O2_*/') +glob.glob('tests/F2/F2_*/')
 
-molecules = ['h2']
-
+molecules = ['H2','N2','O2','F2']
+X_df = pd.DataFrame()
+y_df = pd.DataFrame()
 for mol in range(len(molecules)):
     file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
-    X_df = pd.DataFrame()
+    X_df_mol = pd.DataFrame()
+    y_df_mol = pd.DataFrame()
     for file in range(len(file_path)):
-        temp,Hessian_Coll,col_name,y_df = import_files(file_path[file])
+        temp,Hessian_Coll,col_name,y_df_temp = import_files(file_path[file])
+
         temp.insert(1, 'variation', file)
         temp.insert(1, 'molecule', mol)
+        X_df_mol = pd.concat([X_df_mol,temp],axis = 0)
+        y_df_mol = pd.concat([y_df_mol,y_df_temp],axis = 0)
+    X_df = pd.concat([X_df,X_df_mol],axis = 0)
+    y_df = pd.concat([y_df,y_df_mol],axis = 0)
 
-        X_df = pd.concat([X_df,temp],axis = 1)
+
+
+X_df = X_df.reset_index(drop = True)
+y_df = y_df.reset_index(drop = True)
+
 
 ###############################
 #Generating features for diagonal hessian matrix blocks
-X_diag_prep = np.empty([2,40])
-y_diag_prep = np.empty([2,9])
+N_diag = 62*2
+N_non_diag = 62
+X_diag_prep = np.empty([N_diag,40])
+y_diag_prep = np.empty([N_diag,9])
 
-X_non_diag_prep = np.empty([1,200])
-y_non_diag_prep = np.empty([1,9])
+X_non_diag_prep = np.empty([N_non_diag,200])
+y_non_diag_prep = np.empty([N_non_diag,9])
 
 
-k = 0 
+
+k = 0
 l = 0
 for mol in range(len(molecules)):
     file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
@@ -62,7 +76,9 @@ for mol in range(len(molecules)):
                 X_diag_prep[k] = X_df_apf.iloc[0,-40:]
                 y_diag_prep[k] = np.array(y_df.iloc[k+l]) 
                 k+=1
-            elif len(X_df_apf) ==2:
+
+            elif len(X_df_apf) == 2:
+
                 X_non_diag_prep[l,:40] = X_df_apf.iloc[0,-40:]
                 X_non_diag_prep[l,40:80] = X_df_apf.iloc[1,-40:]
                 X_non_diag_prep[l,80:120] = (X_df_apf.iloc[0,-40:] + X_df_apf.iloc[1,-40:])/2
@@ -71,52 +87,8 @@ for mol in range(len(molecules)):
                 y_non_diag_prep[l,:] = np.array(y_df.iloc[l+k]) 
                 l+=1
 
-
-
-N_tot = len(X_df)
-X_diag = np.zeros([2*9,43])
-y_diag = np.zeros(2*9)
-grps_diag = y_diag.copy()
-k = 0
-l = 0
-for A in range(len(X_diag_prep)):
-    m = 0
-    for i in range(3):
-        for j in range(3):
-            xyz = np.array([0,0,0])
-            grps_diag[k] = int(l)
-            xyz[i] += 1
-            xyz[j] += 1
-            X_diag[l,0:3] = xyz
-            X_diag[l,3:]  = X_diag_prep[k,:]
-            y_diag[l] = y_diag_prep[A,m]
-            l += 1
-            m += 1
-    k += 1
-
-
-X_non_diag = np.zeros([1*9,203])
-y_non_diag = np.zeros(1*9)
-grps_non_diag = y_non_diag.copy()
-
-k = 0
-l = 0
-for A in range(len(X_non_diag_prep)):
-    m = 0
-    for i in range(3):
-        for j in range(3):
-            xyz = np.array([0,0,0])
-            xyz[i] += 1
-            xyz[j] += 1
-            X_non_diag[l,0:3] = xyz
-            X_non_diag[l,3:]  = X_non_diag_prep[k,:]
-            y_non_diag[l] = y_non_diag_prep[A,m]
-            l += 1
-            m += 1
-    k += 1
-
-
-
+X_diag,y_diag,grps_diag =  transform_diag_prep(X_diag_prep,y_diag_prep)
+X_non_diag,y_non_diag,grps_non_diag = transform_non_diag_prep(X_non_diag_prep,y_non_diag_prep)
 
 
 #############################
@@ -127,7 +99,7 @@ for A in range(len(X_non_diag_prep)):
 #############################
 #Separation into Training and Test data
 
-gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state=42)
+gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state =2)
 idx = list(gss.split(X_diag, y_diag, grps_diag))
 
 train_idx = idx[0][0]
@@ -138,6 +110,8 @@ X_test = X_diag[test_idx]
 
 y_train = y_diag[train_idx]
 y_test = y_diag[test_idx]
+
+
 
 
 #############################
@@ -169,6 +143,7 @@ plt.savefig('diag_r2_coefficents.svg')
 
 #############################
 #Separation into Training and Test data
+
 idx = list(gss.split(X_non_diag, y_non_diag, grps_non_diag))
 
 train_idx = idx[0][0]
@@ -211,7 +186,7 @@ ax.bar(ticks[3:]+0.3 ,importances[163:203],alpha=1.0, width=0.15, label = 'absol
 ax.legend()
 ax.set_xlabel('Features')
 ax.set_ylabel('R² coefficient')
-ax.set_xticks(ticks )
+ax.set_xticks(ticks)
 ax.set_xticklabels(['x','y','z'] + col_name,rotation=90)
 plt.gcf().subplots_adjust(bottom=0.45)
 fig.set_figwidth(15)
@@ -221,45 +196,44 @@ plt.savefig('non_diag_r2_coefficents.svg')
 
 #############################
 #Transformation of the hessian blocks into a full hessian to compute the frequencies
-test_path = ['tests/h2/H2_0.25/']
-df_HF,hess_HF,col_name_hf = import_files(test_path)
-X_diag_HF,y_diag_HF,grps_hf = diag_features(df_HF,hess_HF,apf_list,test_path)
-X_non_diag_HF,y_non_diag_HF = non_diag_features(df_HF,hess_HF,apf_list,test_path)
-
-diag_pred_HF = regr_diag.predict(X_diag_HF)
-non_diag_pred_HF = regr_non_diag.predict(X_non_diag_HF)
-
-
 num = 0#18*7
 file_num = 0#test_idx[num]//18
 
 hess_diag = np.zeros([3,3])
 hess_non_diag = np.zeros([3,3])
 
+mol = 0
+file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
+init_path_coord = f'{file_path[file_num]}'+'/init_coord/coord.xyz'
+R_00 = np.genfromtxt(f'{file_path[file_num]}'+'apf_coord/atoms_0_0HH/R_inert_apf.txt')
+R_01 = np.genfromtxt(f'{file_path[file_num]}'+'apf_coord/atoms_0_1HH/R_inert_apf.txt')
+
+
 k= int(num//9*9)
 for i in range(3):
     for j in range(3):
 
-        hess_diag[i,j] = diag_pred_HF[k]
-        hess_non_diag[i,j] = non_diag_pred_HF[k]
+        hess_diag[i,j] = hess_diag_pred[k]
+        hess_non_diag[i,j] = hess_non_diag_pred[k]
 
         k += 1
 
 hess = np.zeros([6,6])
 
 
-hess[0:3,0:3] = hess_diag
-hess[3:6,3:6] = hess_diag
-hess[0:3,3:6] = hess_non_diag
-hess[3:6,0:3] = hess_non_diag
+hess[0:3,0:3] = matmul(matmul((R_00),hess_diag),np.transpose(R_00))
+hess[3:6,3:6] = matmul(matmul((R_00),hess_diag),np.transpose(R_00))
+hess[0:3,3:6] = matmul(matmul((R_01),hess_non_diag),np.transpose(R_01))
+hess[3:6,0:3] = matmul(matmul((R_01),hess_non_diag),np.transpose(R_01))
 
 
-#P = np.genfromtxt('h2_2/P_init_inert')
-
-init_path_coord = f'{file_path[file_num]}'+'coord.xyz'
+#P = np.genfromtxt('h2/P_init_inert')
+mol = 0
+file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
+init_path_coord = f'{file_path[file_num]}'+'/init_coord/coord.xyz'
 coord,head = import_coord(init_path_coord)
 
-#hess_pred = matmul(matmul(np.transpose(P),hess),P)
+hess_pred = hess #matmul(matmul(np.transpose(P),hess),P)
 hessian_mass = mass_weighted_hessian(hess,coord['atoms'])
 lamb, Q = linalg.eigh(hessian_mass)
 freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
@@ -267,11 +241,25 @@ freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 print(freq1)
 #hess_test = matmul(matmul(np.transpose(P),Hessian_Coll[5]),P)
 
-print(file_path[file_num])
-hess_test =hess_HF[file_num]
+file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
+init_path_coord = f'{file_path[file_num]}'+'/init_coord/coord.xyz'
+
+
+hess_diag_test = import_hess(f'{file_path[file_num]}'+'apf_coord/atoms_0_0HH/hessian',coord)[0:3,0:3]
+hess_non_diag_test = import_hess(f'{file_path[file_num]}'+'apf_coord/atoms_0_1HH/hessian',coord)[0:3,3:6]
+
+hess_test = np.zeros([6,6])
+
+hess_test[0:3,0:3] = matmul(matmul((R_00),hess_diag_test),np.transpose(R_00))
+hess_test[3:6,3:6] = matmul(matmul((R_00),hess_diag_test),np.transpose(R_00))
+hess_test[0:3,3:6] = matmul(matmul((R_01),hess_non_diag_test),np.transpose(R_01))
+hess_test[3:6,0:3] = matmul(matmul((R_01),hess_non_diag_test),np.transpose(R_01))
+
+#hess_test = import_hess(f'{file_path[file_num]}'+'/init_coord/hessian',coord)
 hessian_mass = mass_weighted_hessian(hess_test,coord['atoms'])
 lamb, Q = linalg.eigh(hessian_mass)
 freq1 = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
 
 print(freq1)
+
 

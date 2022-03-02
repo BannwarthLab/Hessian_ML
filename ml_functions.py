@@ -20,6 +20,7 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import  Matern ,RBF
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GroupShuffleSplit
+
 def non_diag_features(X_df,Hessian_Coll,apf_list,file_path):
     N_tot = len(X_df)
     X_non_diag = np.zeros([N_tot*9,203])
@@ -175,3 +176,53 @@ def import_files(file_path_mol):
     X_df = pd.concat([file,CN,dipm,qm_atom_mat_df,qm_delta_mat_df,qm,energy_based],axis =1)
 
     return X_df,Hessian_Coll,col_name,hessian_df
+
+
+
+def transform_diag_prep(X_diag_prep,y_diag_prep):
+    N_diag = 62*2 ###Abändern
+
+    X_diag = np.zeros([N_diag*9,43])
+    y_diag = np.zeros(N_diag*9)
+
+    grps_diag = y_diag.copy()
+    l = 0
+    for A in range(len(X_diag_prep)):
+        m = 0
+        for i in range(3):
+            for j in range(3):
+                xyz = np.array([0,0,0])
+                xyz[i] += 1
+                xyz[j] += 1
+                X_diag[l,0:3] = xyz
+                X_diag[l,3:]  = X_diag_prep[A,:]
+                y_diag[l] = y_diag_prep[A,m]
+                grps_diag[l] = A//2
+
+                l += 1
+                m += 1
+    return X_diag,y_diag,grps_diag
+
+def transform_non_diag_prep(X_non_diag_prep,y_non_diag_prep):
+    N_non_diag = 62 ###Abändern
+
+    X_non_diag = np.zeros([N_non_diag*9,203])
+    y_non_diag = np.zeros(N_non_diag*9)
+
+    grps_non_diag = y_non_diag.copy()
+
+    l = 0
+    for A in range(len(X_non_diag_prep)):
+        m = 0
+        for i in range(3):
+            for j in range(3):
+                xyz = np.array([0,0,0])
+                xyz[i] += 1
+                xyz[j] += 1
+                X_non_diag[l,0:3] = xyz
+                X_non_diag[l,3:]  = X_non_diag_prep[A,:]
+                y_non_diag[l] = y_non_diag_prep[A,m]
+                grps_non_diag[l] = A
+                l += 1
+                m += 1
+    return X_non_diag,y_non_diag,grps_non_diag
