@@ -79,13 +79,80 @@ def non_diag_features(X_df,Hessian_Coll,apf_list,file_path):
                                 k+=1
     return X_non_diag,y_non_diag
 
+def project_hess(hess_v,coord):
+    idx = find_trans_rot(hess_v,coord)
+    lamb,Q = linalg.eigh(hess_v)
+    hess_projected_v = hess_v.copy()
 
+    for i in idx:
+        i = int(i)
+        hess_projected_v -= lamb[i] * np.outer(Q.T[i], Q.T[i])
+
+    return hess_projected_v
+
+def find_trans_rot(hess,coord):
+
+    Nat = len(coord)
+    overlap_mat = np.zeros([3*Nat,6])
+
+    trans_x = np.array([1.,0.,0.])
+    trans_y = np.array([0.,1.,0.])
+    trans_z = np.array([0.,0.,1.])
+
+    for i in range(Nat):
+        overlap_mat[0,3*i:3*i+3] = trans_x
+        overlap_mat[1,3*i:3*i+3] = trans_y
+        overlap_mat[2,3*i:3*i+3] = trans_z
+
+        overlap_mat[3,3*i:3*i+3] = np.array([0.,coord.loc[i,'z'],-coord.loc[i,'y']])
+        overlap_mat[4,3*i:3*i+3] = np.array([-coord.loc[i,'z'],0.,coord.loc[i,'x']])
+        overlap_mat[5,3*i:3*i+3] = np.array([coord.loc[i,'y'],-coord.loc[i,'x'],0.])
+
+    overlap_mat = overlap_mat / Nat
+    overlap_mat = 1/(linalg.norm(overlap_mat,1)) * overlap_mat
+
+
+    lamb, Q = linalg.eigh(hess)
+
+    M = matmul(overlap_mat,Q)
+
+    
+    norm_x = np.array(linalg.norm(coord.loc[:,'x']))
+    
+    norm_y = np.array(linalg.norm(coord.loc[:,'y']))
+
+    norm_z = np.array(linalg.norm(coord.loc[:,'z']))
+
+    idx_len = 6 
+
+    if (norm_x + norm_y) < 1e-6 or (norm_y + norm_z) < 1e-6 or (norm_z + norm_x)< 1e-6:
+        idx_len = 5
+
+    M_sum = np.zeros(3*Nat)
+    for i in range(len(M_sum)):
+        M_sum[i] = np.sum(np.abs(M[:,i]))
+
+    idx_list = np.zeros(idx_len)
+    for i in range(idx_len):
+        idx = np.where(M_sum == np.amax(M_sum))[0][0]
+        idx_list[i] = int(idx)
+        M_sum[idx] -= M_sum[idx]
+
+    return idx_list
+
+def freq(hess_v):
+    lamb, Q = linalg.eigh(hess_v)
+    freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+    return freq_val
 
 def gen_X_y_DF(molecules):
     X_df = pd.DataFrame()
     y_df = pd.DataFrame()
+    Nat = pd.DataFrame()
+
     for mol in range(len(molecules)):
         file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
+        Nat.loc[mol,'Nat'] = len(import_coord(f'tests/{molecules[mol]}/init_coord/coord.xyz')[0])
         X_df_mol = pd.DataFrame()
         y_df_mol = pd.DataFrame()
         for file in range(len(file_path)):
@@ -98,7 +165,7 @@ def gen_X_y_DF(molecules):
             y_df_mol = pd.concat([y_df_mol,y_df_temp],axis = 0)
         X_df = pd.concat([X_df,X_df_mol],axis = 0)
         y_df = pd.concat([y_df,y_df_mol],axis = 0)
-    return X_df,y_df,col_name
+    return X_df,y_df,col_name,Nat
 
 
 
@@ -130,6 +197,7 @@ def gen_feature_target_precursor(X_df,y_df):
 
     k = 0
     for mol in range(X_df['molecule'].max()+1):
+
         temp =  X_df.loc[(X_df['molecule'] == mol)]
         var_len = temp['variation'].max() + 1
 
@@ -234,6 +302,17 @@ def hess_block_to_hess_vec(hess_mat,A,B):
             k+=1
     return hess_vec
 
+def hess_vec_to_hess_block(hess_vec):
+    k = 0 
+    hess_mat = np.zeros([3,3])
+    for i in range(3):
+        for j in range(3):
+            hess_mat[i,j] = hess_vec[k]
+            k += 1
+    return hess_mat
+
+            
+
 def import_files(file_path_mol):
     #############################
     #Import Files
@@ -256,6 +335,7 @@ def import_files(file_path_mol):
     k = 0
     for f in range(len(feature_path)):
         A,B = np.genfromtxt(info_path[f], delimiter =',')
+
         feature_df = pd.read_csv(feature_path[f])
 
         coord,head = import_coord(coord_path[f])
@@ -266,20 +346,35 @@ def import_files(file_path_mol):
         hess_temp = hess_block_to_hess_vec(hessian,A,B)
 
 
+
         if A == B:
+            hessian_df.loc[k,'atom1'] = A
+            hessian_df.loc[k,'atom2'] = B
+
             hessian_df.loc[k,col_hess] = hess_temp
             temp = feature_df.iloc[[A]]
             temp.insert(0,'block','diag')
 
 
+
         elif A != B:  
+
+            hessian_df.loc[k,'atom1'] = A
+            hessian_df.loc[k,'atom2'] = B
+
             hessian_df.loc[k,col_hess] = hess_temp
 
             temp = feature_df.iloc[[A,B]]
             temp.insert(0,'block','nondiag')
 
+    
+
             hess_temp = hess_block_to_hess_vec(hessian,B,A)
             k+=1
+
+
+            hessian_df.loc[k,'atom1'] = B
+            hessian_df.loc[k,'atom2'] = A
             hessian_df.loc[k,col_hess] = hess_temp
 
         temp.insert(0,'apf',f)
