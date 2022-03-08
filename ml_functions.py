@@ -88,13 +88,14 @@ def project_hess(hess_v,coord):
         i = int(i)
         hess_projected_v -= lamb[i] * np.outer(Q.T[i], Q.T[i])
 
-    return hess_projected_v
+    return hess_projected_v,Q
 
 def find_trans_rot(hess,coord):
 
     Nat = len(coord)
-    overlap_mat = np.zeros([3*Nat,6])
 
+    overlap_mat = np.zeros([6,3*Nat])
+    
     trans_x = np.array([1.,0.,0.])
     trans_y = np.array([0.,1.,0.])
     trans_z = np.array([0.,0.,1.])
@@ -152,7 +153,7 @@ def gen_X_y_DF(molecules):
 
     for mol in range(len(molecules)):
         file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
-        Nat.loc[mol,'Nat'] = len(import_coord(f'tests/{molecules[mol]}/init_coord/coord.xyz')[0])
+        Nat.loc[mol,'Nat'] = len(import_coord(f'{file_path[0]}/init_coord/coord.xyz')[0])
         X_df_mol = pd.DataFrame()
         y_df_mol = pd.DataFrame()
         for file in range(len(file_path)):
@@ -265,6 +266,34 @@ def gen_feature_target_precursor(X_df,y_df):
 
     return  X_diag_prep, y_diag_prep, X_non_diag_prep, y_non_diag_prep
 
+def gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred,hess_non_diag_pred,N_at,mol,file_num,rot_arr):
+    num_atoms = int(N_at.loc[mol,'Nat'])
+    lenH = 3 * num_atoms
+    clean_hess = np.zeros([lenH,lenH])
+    idx_mol_var = X_df.loc[(X_df['molecule'] == mol) & (X_df['variation'] == file_num)].index.values.tolist()
+    mat_list = gen_sym_mat_list(num_atoms)
+    for l in range(len(idx_mol_var)):
+
+        i = idx_mol_var[l]
+
+        k = mat_list[l]
+        
+
+        A = int(y_df.loc[i,'atom1'])
+        B = int(y_df.loc[i,'atom2'])
+
+        if A == B:
+            hess_vec = hess_diag_pred
+            
+        elif A != B:
+            hess_vec = hess_non_diag_pred
+
+        hess_mat = hess_vec_to_hess_block(hess_vec)
+
+        clean_hess[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot_arr[k]),hess_mat),(rot_arr[k]))
+
+
+    return clean_hess
 
 def get_grps(X_diag_prep,X_non_diag_prep):
 
@@ -292,6 +321,35 @@ def get_grps(X_diag_prep,X_non_diag_prep):
 
             l+=1
     return grps_diag,grps_non_diag
+    
+def gen_rot_arr(path_variation):
+    path_apf_list = glob.glob(f'{path_variation}'+'apf_coord/atoms_*')
+    rot_arr = []
+    for path_apf in path_apf_list:
+        rot = np.genfromtxt(os.path.join(path_apf,'R_inert_apf.txt'))
+        rot_arr.append(rot)    
+    return rot_arr
+
+def gen_sym_mat_list(N):
+    idx_list = []
+    k = N
+    l = 0
+    m = 1
+    while k > 0:
+        for _ in range(k):
+            idx_list.append(l)
+            l+= 1 
+        o = N -1
+
+        if k >1:
+
+            for _ in range(N-k+1):
+                idx_list.append(m)
+                m += o
+                o-= 1
+        m = N-k+2
+        k -= 1
+    return idx_list
 
 def hess_block_to_hess_vec(hess_mat,A,B):
     k = 0
@@ -493,3 +551,48 @@ def transform_non_diag_prep(X_non_diag_prep,y_non_diag_prep):
                 m += 1
 
     return X_non_diag,y_non_diag
+
+def plot_non_diag_importances(regr_non_diag,col_name):
+    importances = regr_non_diag.feature_importances_
+    ticks = np.array(range(len(importances)))
+    fig ,ax = plt.subplots()
+    ax.bar(ticks[:3] ,importances[:3],alpha=1.0, width=0.15, color='black')
+    ax.bar(ticks[3:]-0.3 ,importances[3:43],alpha=1.0, width=0.15, label = 'atom A')
+    ax.bar(ticks[3:]-0.15 ,importances[43:83],alpha=1.0, width=0.15, label = 'atom B')
+    ax.bar(ticks[3:] ,importances[83:123],alpha=1.0, width=0.15, label = 'arithmetic mean')
+    ax.bar(ticks[3:]+0.15 ,importances[123:163],alpha=1.0, width=0.15, label = 'product')
+    ax.bar(ticks[3:]+0.3 ,importances[163:203],alpha=1.0, width=0.15, label = 'absolute difference')
+
+    ax.legend()
+    ax.set_xlabel('Features')
+    ax.set_ylabel('R² coefficient')
+    ax.set_xticks(ticks)
+    ax.set_xticklabels(['x','y','z'] + col_name,rotation=90)
+    plt.gcf().subplots_adjust(bottom=0.45)
+    fig.set_figwidth(15)
+    plt.savefig('non_diag_r2_coefficents.png')
+    plt.savefig('non_diag_r2_coefficents.svg')
+
+    return
+
+
+def plot_diag_importances(regr_diag,col_name):
+    importances = regr_diag.feature_importances_
+
+    ticks = np.array(range(len(importances)))
+
+    fig ,ax = plt.subplots()
+
+    ax.bar(ticks ,importances,alpha=1.0, width=0.15, color='orange')
+    ax.set_xlabel('Features')
+    ax.set_ylabel('R² coefficient')
+    ax.set_xticks(ticks)
+
+    ax.set_xticklabels(['x','y','z']+col_name,rotation=90)
+    plt.gcf().subplots_adjust(bottom=0.45)
+    fig.set_figwidth(15)
+
+    plt.savefig('diag_r2_coefficents.png')
+    plt.savefig('diag_r2_coefficents.svg')
+
+    return

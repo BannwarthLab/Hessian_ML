@@ -48,6 +48,87 @@ def coord_rot(coord_var,rotM):
           coord_var.iloc[i,1:] = matmul(rotM,coord_var.iloc[i,1:])
      return coord_var
 
+def get_R_euler(coord_end,dipm,i,j):
+     #Translation
+     axis = np.identity(3)
+
+     T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+     vec_trans(coord_end,T)
+
+     vec_z = np.zeros(3)
+     vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]
+     #Rotation for i < j 
+     if i < j:
+          #Atom pair focussed coordinate system
+          
+          vec_z  = (coord_end.iloc[i,1:]).astype('float64')
+          vec_x = np.cross(vec_z,vec_dipm)
+          #vec_y = np.cross(vec_z,vec_x)
+
+          #Euler angles
+          LL = np.cross(vec_z,axis[2])
+          alpha = angle_two_vec(LL,axis[0])
+          beta = angle_two_vec(vec_z,axis[2])
+          gamma = angle_two_vec(LL,vec_x)
+
+          #Find right rotation angle
+          if linalg.det(np.array([axis[0],axis[2],LL]))<0.:
+               alpha = 2*np.pi - alpha
+          
+          if linalg.det(np.array([LL,vec_x,vec_z])) > 0.:
+               gamma = 2*np.pi - gamma
+          
+     # Rotation for i = j
+     elif i == j:
+          #Atom pair focussed coordinate system
+          vec_z[2] = 1
+          vec_x = np.cross(vec_z,vec_dipm)
+          #vec_y = np.cross(vec_z,vec_x)
+
+          #Euler angles
+          LL = axis[0]
+          beta = 0
+          alpha = 0
+          gamma = angle_two_vec(LL,vec_x)
+          
+          #Find right rotation angle
+          if vec_x[1]>= 0. :
+               gamma = 2*np.pi - gamma
+
+     #Euler Rotationmatrix
+
+     R_euler = matmul(matmul(rot_Z(gamma),rot_X(beta)),rot_Z(alpha))
+
+     #Rotation by 180 ° if dipole moment is negative in x
+
+     if matmul(R_euler,vec_x)[0] < 0.:
+          vec_z_norm = matmul(R_euler,vec_z)
+          vec_z_norm = vec_z_norm/linalg.norm(vec_z_norm)
+          R_z = rot_Z(np.pi)
+          R_euler = matmul(R_z,R_euler)
+
+
+     #Apply the euler rotation matrix on the new x axis for verification reasons
+     vec_x = matmul(R_euler,vec_x)
+
+     coord_end = coord_rot(coord_end.copy(),R_euler)
+
+     #Check for Errors in dipole moment or the coordinates
+     if vec_x[0] < 0.:
+          print(f'Error in vec_x[0] in {i,j}')
+
+     if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
+          print(vec_x)
+          print('Error in vec_x')
+
+     if coord_end.iloc[i,1] > 1e-8 or coord_end.iloc[i,2] > 1e-8:
+          print('Error in coord i') 
+
+     if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
+          print('Error in coord j') 
+
+     return R_euler
+
 def rot_Z(alpha):
      R = np.array([[np.cos(alpha), -np.sin(alpha), 0],
                    [np.sin(alpha),  np.cos(alpha), 0],
