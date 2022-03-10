@@ -156,26 +156,24 @@ for i in range(len(coord.iloc[:,1])):
                     H_euler[j0:j3,i0:i3] = np.transpose(H_euler[i0:i3,j0:j3])
 
                     coord_save = coord_end.copy()
-
-                    for k in range(24):
-                         rotM_Z = rot_Z(k*15/360*2*np.pi)
                          
-                         H_euler[i0:i3,j0:j3] = matmul(matmul(R_euler,H_euler[i0:i3,j0:j3]),(np.transpose(R_euler)))
-                         directory = f'atoms_{i}_{j}{coord_end.iloc[i,0]}{coord_end.iloc[j,0]}/'
-                         apf_path = os.path.join(apf,directory)
+                    H_euler[i0:i3,j0:j3] = matmul(matmul(R_euler,H_euler[i0:i3,j0:j3]),(np.transpose(R_euler)))
+                    directory = f'atoms_{i}_{j}{coord_end.iloc[i,0]}{coord_end.iloc[j,0]}/'
+                    apf_path = os.path.join(apf,directory)
 
-                         if os.path.exists(apf_path):
-                              shutil.rmtree(apf_path)
+                    if os.path.exists(apf_path):
+                         shutil.rmtree(apf_path)
 
-                         os.mkdir(apf_path)
+                    os.mkdir(apf_path)
 
-                         np.savetxt(apf_path+'R_inert_apf.txt',R_euler)
-                         #np.savetxt(apf_path + 'hessian.txt',H_euler)
-                         f = open(apf_path + f'coord.xyz',"w")
-                         np.savetxt(apf_path + 'atoms.txt',[i,j])
-                         
-                         f.write(head[0])
-                         f.write(head[1])
-                         f.close()
+                    np.savetxt(apf_path+'R_inert_apf.txt',R_euler)
+                    #np.savetxt(apf_path + 'hessian.txt',H_euler)
+                    
+                    f = open(apf_path + f'coord.xyz',"w")
+                    np.savetxt(apf_path + 'atoms.txt',[i,j])
+
+                    f.write(head[0])
+                    f.write(head[1])
+                    f.close()
 
                     coord_save.to_csv(apf_path +'coord.xyz', mode ='a',sep = '\t',header = None , index = False, float_format='{:10.8f}'.format)

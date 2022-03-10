@@ -80,17 +80,18 @@ def non_diag_features(X_df,Hessian_Coll,apf_list,file_path):
     return X_non_diag,y_non_diag
 
 def project_hess(hess_v,coord):
-    idx = find_trans_rot(hess_v.copy(),coord.copy())
+    idx = find_trans_rot(hess_v,coord)
     lamb,Q = linalg.eigh(hess_v)
     hess_projected_v = hess_v.copy()
 
     for i in idx:
         i = int(i)
-        hess_projected_v -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
+        hess_projected_v -= lamb[i] * np.outer(Q.T[i], Q.T[i])
 
     return hess_projected_v,Q
 
 def find_trans_rot(hess,coord):
+
     Nat = len(coord)
 
     overlap_mat = np.zeros([6,3*Nat])
@@ -116,6 +117,7 @@ def find_trans_rot(hess,coord):
 
     M = matmul(overlap_mat,Q)
 
+    
     norm_x = np.array(linalg.norm(coord.loc[:,'x']))
     
     norm_y = np.array(linalg.norm(coord.loc[:,'y']))
@@ -145,43 +147,34 @@ def freq(hess_v):
     return freq_val
 
 def freq_extract(freq):
-    freq = freq.copy()
     list_freq = []
-    while np.amax(freq) > 1e-3 :
+    while np.amax(freq) > 1 :
         idx = np.where(freq == np.amax(freq))[0][0]
         list_freq.append(freq[idx])
         freq[idx] = 0
 
-    return list(list_freq)
+    return list_freq
 
 def gen_X_y_DF(molecules):
     X_df = pd.DataFrame()
     y_df = pd.DataFrame()
     Nat = pd.DataFrame()
 
-    k = 0 
     for mol in range(len(molecules)):
         file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
         Nat.loc[mol,'Nat'] = len(import_coord(f'{file_path[0]}/init_coord/coord.xyz')[0])
         X_df_mol = pd.DataFrame()
         y_df_mol = pd.DataFrame()
-
+        
         for file in range(len(file_path)):
             temp,col_name,y_df_temp = import_files(file_path[file])
 
 
             temp.insert(1, 'variation', file)
             temp.insert(1, 'molecule', mol)
-            temp.insert(1, 'mol_idx', k)
-
-            y_df_temp.insert(1, 'variation', file)
-            y_df_temp.insert(1, 'molecule', mol)
-            y_df_temp.insert(1, 'mol_idx', k)
-
             X_df_mol = pd.concat([X_df_mol,temp],axis = 0)
             y_df_mol = pd.concat([y_df_mol,y_df_temp],axis = 0)
 
-            k += 1
         X_df = pd.concat([X_df,X_df_mol],axis = 0)
         y_df = pd.concat([y_df,y_df_mol],axis = 0)
     return X_df,y_df,col_name,Nat
@@ -223,32 +216,47 @@ def gen_feature_target_precursor(X_df,y_df):
 
         for var in range(var_len):
             X_temp_diag = X_df.loc[(X_df['variation'] == var) & (X_df['molecule'] == mol) & (X_df['block'] == 'diag')].reset_index(drop =True)
-            y_temp_diag = y_df.loc[(y_df['variation'] == var) & (y_df['molecule'] == mol) & (y_df['block'] == 'diag')].reset_index(drop =True)
+            y_temp_diag = y_df.loc[(X_df['variation'] == var) & (X_df['molecule'] == mol) & (y_df['block'] == 'diag')].reset_index(drop =True)
 
             X_temp_non_diag = X_df.loc[(X_df['variation'] == var) & (X_df['molecule'] == mol) & (X_df['block'] == 'nondiag')].reset_index(drop =True)
-            y_temp_non_diag = y_df.loc[(y_df['variation'] == var) & (y_df['molecule'] == mol) & (y_df['block'] == 'nondiag')].reset_index(drop =True)
+            y_temp_non_diag = y_df.loc[(X_df['variation'] == var) & (X_df['molecule'] == mol) & (y_df['block'] == 'nondiag')].reset_index(drop =True)
 
             for i in range(len(y_temp_diag)):
                 y_diag_prep.loc[l+i,col_name_y] = y_temp_diag.loc[i,col_name_y]
                 X_diag_prep.loc[l+i,col_name] = X_temp_diag.loc[i,col_name]
+
             l += len(y_temp_diag)
+
             for i in range(0,len(X_temp_non_diag),2):
 
-                h = i//2
-                j = i + 1
-                y_non_diag_prep.loc[k+h,col_name_y] = y_temp_non_diag.loc[h,col_name_y]
+                j =i + 1
+                y_non_diag_prep.loc[k+i,col_name_y] = y_temp_non_diag.loc[i,col_name_y]
 
-                X_non_diag_prep.loc[k+h,col_name_info] = X_temp_non_diag.loc[i,col_name_info]
+                X_non_diag_prep.loc[k+i,col_name_info] = X_temp_non_diag.loc[i,col_name_info]
 
-                X_non_diag_prep.loc[k+h,col_name_A] = np.array(X_temp_non_diag.loc[i,col_name_temp])
-                X_non_diag_prep.loc[k+h,col_name_B] = np.array(X_temp_non_diag.loc[j,col_name_temp])
+                X_non_diag_prep.loc[k+i,col_name_A] = np.array(X_temp_non_diag.loc[i,col_name_temp])
+                X_non_diag_prep.loc[k+i,col_name_B] = np.array(X_temp_non_diag.loc[j,col_name_temp])
 
-                X_non_diag_prep.loc[k+h,col_name_Arith] = np.array(X_temp_non_diag.loc[i,col_name_temp] + X_temp_non_diag.loc[j,col_name_temp])
-                X_non_diag_prep.loc[k+h,col_name_Prod] = np.array(X_temp_non_diag.loc[i,col_name_temp] * X_temp_non_diag.loc[j,col_name_temp])
+                X_non_diag_prep.loc[k+i,col_name_Arith] = np.array(X_temp_non_diag.loc[i,col_name_temp] + X_temp_non_diag.loc[j,col_name_temp])
+                X_non_diag_prep.loc[k+i,col_name_Prod] = np.array(X_temp_non_diag.loc[i,col_name_temp] * X_temp_non_diag.loc[j,col_name_temp])
 
-                X_non_diag_prep.loc[k+h,col_name_AbsDiff] = np.array(np.abs(X_temp_non_diag.loc[i,col_name_temp] - X_temp_non_diag.loc[j,col_name_temp]))
+                X_non_diag_prep.loc[k+i,col_name_AbsDiff] = np.array(np.abs(X_temp_non_diag.loc[i,col_name_temp] - X_temp_non_diag.loc[j,col_name_temp]))
+
+                i,j = j,i
+
+                y_non_diag_prep.loc[k+i,col_name_y] = y_temp_non_diag.loc[i,col_name_y]
+
+                X_non_diag_prep.loc[k+i,col_name_info] = X_temp_non_diag.loc[i,col_name_info]
+
+                X_non_diag_prep.loc[k+i,col_name_A] = np.array(X_temp_non_diag.loc[i,col_name_temp])
+                X_non_diag_prep.loc[k+i,col_name_B] = np.array(X_temp_non_diag.loc[j,col_name_temp])
+
+                X_non_diag_prep.loc[k+i,col_name_Arith] = np.array(X_temp_non_diag.loc[i,col_name_temp] + X_temp_non_diag.loc[j,col_name_temp])
+                X_non_diag_prep.loc[k+i,col_name_Prod] = np.array(X_temp_non_diag.loc[i,col_name_temp] * X_temp_non_diag.loc[j,col_name_temp])
+
+                X_non_diag_prep.loc[k+i,col_name_AbsDiff] = np.array(np.abs(X_temp_non_diag.loc[i,col_name_temp] - X_temp_non_diag.loc[j,col_name_temp]))
                 
-            k += len(X_temp_non_diag)
+            k += 2*len(X_temp_non_diag)
 
 
             """
@@ -292,9 +300,13 @@ def gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred,hess_non_diag_pred,nu
 
     lenH = 3 * int(num_atoms)
     clean_hess = np.zeros([lenH,lenH])
-    idx_mol_var = y_df.loc[(y_df['molecule'] == mol) & (y_df['variation'] == file_num)].index.values.tolist()
-    mat_list = np.arange(int(num_atoms+(num_atoms**2 - num_atoms)/2))#gen_sym_mat_list(int(num_atoms))
+    idx_mol_var = X_df.loc[(X_df['molecule'] == mol) & (X_df['variation'] == file_num)].index.values.tolist()
 
+    print(idx_mol_var)
+
+    mat_list = np.arange(6)#gen_sym_mat_list(int(num_atoms))
+
+    m = 0
     o = 0
     for l in range(len(idx_mol_var)):
 
@@ -304,25 +316,32 @@ def gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred,hess_non_diag_pred,nu
         A = int(y_df.loc[i,'atom1'])
         B = int(y_df.loc[i,'atom2'])
 
-        k = mat_list[l]
+        k = mat_list[m]
+
         if A == B:
             rot = rot_arr[k]
             hess_vec = hess_diag_pred[9*A:9*A+9]
-
+            m+=1
             hess_mat = hess_vec_to_hess_block(hess_vec)
             clean_hess[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot),hess_mat),(rot))
 
             
         elif A != B:
+
             hess_vec = hess_non_diag_pred[o:o+9]
             o += 9
+
             rot = rot_arr[k]
-            hess_mat = hess_vec_to_hess_block(hess_vec)
 
-            clean_hess[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot),hess_mat),(rot))
+            if B > A:
+                m += 1
+                hess_mat = hess_vec_to_hess_block(hess_vec)
+                clean_hess[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot),hess_mat),(rot))
 
-            hess_mat = hess_vec_to_hess_block(hess_vec)
-            clean_hess[3*B:3*B+3,3*A:3*A+3] = np.transpose(matmul(matmul(np.transpose(rot),hess_mat),(rot)))
+            elif A < B:
+                m+= 0
+                hess_mat = hess_vec_to_hess_block(hess_vec)
+                clean_hess[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot),hess_mat),(rot))
    
 
         
@@ -356,12 +375,13 @@ def get_grps(X_diag_prep,X_non_diag_prep):
             for j in strucs_non_diag:
                 for i in range(9):
                     grps_non_diag[9*j+i] = l
-            l+=1
 
+            l+=1
     return grps_diag,grps_non_diag
     
 def gen_rot_arr(path_variation):
     path_apf_list = glob.glob(f'{path_variation}'+'apf_coord/atoms_*')
+    print(path_apf_list)
     rot_arr = []
     for path_apf in path_apf_list:
         rot = np.genfromtxt(os.path.join(path_apf,'R_inert_apf.txt'))
@@ -452,7 +472,7 @@ def import_files(file_path_mol):
             hessian_df.loc[k,col_hess] = hess_temp
             temp = feature_df.iloc[[A]]
 
-            temp.insert(0,'atom',[int(A)])
+            temp.insert(0,'atom',[A])
             temp.insert(0,'block','diag')
 
 
@@ -464,13 +484,23 @@ def import_files(file_path_mol):
             hessian_df.loc[k,col_hess] = hess_temp
       
             temp = feature_df.iloc[[A,B]]
-            temp.insert(0,'atom',[int(A),int(B)])
+            temp.insert(0,'atom',[A,B])
             temp.insert(0,'block','nondiag')
 
+            hess_temp = hess_block_to_hess_vec(hessian,B,A)
+
+            k+=1
+            hessian_df.loc[k,'block'] = 'nondiag'
+            hessian_df.loc[k,'atom1'] = B
+            hessian_df.loc[k,'atom2'] = A
+
+            hessian_df.loc[k,col_hess] = hess_temp
+
+        temp.insert(0,'apf',f)
         ml_feature = pd.concat([ml_feature,temp])
         k += 1
 
-    ml_feature = ml_feature.reset_index(drop = True)
+    ml_feature = ml_feature.reset_index()
     #apf list for which atoms are on the z axis
     
     #ml_feature generate hessian
@@ -480,7 +510,7 @@ def import_files(file_path_mol):
 
     ##############################
     #Extract features
-    file = ml_feature.loc[:,['block','atom']]
+    file = ml_feature.loc[:,['index','apf','block','atom']]
 
     CN = ml_feature.loc[:,('coordination number','delta coordination number')]
     charges = ml_feature.loc[:,('atomic partial charges','delta partial charges')]
@@ -599,8 +629,8 @@ def plot_non_diag_importances(regr_non_diag,col_name):
     plt.gcf().subplots_adjust(bottom=0.45)
     fig.set_figwidth(15)
 
-    plt.savefig('plots/non_diag_r2_coefficents.png')
-    plt.savefig('plots/non_diag_r2_coefficents.svg')
+    plt.savefig('non_diag_r2_coefficents.png')
+    plt.savefig('non_diag_r2_coefficents.svg')
 
     return
 
@@ -621,7 +651,7 @@ def plot_diag_importances(regr_diag,col_name):
     plt.gcf().subplots_adjust(bottom=0.45)
     fig.set_figwidth(15)
 
-    plt.savefig('plots/diag_r2_coefficents.png')
-    plt.savefig('plots/diag_r2_coefficents.svg')
+    plt.savefig('diag_r2_coefficents.png')
+    plt.savefig('diag_r2_coefficents.svg')
 
     return

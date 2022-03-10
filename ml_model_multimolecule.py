@@ -25,46 +25,37 @@ from ml_functions import *
 #Init File Import for Information
 #
  #+ glob.glob('tests/h2/H2_*/')# + glob.glob('tests/N2/N2_*/') + glob.glob('tests/O2/O2_*/') +glob.glob('tests/F2/F2_*/')
-mol_list = ['H2','N2','O2','F2','CO','HF']
+#mol_list = ['H2','N2','O2','F2','CO','HF']
 
 list_test = []
 list_true = []
-for molecule in range(len(mol_list)):
-    
-    molecules = ['H2','N2','O2','F2','CO','HF','H2O']
-    #molecules = [mol_list[molecule]]
-    X_df,y_df,col_name,N_at = gen_X_y_DF(molecules)
+molecules = ['H2','N2','O2','F2','CO','HF','H2O']
+#molecules = [mol_list[molecule]]
+X_df,y_df,col_name,N_at = gen_X_y_DF(molecules)
 
-    X_df = X_df.reset_index()
+X_df = X_df.reset_index()
 
-    y_df = y_df.reset_index()
 
-    N_atoms = np.array(N_at.iloc[0])
+y_df = y_df.reset_index()
 
-    N_diag = int(N_atoms)
 
-    N_non_diag = int((N_atoms ** 2 - N_atoms)/2)
+X_diag_prep, y_diag_prep, X_non_diag_prep, y_non_diag_prep = gen_feature_target_precursor(X_df,y_df)
+
+grps_diag,grps_non_diag =  get_grps(X_diag_prep,X_non_diag_prep)
 
 
 
 
-    X_diag_prep, y_diag_prep, X_non_diag_prep, y_non_diag_prep = gen_feature_target_precursor(X_df,y_df)
+X_diag,y_diag =  transform_diag_prep(X_diag_prep,y_diag_prep)
 
-    grps_diag,grps_non_diag =  get_grps(X_diag_prep,X_non_diag_prep)
-
-
-
-
-    X_diag,y_diag =  transform_diag_prep(X_diag_prep,y_diag_prep)
-
-    X_non_diag,y_non_diag = transform_non_diag_prep(X_non_diag_prep,y_non_diag_prep)
+X_non_diag,y_non_diag = transform_non_diag_prep(X_non_diag_prep,y_non_diag_prep)
 
 
 
-    #############################
-    #Separation into Training and Test data
-
-    gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state = 100)
+#############################
+#Separation into Training and Test data
+for rnd_state in [0,22,42,100,63]:
+    gss = GroupShuffleSplit(n_splits=5,train_size=0.75,random_state = rnd_state)
 
     idx_diag = list(gss.split(X_diag, y_diag, grps_diag))
 
@@ -75,6 +66,7 @@ for molecule in range(len(mol_list)):
 
     X_train = X_diag[train_idx]
     X_test = X_diag[test_idx]
+    grps_test = grps_diag[test_idx]
 
     y_train = y_diag[train_idx]
     y_test = y_diag[test_idx]
@@ -84,9 +76,12 @@ for molecule in range(len(mol_list)):
 
     X_non_diag_train = X_non_diag[train_idx_non_diag]
     X_non_diag_test = X_non_diag[test_idx_non_diag]
+    grps_test_non_diag = grps_non_diag[test_idx_non_diag]
+
 
     y_non_diag_train = y_non_diag[train_idx_non_diag]
     y_non_diag_test = y_non_diag[test_idx_non_diag]
+
 
 
     #############################
@@ -125,46 +120,45 @@ for molecule in range(len(mol_list)):
     #############################
     #Transformation of the hessian blocks into a full hessian to compute the frequencies
     #rnd = random.randint(0,len(test_idx)-1)
-    idx_diag_list = []
-    for m in range(0,int(len(test_idx-1)),(9*N_diag)):
-        idx_diag_list.append(int(m))
 
-    idx_non_diag_list = (np.array(idx_diag_list)/N_diag*N_non_diag).astype(int)
+    for idx in range(len(np.unique(grps_test))):
 
+        id_0 = np.unique(grps_test)[idx]
+        
+        temp = (X_diag_prep.loc[(X_diag_prep['mol_idx'] == id_0)])
 
-    for idx in range(len(idx_diag_list)):
-        id = grps_diag[test_idx[idx_diag_list[idx]]]*N_diag
+        mol = int(temp['molecule'].iloc[0])
+        file_num = int(temp['variation'].iloc[0])
 
-        mol = int(X_diag_prep.loc[id,['molecule']])
-        file_num =int(X_diag_prep.loc[id,['variation']])
+        N_atoms = N_at.iloc[mol]
+        
+        N_diag = int(N_atoms)
+
+        N_non_diag = int((N_atoms ** 2 - N_atoms)/2)
+
+        id = id_0*N_diag
 
         ##########
 
-        k = idx_diag_list[idx]
+        k = int(np.where(grps_test == id_0)[0][0])
 
-        l = idx_non_diag_list[idx]
+        l = int(np.where(grps_test_non_diag == id_0)[0][0])
 
+        
         num_hess_diag = N_diag * 9
         num_hess_non_diag = N_non_diag * 9
 
         ##########
-        file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
-        init_path_coord = f'{file_path[file_num]}'+'/init_coord/coord.xyz'
-
-        coord,head = import_coord(init_path_coord)
-        rot_arr = gen_rot_arr(file_path[file_num])
-
         
-        hess = gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred[k:k+num_hess_diag],hess_non_diag_pred[l:l+num_hess_non_diag],N_atoms,mol,file_num,rot_arr)
-
-
-        np.savetxt('hess_ML',hess)
-
         file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
         inert_path_coord = f'{file_path[file_num]}'+'/inert_coord/coord.xyz'
         inert_path_hess = f'{file_path[file_num]}'+'/inert_coord/hessian'
 
+        rot_arr = gen_rot_arr(file_path[file_num])
+
         print(inert_path_hess)
+
+        hess = gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred[k:k+num_hess_diag],hess_non_diag_pred[l:l+num_hess_non_diag],N_atoms,mol,file_num,rot_arr)
 
         coord_inert,head = import_coord(inert_path_coord)
         hess_inert =  np.array(pd.read_csv(inert_path_hess,delimiter = '\t',index_col = 0))
@@ -177,7 +171,7 @@ for molecule in range(len(mol_list)):
         list_true.extend(freq_extract(freq_inert_proj_mass.copy()))
 
         hess_proj,Q= project_hess(hess,coord_inert)
-        hess_proj_mass = mass_weighted_hessian(hess_proj.copy(),coord['atoms'])
+        hess_proj_mass = mass_weighted_hessian(hess_proj.copy(),coord_inert['atoms'])
         freq_proj_mass = freq(hess_proj_mass)
 
         #print(freq_inert_proj_mass)
