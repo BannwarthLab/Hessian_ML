@@ -25,14 +25,13 @@ from ml_functions import *
 #Init File Import for Information
 #
  #+ glob.glob('tests/h2/H2_*/')# + glob.glob('tests/N2/N2_*/') + glob.glob('tests/O2/O2_*/') +glob.glob('tests/F2/F2_*/')
-mol_list = ['H2','N2','O2','F2','CO','HF']
+mol_list = ['H2','N2','O2','F2','CO','HF','H2O','NH3']
 
 list_test = []
 list_true = []
 for molecule in range(len(mol_list)):
     
-    molecules = ['H2','N2','O2','F2','CO','HF','H2O']
-    #molecules = [mol_list[molecule]]
+    molecules = [mol_list[molecule]]
     X_df,y_df,col_name,N_at = gen_X_y_DF(molecules)
 
     X_df = X_df.reset_index()
@@ -63,127 +62,130 @@ for molecule in range(len(mol_list)):
 
     #############################
     #Separation into Training and Test data
+    for rnd_state in [0,22,42,63,100]:
+        gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state = rnd_state)
 
-    gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state = 100)
+        idx_diag = list(gss.split(X_diag, y_diag, grps_diag))
 
-    idx_diag = list(gss.split(X_diag, y_diag, grps_diag))
+        idx_non_diag = list(gss.split(X_non_diag,y_non_diag,grps_non_diag))
 
-    idx_non_diag = list(gss.split(X_non_diag,y_non_diag,grps_non_diag))
+        train_idx = idx_diag[0][0]
+        test_idx =  idx_diag[0][1]
 
-    train_idx = idx_diag[0][0]
-    test_idx =  idx_diag[0][1]
+        X_train = X_diag[train_idx]
+        X_test = X_diag[test_idx]
+        grps_test = grps_diag[test_idx]
 
-    X_train = X_diag[train_idx]
-    X_test = X_diag[test_idx]
+        y_train = y_diag[train_idx]
+        y_test = y_diag[test_idx]
 
-    y_train = y_diag[train_idx]
-    y_test = y_diag[test_idx]
-
-    train_idx_non_diag = idx_non_diag[0][0]
-    test_idx_non_diag =  idx_non_diag[0][1]
-
-    X_non_diag_train = X_non_diag[train_idx_non_diag]
-    X_non_diag_test = X_non_diag[test_idx_non_diag]
-
-    y_non_diag_train = y_non_diag[train_idx_non_diag]
-    y_non_diag_test = y_non_diag[test_idx_non_diag]
+        train_idx_non_diag = idx_non_diag[0][0]
+        test_idx_non_diag =  idx_non_diag[0][1]
+        grps_test_non_diag = grps_non_diag[test_idx_non_diag]
 
 
-    #############################
-    # Training and Prediction via ML
-    print('Start Fitting of Machine Learning')
-    regr_diag = RandomForestRegressor(n_estimators = 100,random_state=0,bootstrap=False)
-    #regr_diag = GaussianProcessRegressor(kernel = Matern() ,random_state=42)
+        X_non_diag_train = X_non_diag[train_idx_non_diag]
+        X_non_diag_test = X_non_diag[test_idx_non_diag]
 
-    regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=0, bootstrap=False)
-    #regr_non_diag = GaussianProcessRegressor(kernel = Matern(),random_state=42)
-
-    regr_diag.fit(X_train, y_train)
-    regr_non_diag.fit(X_non_diag_train, y_non_diag_train)
-
-    hess_diag_pred = regr_diag.predict(X_test)
-    hess_non_diag_pred = regr_non_diag.predict(X_non_diag_test)
+        y_non_diag_train = y_non_diag[train_idx_non_diag]
+        y_non_diag_test = y_non_diag[test_idx_non_diag]
 
 
-    #############################
-    #Results and Plots of diagonal hessian matrix blocks
+        #############################
+        # Training and Prediction via ML
+        print('Start Fitting of Machine Learning')
+        regr_diag = RandomForestRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False)
+        #regr_diag = GaussianProcessRegressor(kernel = Matern() ,random_state=42)
 
-    print('Score of diag model:',regr_diag.score(X_test,y_test))
+        regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=rnd_state, bootstrap=False)
+        #regr_non_diag = GaussianProcessRegressor(kernel = Matern(),random_state=42)
 
-    plot_diag_importances(regr_diag,col_name)
+        regr_diag.fit(X_train, y_train)
+        regr_non_diag.fit(X_non_diag_train, y_non_diag_train)
 
-    #############################
-    #Training and Prediction via ML
-
-
-    #############################
-    #Results and Plots of prediction of non diagonal hessian matrix blocks
-    print('Score of non diag model:',regr_non_diag.score(X_non_diag_test,y_non_diag_test))
-
-    plot_non_diag_importances(regr_non_diag,col_name)
-
-    #############################
-    #Transformation of the hessian blocks into a full hessian to compute the frequencies
-    #rnd = random.randint(0,len(test_idx)-1)
-    idx_diag_list = []
-    for m in range(0,int(len(test_idx-1)),(9*N_diag)):
-        idx_diag_list.append(int(m))
-
-    idx_non_diag_list = (np.array(idx_diag_list)/N_diag*N_non_diag).astype(int)
+        hess_diag_pred = regr_diag.predict(X_test)
+        hess_non_diag_pred = regr_non_diag.predict(X_non_diag_test)
 
 
-    for idx in range(len(idx_diag_list)):
-        id = grps_diag[test_idx[idx_diag_list[idx]]]*N_diag
+        #############################
+        #Results and Plots of diagonal hessian matrix blocks
 
-        mol = int(X_diag_prep.loc[id,['molecule']])
-        file_num =int(X_diag_prep.loc[id,['variation']])
+        print('Score of diag model:',regr_diag.score(X_test,y_test))
 
-        ##########
+        if molecule == 'NH3':
+            plot_diag_importances(regr_diag,col_name,f'rnd_{rnd_state}_mol_{molecule}')
 
-        k = idx_diag_list[idx]
+        #############################
+        #Training and Prediction via ML
 
-        l = idx_non_diag_list[idx]
 
-        num_hess_diag = N_diag * 9
-        num_hess_non_diag = N_non_diag * 9
-
-        ##########
-        file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
-        init_path_coord = f'{file_path[file_num]}'+'/init_coord/coord.xyz'
-
-        coord,head = import_coord(init_path_coord)
-        rot_arr = gen_rot_arr(file_path[file_num])
-
+        #############################
+        #Results and Plots of prediction of non diagonal hessian matrix blocks
+        print('Score of non diag model:',regr_non_diag.score(X_non_diag_test,y_non_diag_test))
         
-        hess = gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred[k:k+num_hess_diag],hess_non_diag_pred[l:l+num_hess_non_diag],N_atoms,mol,file_num,rot_arr)
+        if molecule == 'NH3':
+            plot_non_diag_importances(regr_non_diag,col_name,f'rnd_{rnd_state}_mol_{molecule}')
 
+        #############################
+        #Transformation of the hessian blocks into a full hessian to compute the frequencies
+        #rnd = random.randint(0,len(test_idx)-1)
 
-        np.savetxt('hess_ML',hess)
+        for idx in range(len(np.unique(grps_test))):
+            id_0 = np.unique(grps_test)[idx]
+            
+            temp = (X_diag_prep.loc[(X_diag_prep['mol_idx'] == id_0)])
 
-        file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
-        inert_path_coord = f'{file_path[file_num]}'+'/inert_coord/coord.xyz'
-        inert_path_hess = f'{file_path[file_num]}'+'/inert_coord/hessian'
+            mol = int(temp['molecule'].iloc[0])
+            file_num = int(temp['variation'].iloc[0])
 
-        print(inert_path_hess)
+            N_atoms = N_at.iloc[mol]
+            
+            N_diag = int(N_atoms)
 
-        coord_inert,head = import_coord(inert_path_coord)
-        hess_inert =  np.array(pd.read_csv(inert_path_hess,delimiter = '\t',index_col = 0))
-        #hess_inert = import_hess(inert_path_hess,coord_inert)
+            N_non_diag = int((N_atoms ** 2 - N_atoms)/2)
 
-        hess_inert_proj,Q = project_hess(hess_inert,coord_inert)
-        hess_inert_proj_mass = mass_weighted_hessian(hess_inert_proj.copy(),coord_inert['atoms'])
-        freq_inert_proj_mass = freq(hess_inert_proj_mass)
+            id = id_0*N_diag
 
-        list_true.extend(freq_extract(freq_inert_proj_mass.copy()))
+            ##########
 
-        hess_proj,Q= project_hess(hess,coord_inert)
-        hess_proj_mass = mass_weighted_hessian(hess_proj.copy(),coord['atoms'])
-        freq_proj_mass = freq(hess_proj_mass)
+            k = int(np.where(grps_test == id_0)[0][0])
 
-        #print(freq_inert_proj_mass)
-        #print(freq_proj_mass)
+            l = int(np.where(grps_test_non_diag == id_0)[0][0])
 
-        list_test.extend(freq_extract(freq_proj_mass.copy()))
+            
+            num_hess_diag = N_diag * 9
+            num_hess_non_diag = N_non_diag * 9
+
+            ##########
+            
+            file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
+            inert_path_coord = f'{file_path[file_num]}'+'/inert_coord/coord.xyz'
+            inert_path_hess = f'{file_path[file_num]}'+'/inert_coord/hessian'
+
+            rot_arr = gen_rot_arr(file_path[file_num])
+
+            print(inert_path_hess)
+
+            hess = gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred[k:k+num_hess_diag],hess_non_diag_pred[l:l+num_hess_non_diag],N_atoms,mol,file_num,rot_arr)
+
+            coord_inert,head = import_coord(inert_path_coord)
+            hess_inert =  np.array(pd.read_csv(inert_path_hess,delimiter = '\t',index_col = 0))
+            #hess_inert = import_hess(inert_path_hess,coord_inert)
+
+            hess_inert_proj,Q = project_hess(hess_inert,coord_inert)
+            hess_inert_proj_mass = mass_weighted_hessian(hess_inert_proj.copy(),coord_inert['atoms'])
+            freq_inert_proj_mass = freq(hess_inert_proj_mass)
+
+            list_true.extend(freq_extract(freq_inert_proj_mass.copy()))
+
+            hess_proj,Q= project_hess(hess,coord_inert)
+            hess_proj_mass = mass_weighted_hessian(hess_proj.copy(),coord_inert['atoms'])
+            freq_proj_mass = freq(hess_proj_mass)
+
+            #print(freq_inert_proj_mass)
+            #print(freq_proj_mass)
+
+            list_test.extend(freq_extract(freq_proj_mass.copy()))
 
 
 np.savetxt('plots/freq_ML',list_test)

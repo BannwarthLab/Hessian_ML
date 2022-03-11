@@ -579,8 +579,11 @@ def transform_non_diag_prep(X_non_diag_prep,y_non_diag_prep):
 
     return X_non_diag,y_non_diag
 
-def plot_non_diag_importances(regr_non_diag,col_name):
+def plot_non_diag_importances(regr_non_diag,col_name,info):
+
     importances = regr_non_diag.feature_importances_
+
+    np.savetxt(f'plots/importances_non_diag_{info}',importances)
 
     ticks = np.array(range(43))
     fig ,ax = plt.subplots()
@@ -599,14 +602,16 @@ def plot_non_diag_importances(regr_non_diag,col_name):
     plt.gcf().subplots_adjust(bottom=0.45)
     fig.set_figwidth(15)
 
-    plt.savefig('plots/non_diag_r2_coefficents.png')
-    plt.savefig('plots/non_diag_r2_coefficents.svg')
+    plt.savefig(f'plots/non_diag_r2_coefficents_{info}.png')
+    plt.savefig(f'plots/non_diag_r2_coefficents__{info}.svg')
 
     return
 
 
-def plot_diag_importances(regr_diag,col_name):
+def plot_diag_importances(regr_diag,col_name,info):
     importances = regr_diag.feature_importances_
+
+    np.savetxt(f'plots/importances_diag_{info}',importances)
 
     ticks = np.array(range(len(importances)))
 
@@ -621,7 +626,7 @@ def plot_diag_importances(regr_diag,col_name):
     plt.gcf().subplots_adjust(bottom=0.45)
     fig.set_figwidth(15)
 
-    plt.savefig('plots/diag_r2_coefficents.png')
-    plt.savefig('plots/diag_r2_coefficents.svg')
+    plt.savefig(f'plots/diag_r2_coefficents_{info}.png')
+    plt.savefig(f'plots/diag_r2_coefficents_{info}.svg')
 
     return

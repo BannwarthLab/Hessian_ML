@@ -29,7 +29,7 @@ from ml_functions import *
 
 list_test = []
 list_true = []
-molecules = ['H2','N2','O2','F2','CO','HF','H2O']
+molecules = ['H2','N2','O2','F2','CO','HF','H2O','NH3']
 #molecules = [mol_list[molecule]]
 X_df,y_df,col_name,N_at = gen_X_y_DF(molecules)
 
@@ -87,10 +87,10 @@ for rnd_state in [0,22,42,100,63]:
     #############################
     # Training and Prediction via ML
     print('Start Fitting of Machine Learning')
-    regr_diag = RandomForestRegressor(n_estimators = 100,random_state=0,bootstrap=False)
+    regr_diag = RandomForestRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False)
     #regr_diag = GaussianProcessRegressor(kernel = Matern() ,random_state=42)
 
-    regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=0, bootstrap=False)
+    regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=rnd_state, bootstrap=False)
     #regr_non_diag = GaussianProcessRegressor(kernel = Matern(),random_state=42)
 
     regr_diag.fit(X_train, y_train)
@@ -105,7 +105,7 @@ for rnd_state in [0,22,42,100,63]:
 
     print('Score of diag model:',regr_diag.score(X_test,y_test))
 
-    plot_diag_importances(regr_diag,col_name)
+    #plot_diag_importances(regr_diag,col_name,rnd_state)
 
     #############################
     #Training and Prediction via ML
@@ -115,7 +115,7 @@ for rnd_state in [0,22,42,100,63]:
     #Results and Plots of prediction of non diagonal hessian matrix blocks
     print('Score of non diag model:',regr_non_diag.score(X_non_diag_test,y_non_diag_test))
 
-    plot_non_diag_importances(regr_non_diag,col_name)
+    #plot_non_diag_importances(regr_non_diag,col_name,rnd_state)
 
     #############################
     #Transformation of the hessian blocks into a full hessian to compute the frequencies
