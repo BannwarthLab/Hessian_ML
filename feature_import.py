@@ -94,10 +94,10 @@ for molecule in range(len(mol_list)):
         #############################
         # Training and Prediction via ML
         print('Start Fitting of Machine Learning')
-        regr_diag = RandomForestRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False)
+        regr_diag = RandomForestRegressor(n_estimators = 10,max_depth = 30,random_state=rnd_state,bootstrap=False)
         #regr_diag = GaussianProcessRegressor(kernel = Matern() ,random_state=42)
 
-        regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=rnd_state, bootstrap=False)
+        regr_non_diag = RandomForestRegressor(n_estimators = 10,max_depth = 30,random_state=rnd_state, bootstrap=False)
         #regr_non_diag = GaussianProcessRegressor(kernel = Matern(),random_state=42)
 
         regr_diag.fit(X_train, y_train)

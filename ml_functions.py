@@ -240,8 +240,8 @@ def gen_feature_target_precursor(X_df,y_df):
 
                 X_non_diag_prep.loc[k+h,col_name_info] = X_temp_non_diag.loc[i,col_name_info]
 
-                X_non_diag_prep.loc[k+h,col_name_A] = np.array(X_temp_non_diag.loc[i,col_name_temp])
-                X_non_diag_prep.loc[k+h,col_name_B] = np.array(X_temp_non_diag.loc[j,col_name_temp])
+                #X_non_diag_prep.loc[k+h,col_name_A] = np.array(X_temp_non_diag.loc[i,col_name_temp])
+                #X_non_diag_prep.loc[k+h,col_name_B] = np.array(X_temp_non_diag.loc[j,col_name_temp])
 
                 X_non_diag_prep.loc[k+h,col_name_Arith] = np.array(X_temp_non_diag.loc[i,col_name_temp] + X_temp_non_diag.loc[j,col_name_temp])
                 X_non_diag_prep.loc[k+h,col_name_Prod] = np.array(X_temp_non_diag.loc[i,col_name_temp] * X_temp_non_diag.loc[j,col_name_temp])
@@ -555,11 +555,11 @@ def transform_diag_prep(X_diag_prep,y_diag_prep):
 
 def transform_non_diag_prep(X_non_diag_prep,y_non_diag_prep):
 
-    col_name_X = X_non_diag_prep.columns.values.tolist()[-200:]
+    col_name_X = X_non_diag_prep.columns.values.tolist()[-120:]
     col_name_y = y_non_diag_prep.columns.values.tolist()[-9:]
 
     len_df = len(X_non_diag_prep)*9
-    X_non_diag = np.zeros([len_df,203])
+    X_non_diag = np.zeros([len_df,123])
     y_non_diag = np.zeros(len_df)
 
 
@@ -588,11 +588,11 @@ def plot_non_diag_importances(regr_non_diag,col_name,info):
     ticks = np.array(range(43))
     fig ,ax = plt.subplots()
     ax.bar(ticks[:3] ,importances[:3],alpha=1.0, width=0.15, color='black')
-    ax.bar(ticks[3:]-0.3 ,importances[3:43],alpha=1.0, width=0.15, label = 'atom A')
-    ax.bar(ticks[3:]-0.15 ,importances[43:83],alpha=1.0, width=0.15, label = 'atom B')
-    ax.bar(ticks[3:] ,importances[83:123],alpha=1.0, width=0.15, label = 'arithmetic mean')
-    ax.bar(ticks[3:]+0.15 ,importances[123:163],alpha=1.0, width=0.15, label = 'product')
-    ax.bar(ticks[3:]+0.3 ,importances[163:203],alpha=1.0, width=0.15, label = 'absolute difference')
+    ax.bar(ticks[3:]-0.3 ,importances[3:43],alpha=1.0, width=0.15, label = 'arithmetic mean')#'atom A')
+    ax.bar(ticks[3:]-0.15 ,importances[43:83],alpha=1.0, width=0.15, label = 'product')#'atom B')
+    ax.bar(ticks[3:] ,importances[83:123],alpha=1.0, width=0.15, label = 'absolute difference')#'arithmetic mean')
+    #ax.bar(ticks[3:]+0.15 ,importances[123:163],alpha=1.0, width=0.15, label = 'product')
+    #ax.bar(ticks[3:]+0.3 ,importances[163:203],alpha=1.0, width=0.15, label = 'absolute difference')
 
     ax.legend()
     ax.set_xlabel('Features')
