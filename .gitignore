@@ -10,3 +10,5 @@ N2/
 O2/
 *.png
 *.svg
+plots/
+tests/
