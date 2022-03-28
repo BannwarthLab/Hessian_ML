@@ -576,7 +576,7 @@ def plot_non_diag_perm_importances(model,X,y,col_name,info):
     ax.set_xlabel('Features')
     ax.set_ylabel('R² coefficient')
     ax.set_xticks(ticks)
-    ax.set_xticklabels(col_name[:N_features+1],rotation=90)
+    ax.set_xticklabels(col_name[:N_features+N],rotation=90)
     plt.gcf().subplots_adjust(bottom=0.45)
     fig.set_figwidth(15)
 

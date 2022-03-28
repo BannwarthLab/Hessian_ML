@@ -6,7 +6,6 @@ from functions import *
 from operator import matmul
 import pandas as pd
 import numpy as np
-
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
 from scipy import linalg
 from scipy.spatial.transform import Rotation as rot_trafo
@@ -16,6 +15,7 @@ import time as time
 from scipy.stats import linregress 
 import matplotlib.pyplot as plt
 import os
+import time as time
 
 
 def project_hess(hess_v,coord):
@@ -103,27 +103,20 @@ def gen_X_y_DF(molecules):
         file_path = glob.glob(f'tests/{molecules[mol]}/{molecules[mol]}_*/')
         Nat.loc[mol,'Nat'] = len(import_coord(f'{file_path[0]}/init_coord/coord.xyz')[0])
         X_df_mol = pd.DataFrame()
-        y_df_mol = pd.DataFrame()
 
         for file in range(len(file_path)):
-            temp,col_name,y_df_temp = import_files(file_path[file])
-
+            temp,col_name = import_files(file_path[file])
 
             temp.insert(1, 'variation', file)
             temp.insert(1, 'molecule', mol)
             temp.insert(1, 'mol_idx', k)
 
-            y_df_temp.insert(1, 'variation', file)
-            y_df_temp.insert(1, 'molecule', mol)
-            y_df_temp.insert(1, 'mol_idx', k)
-
             X_df_mol = pd.concat([X_df_mol,temp],axis = 0)
-            y_df_mol = pd.concat([y_df_mol,y_df_temp],axis = 0)
 
             k += 1
+
         X_df = pd.concat([X_df,X_df_mol],axis = 0)
-        y_df = pd.concat([y_df,y_df_mol],axis = 0)
-    return X_df,y_df,col_name,Nat
+    return X_df,col_name,Nat
 
 def gen_feature_target_precursor(X_df,y_df):
     col_name = X_df.columns.values.tolist()
@@ -180,7 +173,7 @@ def gen_feature_target_precursor(X_df,y_df):
 
                 h = i//2
                 j = i + 1
-
+                
                 y_non_diag_prep.loc[k+h,col_name_y] = y_temp_non_diag.loc[h,col_name_y]
 
                 X_non_diag_prep.loc[k+h,col_name_info] = X_temp_non_diag.loc[i,col_name_info]
@@ -235,11 +228,11 @@ def gen_feature_target_precursor(X_df,y_df):
 
     return  X_diag_prep, y_diag_prep, X_non_diag_prep, y_non_diag_prep
 
-def gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred,hess_non_diag_pred,num_atoms,mol,file_num,rot_arr):
+def gen_full_hess_mat_from_vector(y_df,hess_diag_pred,hess_non_diag_pred,num_atoms,mol,file_num,rot_arr):
 
     lenH = 3 * int(num_atoms)
     clean_hess = np.zeros([lenH,lenH])
-    idx_mol_var = y_df.loc[(y_df['molecule'] == mol) & (y_df['variation'] == file_num) ].index.values.tolist()
+    idx_mol_var = y_df.loc[(y_df['molecule'] == mol) & (y_df['variation'] == file_num) & (y_df['y_idx'] == 'xx')].index.values.tolist()
     mat_list = np.arange(int(num_atoms+(num_atoms**2 - num_atoms)/2))#gen_sym_mat_list(int(num_atoms))
 
     o = 0
@@ -247,7 +240,6 @@ def gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred,hess_non_diag_pred,nu
 
         i = idx_mol_var[l]
 
-        
         A = int(y_df.loc[i,'atom1'])
         B = int(y_df.loc[i,'atom2'])
 
@@ -276,30 +268,8 @@ def gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred,hess_non_diag_pred,nu
 
 def get_grps(X_diag_prep,X_non_diag_prep):
 
-    grps_non_diag = np.zeros(len(X_non_diag_prep)*9)
-
-    grps_diag = np.zeros(len(X_diag_prep)*9)
-
-    molecules = int(X_diag_prep['molecule'].max() +1)
-
-    l = 0
-    for mol in range(molecules):
-        temp =  X_diag_prep.loc[(X_diag_prep['molecule'] == mol)]
-        var_len = int(temp['variation'].max() + 1)
-
-        for var in range(var_len):
-            strucs_diag = X_diag_prep.loc[(X_diag_prep['molecule'] == mol) & (X_diag_prep['variation'] == var)].index.tolist()
-
-            for j in strucs_diag:
-                for i in range(9):
-                    grps_diag[9*j+i] = l
-
-            strucs_non_diag = X_non_diag_prep.loc[(X_non_diag_prep['molecule'] == mol) & (X_non_diag_prep['variation'] == var)].index.tolist()
-
-            for j in strucs_non_diag:
-                for i in range(9):
-                    grps_non_diag[9*j+i] = l
-            l+=1
+    grps_diag = np.array(X_diag_prep['mol_idx'])
+    grps_non_diag = np.array(X_non_diag_prep['mol_idx'])
 
     return grps_diag,grps_non_diag
     
@@ -350,7 +320,146 @@ def hess_vec_to_hess_block(hess_vec):
             k += 1
     return hess_mat
 
+def extract_feature(ml_feature,y_idx):
+
+    CN = ml_feature.loc[['coordination number','delta coordination number']]
+
+    dipm_atom = ml_feature.loc[['dipm_atom_x','dipm_atom_y','dipm_atom_z']]
+    dipm_delta = ml_feature.loc[['dipm_delta_x','dipm_delta_y','dipm_delta_z']]
+    dipm_only_mull = ml_feature.loc[['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']]
+
+    qm_delta_only_Z = ml_feature.loc[['delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz']]
+    qm_delta_only_mull = ml_feature.loc[['delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz']]
+
+    qm_atom = ml_feature.loc[['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']]
+    qm_delta = ml_feature.loc[['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']]
+
+    energy_based = ml_feature.loc[['response (a.u.)','gap (eV)','chem.pot (eV)','HOAO (eV)','LUAO (eV)',
+                                    'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
+                                    'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']]  # 
+
+    ##############################
+    #Extract features which need to be transformed
+    if y_idx  in ['yx','zx','zy']:
+        dipm_atom[['dipm_atom_x','dipm_atom_z']] = - np.array(dipm_atom[['dipm_atom_x','dipm_atom_z']])
+        dipm_delta[['dipm_delta_x','dipm_delta_z']] = - np.array(dipm_delta[['dipm_delta_x','dipm_delta_z']])
+        dipm_only_mull[['delta dipm only mull x','delta dipm only mull z']] = - np.array(dipm_only_mull[['delta dipm only mull x','delta dipm only mull z']])
+        qm_delta_only_Z[['delta qm only Z xx',' delta qm only Z zz']] = - np.array(qm_delta_only_Z[['delta qm only Z xx',' delta qm only Z zz']])
+        qm_delta_only_mull[['delta qm only mull xx',' delta qm only mull zz']] = np.array(qm_delta_only_mull[['delta qm only mull xx',' delta qm only mull zz']])
+        qm_atom[['qm_atom_xy', 'qm_atom_yz']] =  - np.array(qm_atom[['qm_atom_xy', 'qm_atom_yz']])
+        qm_delta[['qm_delta_xy', 'qm_delta_yz']] =  - np.array(qm_delta[['qm_delta_xy', 'qm_delta_yz']])
+
+
+    #Transform to vector by QM x I
+    qm_atom_mat = np.zeros(3)
+    qm_delta_mat = np.zeros(3)
+
+    I = np.array([1,1,1])
+
+    qm_atom_mat = matmul(qm_matrix(qm_atom,'qm_atom_'),I)
+    qm_delta_mat = matmul(qm_matrix(qm_delta,'qm_delta_'),I)
+
+    qm_atom_mat_df = pd.Series(qm_atom_mat, index = ['qm_atom_x','qm_atom_y','qm_atom_z'])
+    qm_delta_mat_df = pd.Series(qm_delta_mat,index = ['qm_delta_x','qm_delta_y','qm_delta_z'])
+
+    #col_name = (CN.columns.values.tolist() + dipm.columns.values.tolist() + qm_atom_mat_df.columns.values.tolist()+ qm_delta_mat_df.columns.values.tolist() + qm.columns.values.tolist())
+
+    #Generate the Feature DataFrame
+    X_df = pd.concat([CN,dipm_atom,dipm_delta,dipm_only_mull,qm_atom_mat_df,qm_delta_mat_df,qm_delta_only_Z,qm_delta_only_mull,energy_based],axis =0)
+    #X_df = pd.concat([file,CN,dipm,qm_atom_mat_df,qm_delta_mat_df,qm],axis =1)
+    return X_df
+
 def import_files(file_path_mol):
+
+    file_path = glob.glob(os.path.join(file_path_mol,'apf_coord/atoms_*'))
+
+    feature_path = file_path.copy()
+    coord_path = file_path.copy()
+    info_path = file_path.copy()
+    hess_path = file_path.copy()
+
+    for file in range(len(file_path)):
+        feature_path[file] = os.path.join(file_path[file],'ml_feature.csv')
+        coord_path[file] = os.path.join(file_path[file],'coord.xyz')
+        hess_path[file] = os.path.join(file_path[file], 'hessian')
+        info_path[file] = os.path.join(file_path[file], 'atoms.txt')
+
+    FT_df = pd.DataFrame()
+
+    k = 0
+    for f in range(len(feature_path)):
+
+        A,B = np.genfromtxt(info_path[f], delimiter =',').astype('int')
+
+        feature_df = pd.read_csv(feature_path[f])
+
+        coord,head = import_coord(coord_path[f])
+
+        hessian = import_hess(hess_path[f],coord)
+
+        col_hess=['xx','xy','xz','yx','yy','yz','zx','zy','zz']
+
+        list_hess = np.array([[2,0,0],[1,1,0],[1,0,1],
+                              [1,1,0],[0,2,0],[0,1,1],
+                              [1,0,1],[0,1,1],[0,0,2]])
+
+        col = extract_feature(feature_df.iloc[int(A)],col_hess[0])
+
+        feature_col_name = col.index.values.tolist()
+
+        feature_col_name_A = [s + '_A' for s in feature_col_name]
+        feature_col_name_B = [s + '_B' for s in feature_col_name]
+        feature_name_Arith = [s + '_Arith' for s in feature_col_name]
+        feature_name_Prod = [s + '_Prod' for s in feature_col_name]
+        feature_name_AbsDiff = [s + '_AbsDiff' for s in feature_col_name]
+
+        hess_temp = hess_block_to_hess_vec(hessian,A,B)
+
+        for i in range(len(col_hess)):
+            if A == B:
+                FT_df.loc[k+i,'block'] = 'diag'
+            elif A != B:
+                FT_df.loc[k+i,'block'] = 'nondiag'
+            
+            FT_df.loc[k+i,'atom1'] = A
+            FT_df.loc[k+i,'atom2'] = B
+            FT_df.loc[k+i,'y_idx'] = col_hess[i]
+            FT_df.loc[k+i,'y'] = hess_temp[i]
+            FT_df.loc[k+i,['xi','yi','zi']] = list_hess[i]
+            FT_df.loc[k+i,'Rab'] = linalg.norm(coord.iloc[int(A),1:] - coord.iloc[int(B),1:])
+
+            X_A = np.array(extract_feature(feature_df.iloc[int(A)],col_hess[i]))
+            X_B = np.array(extract_feature(feature_df.iloc[int(B)],col_hess[i]))
+
+            if col_hess[i] in ['yx','zx','zy']:
+                FT_df.loc[k+i,feature_col_name_A] = X_B
+
+                FT_df.loc[k+i,feature_col_name_B] = X_A
+
+                FT_df.loc[k+i,feature_name_Arith] = (X_A + X_B )/ 2
+
+                FT_df.loc[k+i,feature_name_Prod] = X_A * X_B
+
+                FT_df.loc[k+i,feature_name_AbsDiff] = np.abs(X_A - X_B)
+            else:
+
+                FT_df.loc[k+i,feature_col_name_A] = X_A
+
+                FT_df.loc[k+i,feature_col_name_B] = X_B
+
+                FT_df.loc[k+i,feature_name_Arith] = (X_A + X_B )/ 2
+
+                FT_df.loc[k+i,feature_name_Prod] = X_A * X_B
+
+                FT_df.loc[k+i,feature_name_AbsDiff] = np.abs(X_A - X_B)
+        k += 9
+    FT_df = FT_df.reset_index(drop = True)
+
+    col_name = FT_df.columns.values.tolist()
+
+    return FT_df,col_name
+
+def import_files_old(file_path_mol):
     #############################
     #Import Files
     file_path = glob.glob(os.path.join(file_path_mol,'apf_coord/atoms_*'))
@@ -397,6 +506,7 @@ def import_files(file_path_mol):
             temp = feature_df.iloc[[A]]
 
             Rab = linalg.norm(coord.iloc[int(A),1:] - coord.iloc[int(B),1:])
+
             temp.insert(0,'R_ab',[Rab])
             temp.insert(0,'atom',[int(A)])
             temp.insert(0,'block','diag')
@@ -426,7 +536,6 @@ def import_files(file_path_mol):
 
     #apf list for which atoms are on the z axis
     
-
     ##############################
     #Extract features
 

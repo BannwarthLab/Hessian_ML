@@ -216,12 +216,18 @@ def mass_weighted_hessian(hessian, atoms):
      return hessian
 
      
-def qm_matrix(qm_atom):
-     temp = np.array(qm_atom)
+def qm_matrix(qm_atom,name):
 
-     qm_matrix = np.array([[temp[0],temp[3],temp[4]],
-                          [temp[3],temp[1],temp[5]],
-                          [temp[4],temp[5],temp[2]]])
+     xx = qm_atom.loc[f'{name}xx']
+     xy = qm_atom.loc[f'{name}xy']
+     yy = qm_atom.loc[f'{name}yy']
+     xz = qm_atom.loc[f'{name}xz']
+     zz = qm_atom.loc[f'{name}zz']
+     yz = qm_atom.loc[f'{name}yz']
+
+     qm_matrix = np.array([[xx,xy,xz],
+                          [xy,yy,yz],
+                          [xz,yz,zz]])
 
      return qm_matrix
 
