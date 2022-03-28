@@ -1,4 +1,5 @@
 from multiprocessing.sharedctypes import Value
+from tkinter import Grid
 from functions import *
 from operator import matmul
 import pandas as pd
@@ -14,14 +15,19 @@ import matplotlib.pyplot as plt
 import os
 import random as random
 
-from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import RandomForestRegressor
+from sklearn import svm
+from sklearn.model_selection import GridSearchCV
+from sklearn.neighbors import KNeighborsRegressor
+
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import  Matern ,RBF
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GroupShuffleSplit
-from ml_functions import *
-
+from ml_functions_permutation import *
+from sklearn.ensemble import ExtraTreesRegressor
+from sklearn.inspection import permutation_importance
+import time as time
 #############################
 #Init File Import for Information
 #
@@ -30,33 +36,43 @@ from ml_functions import *
 
 list_test = []
 list_true = []
-molecules = ['H2','N2','O2','F2','CO','HF','H2O','NH3']
-#molecules = [mol_list[molecule]]
-X_df,y_df,col_name,N_at = gen_X_y_DF(molecules)
+r_score_diag_list = []
+r_score_non_diag_list = []
 
-X_df = X_df.reset_index()
+mol_list = ['H2','N2','O2','F2','CO','HF','H2O','NH3']
+
+molecules = mol_list
+
+FT_df,col_name,N_at = gen_X_y_DF(molecules)
+
+FT_df = FT_df.reset_index(drop = True)
+
+#X_diag_prep, y_diag_prep, X_non_diag_prep, y_non_diag_prep = gen_feature_target_precursor(X_df,y_df)
+
+FT_diag = FT_df.loc[FT_df['block'] == 'diag']
+
+FT_non_diag = FT_df.loc[FT_df['block'] == 'nondiag']
+
+print(col_name[8:50])
+
+col_name_Features_diag = col_name[8:50]
+col_name_Features_ndiag = col_name[8:]
+
+X_diag = np.array(FT_diag[col_name_Features_diag])
+y_diag = np.array(FT_diag['y'])
+
+X_non_diag = np.array(FT_non_diag[col_name_Features_ndiag])
+y_non_diag = np.array(FT_non_diag['y'])
+
+print(X_non_diag[0,:42])
 
 
-y_df = y_df.reset_index()
-
-
-X_diag_prep, y_diag_prep, X_non_diag_prep, y_non_diag_prep = gen_feature_target_precursor(X_df,y_df)
-
-grps_diag,grps_non_diag =  get_grps(X_diag_prep,X_non_diag_prep)
-
-
-
-
-X_diag,y_diag =  transform_diag_prep(X_diag_prep,y_diag_prep)
-
-X_non_diag,y_non_diag = transform_non_diag_prep(X_non_diag_prep,y_non_diag_prep)
-
-
+grps_diag,grps_non_diag =  get_grps(FT_diag,FT_non_diag)
 
 #############################
 #Separation into Training and Test data
-for rnd_state in [0,22,42,100,63]:
-    gss = GroupShuffleSplit(n_splits=5,train_size=0.75,random_state = rnd_state)
+for rnd_state in [0,22,42,100,63]:#,54,96,35,408,74]:
+    gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state = rnd_state)
 
     idx_diag = list(gss.split(X_diag, y_diag, grps_diag))
 
@@ -79,49 +95,57 @@ for rnd_state in [0,22,42,100,63]:
     X_non_diag_test = X_non_diag[test_idx_non_diag]
     grps_test_non_diag = grps_non_diag[test_idx_non_diag]
 
-
     y_non_diag_train = y_non_diag[train_idx_non_diag]
     y_non_diag_test = y_non_diag[test_idx_non_diag]
-
-
 
     #############################
     # Training and Prediction via ML
     print('Start Fitting of Machine Learning')
-    regr_diag =  AdaBoostRegressor(
-                                    RandomForestRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=False) ,
-                                    n_estimators= 300,
-                                    random_state=rnd_state)
-    #regr_diag = GaussianProcessRegressor(kernel = Matern() ,random_state=42)
 
-    regr_non_diag = AdaBoostRegressor(
-                                    RandomForestRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=False) ,
-                                    n_estimators= 300,
-                                    random_state=rnd_state)
-    #regr_non_diag = GaussianProcessRegressor(kernel = Matern(),random_state=42)
+    param_grid = [{'C' : [0.1,1,10,100],'gamma' : [100,10,1,0.1,0.01],'epsilon' : [10,1,0.1,0.001,0.0001], 
+                    'kernel' : ['rbf']}]
 
-    regr_diag.fit(X_train, y_train)
-    regr_non_diag.fit(X_non_diag_train, y_non_diag_train)
+    regr_diag =  RandomForestRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=False) 
+
+    #regr_diag = KNeighborsRegressor(n_neighbors= 25 ,weights='distance')
+    #regr_diag = GridSearchCV(svm.SVR(),param_grid,cv = 2)
+
+    regr_non_diag = RandomForestRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False)
+    
+    #regr_non_diag = GridSearchCV(svm.SVR(),param_grid,cv = 2)
+    #regr_non_diag = KNeighborsRegressor(n_neighbors= 25 ,weights='distance')
+
+    model_diag = regr_diag.fit(X_train, y_train)
+
+    model_non_diag = regr_non_diag.fit(X_non_diag_train, y_non_diag_train)
 
     hess_diag_pred = regr_diag.predict(X_test)
-    hess_non_diag_pred = regr_non_diag.predict(X_non_diag_test)
 
+    hess_non_diag_pred = regr_non_diag.predict(X_non_diag_test)
 
     #############################
     #Results and Plots of diagonal hessian matrix blocks
+    rscore_diag = regr_diag.score(X_test,y_test)
+    print('Score of diag model:',rscore_diag)
+    r_score_diag_list.append(rscore_diag)
 
-    print('Score of diag model:',regr_diag.score(X_test,y_test))
-
-    plot_diag_importances(regr_diag,col_name,rnd_state)
+    #plot_diag_importances(regr_diag,col_name,rnd_state)
+    if rnd_state == 0:
+        plot_diag_perm_importances(model_diag,X_test,y_test,col_name_Features_diag,rnd_state)
 
     #############################
     #Training and Prediction via ML
 
     #############################
     #Results and Plots of prediction of non diagonal hessian matrix blocks
-    print('Score of non diag model:',regr_non_diag.score(X_non_diag_test,y_non_diag_test))
 
-    plot_non_diag_importances(regr_non_diag,col_name,rnd_state)
+    rscore_non_diag = regr_non_diag.score(X_non_diag_test,y_non_diag_test)
+    print('Score of non diag model:',rscore_non_diag)
+    r_score_non_diag_list.append(rscore_non_diag)
+
+    #plot_non_diag_importances(regr_non_diag,col_name,rnd_state)
+    if rnd_state == 0:
+        plot_non_diag_perm_importances(model_non_diag,X_non_diag_test,y_non_diag_test,col_name_Features_diag,rnd_state)
 
     #############################
     #Transformation of the hessian blocks into a full hessian to compute the frequencies
@@ -131,7 +155,7 @@ for rnd_state in [0,22,42,100,63]:
 
         id_0 = np.unique(grps_test)[idx]
         
-        temp = (X_diag_prep.loc[(X_diag_prep['mol_idx'] == id_0)])
+        temp = (FT_diag.loc[(FT_diag['mol_idx'] == id_0)])
 
         mol = int(temp['molecule'].iloc[0])
         file_num = int(temp['variation'].iloc[0])
@@ -149,9 +173,9 @@ for rnd_state in [0,22,42,100,63]:
         k = int(np.where(grps_test == id_0)[0][0])
 
         l = int(np.where(grps_test_non_diag == id_0)[0][0])
-
         
         num_hess_diag = N_diag * 9
+        
         num_hess_non_diag = N_non_diag * 9
 
         ##########
@@ -162,12 +186,15 @@ for rnd_state in [0,22,42,100,63]:
 
         rot_arr = gen_rot_arr(file_path[file_num])
 
-        print(inert_path_hess)
+        hess = gen_full_hess_mat_from_vector(FT_df,hess_diag_pred[k:k+num_hess_diag],hess_non_diag_pred[l:l+num_hess_non_diag],N_atoms,mol,file_num,rot_arr)
 
-        hess = gen_full_hess_mat_from_vector(y_df,X_df,hess_diag_pred[k:k+num_hess_diag],hess_non_diag_pred[l:l+num_hess_non_diag],N_atoms,mol,file_num,rot_arr)
+        np.savetxt('plots/hess',hess)
 
         coord_inert,head = import_coord(inert_path_coord)
         hess_inert =  np.array(pd.read_csv(inert_path_hess,delimiter = '\t',index_col = 0))
+
+        np.savetxt('plots/hess_inert',hess_inert)
+
         #hess_inert = import_hess(inert_path_hess,coord_inert)
 
         hess_inert_proj,Q = project_hess(hess_inert,coord_inert)
@@ -188,3 +215,7 @@ for rnd_state in [0,22,42,100,63]:
 
 np.savetxt('plots/freq_ML',list_test)
 np.savetxt('plots/freq_xTB',list_true)
+
+np.savetxt('plots/rscore_diag',r_score_diag_list)
+np.savetxt('plots/rscore_nondiag',r_score_non_diag_list)
+
