@@ -14,8 +14,14 @@ hplanck = 6.62607015e-34 # hplank Js
 conv_J_to_eV = (1.602176634e-19)**-1 #eV/J
 
 def angle_two_vec(a,b):
-     cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
+
+     if linalg.norm(a) == 0. or linalg.norm(b) == 0.:
+          cosangle = 0
+     else:
+          cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
+
      angle = np.arccos(np.clip(cosangle,-1,1))
+     
      return angle
 
 def center_charge(coord_var):
