@@ -12,7 +12,12 @@ mass_unit_in_au = 1.66054e-27 / 9.1094e-31
 atomic_time_unit = 2.4189e-17   # E_h / hbar
 
 def angle_two_vec(a,b):
-     cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
+
+     if linalg.norm(a) == 0. or linalg.norm(b) == 0.:
+          cosangle = 0
+     else:
+          cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
+
      angle = np.arccos(np.clip(cosangle,-1,1))
      return angle
 
