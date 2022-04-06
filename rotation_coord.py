@@ -1,5 +1,4 @@
 from operator import matmul
-from xml.etree import ElementInclude
 import pandas as pd
 import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
@@ -13,19 +12,15 @@ speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
 atomic_time_unit = 2.4189e-17   # E_h / hbar
 
-if False:
-     file_path = 'tests/h2o/'
-     input_path_coord = f'{file_path}'+'h2o.xyz'
-     output_path_coord = f'{file_path}'
+if True:
+     file_path = 'tests/H2O_for_pics/'
+     input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
-     input_path_hess = f'{file_path}'+'h2o_hess'
-     output_path = f'{file_path}'+'rot_h2o_hess'
+     input_path_hess = f'{file_path}'+'init_coord/'+'hessian'
 
-     input_path_dipm = f'{file_path}'+'xyz_dipm.csv'
+     input_path_dipm = f'{file_path}'+'init_coord/'+'xyz_dipm.csv'
 
-     trafo_coord = import_coord(f'{file_path}'+'h2o_oh.xyz')[0]
-     trafo_hess =  import_hess(f'{file_path}'+'h2o_oh_hess',trafo_coord)
-elif True:
+elif False:
      file_path = ''
      input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
@@ -113,7 +108,7 @@ coord.to_csv(file_path_inert_CS +'coord.xyz', mode ='a',sep = '\t',header = None
 
 np.savetxt(f'{file_path}'+'P_init_inert',P)
 ###
-
+print(dipm)
 ############ Translation and Rotation of the coordinates into end position
 
 # Translation in the center of the bonding
@@ -137,7 +132,6 @@ for i in range(len(coord.iloc[:,1])):
                     #Apply the euler rotation matrix on the coordinates
                     # 
                     R_euler = get_R_euler(coord_end,dipm,i,j)       
-
                     H_euler = np.zeros([len(coord_end.iloc[:,1])*3,len(coord_end.iloc[:,1])*3]) 
                       
                     coord_rot(coord_end,R_euler)
