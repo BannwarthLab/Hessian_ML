@@ -10,6 +10,8 @@ bohr2angs = 0.52917721067
 speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
 atomic_time_unit = 2.4189e-17   # E_h / hbar
+hplanck = 6.62607015e-34 # hplank Js
+conv_J_to_eV = (1.602176634e-19)**-1 #eV/J
 
 def angle_two_vec(a,b):
      cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
@@ -53,12 +55,14 @@ def get_R_euler(coord_end,dipm,i,j):
      axis = np.identity(3)
 
      T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+     
      vec_trans(coord_end,T)
 
      vec_z = np.zeros(3)
      vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]
      #Rotation for i < j 
      if i < j:
+
           #Atom pair focussed coordinate system
           
           vec_z  = (coord_end.iloc[i,1:]).astype('float64')
@@ -67,16 +71,26 @@ def get_R_euler(coord_end,dipm,i,j):
 
           #Euler angles
           LL = np.cross(vec_z,axis[2])
-          alpha = angle_two_vec(LL,axis[0])
-          beta = angle_two_vec(vec_z,axis[2])
-          gamma = angle_two_vec(LL,vec_x)
 
-          #Find right rotation angle
-          if linalg.det(np.array([axis[0],axis[2],LL]))<0.:
-               alpha = 2*np.pi - alpha
-          
-          if linalg.det(np.array([LL,vec_x,vec_z])) > 0.:
-               gamma = 2*np.pi - gamma
+          if  np.sum(np.abs(np.array(coord_end.iloc[[i,j],1:3]))) < 1e-9:
+               beta = angle_two_vec(vec_z,axis[2])
+               alpha = 2*np.pi - angle_two_vec(vec_x,axis[0])
+               gamma = 0
+               
+               if linalg.det(np.array([axis[0],axis[2],vec_x])) > 0.:
+                    alpha = 2*np.pi - alpha
+
+          else:
+               alpha = angle_two_vec(LL,axis[0])
+               beta = angle_two_vec(vec_z,axis[2])
+               gamma = angle_two_vec(LL,vec_x)
+
+               #Find right rotation angle
+               if linalg.det(np.array([axis[0],axis[2],LL])) < 0.:
+                    alpha = 2*np.pi - alpha
+               
+               if linalg.det(np.array([LL,vec_x,vec_z])) > 0.:
+                    gamma = 2*np.pi - gamma
           
      # Rotation for i = j
      elif i == j:
@@ -92,7 +106,7 @@ def get_R_euler(coord_end,dipm,i,j):
           gamma = angle_two_vec(LL,vec_x)
           
           #Find right rotation angle
-          if vec_x[1]>= 0. :
+          if vec_x[1]>= 0. : #is this still right??
                gamma = 2*np.pi - gamma
 
      #Euler Rotationmatrix

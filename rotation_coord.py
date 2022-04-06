@@ -12,7 +12,7 @@ speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
 atomic_time_unit = 2.4189e-17   # E_h / hbar
 
-if True:
+if False:
      file_path = 'tests/H2O_for_pics/'
      input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 
@@ -20,7 +20,7 @@ if True:
 
      input_path_dipm = f'{file_path}'+'init_coord/'+'xyz_dipm.csv'
 
-elif False:
+elif True:
      file_path = ''
      input_path_coord = f'{file_path}'+'init_coord/'+'coord.xyz'
 

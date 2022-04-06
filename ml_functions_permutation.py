@@ -78,10 +78,17 @@ def find_trans_rot(hess,coord):
 
     return idx_list
 
-def freq(hess_v):
+def wavenumber(hess_v):
     lamb, Q = linalg.eigh(hess_v)
     freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
     return freq_val
+
+
+def frequency(hess_v):
+    lamb, Q = linalg.eigh(hess_v)
+    freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi))
+    return freq_val
+
 
 def freq_extract(freq):
     freq = freq.copy()
@@ -287,8 +294,8 @@ def extract_feature(ml_feature,y_idx):
 
     elif y_idx == 'xz':
 
-        perm_a = ['y','z','x']
-        perm_aa = ['yy','xx','zz','yz','xy','xz']
+        perm_a = ['z','x','y']
+        perm_aa = ['zz','xx','yy','xz','yz','xy']
 
         sign_aa = [1,1,1,1,1,1]
         sign_a = [1,1,1]
@@ -300,21 +307,21 @@ def extract_feature(ml_feature,y_idx):
         perm_aa = ['zz','yy','xx','yz','xz','xy']
 
         sign_aa = [1,1,1,1,-1,-1]
-        sign_a = [-1,1,1]
+        sign_a = [1,1,-1]
 
 
     elif y_idx == 'zx':
 
-        perm_a = ['z','y','x']
+        perm_a = ['x','z','y']
         perm_aa = ['xx','zz','yy','xz','xy','yz']
 
-        sign_aa = [1,1,1,-1,1,-1]
-        sign_a = [1,-1,1]
+        sign_aa = [1,1,1,1,-1,-1]
+        sign_a = [1,1,-1]
 
     elif y_idx == 'zy':
 
-        perm_a = ['z','x','y']
-        perm_aa = ['zz','xx','yy','xz','yz','xy']
+        perm_a = ['y','z','x']
+        perm_aa = ['yy','zz','xx','yz','xz','xy']
 
         sign_aa = [1,1,1,1,1,1]
         sign_a = [1,1,1]
@@ -329,19 +336,19 @@ def extract_feature(ml_feature,y_idx):
 
     elif y_idx == 'yy':
 
-        perm_a = ['y','x','z']
-        perm_aa = ['zz','xx','yy','xy','yz','xz']
+        perm_a = ['y','z','x']
+        perm_aa = ['yy','zz','xx','yz','xy','xz']
 
-        sign_aa = [1,1,1,1,-1,-1]
-        sign_a = [1,1,-1]
+        sign_aa = [1,1,1,1,1,1]
+        sign_a = [1,1,1]
 
     elif y_idx == 'zz':
 
-        perm_a = ['z','y','x']
-        perm_aa = ['zz','yy','xx','yz','xz','xy']
+        perm_a = ['z','x','y']
+        perm_aa = ['zz','xx','yy','xz','yz','xy']
 
-        sign_aa = [1,1,1,-1,-1,1]
-        sign_a = [1,1,-1]
+        sign_aa = [1,1,1,1,1,1]
+        sign_a = [1,1,1]
 
     else:
         print('Not in list')
