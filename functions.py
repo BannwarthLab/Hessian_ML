@@ -10,6 +10,7 @@ bohr2angs = 0.52917721067
 speed_of_light = 2.9979e10   # in cm/s
 mass_unit_in_au = 1.66054e-27 / 9.1094e-31
 atomic_time_unit = 2.4189e-17   # E_h / hbar
+atomic_mass_unit = 1.6605390666e-27 # in kg
 hplanck = 6.62607015e-34 # hplank Js
 conv_J_to_eV = (1.602176634e-19)**-1 #eV/J
 

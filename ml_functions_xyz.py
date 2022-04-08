@@ -78,10 +78,21 @@ def find_trans_rot(hess,coord):
 
     return idx_list
 
-def freq(hess_v):
-    lamb, Q = linalg.eigh(hess_v)
+def wavenumber(lamb):
     freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
     return freq_val
+
+def frequency(lamb):
+    freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi))
+    return freq_val
+
+def force_constant(lamb,atoms):
+    m_sum = 0
+    for i in range(len(atoms)):
+        m_sum += 1/elements_dict[atoms[i]]
+    mu = 1/m_sum
+    fc = mu*lamb
+    return fc
 
 def freq_extract(freq):
     freq = freq.copy()
@@ -100,7 +111,7 @@ def get_feature_name(feature_col_name):
     feature_name_Arith = [s + '_Arith' for s in feature_col_name]
     feature_name_Prod = [s + '_Prod' for s in feature_col_name]
     feature_name_AbsDiff = [s + '_AbsDiff' for s in feature_col_name]
-    feature_name_full = ['atom1','atom2','y_idx','y','x','y','z','Rab']#'nucA','nucB',
+    feature_name_full = ['atom1','atom2','y_idx','y','xi','yi','zi','Rab']#'nucA','nucB',
 
     for i in [feature_col_name_A,feature_col_name_B,feature_name_Arith,feature_name_Prod,feature_name_AbsDiff]:
         feature_name_full.extend(i)
@@ -252,13 +263,13 @@ def extract_feature(ml_feature,y_idx):
     dipm_delta = ml_feature.loc[['dipm_delta_x','dipm_delta_y','dipm_delta_z']]
     dipm_only_mull = ml_feature.loc[['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']]
 
-    qm_delta_only_Z = ml_feature.loc[['delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz']]
+    #qm_delta_only_Z = ml_feature.loc[['delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz']]
 
-    qm_delta_only_Z = qm_delta_only_Z.rename(index= {' delta qm only Z zz':'delta qm only Z zz'})
+    #qm_delta_only_Z = qm_delta_only_Z.rename(index= {' delta qm only Z zz':'delta qm only Z zz'})
 
-    qm_delta_only_mull = ml_feature.loc[['delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz']]
+    #qm_delta_only_mull = ml_feature.loc[['delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz']]
 
-    qm_delta_only_mull = qm_delta_only_mull.rename(index= {' delta qm only mull yy' : 'delta qm only mull yy',' delta qm only mull zz' : 'delta qm only mull zz' })
+    #qm_delta_only_mull = qm_delta_only_mull.rename(index= {' delta qm only mull yy' : 'delta qm only mull yy',' delta qm only mull zz' : 'delta qm only mull zz' })
 
     qm_atom = ml_feature.loc[['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']]
     qm_delta = ml_feature.loc[['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']]
@@ -266,6 +277,14 @@ def extract_feature(ml_feature,y_idx):
     energy_based = ml_feature.loc[['response (a.u.)','gap (eV)','chem.pot (eV)','HOAO (eV)','LUAO (eV)',
                                     'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']]  # 
+
+
+    if y_idx in ['yx','zx','zy']:
+        dipm_atom['dipm_atom_x','dipm_atom_y','dipm_atom_z'] = np.array([dipm_atom[f'dipm_atom_x'],dipm_atom[f'dipm_atom_y'],dipm_atom[f'dipm_atom_z']])
+        dipm_delta = ml_feature.loc[['dipm_delta_x','dipm_delta_y','dipm_delta_z']]
+        dipm_only_mull = ml_feature.loc[['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']]
+        qm_atom = ml_feature.loc[['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']]
+        qm_delta = ml_feature.loc[['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']]
 
     ##############################
     #Extract features which need to be transformed
@@ -463,7 +482,7 @@ def plot_non_diag_importances(regr_non_diag,col_name,info):
 def plot_non_diag_perm_importances(model,X,y,col_name,info):
 
     N_features = 40
-    N= 5
+    N= 4
     importances = permutation_importance(model,X,y,n_repeats=15).importances_mean
     np.savetxt(f'plots/importances_non_diag_{info}',importances)
 
@@ -473,7 +492,6 @@ def plot_non_diag_perm_importances(model,X,y,col_name,info):
     ax.bar(ticks[1] ,importances[1],alpha=1.0, width=0.15,color = 'blue')
     ax.bar(ticks[2] ,importances[2],alpha=1.0, width=0.15,color = 'blue')
     ax.bar(ticks[3] ,importances[3],alpha=1.0, width=0.15,color = 'blue')
-    ax.bar(ticks[4] ,importances[4],alpha=1.0, width=0.15,color = 'blue')
 
     ax.bar(ticks[N:N_features+N]-0.3 ,importances[N:N_features+N],alpha=1.0, width=0.15, label = 'A')
     ax.bar(ticks[N:N_features+N]-0.15,importances[N_features+N:2*N_features+N],alpha=1.0, width=0.15, label = 'B')#'atom A')
@@ -487,7 +505,7 @@ def plot_non_diag_perm_importances(model,X,y,col_name,info):
     ax.set_xlabel('Features')
     ax.set_ylabel('R² coefficient')
     ax.set_xticks(ticks)
-    ax.set_xticklabels(col_name[:N_features+1],rotation=90)
+    ax.set_xticklabels(col_name[:N_features+N],rotation=90)
     plt.gcf().subplots_adjust(bottom=0.45)
     fig.set_figwidth(15)
 
@@ -501,7 +519,7 @@ def plot_diag_importances(regr_diag,col_name,info):
 
     np.savetxt(f'plots/importances_diag_{info}',importances)
 
-    ticks = np.array(range(len(importances)))
+    ticks = np.array(range(len(importances)+1))
 
     fig ,ax = plt.subplots()
 
@@ -510,7 +528,7 @@ def plot_diag_importances(regr_diag,col_name,info):
     ax.set_ylabel('R² coefficient')
     ax.set_xticks(ticks)
 
-    ax.set_xticklabels(['x','y','z']+col_name,rotation=90)
+    ax.set_xticklabels(col_name,rotation=90)
     plt.gcf().subplots_adjust(bottom=0.45)
     fig.set_figwidth(15)
 

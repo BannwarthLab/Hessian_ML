@@ -78,16 +78,21 @@ def find_trans_rot(hess,coord):
 
     return idx_list
 
-def wavenumber(hess_v):
-    lamb, Q = linalg.eigh(hess_v)
+def wavenumber(lamb):
     freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
     return freq_val
 
-
-def frequency(hess_v):
-    lamb, Q = linalg.eigh(hess_v)
+def frequency(lamb):
     freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi))
     return freq_val
+
+def force_constant(lamb,atoms):
+    m_sum = 0
+    for i in range(len(atoms)):
+        m_sum += 1/elements_dict[atoms[i]]
+    mu = 1/m_sum
+    fc = mu*lamb
+    return fc
 
 
 def freq_extract(freq):
@@ -102,14 +107,14 @@ def freq_extract(freq):
 
 def get_feature_name(feature_col_name):
 
-    feature_col_name_A = [s + '_A' for s in feature_col_name]
-    feature_col_name_B = [s + '_B' for s in feature_col_name]
+    #feature_col_name_A = [s + '_A' for s in feature_col_name]
+    #feature_col_name_B = [s + '_B' for s in feature_col_name]
     feature_name_Arith = [s + '_Arith' for s in feature_col_name]
     feature_name_Prod = [s + '_Prod' for s in feature_col_name]
     feature_name_AbsDiff = [s + '_AbsDiff' for s in feature_col_name]
     feature_name_full = ['atom1','atom2','y_idx','y','pos','Rab']#'nucA','nucB',
 
-    for i in [feature_col_name_A,feature_col_name_B,feature_name_Arith,feature_name_Prod,feature_name_AbsDiff]:
+    for i in [feature_name_Arith,feature_name_Prod,feature_name_AbsDiff]:# [feature_col_name_A,feature_col_name_B,
         feature_name_full.extend(i)
 
     return feature_name_full
@@ -259,13 +264,13 @@ def extract_feature(ml_feature,y_idx):
     dipm_delta = ml_feature.loc[['dipm_delta_x','dipm_delta_y','dipm_delta_z']]
     dipm_only_mull = ml_feature.loc[['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']]
 
-    qm_delta_only_Z = ml_feature.loc[['delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz']]
+    # qm_delta_only_Z = ml_feature.loc[['delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz']]
 
-    qm_delta_only_Z = qm_delta_only_Z.rename(index= {' delta qm only Z zz':'delta qm only Z zz'})
+    # qm_delta_only_Z = qm_delta_only_Z.rename(index= {' delta qm only Z zz':'delta qm only Z zz'})
 
-    qm_delta_only_mull = ml_feature.loc[['delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz']]
+    # qm_delta_only_mull = ml_feature.loc[['delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz']]
 
-    qm_delta_only_mull = qm_delta_only_mull.rename(index= {' delta qm only mull yy' : 'delta qm only mull yy',' delta qm only mull zz' : 'delta qm only mull zz' })
+    # qm_delta_only_mull = qm_delta_only_mull.rename(index= {' delta qm only mull yy' : 'delta qm only mull yy',' delta qm only mull zz' : 'delta qm only mull zz' })
 
     qm_atom = ml_feature.loc[['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']]
     qm_delta = ml_feature.loc[['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']]
@@ -359,9 +364,9 @@ def extract_feature(ml_feature,y_idx):
 
     dipm_only_mull[['delta dipm only mull x','delta dipm only mull x','delta dipm only mull z']] = np.array([sign_a[0]*dipm_only_mull[f'delta dipm only mull {perm_a[0]}'],sign_a[1]*dipm_only_mull[f'delta dipm only mull {perm_a[1]}'],sign_a[2]*dipm_only_mull[f'delta dipm only mull {perm_a[2]}']])
 
-    qm_delta_only_Z[['delta qm only Z xx','delta qm only Z yy','delta qm only Z zz']] =  np.array([sign_a[0]*qm_delta_only_Z[f'delta qm only Z {perm_a[0]}{perm_a[0]}'],sign_a[1]*qm_delta_only_Z[f'delta qm only Z {perm_a[1]}{perm_a[1]}'],sign_a[2]*qm_delta_only_Z[f'delta qm only Z {perm_a[2]}{perm_a[2]}']])
+    #qm_delta_only_Z[['delta qm only Z xx','delta qm only Z yy','delta qm only Z zz']] =  np.array([sign_a[0]*qm_delta_only_Z[f'delta qm only Z {perm_a[0]}{perm_a[0]}'],sign_a[1]*qm_delta_only_Z[f'delta qm only Z {perm_a[1]}{perm_a[1]}'],sign_a[2]*qm_delta_only_Z[f'delta qm only Z {perm_a[2]}{perm_a[2]}']])
 
-    qm_delta_only_mull[['delta qm only mull xx','delta qm only mull yy','delta qm only mull zz']] = np.array([sign_a[0]*qm_delta_only_mull[f'delta qm only mull {perm_a[0]}{perm_a[0]}'],sign_a[1]*qm_delta_only_mull[f'delta qm only mull {perm_a[1]}{perm_a[1]}'],sign_a[2]*qm_delta_only_mull[f'delta qm only mull {perm_a[2]}{perm_a[2]}']])
+    #qm_delta_only_mull[['delta qm only mull xx','delta qm only mull yy','delta qm only mull zz']] = np.array([sign_a[0]*qm_delta_only_mull[f'delta qm only mull {perm_a[0]}{perm_a[0]}'],sign_a[1]*qm_delta_only_mull[f'delta qm only mull {perm_a[1]}{perm_a[1]}'],sign_a[2]*qm_delta_only_mull[f'delta qm only mull {perm_a[2]}{perm_a[2]}']])
     
     qm_atom[['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']] =   np.array([sign_aa[0]*qm_atom[f'qm_atom_{perm_aa[0]}'],sign_aa[1]*qm_atom[f'qm_atom_{perm_aa[1]}'],sign_aa[2]*qm_atom[f'qm_atom_{perm_aa[2]}'],
                                                                                                         sign_aa[3]*qm_atom[f'qm_atom_{perm_aa[3]}'],sign_aa[4]*qm_atom[f'qm_atom_{perm_aa[4]}'],sign_aa[5]*qm_atom[f'qm_atom_{perm_aa[5]}']])
@@ -384,7 +389,7 @@ def extract_feature(ml_feature,y_idx):
     #col_name = (CN.columns.values.tolist() + dipm.columns.values.tolist() + qm_atom_mat_df.columns.values.tolist()+ qm_delta_mat_df.columns.values.tolist() + qm.columns.values.tolist())
 
     #Generate the Feature DataFrame
-    X_df = pd.concat([CN,dipm_atom,dipm_delta,dipm_only_mull,qm_atom_mat_df,qm_delta_mat_df,qm_delta_only_Z,qm_delta_only_mull,energy_based],axis =0)
+    X_df = pd.concat([CN,dipm_atom,dipm_delta,dipm_only_mull,qm_atom_mat_df,qm_delta_mat_df,energy_based],axis =0)#,qm_delta_only_Z,qm_delta_only_mull,energy_based],axis =0)
     #X_df = pd.concat([file,CN,dipm,qm_atom_mat_df,qm_delta_mat_df,qm],axis =1)
     return X_df
 
@@ -454,16 +459,16 @@ def import_files(file_path_mol,feature_name_full):
 
             if col_hess[i] in ['yx','zx','zy']:
                 
-                X.extend(X_B)
-                X.extend(X_A)
+                #X.extend(X_B)
+                #X.extend(X_A)
                 X.extend( (X_A + X_B )/ 2)
                 X.extend(X_A * X_B)
                 X.extend(np.abs(X_A - X_B))
 
             else:
 
-                X.extend(X_A)
-                X.extend(X_B)
+                #X.extend(X_A)
+                #X.extend(X_B)
                 X.extend((X_A + X_B )/ 2)
                 X.extend(X_A * X_B)
                 X.extend(np.abs(X_A - X_B))
