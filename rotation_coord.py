@@ -108,10 +108,10 @@ coord.to_csv(file_path_inert_CS +'coord.xyz', mode ='a',sep = '\t',header = None
 
 np.savetxt(f'{file_path}'+'P_init_inert',P)
 ###
-print(dipm)
 ############ Translation and Rotation of the coordinates into end position
 
 # Translation in the center of the bonding
+
 
 
 

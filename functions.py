@@ -98,7 +98,7 @@ def get_R_euler(coord_end,dipm,i,j):
                
                if linalg.det(np.array([LL,vec_x,vec_z])) > 0.:
                     gamma = 2*np.pi - gamma
-          
+     
      # Rotation for i = j
      elif i == j:
           #Atom pair focussed coordinate system

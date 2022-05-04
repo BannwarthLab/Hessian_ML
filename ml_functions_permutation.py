@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 import os
 import time as time
 
+modIP = 'perm'
+
 def project_hess(hess_v,coord):
     idx = find_trans_rot(hess_v.copy(),coord.copy())
     lamb,Q = linalg.eigh(hess_v)
@@ -326,7 +328,7 @@ def extract_feature(ml_feature,y_idx):
     elif y_idx == 'zy':
 
         perm_a = ['y','z','x']
-        perm_aa = ['yy','zz','xx','yz','xz','xy']
+        perm_aa = ['yy','zz','xx','yz','xy','xz']
 
         sign_aa = [1,1,1,1,1,1]
         sign_a = [1,1,1]

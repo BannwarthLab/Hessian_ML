@@ -18,9 +18,9 @@ import matplotlib.pyplot as plt
 import os
 import time as time
 
+modIP = 'indexed'
 def project_hess(hess_v,coord):
-    idx = find_trans_rot(hess_v.copy(),coord.copy())
-    lamb,Q = linalg.eigh(hess_v)
+    idx,lamb,Q = find_trans_rot(hess_v.copy(),coord.copy())
     hess_projected_v = hess_v.copy()
 
     for i in idx:
@@ -76,7 +76,7 @@ def find_trans_rot(hess,coord):
         idx_list[i] = int(idx)
         M_sum[idx] -= M_sum[idx]
 
-    return idx_list
+    return idx_list,lamb,Q
 
 def wavenumber(lamb):
     freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
@@ -106,14 +106,14 @@ def freq_extract(freq):
 
 def get_feature_name(feature_col_name):
 
-    feature_col_name_A = [s + '_A' for s in feature_col_name]
-    feature_col_name_B = [s + '_B' for s in feature_col_name]
+    # feature_col_name_A = [s + '_A' for s in feature_col_name]
+    # feature_col_name_B = [s + '_B' for s in feature_col_name]
     feature_name_Arith = [s + '_Arith' for s in feature_col_name]
     feature_name_Prod = [s + '_Prod' for s in feature_col_name]
     feature_name_AbsDiff = [s + '_AbsDiff' for s in feature_col_name]
     feature_name_full = ['atom1','atom2','y_idx','y','xi','yi','zi','Rab']#'nucA','nucB',
 
-    for i in [feature_col_name_A,feature_col_name_B,feature_name_Arith,feature_name_Prod,feature_name_AbsDiff]:
+    for i in [feature_name_Arith,feature_name_Prod,feature_name_AbsDiff]:#feature_col_name_A,feature_col_name_B,
         feature_name_full.extend(i)
 
     return feature_name_full
@@ -132,7 +132,7 @@ def gen_X_y_DF(molecules):
         feature_path = os.path.join(feature_file_path[0],'init_coord/ml_feature.csv')
         feature_df = pd.read_csv(feature_path)
 
-        col = extract_feature(feature_df.iloc[0],'yx')
+        col = extract_feature(feature_df.iloc[0],'yx',0,0)
 
         feature_name_full = get_feature_name(col.index.values.tolist())
         feature_name_full.insert(0, 'block')
@@ -256,20 +256,20 @@ def hess_vec_to_hess_block(hess_vec):
             k += 1
     return hess_mat
 
-def extract_feature(ml_feature,y_idx):
+def extract_feature(ml_feature,y_idx,A,B):
     CN = ml_feature.loc[['coordination number','delta coordination number']]
 
     dipm_atom = ml_feature.loc[['dipm_atom_x','dipm_atom_y','dipm_atom_z']]
     dipm_delta = ml_feature.loc[['dipm_delta_x','dipm_delta_y','dipm_delta_z']]
     dipm_only_mull = ml_feature.loc[['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']]
 
-    qm_delta_only_Z = ml_feature.loc[['delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz']]
+    #qm_delta_only_Z = ml_feature.loc[['delta qm only Z xx','delta qm only Z yy',' delta qm only Z zz']]
 
-    qm_delta_only_Z = qm_delta_only_Z.rename(index= {' delta qm only Z zz':'delta qm only Z zz'})
+    #qm_delta_only_Z = qm_delta_only_Z.rename(index= {' delta qm only Z zz':'delta qm only Z zz'})
 
-    qm_delta_only_mull = ml_feature.loc[['delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz']]
+    #qm_delta_only_mull = ml_feature.loc[['delta qm only mull xx',' delta qm only mull yy',' delta qm only mull zz']]
 
-    qm_delta_only_mull = qm_delta_only_mull.rename(index= {' delta qm only mull yy' : 'delta qm only mull yy',' delta qm only mull zz' : 'delta qm only mull zz' })
+    #qm_delta_only_mull = qm_delta_only_mull.rename(index= {' delta qm only mull yy' : 'delta qm only mull yy',' delta qm only mull zz' : 'delta qm only mull zz' })
 
     qm_atom = ml_feature.loc[['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']]
     qm_delta = ml_feature.loc[['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']]
@@ -278,7 +278,12 @@ def extract_feature(ml_feature,y_idx):
                                     'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']]  # 
                                     
-
+    if y_idx in ['yx','zx','zy'] and A != B:
+        dipm_atom['dipm_atom_x','dipm_atom_y','dipm_atom_z'] = np.array([-dipm_atom['dipm_atom_x'],dipm_atom['dipm_atom_y'],-dipm_atom['dipm_atom_z']])
+        dipm_delta['dipm_delta_x','dipm_delta_y','dipm_delta_z'] = np.array([-dipm_delta['dipm_delta_x'],dipm_delta['dipm_delta_y'],-dipm_delta['dipm_delta_z']])
+        dipm_only_mull['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z'] = np.array([-dipm_only_mull['delta dipm only mull x'],dipm_only_mull['delta dipm only mull y'],-dipm_only_mull['delta dipm only mull z']])
+        qm_atom['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz'] = np.array([qm_atom['qm_atom_xx'],qm_atom['qm_atom_yy'],qm_atom['qm_atom_zz'],-qm_atom['qm_atom_xy'],qm_atom['qm_atom_xz'],-qm_atom['qm_atom_yz']])
+        qm_delta['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz'] = np.array([qm_delta['qm_delta_xx'],qm_delta['qm_delta_yy'],qm_delta[ 'qm_delta_zz'],-qm_delta['qm_delta_xy'],qm_delta['qm_delta_xz'],-qm_delta['qm_delta_yz']])
     ##############################
     #Extract features which need to be transformed
 
@@ -297,7 +302,7 @@ def extract_feature(ml_feature,y_idx):
     #col_name = (CN.columns.values.tolist() + dipm.columns.values.tolist() + qm_atom_mat_df.columns.values.tolist()+ qm_delta_mat_df.columns.values.tolist() + qm.columns.values.tolist())
 
     #Generate the Feature DataFrame
-    X_df = pd.concat([CN,dipm_atom,dipm_delta,dipm_only_mull,qm_atom_mat_df,qm_delta_mat_df,qm_delta_only_Z,qm_delta_only_mull,energy_based],axis =0)
+    X_df = pd.concat([CN,dipm_atom,dipm_delta,dipm_only_mull,qm_atom_mat_df,qm_delta_mat_df,energy_based],axis =0)#qm_delta_only_Z,qm_delta_only_mull
     #X_df = pd.concat([file,CN,dipm,qm_atom_mat_df,qm_delta_mat_df,qm],axis =1)
     return X_df
 
@@ -326,21 +331,25 @@ def import_files(file_path_mol,feature_name_full):
 
         coord,head = import_coord(coord_path[f])
 
-        atomA = coord.iloc[A,0]
-        atomB = coord.iloc[B,0]
+        # atomA = coord.iloc[A,0]
+        # atomB = coord.iloc[B,0]
 
-        nucA = ELEMENTS2Z[atomA]
-        nucB = ELEMENTS2Z[atomB]
+        # nucA = ELEMENTS2Z[atomA]
+        # nucB = ELEMENTS2Z[atomB]
 
         hessian = import_hess(hess_path[f],coord)
 
         col_hess=['xx','xy','xz','yx','yy','yz','zx','zy','zz']
 
-        yidx_list = [[2,0,0],[1,1,0],[1,0,1],
-                    [1,1,0],[0,2,0],[0,1,1],
-                    [1,0,1],[0,1,1],[0,0,2]]
+        yidx_list = [[2,0,0],[1,-1,0],[1,0,-1],
+                    [-1,1,0],[0,2,0],[0,1,-1],
+                    [-1,0,1],[0,-1,1],[0,0,2]]
 
         hess_temp = hess_block_to_hess_vec(hessian,A,B)
+        # if A != B :
+        #     hess_temp[3] = -hess_temp[3]
+        #     hess_temp[7] = -hess_temp[7]
+
 
         for i in range(len(col_hess)):
             X = []
@@ -362,21 +371,21 @@ def import_files(file_path_mol,feature_name_full):
 
             X.extend([linalg.norm(coord.iloc[int(A),1:] - coord.iloc[int(B),1:])])
 
-            X_A = np.array(extract_feature(feature_df.iloc[int(A)],col_hess[i]))
-            X_B = np.array(extract_feature(feature_df.iloc[int(B)],col_hess[i]))
+            X_A = np.array(extract_feature(feature_df.iloc[int(A)],col_hess[i],0,0))
+            X_B = np.array(extract_feature(feature_df.iloc[int(B)],col_hess[i],0,0))
 
             if col_hess[i] in ['yx','zx','zy']:
                 
-                X.extend(X_B)
-                X.extend(X_A)
+                # X.extend(X_B)
+                # X.extend(X_A)
                 X.extend( (X_A + X_B )/ 2)
                 X.extend(X_A * X_B)
                 X.extend(np.abs(X_A - X_B))
 
             else:
 
-                X.extend(X_A)
-                X.extend(X_B)
+                # X.extend(X_A)
+                # X.extend(X_B)
                 X.extend((X_A + X_B )/ 2)
                 X.extend(X_A * X_B)
                 X.extend(np.abs(X_A - X_B))

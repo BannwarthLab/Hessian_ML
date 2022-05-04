@@ -13,7 +13,7 @@ atomic_time_unit = 2.4189e-17   # E_h / hbar
 
 def angle_two_vec(a,b):
 
-     if linalg.norm(a) == 0. or linalg.norm(b) == 0.:
+     if linalg.norm(a) > 1e-8 or linalg.norm(b) >1e-8 :
           cosangle = 0
      else:
           cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
