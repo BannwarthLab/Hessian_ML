@@ -1,5 +1,3 @@
-from msilib.schema import Feature
-from pyparsing import col
 from sklearn import preprocessing
 from functions import *
 from operator import matmul
@@ -7,7 +5,6 @@ import pandas as pd
 import numpy as np
 from mass_charge_dict import ELEMENTS2Z, Z2ELEMENTS,elements_dict
 from scipy import linalg
-from scipy.spatial.transform import Rotation as rot_trafo
 from math import log10 , floor
 import glob as glob
 import time as time
