@@ -117,7 +117,7 @@
 	
 	\begin{table}[H]
 		\centering
-		\caption[]{}
+		\caption[]{Permutation of the coordinates for each Hessian element.}
 			\begin{tabular}{c c c c c}
 				\hline
 				Hessian Element & x & y & z \\
@@ -145,8 +145,6 @@
 	In this case though, the hessian matrix elements with a derivative in respect to the $z$ coordinate get the same index.
 	Furthermore, the diagonal and off--diagonal elements get different indices.
 	This labeling is called \textbf{permuted} (perm).
-
-
 	%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 	\section{Transformation of Coordinates}
 	The hessian matrix and some features depend on the orientation of the coordinate~system~(CS).
@@ -363,7 +361,7 @@ The rotation back into the mi system is done by Eq.~\eqref{eq:rotHessBlock}.
 \end{align}
 In the mi system, the hessian matrix $\textbf{H}^\mathrm{mi}$ is filled with the blocks $\textbf{H}^\mathrm{mi}_\mathrm{AB}$.
 Before some quantities for measuring can be computed, the $\textbf{H}^\mathrm{mi}$ is projected and mass--weighted.
-Thus the $\textbf{H}^\mathrm{proj,w|mi}$ is build. 
+Thus, the $\textbf{H}^\mathrm{proj,w|mi}$ is build. 
 The procedure of the projection and mass--weighting is described in the chapter Theory.
 
 %  
@@ -382,7 +380,7 @@ The number of data points is $n$.
 	\label{eq:MSE}
 	\mathrm{MSE} =  \dfrac{1}{n} \sum_{i=1}^n \left( y_{i\mathrm{,ML}} - y_{i\mathrm{,xTB}} \right)^2
 \end{align}
-For the comparison of the different models (e.g. ETR--Case--Perm, RFR--Gen-Idx, etc.) the comparison is done by assuming a normal distribution.
+For the comparison of the different models (e.g. ETR--Case--Perm, RFR--Gen--Idx, etc.) the comparison is done by assuming a normal distribution.
 
 For this the difference between the GFN2--xTB computation and ML model prediction is calculated.
 Furthermore, the standard deviation and mean is computed. After that a normal distribution is assumed.
@@ -402,7 +400,6 @@ For the transformation into SI--units, the hartree Energy $E_\mathrm{h}$,
 planck constant $h$, reduced planck constant $\hbar$, speed of light $c$ and the atomic mass unit $u$ are required.
 
 \begin{subequations}
-	
 \begin{align}
 	\label{eq:WN}
 	\tilde{\nu} &= \sqrt{|\lambda|} \cdot \dfrac{E_\mathrm{h}}{\hbar \cdot c}\\
@@ -411,14 +408,13 @@ planck constant $h$, reduced planck constant $\hbar$, speed of light $c$ and the
 	\label{eq:ZPVE}
 	\mathrm{ZPVE} &= \dfrac{E_\mathrm{h}}{h} \sum_i^n \sqrt{|\lambda_i|} 
 \end{align}
-
 \end{subequations}
 
 
 
 \section{Computational Methods}
 
-All electronic structure computations were performed with GFN2--xTB\supercite{Bannwarth2019_GFN2xTB}, for this the \textit{xtb} was used.
+All electronic structure computations were performed with GFN2--xTB\supercite{Bannwarth2019_GFN2xTB}, for this \textit{xtb}\supercite{Bannwarth2021_xTB} was used.
 The computation of the information for the feature vector and target vector are done with GFN2--xTB level calculation.
 For this the GFN2--xTB code was used. For transformation of the coordinates and the ML models python was used.
-Especially, the packages sklearn, numpy and pandas were used for this project.\supercite{Bannwarth2021_xTB}
+Especially, the packages \textit{sklearn}\supercite{scikit-learn}, \textit{numpy}\supercite{numpy} and \textit{pandas}\supercite{pandas.Paper,pandas.software} were used for this project.

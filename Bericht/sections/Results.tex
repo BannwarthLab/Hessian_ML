@@ -1,10 +1,16 @@
-\section{The Machine Learning Models}
+\section{The ML Models and Data Set}
 For every prediction of the hessian matrix, it is necessary to use the homonuclear and heteronuclear model.
 Both models were further investigated by three adjustments, namely the algorithms, the labeling and a generalization.\\
 At first, as described in the Chapter Theory, the RFR and ETR are used as the different algorithms for the fitting of the ML model.
 For the labeling the two possible cases of the labeling, which are the indexed and permuted case were discussed.
 At last, it is investigated, how the performance changes if instead of fitting the ML model only case--specific
-the ML model is fitted to a general model, that predicts all cases.
+the ML model is fitted to a general model, that predicts all cases.\\
+A data set for benchmarking the ML model was constructed. The set consists of eight different molecules.
+These are namely $\mathrm{H}_2$, $\mathrm{N}_2$, $\mathrm{O}_2$, $\mathrm{F}_2$, $\mathrm{HF}$, $\mathrm{CO}$,
+$\mathrm{H}_2\mathrm{O}$, and $\mathrm{NH}_3$.
+For each molecule, structures with different bond length were generated.
+Only the distance of one bond was changed for each molecule.
+This lead into 103 different structures.
 
 \section{The $\mathrm{\textbf{H}}_\mathrm{\textbf{2}}$ system}
 \begin{figure}[H]
