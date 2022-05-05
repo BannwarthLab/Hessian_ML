@@ -1,3 +1,4 @@
+\chapter{Results and Discussion}
 \section{The ML Models and Data Set}
 For every prediction of the hessian matrix, it is necessary to use the homonuclear and heteronuclear model.
 Both models were further investigated by three adjustments, namely the algorithms, the labeling and a generalization.\\
@@ -10,19 +11,32 @@ These are namely $\mathrm{H}_2$, $\mathrm{N}_2$, $\mathrm{O}_2$, $\mathrm{F}_2$,
 $\mathrm{H}_2\mathrm{O}$, and $\mathrm{NH}_3$.
 For each molecule, structures with different bond length were generated.
 Only the distance of one bond was changed for each molecule.
-This lead into 103 different structures.
-
+This lead into 103 different structures. These structures were split into a training set of 75\% and a test set of 25\%.
+The split is done structure wise to achieve the possibility to compare other quantities then the hessian elements.
+For each structure, the hessian and feature were calculated with the GFN2--xTB method.\\
 \section{The $\mathrm{\textbf{H}}_\mathrm{\textbf{2}}$ system}
+As a first approach, the ETR--Case--Perm model was used for only the subset of the hydrogen molecule.
+For this the wave numbers $\tilde{\nu}_\mathrm{ML}$ were predicted and plotted against the wave numbers $\tilde{\nu}_\mathrm{xTB}$ calculated via GFN2--xTB.
+This is done for 5 random states and is shown in Fig.~\ref{fig:WN_H2}.
+The black line is the diagonal, on which the data points would appear for a perfect prediction.
+Furthermore, the wave number increases with the decrease of the bond length.
+For the approximated range of $1800~\mathrm{cm^{-1}} < \tilde{\nu}_\mathrm{xTB}< 7500~\mathrm{cm^{-1}}$ there are abbreviations from the diagonal and therefore a sufficient prediction.
+In respect to the small data set of only eleven structures for the full subset of hydrogen, the prediction is 
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{H2_single/Clean.eps}
-    \caption[Plot of wavenumber from GFN2--xTB against wavenumber predicted by a ML model.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
+    \caption[Plot of wavenumbers from GFN2--xTB $\tilde{\nu}_\mathrm{xTB}$ against wavenumbers predicted by a ML model $\tilde{\nu}_\mathrm{ML}$.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
     is plotted against the wavenumber calculated via GFN2--xTB $\tilde{\nu}_\mathrm{xTB}$.
     The model uses the Extra Tree Regression.
     The sample set is $\mathrm{H}_2$ and the training set is 75~\% of the whole set.
     The prediction were done for 5 random states.}
     \label{fig:WN_H2}
 \end{figure}
+The abbreviations are stronger in the cases of $1800~\mathrm{cm^{-1}} > \tilde{\nu}_\mathrm{xTB}$ and $\tilde{\nu}_\mathrm{xTB} > 7500~\mathrm{cm^{-1}}$.
+These predictions are probably done for cases, where the training set does not include molecules, which have a lower or higher distance, respectively.
+This assumption is underlined by the fact, that the predicted values correspond to the next higher or lower value.
+For example, the next lowest value in the case of the prediction at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$ is $\tilde{\nu}_\mathrm{xTB} \approx 7\cdot 10^4 \mathrm{cm^{-1}}$.
+This in the same order as the predicted value $\tilde{\nu}_\mathrm{ML}\approx 6.4\cdot 10^4 \mathrm{cm^{-1}}$ at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$.
 
 \section{Comparison of RFR and ETF}
 For the ML models two different algorithms were used, which are the ETR and RFR.

@@ -263,6 +263,12 @@ INPUT C:/Users/Nutzer/AppData/Roaming/MiKTeX/2.9/tex/latex/listings/lstmisc.sty
 INPUT C:/Users/Nutzer/AppData/Roaming/MiKTeX/2.9/tex/latex/listings/lstmisc.sty
 INPUT main.aux
 INPUT main.aux
+INPUT sections/Theory.aux
+INPUT sections/Theory.aux
+INPUT sections/Methods.aux
+INPUT sections/Methods.aux
+INPUT sections/Results.aux
+INPUT sections/Results.aux
 OUTPUT main.aux
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/ts1cmr.fd
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/ts1cmr.fd
@@ -275,8 +281,14 @@ INPUT C:/Program Files/MiKTeX 2.9/tex/latex/oberdiek/refcount.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/oberdiek/refcount.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/gettitlestring.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/gettitlestring.sty
-OUTPUT main.out
+INPUT main.out
+INPUT main.out
+INPUT main.out
+INPUT main.out
 OUTPUT main.pdf
+INPUT ./main.out
+INPUT ./main.out
+OUTPUT main.out
 INPUT C:/Users/Nutzer/AppData/Roaming/MiKTeX/2.9/tex/latex/translator/translator-basic-dictionary-English.dict
 INPUT C:/Users/Nutzer/AppData/Roaming/MiKTeX/2.9/tex/latex/translator/translator-basic-dictionary-English.dict
 INPUT C:/Users/Nutzer/AppData/Roaming/MiKTeX/2.9/tex/latex/siunitx/siunitx-abbreviations.cfg
@@ -290,6 +302,9 @@ INPUT C:/Program Files/MiKTeX 2.9/tex/latex/graphics/lscape.sty
 INPUT C:/Users/Nutzer/AppData/Roaming/MiKTeX/2.9/tex/latex/biblatex/lbx/english.lbx
 INPUT C:/Users/Nutzer/AppData/Roaming/MiKTeX/2.9/tex/latex/biblatex/lbx/english.lbx
 OUTPUT main.bcf
+INPUT main.bbl
+INPUT main.bbl
+INPUT main.bbl
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/lm/ot1lmr.fd
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/lm/ot1lmr.fd
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/rm-lmr10.tfm
@@ -359,8 +374,18 @@ INPUT C:/Program Files/MiKTeX 2.9/tex/latex/lm/t1lmss.fd
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmss10.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmssbx10.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmssbx10.tfm
+INPUT main.toc
+INPUT main.toc
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmr8.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmbx8.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmr6.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmbx6.tfm
 OUTPUT main.toc
+INPUT main.lof
+INPUT main.lof
 OUTPUT main.lof
+INPUT main.lot
+INPUT main.lot
 OUTPUT main.lot
 OUTPUT sections/Results.aux
 INPUT sections/Results.tex
@@ -542,12 +567,14 @@ OUTPUT main.run.xml
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc
-INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc
+INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx8.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx8.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb
@@ -574,3 +601,5 @@ INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb
