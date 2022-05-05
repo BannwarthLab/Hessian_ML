@@ -413,9 +413,13 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\begin{align}
 		\textbf{H}^\mathrm{proj} =\textbf{H} - \sum_{i \in \textbf{v}} \bm{\uplambda}_i \cdot{\textbf{Q}^\intercal}_i \otimes \left({\textbf{Q}^\intercal}_i\right)^\intercal
 	\end{align}
-
-	--Mass weighting the projected hessian matrix.\\
-
+	At last, the hessian needs to be mass weighted. Every element is multiplied by a specifc factor,
+	which depends on the mass $m_A$ of the atoms $A$ of the coordinates.
+	\begin{align}
+		\label{eq:MassWeightedHess}
+		\textbf{H}_{AB}^\mathrm{proj,w} = \dfrac{1}{\sqrt{m_A m_B}} \textbf{H}_{AB}^\mathrm{proj}
+	\end{align}
+	This is done for the full Hessian matrix, 
 	\section{Machine Learning}
 	Extra Tree Regression (ETR) and Random Forest Regression (RFR) are used as ML algorithms in this research.
 	Both algorithms are ensemble methods based on decision trees as individual estimators.

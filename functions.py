@@ -223,6 +223,7 @@ def inert_tensor(coord_var):
 
      return inert_t/m/bohr2angs**2
 
+#Das kann evtl. noch verschnellert werden, indem man direkt bspw. H_AB mit den Massen multipliziert.
 def mass_weighted_hessian(hessian, atoms):
      for k in range(len(hessian[1,:])):
         for l in range(len(hessian[:,1])):
