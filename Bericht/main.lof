@@ -4,7 +4,7 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Depiction of two Coordinate systems for description of Euler Angles.}}{2}{figure.caption.6}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{10}{figure.caption.7}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{11}{figure.caption.7}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Plot of wavenumber from GFN2--xTB against wavenumber predicted by a ML model.}}{20}{figure.caption.11}

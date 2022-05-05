@@ -345,29 +345,63 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\begin{align}
 		\textbf{H} =
 		\left(\begin{matrix}
-			\textbf{H}^{AA} & \textbf{H}^{AB} & \hdotsfor{0} &  \textbf{H}^{AM}\\
-			\textbf{H}^{BA}& \ddots & & \vdots\\
+			\textbf{H}_{AA} & \textbf{H}_{AB} & \hdotsfor{0} &  \textbf{H}_{AM}\\
+			\textbf{H}_{BA}& \ddots & & \vdots\\
 			\vdots & & \ddots & \vdots \\
-			\textbf{H}^{MA} &\hdotsfor{0} & \hdotsfor{0}& \textbf{H}^{MM} \\
+			\textbf{H}_{MA} &\hdotsfor{0} & \hdotsfor{0}& \textbf{H}_{MM} \\
 		\end{matrix}\right)
 	\end{align}
-	Due to the Schwartz Theorem, the $\textbf{H}^{BA}$ and $\textbf{H}^{AB}$ are related to another by Eq.~\eqref{eq:Hess:HABBA}
+	Due to the Schwartz Theorem, the $\textbf{H}_{BA}$ and $\textbf{H}_{AB}$ are related to another by Eq.~\eqref{eq:Hess:HABBA}
 	\begin{align}
 		\label{eq:Hess:HABBA}
-		\textbf{H}^{BA} = \left({\textbf{H}^{AB}}\right)^\intercal
+		\textbf{H}_{BA} = \left({\textbf{H}_{AB}}\right)^\intercal
 	\end{align}
-	Therefore the only information needed for the hessian is a triangular matrix (s.~Eq.~\eqref{eq:Hess:TriangularMat}).
+	Therefore, the only information needed for the hessian is a triangular matrix (s.~Eq.~\eqref{eq:Hess:TriangularMat}).
 	\begin{align}
 		\label{eq:Hess:TriangularMat}
 		\textbf{H} =
 		\left(\begin{matrix}
-			\textbf{H}^{AA} & \textbf{H}^{AB} & \hdotsfor{0} &  \textbf{H}^{AM}\\	
+			\textbf{H}_{AA} & \textbf{H}_{AB} & \hdotsfor{0} &  \textbf{H}_{AM}\\	
 			 & \ddots & & \vdots \\
 			 & \text{\kern-2em\smash{\raisebox{-2ex}{\Huge 0}}} & \ddots & \vdots \\
-			 &  &  & \textbf{H}^{MM} 
+			 &  &  & \textbf{H}_{MM} 
 		\end{matrix}\right)
 	\end{align}
-
+	The hessian matrix needs to be projected for the computation of physical quantities like the harmonic frequencies,
+	zero point vibrational energy.
+	For the projection the rotational and translational parts of the hessian need to be detected.
+	A $6 \times 3N$ matrix is constructed, that describes the rotation and translation of each atom.
+	For one atom, the overlap is depicted in Eq.~\eqref{eq:RotTransMat}.
+	The translation correspond to the first 3 rows of the matrix $\textbf{O}_A$.
+	While the contribution of the rotation is given in the lower 3 rows.
+	For example, the rotation around the x--axis leads to the translation of the y--coordinate $\textbf{r}^y_A$ by $\textbf{r}^z_A$.
+	While the z--coordinate is moved by $-\textbf{r}_A^y$.
+	\begin{align}
+		\label{eq:RotTransMat}
+		\textbf{O}_A = \left(\begin{matrix}
+			1 & 0 & 0 \\
+			0 & 1 & 0  \\
+			0 & 0 & 1 \\
+			0 & \textbf{r}_A^z &  -\textbf{r}_A^y \\
+			-\textbf{r}_A^z & 0 & \textbf{r}_A^x   \\
+			\textbf{r}_A^y & -\textbf{r}_A^x & 0 
+		\end{matrix} \right)
+	\end{align}
+	For a system of $N$ atoms, the full overlap matrix is shown in Eq.~\eqref{eq:RotTransMatFull}
+	\begin{align}
+		\label{eq:RotTransMatFull}
+		\textbf{O} = \left(\begin{matrix}
+			\textbf{O}_A & \textbf{O}_B &\hdots& \textbf{O}_N 
+		\end{matrix}
+		\right)
+	\end{align}
+	After that, the rotation and translation matrix is normalized $\frac{1}{\left\| \textbf{O} \right\| } \cdot \textbf{O}$.
+	For the detection, the overlap between the normalized rotation and translation matrix and the hessian matrix is computed (s. Eq.~\eqref{eq:}).
+	The multiplication of the $6\times 3N$ and $3N \times 3N$ matrix leads to $6 \times 3N$ matrix.
+	\begin{align}
+		\textbf{M} = \textbf{O} \times \textbf{H}
+	\end{align}
+	
 	--Projection of the Hessian matrix\\
 
 	--Mass weighting the projected hessian matrix.\\

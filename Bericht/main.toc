@@ -11,8 +11,8 @@
 \contentsline {subsection}{\numberline {3.2.2}Kohn--Sham Density Functional Theory}{5}{subsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.2.3}GFN2--xTB Electronic Structure Method}{6}{subsection.3.2.3}%
 \contentsline {section}{\numberline {3.3}Hessian Matrices}{8}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Machine Learning}{9}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Methods}{11}{chapter.4}%
+\contentsline {section}{\numberline {3.4}Machine Learning}{10}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Methods}{12}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Feature Overview}{12}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Transformation of Coordinates}{14}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Quantities for Measuring}{19}{section.4.3}%
