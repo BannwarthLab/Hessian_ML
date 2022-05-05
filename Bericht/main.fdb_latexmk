@@ -1,10 +1,10 @@
 # Fdb version 3
-["biber main"] 1651759203 "main.bcf" "main.bbl" "main" 1651764749
-  "main.bcf" 1651764749 103109 74d687a69f26f36ed25a4cdf3836f352 "pdflatex"
+["biber main"] 1651759203 "main.bcf" "main.bbl" "main" 1651764906
+  "main.bcf" 1651764905 103109 74d687a69f26f36ed25a4cdf3836f352 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1651764744 "c:/Users/Nutzer/Documents/GitHub/hessian_ml/Bericht/main.tex" "main.pdf" "main" 1651764749
+["pdflatex"] 1651764899 "c:/Users/Nutzer/Documents/GitHub/hessian_ml/Bericht/main.tex" "main.pdf" "main" 1651764906
   "C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc" 1254938640 2375 baa924870cfb487815765f9094cf3728 ""
   "C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc" 1254938640 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc" 1254938640 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -242,17 +242,17 @@
   "MSE/MSE_RFR.eps" 1651167691 29052 2e61bd3bb906d78e1c84625f51c505d7 ""
   "MSE/MSE_vs_sigma.eps" 1651168191 24582 1b15305ce9aeff91b22f0d60771da2d0 ""
   "c:/Users/Nutzer/Documents/GitHub/hessian_ml/Bericht/main.tex" 1651759186 5317 241e76e3d063344656c354372cf62f50 ""
-  "main.aux" 1651764749 2945 aedd4c01a9e4018feb9b20b15c246a16 "pdflatex"
+  "main.aux" 1651764905 2945 aedd4c01a9e4018feb9b20b15c246a16 "pdflatex"
   "main.bbl" 0 -1 0 "biber main"
-  "main.lof" 1651764749 2340 a15e61cf092a0ec6b555143910a9f3ab "pdflatex"
-  "main.lot" 1651764749 739 42e381779a5aba35d22e077cb8edce06 "pdflatex"
-  "main.out" 1651764749 792 d3e8d716d5c8cad1ef6f9bc6dc0d26f0 "pdflatex"
-  "main.run.xml" 1651764749 2470 826aeaa4046c744df1320edb46362ec0 "pdflatex"
+  "main.lof" 1651764905 2340 a15e61cf092a0ec6b555143910a9f3ab "pdflatex"
+  "main.lot" 1651764905 739 42e381779a5aba35d22e077cb8edce06 "pdflatex"
+  "main.out" 1651764905 792 d3e8d716d5c8cad1ef6f9bc6dc0d26f0 "pdflatex"
+  "main.run.xml" 1651764905 2470 826aeaa4046c744df1320edb46362ec0 "pdflatex"
   "main.tex" 1651759186 5317 241e76e3d063344656c354372cf62f50 ""
-  "main.toc" 1651764749 2329 6a0b109d5eba9f4141e711d78d6494d1 "pdflatex"
+  "main.toc" 1651764905 2329 6a0b109d5eba9f4141e711d78d6494d1 "pdflatex"
   "sections/Methods.aux" 1651758886 7942 f2930e405d002987b81a83834dbd006f ""
-  "sections/Results.aux" 1651764749 8640 6b364dc7fdd821489b92a3a7ed5cdbac "pdflatex"
-  "sections/Results.tex" 1651764743 15490 fb5515ab020a2f600425e086e2def5e9 ""
+  "sections/Results.aux" 1651764905 8640 6b364dc7fdd821489b92a3a7ed5cdbac "pdflatex"
+  "sections/Results.tex" 1651764898 15491 7c1413896c2233cadabdd9e39dc89984 ""
   "sections/Theory.aux" 1651758886 8451 931d9fbc3c23c9de51fefabbdf37ca4c ""
   (generated)
   "main.aux"
