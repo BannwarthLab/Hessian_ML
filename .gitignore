@@ -13,6 +13,7 @@ O2/
 plots/
 tests/
 xtb/
+__pycache__/
 tests/CO/CO_0.45/apf_coord/atoms_0_0CC/wbo
 tests/CO/CO_0.45/apf_coord/atoms_0_0CC/xtbrestart
 tests/CO/CO_0.45/apf_coord/atoms_0_0CC/xtbtopo.mol
