@@ -419,7 +419,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\label{eq:MassWeightedHess}
 		\textbf{H}_{AB}^\mathrm{proj,w} = \dfrac{1}{\sqrt{m_A m_B}} \textbf{H}_{AB}^\mathrm{proj}
 	\end{align}
-	This is done for the full Hessian matrix, 
+	Eq.~\eqref{eq:MassWeightedHess} is applied to every hessian matrix block $\textbf{H}_{AB}$ in the full Hessian matrix $\textbf{H}$,
+	which leads to the projected mass weighted Hessian matrix $\textbf{H}^\mathrm{proj,w}$.
 	\section{Machine Learning}
 	Extra Tree Regression (ETR) and Random Forest Regression (RFR) are used as ML algorithms in this research.
 	Both algorithms are ensemble methods based on decision trees as individual estimators.
