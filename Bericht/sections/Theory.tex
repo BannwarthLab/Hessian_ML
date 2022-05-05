@@ -401,6 +401,13 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\begin{align}
 		\textbf{M} = \textbf{O} \times \textbf{H}
 	\end{align}
+	The column of 6 values is summed up, which leads to a $3N$ vector.
+	The maximum values of this vector corresponds to the highest overlap between a row in the Hessian matrix and the translations and rotation matrix.
+	The six highest values are searched, and the numbers of the corresponding rows are stored.\\
+	For a linear molecule only the five highest values are searched.
+	The differentiation between linear and non--linear molecules is done by
+	the norm of the coordinates~$\left\| \textbf{r}^x \right\|$,$\left\| \textbf{r}^y \right\|$ and~$\left\| \textbf{r}^z \right\|$.
+	If the sum of  the norm of two coordinates is below a threshold of $1 \cdot 10^{-6}$ a linear molecule is assumed.\\
 	
 	--Projection of the Hessian matrix\\
 
