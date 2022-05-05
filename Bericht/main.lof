@@ -1,22 +1,23 @@
-\babel@toc {english}{}\relax 
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\select@language {english}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Depiction of two Coordinate systems for description of Euler Angles.}}{2}{figure.caption.6}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{11}{figure.caption.7}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Depiction of two Coordinate systems for description of Euler Angles.}}{2}{figure.caption.6}\protected@file@percent 
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{11}{figure.caption.7}\protected@file@percent 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Plot of wavenumber from GFN2--xTB against wavenumber predicted by a ML model.}}{23}{figure.caption.6}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Learning plots of the ETR and RFR for an increasing size of the training set}}{24}{figure.caption.7}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Learning plot for hessian elements with an increase of randomness on $\textbf {x}$}}{25}{figure.caption.8}%
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Gaussian type distribution for the prediction of hessian elements.}}{26}{figure.caption.9}%
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Gaussian type distribution for the prediction of projected hessian elements.}}{27}{figure.caption.10}%
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Gaussian type distribution for the prediction of weighted projected hessian elements.}}{28}{figure.caption.11}%
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Gaussian type distribution for the prediction of wavenumbers.}}{29}{figure.caption.12}%
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{30}{figure.caption.13}%
-\contentsline {figure}{\numberline {5.9}{\ignorespaces Force constants predicted by the indexed multimodel and calculated with GFN2--xTB for $\mathrm {H}_3$~system}}{31}{figure.caption.14}%
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Force constants predicted by the permuted multimodel and calculated with GFN2--xTB for $\mathrm {H}_3$~system}}{32}{figure.caption.15}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Plot of wavenumber from GFN2--xTB against wavenumber predicted by a ML model.}}{4}{figure.caption.6}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Learning plots of the ETR and RFR for an increasing size of the training set}}{5}{figure.caption.7}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Learning plot for hessian elements with an increase of randomness on $\textbf {x}$}}{6}{figure.caption.8}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Gaussian type distribution for the prediction of hessian elements.}}{7}{figure.caption.9}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Gaussian type distribution for the prediction of projected hessian elements.}}{8}{figure.caption.10}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Gaussian type distribution for the prediction of weighted projected hessian elements.}}{9}{figure.caption.11}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Gaussian type distribution for the prediction of wavenumbers.}}{10}{figure.caption.12}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{11}{figure.caption.13}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Force constants predicted by the indexed multimodel and calculated with GFN2--xTB for $\mathrm {H}_3$~system}}{12}{figure.caption.14}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Force constants predicted by the permuted multimodel and calculated with GFN2--xTB for $\mathrm {H}_3$~system}}{13}{figure.caption.15}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

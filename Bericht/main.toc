@@ -1,28 +1,29 @@
-\babel@toc {english}{}\relax 
-\contentsline {chapter}{\nonumberline List of Figures}{iii}{chapter*.2}%
-\contentsline {chapter}{\nonumberline List of Tables}{iii}{chapter*.3}%
-\contentsline {chapter}{\nonumberline List of abbreviations}{iii}{chapter*.4}%
-\contentsline {chapter}{\numberline {1}Aim}{1}{chapter.1}%
-\contentsline {chapter}{\numberline {2}Motivation}{1}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Theory}{1}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Euler Angles}{2}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Electronic Structure Theory}{3}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Hartree--Fock Model}{3}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Kohn--Sham Density Functional Theory}{5}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}GFN2--xTB Electronic Structure Method}{6}{subsection.3.2.3}%
-\contentsline {section}{\numberline {3.3}Hessian Matrices}{8}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Machine Learning}{10}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Methods}{12}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Feature Overview}{13}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Transformation of Coordinates}{15}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Quantities for Measuring}{20}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Computational Methods}{21}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Results and Discussion}{22}{chapter.5}%
-\contentsline {section}{\numberline {5.1}The ML Models and Data Set}{23}{section.5.1}%
-\contentsline {section}{\numberline {5.2}The $\mathrm {\textbf {H}}_\mathrm {\textbf {2}}$ system}{23}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Comparison of RFR and ETF}{24}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Comparison of Permutation Model and Indexed Model}{26}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Benchmarking the H$_\mathrm {\textbf {3}}$~system}{30}{section.5.5}%
-\contentsline {chapter}{\numberline {6}Conclusion and Outlook}{33}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Bibliography}{34}{chapter.7}%
-\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\select@language {english}
+\contentsline {chapter}{\nonumberline List of Figures}{ii}{chapter*.2}
+\contentsline {chapter}{\nonumberline List of Tables}{ii}{chapter*.3}
+\contentsline {chapter}{\nonumberline List of abbreviations}{ii}{chapter*.4}
+\contentsline {chapter}{\numberline {1}Aim}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}Motivation}{1}{chapter.2}
+\contentsline {chapter}{\numberline {3}Theory}{1}{chapter.3}
+\contentsline {section}{\numberline {3.1}Euler Angles}{2}{section.3.1}\protected@file@percent 
+\contentsline {section}{\numberline {3.2}Electronic Structure Theory}{3}{section.3.2}\protected@file@percent 
+\contentsline {subsection}{\numberline {3.2.1}Hartree--Fock Model}{3}{subsection.3.2.1}\protected@file@percent 
+\contentsline {subsection}{\numberline {3.2.2}Kohn--Sham Density Functional Theory}{5}{subsection.3.2.2}\protected@file@percent 
+\contentsline {subsection}{\numberline {3.2.3}GFN2--xTB Electronic Structure Method}{6}{subsection.3.2.3}\protected@file@percent 
+\contentsline {section}{\numberline {3.3}Hessian Matrices}{8}{section.3.3}\protected@file@percent 
+\contentsline {section}{\numberline {3.4}Machine Learning}{10}{section.3.4}\protected@file@percent 
+\contentsline {chapter}{\numberline {4}Methods}{2}{chapter.4}
+\contentsline {section}{\numberline {4.1}Feature Overview}{13}{section.4.1}\protected@file@percent 
+\contentsline {section}{\numberline {4.2}Transformation of Coordinates}{15}{section.4.2}\protected@file@percent 
+\contentsline {section}{\numberline {4.3}Quantities for Measuring}{20}{section.4.3}\protected@file@percent 
+\contentsline {section}{\numberline {4.4}Computational Methods}{21}{section.4.4}\protected@file@percent 
+\contentsline {chapter}{\numberline {5}Results and Discussion}{3}{chapter.5}
+\contentsline {section}{\numberline {5.1}The ML Models and Data Set}{4}{section.5.1}
+\contentsline {section}{\numberline {5.2}The $\mathrm {\textbf {H}}_\mathrm {\textbf {2}}$ system}{4}{section.5.2}
+\contentsline {section}{\numberline {5.3}Comparison of RFR and ETF}{5}{section.5.3}
+\contentsline {section}{\numberline {5.4}Comparison of Permutation Model and Indexed Model}{7}{section.5.4}
+\contentsline {section}{\numberline {5.5}Benchmarking the H$_\mathrm {\textbf {3}}$~system}{11}{section.5.5}
+\contentsline {chapter}{\numberline {6}Conclusion and Outlook}{14}{chapter.6}
+\contentsline {chapter}{\numberline {7}Bibliography}{15}{chapter.7}
