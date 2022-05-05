@@ -13,11 +13,11 @@
 \contentsline {section}{\numberline {3.3}Hessian Matrices}{8}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Machine Learning}{10}{section.3.4}%
 \contentsline {chapter}{\numberline {4}Methods}{12}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Feature Overview}{12}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Transformation of Coordinates}{14}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Quantities for Measuring}{19}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Computational Methods}{19}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Results and Discussion}{21}{chapter.5}%
+\contentsline {section}{\numberline {4.1}Feature Overview}{13}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Transformation of Coordinates}{15}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Quantities for Measuring}{20}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Computational Methods}{20}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Results and Discussion}{22}{chapter.5}%
 \contentsline {section}{\numberline {5.1}The Machine Learning Models}{20}{section.5.1}
 \contentsline {section}{\numberline {5.2}The $\mathrm {\textbf {H}}_\mathrm {\textbf {2}}$ system}{20}{section.5.2}
 \contentsline {section}{\numberline {5.3}Comparison of RFR and ETF}{20}{section.5.3}
