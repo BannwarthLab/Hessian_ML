@@ -1,29 +1,28 @@
-\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
-\defcounter {refsection}{0}\relax 
-\select@language {english}
-\contentsline {chapter}{\nonumberline List of Figures}{iii}{chapter*.2}
-\contentsline {chapter}{\nonumberline List of Tables}{iii}{chapter*.3}
-\contentsline {chapter}{\nonumberline List of abbreviations}{iii}{chapter*.4}
-\contentsline {chapter}{\numberline {1}Aim}{1}{chapter.1}
-\contentsline {chapter}{\numberline {2}Motivation}{1}{chapter.2}
-\contentsline {chapter}{\numberline {3}Theory}{1}{chapter.3}
-\contentsline {section}{\numberline {3.1}Euler Angles}{2}{section.3.1}
-\contentsline {section}{\numberline {3.2}Electronic Structure Theory}{3}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Hartree--Fock Model}{3}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}Kohn--Sham Density Functional Theory}{5}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}GFN2--xTB Electronic Structure Method}{6}{subsection.3.2.3}
-\contentsline {section}{\numberline {3.3}Hessian Matrices}{8}{section.3.3}
-\contentsline {section}{\numberline {3.4}Machine Learning}{9}{section.3.4}
-\contentsline {chapter}{\numberline {4}Methods}{11}{chapter.4}
-\contentsline {section}{\numberline {4.1}Feature Overview}{12}{section.4.1}
-\contentsline {section}{\numberline {4.2}Transformation of Coordinates}{14}{section.4.2}
-\contentsline {section}{\numberline {4.3}Quantities for Measuring}{19}{section.4.3}
-\contentsline {section}{\numberline {4.4}Computational Methods}{19}{section.4.4}
-\contentsline {chapter}{\numberline {5}Results and Discussion}{21}{chapter.5}
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\nonumberline List of Figures}{iii}{chapter*.2}%
+\contentsline {chapter}{\nonumberline List of Tables}{iii}{chapter*.3}%
+\contentsline {chapter}{\nonumberline List of abbreviations}{iii}{chapter*.4}%
+\contentsline {chapter}{\numberline {1}Aim}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Motivation}{1}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Theory}{1}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Euler Angles}{2}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Electronic Structure Theory}{3}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Hartree--Fock Model}{3}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Kohn--Sham Density Functional Theory}{5}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}GFN2--xTB Electronic Structure Method}{6}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Hessian Matrices}{8}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Machine Learning}{9}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Methods}{11}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Feature Overview}{12}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Transformation of Coordinates}{14}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Quantities for Measuring}{19}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Computational Methods}{19}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Results and Discussion}{21}{chapter.5}%
 \contentsline {section}{\numberline {5.1}The Machine Learning Models}{20}{section.5.1}
 \contentsline {section}{\numberline {5.2}The $\mathrm {\textbf {H}}_\mathrm {\textbf {2}}$ system}{20}{section.5.2}
 \contentsline {section}{\numberline {5.3}Comparison of RFR and ETF}{20}{section.5.3}
 \contentsline {section}{\numberline {5.4}Comparison of Permutation Model and Indexed Model}{22}{section.5.4}
 \contentsline {section}{\numberline {5.5}Benchmarking the H$_\mathrm {\textbf {3}}$~system}{27}{section.5.5}
-\contentsline {chapter}{\numberline {6}Conclusion and Outlook}{30}{chapter.6}
-\contentsline {chapter}{\numberline {7}Bibliography}{31}{chapter.7}
+\contentsline {chapter}{\numberline {6}Conclusion and Outlook}{30}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Bibliography}{31}{chapter.7}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

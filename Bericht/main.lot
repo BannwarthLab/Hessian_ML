@@ -1,13 +1,12 @@
-\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
-\defcounter {refsection}{0}\relax 
-\select@language {english}
+\babel@toc {english}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces List of quantities used for the ML models as features. The quantities are divided into geometry, density and energy based quantities.\relax }}{12}{table.caption.6}
-\contentsline {table}{\numberline {4.2}{\ignorespaces Indices used for the different elements in a hessian matrix block to differ between the elements.\relax }}{13}{table.caption.7}
+\contentsline {table}{\numberline {4.1}{\ignorespaces List of quantities used for the ML models as features. The quantities are divided into geometry, density and energy based quantities.\relax }}{12}{table.caption.6}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Indices used for the different elements in a hessian matrix block to differ between the elements.\relax }}{13}{table.caption.7}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
