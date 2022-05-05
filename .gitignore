@@ -12,6 +12,7 @@ O2/
 *.svg
 plots/
 tests/
+xtb/
 tests/CO/CO_0.45/apf_coord/atoms_0_0CC/wbo
 tests/CO/CO_0.45/apf_coord/atoms_0_0CC/xtbrestart
 tests/CO/CO_0.45/apf_coord/atoms_0_0CC/xtbtopo.mol

@@ -1,0 +1,9 @@
+{
+    "json.format.enable": true,
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe", 
+    "python.terminal.activateEnvironment": true,
+    "files.associations": {
+        "\"python.pythonPath\"": "C:\\Users\\Nutzer\\Anaconda3\\envs\\hessian_ml\\Scripts"
+    },
+    "jupyter.jupyterServerType": "local"
+}

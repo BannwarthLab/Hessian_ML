@@ -1,4 +1,3 @@
-from msilib.schema import Feature
 from pyparsing import col
 from sklearn import preprocessing
 from sklearn.inspection import permutation_importance
