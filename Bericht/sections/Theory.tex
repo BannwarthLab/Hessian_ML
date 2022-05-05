@@ -395,25 +395,26 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\end{matrix}
 		\right)
 	\end{align}
-	After that, the rotation and translation matrix is normalized $\frac{1}{\left\| \textbf{O} \right\| } \cdot \textbf{O}$.
-	For the detection, the overlap between the normalized rotation and translation matrix and the hessian matrix is computed (s. Eq.~\eqref{eq:}).
+	After that, the rotation and translation matrix is normalized to $\textbf{O}_n$.
+	For the detection, the overlap matrix $\textbf{M}$ between the normalized rotation and translation matrix and the hessian matrix is computed (s. Eq.~\eqref{eq:OverlapMatProj}).
 	The multiplication of the $6\times 3N$ and $3N \times 3N$ matrix leads to $6 \times 3N$ matrix.
 	\begin{align}
+		\label{eq:OverlapMatProj}
 		\textbf{M} = \textbf{O} \times \textbf{H}
 	\end{align}
-	The column of 6 values is summed up, which leads to a $3N$ vector.
+	The columns of \textbf{M} are summed up, which leads to a $3N$ vector.
 	The maximum values of this vector corresponds to the highest overlap between a row in the Hessian matrix and the translations and rotation matrix.
-	The six highest values are searched, and the numbers of the corresponding rows are stored.\\
+	The six highest values are searched, and the numbers of the corresponding rows are stored in a vector \textbf{v}.\\
 	For a linear molecule only the five highest values are searched.
 	The differentiation between linear and non--linear molecules is done by
 	the norm of the coordinates~$\left\| \textbf{r}^x \right\|$,$\left\| \textbf{r}^y \right\|$ and~$\left\| \textbf{r}^z \right\|$.
 	If the sum of  the norm of two coordinates is below a threshold of $1 \cdot 10^{-6}$ a linear molecule is assumed.\\
-	
-	--Projection of the Hessian matrix\\
+	For the projection itself, the eigenvectors $\textbf{Q}$ of the Hessian matrix  and its eigenvalues $\bm{\uplambda}$ are required.
+	\begin{align}
+		\textbf{H}^\mathrm{proj} =\textbf{H} - \sum_{i \in \textbf{v}} \bm{\uplambda}_i \cdot{\textbf{Q}^\intercal}_i \otimes \left({\textbf{Q}^\intercal}_i\right)^\intercal
+	\end{align}
 
 	--Mass weighting the projected hessian matrix.\\
-
-	--Test this \\
 
 	\section{Machine Learning}
 	Extra Tree Regression (ETR) and Random Forest Regression (RFR) are used as ML algorithms in this research.
