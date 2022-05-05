@@ -361,6 +361,11 @@ The rotation back into the mi system is done by Eq.~\eqref{eq:rotHessBlock}.
 	\textbf{H}^\mathrm{mi}_\mathrm{AB} = {\left(\textbf{R}_\mathrm{mi}^\mathrm{APF}\right)}^\intercal
 	 \times \textbf{H}^\mathrm{APF}_\mathrm{AB} \times  \textbf{R}_\mathrm{mi}^\mathrm{APF}
 \end{align}
+In the mi system, the hessian matrix $\textbf{H}^\mathrm{mi}$ is filled with the blocks $\textbf{H}^\mathrm{mi}_\mathrm{AB}$.
+Before some quantities for measuring can be computed, the $\textbf{H}^\mathrm{mi}$ is projected and mass--weighted.
+Thus the $\textbf{H}^\mathrm{proj,w|mi}$ is build. 
+The procedure of the projection and mass--weighting is described in the chapter Theory.
+
 %  
 %$
 % The rotation of the hessian from the main inertial CS to the APF CS is done via Eq.~\eqref{eq:rotHessian}.
@@ -387,13 +392,12 @@ This normal distribution is computed with Eq.~\eqref{eq:NormalDistribution}.
 	f(x)  = \dfrac{1}{\sigma \sqrt{2\pi}} \exp\left({-\dfrac{1}{2} \left(\dfrac{x-\mu}{\sigma}\right)^2}\right)
 \end{align}
 
-The physical quantities, that were investigated are the hessian matrix elements $\dfrac{\partial^2 E}{\partial a \partial b}$,
+The physical quantities, that were investigated are the elements of the hessian matrix $\textbf{H}^\mathrm{mi}$,
 the wave number $\tilde{\nu}$, the force constant $k$ and the zero point vibrational energy ZPVE.
-
 The wave numbers are calculated by Eq.~\eqref{eq:WN},
 the force constants by Eq.~\eqref{eq:FC} and the ZPVE by Eq.~\eqref{eq:ZPVE}.
 
-Here, $\lambda$ are the eigenvalues of the mass weighted projected hessian matrix and $m_i$ the mass of each atom.
+Here, $\lambda$ are the eigenvalues of the mass weighted projected hessian matrix $\textbf{H}^\mathrm{proj,w|mi}$ and $m_i$ the mass of each atom.
 For the transformation into SI--units, the hartree Energy $E_\mathrm{h}$,
 planck constant $h$, reduced planck constant $\hbar$, speed of light $c$ and the atomic mass unit $u$ are required.
 
