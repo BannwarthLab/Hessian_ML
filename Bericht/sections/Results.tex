@@ -1,11 +1,18 @@
 \chapter{Results and Discussion}
 \section{The ML Models and Data Set}
-For every prediction of the hessian matrix, it is necessary to use the homonuclear and heteronuclear model.
-Both models were further investigated by three adjustments, namely the algorithms, the labeling and a generalization.\\
-At first, as described in the Chapter Theory, the RFR and ETR are used as the different algorithms for the fitting of the ML model.
-For the labeling the two possible cases of the labeling, which are the indexed and permuted case were discussed.
-At last, it is investigated, how the performance changes if instead of fitting the ML model only case--specific
-the ML model is fitted to a general model, that predicts all cases.\\
+For every prediction of the hessian matrix,
+it is necessary to use the homonuclear and heteronuclear model.
+Both models were further investigated by three adjustments,
+namely the algorithms, the labeling and a generalization.\\
+At first, as described in the Chapter Theory,
+the RFR and ETR are used as the different algorithms for the fitting of the ML model.
+For the labeling the two possible cases of the labeling,
+which are the indexed and permuted case were discussed. These are abbreviated with Idx(Indexed) and Perm(Permuted).
+At last, it is investigated,
+how the performance changes if instead of fitting the ML model only case--specific
+the ML model is fitted to a general model, that predicts all cases.
+For this differentiation, the abbreviations Case (case--specific) and Gen (general) are used.
+As an example, the abbreviation for the model with the ETR as the algorithm, the indexed labeling and general case is ETR--Gen--Idx.\\
 A data set for benchmarking the ML model was constructed. The set consists of eight different molecules.
 These are namely $\mathrm{H}_2$, $\mathrm{N}_2$, $\mathrm{O}_2$, $\mathrm{F}_2$, $\mathrm{HF}$, $\mathrm{CO}$,
 $\mathrm{H}_2\mathrm{O}$, and $\mathrm{NH}_3$.
@@ -15,12 +22,13 @@ This lead into 103 different structures. These structures were split into a trai
 The split is done structure wise to achieve the possibility to compare other quantities then the hessian elements.
 For each structure, the hessian and feature were calculated with the GFN2--xTB method.\\
 \section{The $\mathrm{\textbf{H}}_\mathrm{\textbf{2}}$ system}
-As a first approach, the ETR--Case--Perm model was used for only the subset of the hydrogen molecule.
+As a first approach, the ETR--Case--Perm model was used for the subset of the hydrogen molecule.
 For this the wave numbers $\tilde{\nu}_\mathrm{ML}$ were predicted and plotted against the wave numbers $\tilde{\nu}_\mathrm{xTB}$ calculated via GFN2--xTB.
 This is done for 5 random states and is shown in Fig.~\ref{fig:WN_H2}.
 The black line is the diagonal, on which the data points would appear for a perfect prediction.
 Furthermore, the wave number increases with the decrease of the bond length.
-For the approximated range of $1800~\mathrm{cm^{-1}} < \tilde{\nu}_\mathrm{xTB}< 7500~\mathrm{cm^{-1}}$ there are abbreviations from the diagonal and therefore a sufficient prediction.
+For the approximated range of $1800~\mathrm{cm^{-1}} < \tilde{\nu}_\mathrm{xTB}< 7500~\mathrm{cm^{-1}}$
+there are abbreviations from the diagonal and therefore a sufficient prediction.
 In respect to the small data set of only eleven structures for the full subset of hydrogen, the prediction is 
 \begin{figure}[H]
     \centering
@@ -37,17 +45,20 @@ These predictions are probably done for cases, where the training set does not i
 This assumption is underlined by the fact, that the predicted values correspond to the next higher or lower value.
 For example, the next lowest value in the case of the prediction at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$ is $\tilde{\nu}_\mathrm{xTB} \approx 7\cdot 10^4 \mathrm{cm^{-1}}$.
 This in the same order as the predicted value $\tilde{\nu}_\mathrm{ML}\approx 6.4\cdot 10^4 \mathrm{cm^{-1}}$ at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$.
+This matches to the expected behavior for a decision tree based algorithms (cf. Fig.~\ref{fig:ML_Split}).\\
+This concludes in the sufficient description of the wave numbers for interpolation.
+It could also be shown, that the prediction fails for extrapolation.
 
-\section{Comparison of RFR and ETF}
-For the ML models two different algorithms were used, which are the ETR and RFR.
+\section{Comparison of RFR and ETR}
+For the comparison of the algorithms, the RFR--Gen-Perm and ETR--Gen--Perm models were used.
 These models are compared to each other by testing there dependency on the amount of training set used.
 As the quantity for testing the performance the MSE 
-between the predicted hessian and the hessian computed via GFN2--xTB is used.\\
+between the predicted hessian and the hessian computed via GFN2--xTB is used.
+The MSE was calculated for ten different random states and the mean of these MSE was calculated.\\
 It is expected, that the performance of the ML model should increase, the more data it is trained with. 
 To verify this behavior, the training set was increased successively.
 The full training set is 75~\% of the full data set. Thus, test set is 25~\%.
 While keeping the test set constant, the training set is changed successively between 7.5~\% of the data set to 75~\%.
-The MSE was calculated for ten different random states and the mean of these MSE was calculated.
 Fig~\ref{fig:Comparison_RFR_ETR} shows the MSE in the dependency of the amount of training set used for the ETR (on the left)
 and the RFR (on the right). The error bars indicate the standard deviation.
 \begin{figure}[H]
@@ -56,7 +67,7 @@ and the RFR (on the right). The error bars indicate the standard deviation.
     \hfill
     \subfloat{\includegraphics[width = 0.5\textwidth ]{MSE/MSE_RFR.eps}}
     \caption[Learning plots of the ETR and RFR for an increasing size of the training set]{
-    Learning plots for the predicting hessian elements~$\frac{\partial^2H}{\partial a \partial b}$
+    Learning plots for the predicting hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
     for an increase of the amount of training set used.
     On the left is the learning plot of the Extra Tree Regression and on the right the plot of the Random Forest Regression shown.
     The full training set is 75~\% of the sample set.
@@ -84,7 +95,7 @@ if the scattering of the data points increases.
     \centering
     \includegraphics[width = \textwidth]{MSE/MSE_vs_sigma.eps}
     \caption[Learning plot for hessian elements with an increase of randomness on $\textbf{x}$]{
-    Learning plots for predicting hessian elements~$\frac{\partial^2H}{\partial a \partial b}$
+    Learning plots for predicting hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
     for a variation of the factor~$\sigma$.
     The full sample set, excluding the $\mathrm{H}_3$~system, is used for the Ml models.
     The mean of ten random states were used for the MSE.
@@ -99,22 +110,19 @@ Hence, this shows, that the model learns from the features and is not purely ran
 In this section a comparison of the RFR and ETR was done.
 The ETR shows overall a better performance than the RFR.
 Furthermore, it could be verified,
-that the ML model learns from the features used for the prediction of the hessian matrices.
+that the ML model learns statistically from the features used for the prediction of the hessian matrices.
 
 
 \section{Comparison of Permutation Model and Indexed Model}
-Beside the different algorithms for the construction of the trees, other model changes were done.
-These differences are investigated in this section. On the one hand,
-a multimolecule model was constructed as also several single molecules.
-On the other hand, it can be differentiated between the indexed and permuted model.
-For the investigations in this section, 
-the difference between the prediction and GFN2--xTB calculation were computed.
+Beside the different algorithms for the construction of the trees,
+the Case/Gen and Idx/Perm models were compared to another.
+The models ETR--Gen--Perm, ETR--Gen--Idx, ETR--Case--Perm and ETR--Case--Idx are investigated.
+The quantities for measuring are the hessian elements, the wave numbers and the zero point vibrational energy.
+The difference between the predicted and via GFN2--xTB computed quantities were computed.
 From these differences the standard deviation as also the mean were calculated,
 and a Gaussian distribution was assumed.
-This was done for the models ETR--Perm--Multi, ETR--Perm--Single, ETR--Idx--Multi and ETR--Idx--Single.\\
-At first the direct prediction of the hessian elements were investigated.
-Fig.~\ref{fig:ErrorDistHess} shows the distribution for the prediction of the hessian elements.
-
+At first the direct prediction of the hessian elements were investigated,
+and its distribution is shown in Fig~\ref{fig:ErrorDistHess}.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess.eps}

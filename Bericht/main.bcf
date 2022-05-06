@@ -2188,6 +2188,12 @@
     <bcf:datasource type="file" datatype="bibtex">sections/literature.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
+    <bcf:citekey order="1">Bannwarth2019_GFN2xTB</bcf:citekey>
+    <bcf:citekey order="2">Bannwarth2021_xTB</bcf:citekey>
+    <bcf:citekey order="3">scikit-learn</bcf:citekey>
+    <bcf:citekey order="4">numpy</bcf:citekey>
+    <bcf:citekey order="5">pandas.Paper</bcf:citekey>
+    <bcf:citekey order="5">pandas.software</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

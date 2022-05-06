@@ -3,10 +3,23 @@
 \BOOKMARK [0][-]{chapter*.4}{List of abbreviations}{}% 3
 \BOOKMARK [0][-]{chapter.1}{Aim}{}% 4
 \BOOKMARK [0][-]{chapter.2}{Motivation}{}% 5
+\BOOKMARK [0][-]{chapter.3}{Theory}{}% 6
+\BOOKMARK [1][-]{section.3.1}{Euler Angles}{chapter.3}% 7
+\BOOKMARK [1][-]{section.3.2}{Electronic Structure Theory}{chapter.3}% 8
+\BOOKMARK [2][-]{subsection.3.2.1}{Hartree\205Fock Model}{section.3.2}% 9
+\BOOKMARK [2][-]{subsection.3.2.2}{Kohn\205Sham Density Functional Theory}{section.3.2}% 10
+\BOOKMARK [2][-]{subsection.3.2.3}{GFN2\205xTB Electronic Structure Method}{section.3.2}% 11
+\BOOKMARK [1][-]{section.3.3}{Hessian Matrices}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.4}{Machine Learning}{chapter.3}% 13
+\BOOKMARK [0][-]{chapter.4}{Methods}{}% 14
+\BOOKMARK [1][-]{section.4.1}{Feature Overview}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.2}{Transformation of Coordinates}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.3}{Quantities for Measuring}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.4}{Computational Methods}{chapter.4}% 18
 \BOOKMARK [0][-]{chapter.5}{Results and Discussion}{}% 19
 \BOOKMARK [1][-]{section.5.1}{The ML Models and Data Set}{chapter.5}% 20
 \BOOKMARK [1][-]{section.5.2}{The H2 system}{chapter.5}% 21
-\BOOKMARK [1][-]{section.5.3}{Comparison of RFR and ETF}{chapter.5}% 22
+\BOOKMARK [1][-]{section.5.3}{Comparison of RFR and ETR}{chapter.5}% 22
 \BOOKMARK [1][-]{section.5.4}{Comparison of Permutation Model and Indexed Model}{chapter.5}% 23
 \BOOKMARK [1][-]{section.5.5}{Benchmarking the H3 system}{chapter.5}% 24
 \BOOKMARK [0][-]{chapter.6}{Conclusion and Outlook}{}% 25

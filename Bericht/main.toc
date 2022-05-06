@@ -22,7 +22,7 @@
 \contentsline {chapter}{\numberline {5}Results and Discussion}{21}{chapter.5}
 \contentsline {section}{\numberline {5.1}The ML Models and Data Set}{21}{section.5.1}
 \contentsline {section}{\numberline {5.2}The $\mathrm {\textbf {H}}_\mathrm {\textbf {2}}$ system}{21}{section.5.2}
-\contentsline {section}{\numberline {5.3}Comparison of RFR and ETF}{22}{section.5.3}
+\contentsline {section}{\numberline {5.3}Comparison of RFR and ETR}{22}{section.5.3}
 \contentsline {section}{\numberline {5.4}Comparison of Permutation Model and Indexed Model}{24}{section.5.4}
 \contentsline {section}{\numberline {5.5}Benchmarking the H$_\mathrm {\textbf {3}}$~system}{29}{section.5.5}
 \contentsline {chapter}{\numberline {6}Conclusion and Outlook}{32}{chapter.6}
