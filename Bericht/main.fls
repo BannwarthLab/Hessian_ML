@@ -387,6 +387,7 @@ OUTPUT main.lof
 INPUT main.lot
 INPUT main.lot
 OUTPUT main.lot
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmr17.tfm
 OUTPUT sections/Theory.aux
 INPUT sections/Theory.tex
 INPUT sections/Theory.tex
@@ -529,26 +530,6 @@ INPUT ./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf
 INPUT ./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf
 INPUT ./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf
 INPUT ./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf
-INPUT ErrorDistGraphs/error_distribution_ml_hess_p.eps
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p.eps
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p.eps
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p.eps
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
-INPUT ErrorDistGraphs/error_distribution_ml_hess_w.eps
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w.eps
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w.eps
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w.eps
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
-INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
 INPUT ErrorDistGraphs/error_distribution_ml_wn.eps
 INPUT ./ErrorDistGraphs/error_distribution_ml_wn.eps
 INPUT ./ErrorDistGraphs/error_distribution_ml_wn.eps
@@ -579,7 +560,19 @@ INPUT ./ForceConstants/force_const_H3_idx-eps-converted-to.pdf
 INPUT ./ForceConstants/force_const_H3_idx-eps-converted-to.pdf
 INPUT ./ForceConstants/force_const_H3_idx-eps-converted-to.pdf
 INPUT ./ForceConstants/force_const_H3_idx-eps-converted-to.pdf
-INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmri12.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/rm-lmr5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/lmmi5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/lmsy5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/rm-lmss8.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/rm-lmtt8.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/symbols/msam5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/rm-lmbx5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/lmmib5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/lmbsy5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/euler/eurm5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ts1-lmr5.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/lm/ec-lmr5.tfm
 INPUT ForceConstants/force_const_H3_perm.eps
 INPUT ./ForceConstants/force_const_H3_perm.eps
 INPUT ./ForceConstants/force_const_H3_perm.eps
@@ -590,6 +583,26 @@ INPUT ./ForceConstants/force_const_H3_perm-eps-converted-to.pdf
 INPUT ./ForceConstants/force_const_H3_perm-eps-converted-to.pdf
 INPUT ./ForceConstants/force_const_H3_perm-eps-converted-to.pdf
 INPUT ./ForceConstants/force_const_H3_perm-eps-converted-to.pdf
+INPUT ErrorDistGraphs/error_distribution_ml_hess_w.eps
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w.eps
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w.eps
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w.eps
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf
+INPUT ErrorDistGraphs/error_distribution_ml_hess_p.eps
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p.eps
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p.eps
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p.eps
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
+INPUT ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf
 INPUT main.aux
 INPUT sections/Theory.aux
 INPUT sections/Theory.aux
@@ -601,9 +614,9 @@ INPUT ./main.out
 INPUT ./main.out
 INPUT main.run.xml
 OUTPUT main.run.xml
-INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc
+INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc
@@ -639,8 +652,6 @@ INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb
-INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri12.pfb
-INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri12.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb

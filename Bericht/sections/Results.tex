@@ -115,7 +115,7 @@ that the ML model learns statistically from the features used for the prediction
 
 \section{Comparison of Permutation Model and Indexed Model}
 Beside the different algorithms for the construction of the trees,
-the Case/Gen and Idx/Perm models were compared to another.
+the Case and Gen as also Idx and Perm models were compared to another.
 The models ETR--Gen--Perm, ETR--Gen--Idx, ETR--Case--Perm and ETR--Case--Idx are investigated.
 The quantities for measuring are the hessian elements, the wave numbers and the zero point vibrational energy.
 The difference between the predicted and via GFN2--xTB computed quantities were computed.
@@ -132,40 +132,22 @@ and its distribution is shown in Fig~\ref{fig:ErrorDistHess}.
     For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ are computed. }
     \label{fig:ErrorDistHess}
 \end{figure}
-Comparing the ETR--Perm--Single and ETR--Idx--Single as also ETR--Perm--Multi and ETR--Idx--Multi shows,
+
+Comparing the \mbox{ETR--Case--Perm} and \mbox{ETR--Case--Idx},
+as also \mbox{ETR--Gen--Perm} and \mbox{ETR--Gen--Idx} shows,
 that both approaches for the labeling of the features do not differ significantly.
 Thus, both approaches are in good agreement with another.
-This shows, on the one hand, the strength of the decision tree algorithms.
+This shows, on the one hand,
+the strength of the decision tree algorithms.
 They cannot overfit and seem to be capable of describing this complex system with a simple differentiation by indexes.
 On the other hand, the permuted model does the same prediction for the model,
 but may be useful for other machine learning algorithms or even neural networks.\\
-The comparison of the ETR--Perm--Single and ETR--Perm--Multi
-shows, that the ETR--Perm--Single model deviates more strongly.
-This is in agreement with the comparison of the ETR--Idx--Single and ETR--Idx--Multi models.
+The comparison of the \mbox{ETR--Case--Perm} and \mbox{ETR--Gen--Perm}
+shows, that the \mbox{ETR--Case--Perm} model deviates more strongly.
+This is in agreement with the comparison of the \mbox{ETR--Case--Idx} and \mbox{ETR--Gen--Idx} models.
 Though the deviation is stronger, the means of the models do not differ significantly. 
-The data set for training the models is smaller for the Single models than for the Multi models.
+The data set for training the models is smaller for the case--specific models than for the general models.
 This might be the reason for the deviation.\\
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_p.eps}
-    \caption[Gaussian type distribution for the prediction of projected hessian elements.]{
-    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ are computed. }
-    \label{fig:ErrorDistHessP}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_w.eps}
-    \caption[Gaussian type distribution for the prediction of weighted projected hessian elements.]{
-    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ are computed. }    \label{fig:ErrorDistHessW}
-\end{figure}
 
 \begin{figure}[H]
     \centering
@@ -200,30 +182,86 @@ The force constants were also calculated via GFN2--xTB.\\
 Fig.~\ref{fig:FC_idx} shows the force constants calculated by GFN2--xTB and predicted via the ETR--Gen--Idx model.
 Interesting to point out is the symmetric behavior of the system.
 The ML model should, in principle, mimic this behavior.
-While this is overall the case, there are abbreviation from this behavior.
-For the example, the symmetry is not given in the case of $x(\mathrm{H2}) = 1.75$ and $x(\mathrm{H2} = 2.25)$.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{ForceConstants/force_const_H3_idx.eps}
     \caption[Force constants predicted by the indexed multimodel and calculated with
     GFN2--xTB for $\mathrm{H}_3$~system]{
     Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
-    The force constants are shown for the GFN2--xTB calculation (yellow),
+    The force constants are shown for the GFN2--xTB calculation (red),
     as also the via the ML model predicted values (blue).
     The full sample set, excluding the $\mathrm{H}_3$~system, was used for the ML model.
-    The ML model \textit{indexed; multi} was used for the prediction.
+    The ML model ETR--Gen--Idx was used for the prediction.
     }
     \label{fig:FC_idx}
 \end{figure}
+While this is overall the case, there are abbreviation from this behavior.
+For the example, the symmetry is not given in the case of $x(\mathrm{H2}) = 1.84~\si{\angstrom} $ and $x(\mathrm{H2}) = 2.15~\si{\angstrom}$.\\
+Fig.~\ref{fig:FC_perm} shows the prediction of the focre constants via the ETR--Gen--Perm model.
+Similar to the ETR--Gen--Idx model, the symmetry is in general achieved.
+Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\angstrom}$ and $x(\mathrm{H2}) = 3.08 ~\si{\angstrom}$ show abbreviations from oneanother.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{ForceConstants/force_const_H3_perm.eps}
     \caption[Force constants predicted by the permuted multimodel and calculated with
     GFN2--xTB for $\mathrm{H}_3$~system]{Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
-    The force constants are shown for the GFN2--xTB calculation (yellow),
+    The force constants are shown for the GFN2--xTB calculation (red),
     as also the via the ML model predicted values (blue).
     The full sample set, excluding the $\mathrm{H}_3$~system, was used for the ML model.
-    The ML model \textit{perm; multi} was used for the prediction.}
+    The ML model ETR--Gen--Perm was used for the prediction.}
     \label{fig:FC_perm}
 \end{figure}
+Further investigations on the models are necessary, to locate the reason for the break of symmetry.
+Worth considering are the rotation proces, the homonuclear and heteronuclear model.
+The rotation process can be neglected, as rotation is also done for the GFN2--xTB calculations.
+A decoupled investigation of the homonuclear and heteronuclear model is therefore necessary. \\
+\newpage
+\chapter{Conclusion \& Outlook}
+The goal of the research was the prediction of hessian matrices by a machine learning model.
+The machine learning model was based on atomic features and the prediction of the elements of the hessian matrices was done atom pair wise.
+The model was benchmarked by a small data set of 8 molecules with 103 different structures.
+The computations of the hessian matrices and features for these systems was done with the GFN2--xTB method.\\
+In first place, the general learning of the model was investigated.
+A statistical learning behavior of the ML models RFR--Gen--Perm and ETR--Gen--Perm could be observed.
+Compared to another, the ETR--Gen--Perm model showed a better performance.
+Furthermore, a physcial correlation could be presented for the ETR--Gen--Perm model.\\
+Moreover, 4 variations of the model were investigated and compared to another, which are the models ETR--Gen/Case--Perm/Idx.
+Here a similar behavior for different labeling approaches (Indexed and Permuted) was shown.
+The general models show a better prediction than the case--specific models.
+Here, the hessian elements, zero point vibrational energy and wave numbers were predicted.\\
+In addition, the set was used for the prediction of a system, that is unknown to the ML model.\\
+The data set of the new $\mathrm{H}_3$ system shows a symmetric behavior for the force constants,
+which could, with some minor errors, be depicted by the ML models.\\
+
+The next necessary approaches for this research, is the improvement of the models in there symmetric behavior.
+Although, for the $\mathrm{H}_3$ system the errors in symmetry are minor,
+the adjustment to a full symmetric behavior is mandatory.
+In addition, a set of 103 structures is small for a ML model.
+Hence, the date set size should be increased and tests on benchmark data sets should be done for a comparison to literature. 
+When the prediction of the hessian matrix on GFN2--xTB level is sufficient,
+the model can be adapted to a $\Delta$ML model.\\
+\newpage
+
+\chapter{Appendix}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_w.eps}
+    \caption[Gaussian type distribution for the prediction of weighted projected hessian elements.]{
+    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ for different models.
+    In every model, the Extra Tree Regression was used.
+    The distribution is assumed to be Gaussian type.
+    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ are computed. }    \label{fig:ErrorDistHessW}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_p.eps}
+    \caption[Gaussian type distribution for the prediction of projected hessian elements.]{
+    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ for different models.
+    In every model, the Extra Tree Regression was used.
+    The distribution is assumed to be Gaussian type.
+    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ are computed. }
+    \label{fig:ErrorDistHessP}
+\end{figure}
+

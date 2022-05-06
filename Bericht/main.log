@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.31)  6 MAY 2022 10:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.31)  6 MAY 2022 13:49
 entering extended mode
 **c:/Users/Nutzer/Documents/GitHub/hessian_ml/Bericht/main.tex
 (c:/Users/Nutzer/Documents/GitHub/hessian_ml/Bericht/main.tex
@@ -1768,12 +1768,12 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 LaTeX Font Info:    Try loading font information for T1+lmss on input line 178.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmss.fd"
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) (main.toc)
+) (main.toc [1])
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
- [1] [2] (main.lof
-Overfull \hbox (2.08482pt too wide) in paragraph at lines 21--21
+ [2] (main.lof
+Overfull \hbox (2.08482pt too wide) in paragraph at lines 19--19
  [][] [][]\T1/lmr/m/n/10.95 Force con-stants pre-dicted by the per-muted mul-ti-model and cal-cu-lated with GFN2-- 
  []
 
@@ -1828,7 +1828,7 @@ Package epstopdf Info: Source file: <sections/TheoryGraphs/EulerAngle.eps>
 (epstopdf)             Command: <epstopdf --outfile=sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf sections/TheoryGraphs/EulerAngle.eps>
 (epstopdf)             \includegraphics on input line 17.
 Package epstopdf Info: Output file is already uptodate.
-<sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf, id=202, pagebox=cropbox, 397.485pt x 397.485pt>
+<sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf, id=207, pagebox=cropbox, 397.485pt x 397.485pt>
 File: sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf Graphic file (type pdf)
 <use sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf>
 Package pdftex.def Info: sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf  used on input line 17. on input line 17.
@@ -1847,7 +1847,7 @@ Package epstopdf Info: Source file: <sections/TheoryGraphs/ZeichnungDecisionTree
 (epstopdf)             Command: <epstopdf --outfile=sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle.eps>
 (epstopdf)             \includegraphics on input line 438.
 Package epstopdf Info: Output file is already uptodate.
-<sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf, id=318, pagebox=cropbox, 564.1075pt x 238.8925pt>
+<sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf, id=323, pagebox=cropbox, 564.1075pt x 238.8925pt>
 File: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf Graphic file (type pdf)
 <use sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf>
 Package pdftex.def Info: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf  used on input line 438. on input line 438.
@@ -1926,7 +1926,7 @@ Package epstopdf Info: Source file: <H2_single/Clean.eps>
 (epstopdf)             Command: <epstopdf --outfile=H2_single/Clean-eps-converted-to.pdf H2_single/Clean.eps>
 (epstopdf)             \includegraphics on input line 35.
 Package epstopdf Info: Output file is already uptodate.
-<H2_single/Clean-eps-converted-to.pdf, id=455, pagebox=cropbox, 691.58376pt x 453.695pt>
+<H2_single/Clean-eps-converted-to.pdf, id=460, pagebox=cropbox, 691.58376pt x 453.695pt>
 File: H2_single/Clean-eps-converted-to.pdf Graphic file (type pdf)
 <use H2_single/Clean-eps-converted-to.pdf>
 Package pdftex.def Info: H2_single/Clean-eps-converted-to.pdf  used on input line 35. on input line 35.
@@ -1944,7 +1944,7 @@ Package epstopdf Info: Source file: <MSE/MSE_ETR.eps>
 (epstopdf)             Command: <epstopdf --outfile=MSE/MSE_ETR-eps-converted-to.pdf MSE/MSE_ETR.eps>
 (epstopdf)             \includegraphics on input line 66.
 Package epstopdf Info: Output file is already uptodate.
-<MSE/MSE_ETR-eps-converted-to.pdf, id=462, pagebox=cropbox, 643.40375pt x 449.68pt>
+<MSE/MSE_ETR-eps-converted-to.pdf, id=467, pagebox=cropbox, 643.40375pt x 449.68pt>
 File: MSE/MSE_ETR-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_ETR-eps-converted-to.pdf>
 Package pdftex.def Info: MSE/MSE_ETR-eps-converted-to.pdf  used on input line 66. on input line 66.
@@ -1958,7 +1958,7 @@ Package epstopdf Info: Source file: <MSE/MSE_RFR.eps>
 (epstopdf)             Command: <epstopdf --outfile=MSE/MSE_RFR-eps-converted-to.pdf MSE/MSE_RFR.eps>
 (epstopdf)             \includegraphics on input line 68.
 Package epstopdf Info: Output file is already uptodate.
-<MSE/MSE_RFR-eps-converted-to.pdf, id=463, pagebox=cropbox, 643.40375pt x 449.68pt>
+<MSE/MSE_RFR-eps-converted-to.pdf, id=468, pagebox=cropbox, 643.40375pt x 449.68pt>
 File: MSE/MSE_RFR-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_RFR-eps-converted-to.pdf>
 Package pdftex.def Info: MSE/MSE_RFR-eps-converted-to.pdf  used on input line 68. on input line 68.
@@ -1973,7 +1973,7 @@ Package epstopdf Info: Source file: <MSE/MSE_vs_sigma.eps>
 (epstopdf)             Command: <epstopdf --outfile=MSE/MSE_vs_sigma-eps-converted-to.pdf MSE/MSE_vs_sigma.eps>
 (epstopdf)             \includegraphics on input line 96.
 Package epstopdf Info: Output file is already uptodate.
-<MSE/MSE_vs_sigma-eps-converted-to.pdf, id=495, pagebox=cropbox, 631.35875pt x 449.68pt>
+<MSE/MSE_vs_sigma-eps-converted-to.pdf, id=500, pagebox=cropbox, 631.35875pt x 449.68pt>
 File: MSE/MSE_vs_sigma-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_vs_sigma-eps-converted-to.pdf>
 Package pdftex.def Info: MSE/MSE_vs_sigma-eps-converted-to.pdf  used on input line 96. on input line 96.
@@ -1988,46 +1988,22 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess.
 (epstopdf)             Command: <epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_hess.eps>
 (epstopdf)             \includegraphics on input line 128.
 Package epstopdf Info: Output file is already uptodate.
-<ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf, id=573, pagebox=cropbox, 576.1525pt x 463.7325pt>
+<ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf, id=578, pagebox=cropbox, 576.1525pt x 463.7325pt>
 File: ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf>
 Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf  used on input line 128. on input line 128.
 Package pdftex.def Info: Requested size: 455.24417pt x 366.42957pt on input line 128.
  [24 <./MSE/MSE_vs_sigma-eps-converted-to.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 135--148
+Overfull \hbox (5.68532pt too wide) in paragraph at lines 136--151
+[]\T1/lmr/m/n/10.95 Comparing the [] and [], as also [] and []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--151
 
  []
 
 [25 <./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf>]
-Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess_p.eps>
-(epstopdf)                    date: 2022-04-29 15:15:28
-(epstopdf)                    size: 42219 bytes
-(epstopdf)             Output file: <ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-04-29 17:47:40
-(epstopdf)                    size: 27674 bytes
-(epstopdf)             Command: <epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_hess_p.eps>
-(epstopdf)             \includegraphics on input line 151.
-Package epstopdf Info: Output file is already uptodate.
-<ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf, id=664, pagebox=cropbox, 576.1525pt x 463.7325pt>
-File: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf Graphic file (type pdf)
-<use ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf  used on input line 151. on input line 151.
-Package pdftex.def Info: Requested size: 455.24417pt x 366.42957pt on input line 151.
-Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess_w.eps>
-(epstopdf)                    date: 2022-04-29 15:15:26
-(epstopdf)                    size: 41856 bytes
-(epstopdf)             Output file: <ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-04-29 17:47:41
-(epstopdf)                    size: 27321 bytes
-(epstopdf)             Command: <epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_hess_w.eps>
-(epstopdf)             \includegraphics on input line 162.
-Package epstopdf Info: Output file is already uptodate.
-<ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf, id=665, pagebox=cropbox, 576.1525pt x 463.7325pt>
-File: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf Graphic file (type pdf)
-<use ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf  used on input line 162. on input line 162.
-Package pdftex.def Info: Requested size: 455.24417pt x 366.42957pt on input line 162.
- [26 <./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_wn.eps>
 (epstopdf)                    date: 2022-04-29 15:15:29
 (epstopdf)                    size: 39843 bytes
@@ -2035,14 +2011,13 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_wn.ep
 (epstopdf)                    date: 2022-04-29 17:47:42
 (epstopdf)                    size: 25704 bytes
 (epstopdf)             Command: <epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_wn.eps>
-(epstopdf)             \includegraphics on input line 172.
+(epstopdf)             \includegraphics on input line 154.
 Package epstopdf Info: Output file is already uptodate.
-<ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf, id=725, pagebox=cropbox, 576.1525pt x 445.665pt>
+<ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf, id=669, pagebox=cropbox, 576.1525pt x 445.665pt>
 File: ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf  used on input line 172. on input line 172.
-Package pdftex.def Info: Requested size: 455.24417pt x 352.15309pt on input line 172.
- [27 <./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>]
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf  used on input line 154. on input line 154.
+Package pdftex.def Info: Requested size: 455.24417pt x 352.15309pt on input line 154.
 Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_ZPE.eps>
 (epstopdf)                    date: 2022-04-29 15:15:20
 (epstopdf)                    size: 39020 bytes
@@ -2050,72 +2025,117 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_ZPE.e
 (epstopdf)                    date: 2022-04-29 17:47:43
 (epstopdf)                    size: 24839 bytes
 (epstopdf)             Command: <epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_ZPE.eps>
-(epstopdf)             \includegraphics on input line 183.
+(epstopdf)             \includegraphics on input line 165.
 Package epstopdf Info: Output file is already uptodate.
-<ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf, id=786, pagebox=cropbox, 576.1525pt x 445.665pt>
+<ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf, id=670, pagebox=cropbox, 576.1525pt x 445.665pt>
 File: ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf  used on input line 183. on input line 183.
-Package pdftex.def Info: Requested size: 455.24417pt x 352.15309pt on input line 183.
- [28 <./ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf>]
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf  used on input line 165. on input line 165.
+Package pdftex.def Info: Requested size: 455.24417pt x 352.15309pt on input line 165.
+ [26 <./ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 192.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 192.
+(hyperref)                removing `math shift' on input line 174.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 192.
+(hyperref)                removing `subscript' on input line 174.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 174.
 
 Package epstopdf Info: Source file: <ForceConstants/force_const_H3_idx.eps>
-(epstopdf)                    date: 2022-04-25 13:47:09
-(epstopdf)                    size: 27019 bytes
+(epstopdf)                    date: 2022-04-30 13:39:44
+(epstopdf)                    size: 26875 bytes
 (epstopdf)             Output file: <ForceConstants/force_const_H3_idx-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-04-28 15:34:46
-(epstopdf)                    size: 20111 bytes
+(epstopdf)                    date: 2022-05-06 11:30:03
+(epstopdf)                    size: 19924 bytes
 (epstopdf)             Command: <epstopdf --outfile=ForceConstants/force_const_H3_idx-eps-converted-to.pdf ForceConstants/force_const_H3_idx.eps>
-(epstopdf)             \includegraphics on input line 207.
+(epstopdf)             \includegraphics on input line 187.
 Package epstopdf Info: Output file is already uptodate.
-<ForceConstants/force_const_H3_idx-eps-converted-to.pdf, id=843, pagebox=cropbox, 669.50125pt x 453.695pt>
+<ForceConstants/force_const_H3_idx-eps-converted-to.pdf, id=728, pagebox=cropbox, 669.50125pt x 453.695pt>
 File: ForceConstants/force_const_H3_idx-eps-converted-to.pdf Graphic file (type pdf)
 <use ForceConstants/force_const_H3_idx-eps-converted-to.pdf>
-Package pdftex.def Info: ForceConstants/force_const_H3_idx-eps-converted-to.pdf  used on input line 207. on input line 207.
-Package pdftex.def Info: Requested size: 455.24417pt x 308.51544pt on input line 207.
-[29 <./ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>]
+Package pdftex.def Info: ForceConstants/force_const_H3_idx-eps-converted-to.pdf  used on input line 187. on input line 187.
+Package pdftex.def Info: Requested size: 455.24417pt x 308.51544pt on input line 187.
+[27 <./ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <ForceConstants/force_const_H3_perm.eps>
-(epstopdf)                    date: 2022-04-25 18:11:42
-(epstopdf)                    size: 27699 bytes
+(epstopdf)                    date: 2022-04-30 13:39:27
+(epstopdf)                    size: 27031 bytes
 (epstopdf)             Output file: <ForceConstants/force_const_H3_perm-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-04-28 15:34:48
-(epstopdf)                    size: 20800 bytes
+(epstopdf)                    date: 2022-05-06 11:30:05
+(epstopdf)                    size: 20024 bytes
 (epstopdf)             Command: <epstopdf --outfile=ForceConstants/force_const_H3_perm-eps-converted-to.pdf ForceConstants/force_const_H3_perm.eps>
-(epstopdf)             \includegraphics on input line 221.
+(epstopdf)             \includegraphics on input line 206.
 Package epstopdf Info: Output file is already uptodate.
-<ForceConstants/force_const_H3_perm-eps-converted-to.pdf, id=897, pagebox=cropbox, 669.50125pt x 453.695pt>
+<ForceConstants/force_const_H3_perm-eps-converted-to.pdf, id=783, pagebox=cropbox, 669.50125pt x 453.695pt>
 File: ForceConstants/force_const_H3_perm-eps-converted-to.pdf Graphic file (type pdf)
 <use ForceConstants/force_const_H3_perm-eps-converted-to.pdf>
-Package pdftex.def Info: ForceConstants/force_const_H3_perm-eps-converted-to.pdf  used on input line 221. on input line 221.
-Package pdftex.def Info: Requested size: 455.24417pt x 308.51544pt on input line 221.
-) [30 <./ForceConstants/force_const_H3_idx-eps-converted-to.pdf>] [31 <./ForceConstants/force_const_H3_perm-eps-converted-to.pdf>]
+Package pdftex.def Info: ForceConstants/force_const_H3_perm-eps-converted-to.pdf  used on input line 206. on input line 206.
+Package pdftex.def Info: Requested size: 455.24417pt x 308.51544pt on input line 206.
+ [28 <./ForceConstants/force_const_H3_idx-eps-converted-to.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 215--219
+
+ []
+
+[29 <./ForceConstants/force_const_H3_perm-eps-converted-to.pdf>]
 chapter 6.
-[32
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--236
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 237--244
+
+ []
+
+[30]
+chapter 7.
+Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess_w.eps>
+(epstopdf)                    date: 2022-04-29 15:15:26
+(epstopdf)                    size: 41856 bytes
+(epstopdf)             Output file: <ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-04-29 17:47:41
+(epstopdf)                    size: 27321 bytes
+(epstopdf)             Command: <epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_hess_w.eps>
+(epstopdf)             \includegraphics on input line 249.
+Package epstopdf Info: Output file is already uptodate.
+<ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf, id=886, pagebox=cropbox, 576.1525pt x 463.7325pt>
+File: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf Graphic file (type pdf)
+<use ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf  used on input line 249. on input line 249.
+Package pdftex.def Info: Requested size: 455.24417pt x 366.42957pt on input line 249.
+Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess_p.eps>
+(epstopdf)                    date: 2022-04-29 15:15:28
+(epstopdf)                    size: 42219 bytes
+(epstopdf)             Output file: <ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-04-29 17:47:40
+(epstopdf)                    size: 27674 bytes
+(epstopdf)             Command: <epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_hess_p.eps>
+(epstopdf)             \includegraphics on input line 259.
+Package epstopdf Info: Output file is already uptodate.
+<ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf, id=887, pagebox=cropbox, 576.1525pt x 463.7325pt>
+File: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf Graphic file (type pdf)
+<use ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf  used on input line 259. on input line 259.
+Package pdftex.def Info: Requested size: 455.24417pt x 366.42957pt on input line 259.
+[31 <./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>]) [32 <./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>]
+chapter 8.
+
+LaTeX Warning: Empty bibliography on input line 216.
+
+[33
 
 ]
-chapter 7.
-
-LaTeX Warning: Empty bibliography on input line 219.
-
-[33]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 242.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 242.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 239.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 239.
  (main.aux (sections/Theory.aux) (sections/Methods.aux) (sections/Results.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 242.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 242.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 239.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 239.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 67C53CFCAB152D4CAB6DDA8959247D2E;1683.
+(rerunfilecheck)             Checksum: B0E9DEA9DDE70E763DF74175BCDB2F6D;1729.
 
 
 LaTeX Warning: There were undefined references.
@@ -2131,20 +2151,20 @@ Package biblatex Warning: Please (re)run Biber on the file:
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 242.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 239.
  ) 
 Here is how much of TeX's memory you used:
- 33138 strings out of 493312
- 621497 string characters out of 3138896
- 1287939 words of memory out of 3000000
- 36022 multiletter control sequences out of 15000+200000
- 682417 words of font info for 139 fonts, out of 3000000 for 9000
+ 33164 strings out of 493312
+ 621760 string characters out of 3138896
+ 1286937 words of memory out of 3000000
+ 36037 multiletter control sequences out of 15000+200000
+ 695418 words of font info for 152 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 52i,19n,66p,10416b,1826s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/euler/eurb10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (38 pages, 1211904 bytes).
+ 52i,19n,66p,10416b,2458s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/euler/eurb10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (38 pages, 1199796 bytes).
 PDF statistics:
- 1126 PDF objects out of 1200 (max. 8388607)
- 153 named destinations out of 1000 (max. 500000)
- 274 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1123 PDF objects out of 1200 (max. 8388607)
+ 154 named destinations out of 1000 (max. 500000)
+ 282 words of extra memory for PDF output out of 10000 (max. 10000000)
 
