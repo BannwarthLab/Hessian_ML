@@ -1,10 +1,10 @@
 # Fdb version 3
-["biber main"] 1651836856 "main.bcf" "main.bbl" "main" 1651837761
-  "main.bcf" 1651837760 103449 e9941f5c4137865f4897b4d399b787ae "pdflatex"
+["biber main"] 1651909299 "main.bcf" "main.bbl" "main" 1651909348
+  "main.bcf" 1651909347 103449 e9941f5c4137865f4897b4d399b787ae "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1651837754 "c:/Users/Nutzer/Documents/GitHub/hessian_ml/Bericht/main.tex" "main.pdf" "main" 1651837761
+["pdflatex"] 1651909342 "c:/Users/Nutzer/Documents/GitHub/hessian_ml/Bericht/main.tex" "main.pdf" "main" 1651909348
   "C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc" 1254938640 2375 baa924870cfb487815765f9094cf3728 ""
   "C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc" 1254938640 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc" 1254938640 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -265,19 +265,19 @@
   "MSE/MSE_RFR.eps" 1651167691 29052 2e61bd3bb906d78e1c84625f51c505d7 ""
   "MSE/MSE_vs_sigma.eps" 1651168191 24582 1b15305ce9aeff91b22f0d60771da2d0 ""
   "c:/Users/Nutzer/Documents/GitHub/hessian_ml/Bericht/main.tex" 1651836908 5281 22bc5be7a422daef85a08314c26607cf ""
-  "main.aux" 1651837760 3135 03842815c383b4bc8b6b287ad2c71493 "pdflatex"
+  "main.aux" 1651909347 3135 03842815c383b4bc8b6b287ad2c71493 "pdflatex"
   "main.bbl" 0 -1 0 "biber main"
-  "main.lof" 1651837760 2364 2d23d871e1527cbd70544cbdd4d40caf "pdflatex"
-  "main.lot" 1651837760 760 0aa11946531a30b7ceb348c79a719573 "pdflatex"
-  "main.out" 1651837760 1729 f4f517c229657064617a8c4b73a57f8c "pdflatex"
-  "main.run.xml" 1651837760 2470 149065fe92da6c3786b871a7c2cb9f77 "pdflatex"
+  "main.lof" 1651909347 2364 2d23d871e1527cbd70544cbdd4d40caf "pdflatex"
+  "main.lot" 1651909347 760 0aa11946531a30b7ceb348c79a719573 "pdflatex"
+  "main.out" 1651909347 1729 f4f517c229657064617a8c4b73a57f8c "pdflatex"
+  "main.run.xml" 1651909347 2470 149065fe92da6c3786b871a7c2cb9f77 "pdflatex"
   "main.tex" 1651836908 5281 22bc5be7a422daef85a08314c26607cf ""
-  "main.toc" 1651837760 2393 132326cd7d8fcc6664cea0633ae403b0 "pdflatex"
-  "sections/Methods.aux" 1651837759 7942 f2930e405d002987b81a83834dbd006f "pdflatex"
+  "main.toc" 1651909347 2393 132326cd7d8fcc6664cea0633ae403b0 "pdflatex"
+  "sections/Methods.aux" 1651909347 7942 f2930e405d002987b81a83834dbd006f "pdflatex"
   "sections/Methods.tex" 1651758875 22538 a5f96df946d538371a5bea18445d5408 ""
-  "sections/Results.aux" 1651837760 8993 14cc590b865b5853549d88991296da91 "pdflatex"
-  "sections/Results.tex" 1651837753 18783 2d313257df1f6a0dc17e6aac93e54528 ""
-  "sections/Theory.aux" 1651837759 8451 931d9fbc3c23c9de51fefabbdf37ca4c "pdflatex"
+  "sections/Results.aux" 1651909347 8993 2df28bdae453c05b84eb8e6f538bec66 "pdflatex"
+  "sections/Results.tex" 1651909341 19310 444ba648ac6b19233f7902f99cc5d5cf ""
+  "sections/Theory.aux" 1651909347 8451 931d9fbc3c23c9de51fefabbdf37ca4c "pdflatex"
   "sections/Theory.tex" 1651758835 28785 9aca3a48e7e43447f4a3bd71513e59a5 ""
   "sections/TheoryGraphs/EulerAngle.eps" 1651575644 413225 f9b30d806c1c70337a6a787c975c3877 ""
   "sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle.eps" 1651673854 30794 a35773c85dab46a1907bb1a4f17e366d ""

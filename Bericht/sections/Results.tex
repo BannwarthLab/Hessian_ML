@@ -225,7 +225,7 @@ The computations of the hessian matrices and features for these systems was done
 In first place, the general learning of the model was investigated.
 A statistical learning behavior of the ML models RFR--Gen--Perm and ETR--Gen--Perm could be observed.
 Compared to another, the ETR--Gen--Perm model showed a better performance.
-Furthermore, a physcial correlation could be presented for the ETR--Gen--Perm model.\\
+Furthermore, a physical correlation could be presented for the ETR--Gen--Perm model.\\
 Moreover, 4 variations of the model were investigated and compared to another, which are the models ETR--Gen/Case--Perm/Idx.
 Here a similar behavior for different labeling approaches (Indexed and Permuted) was shown.
 The general models show a better prediction than the case--specific models.
@@ -264,4 +264,13 @@ the model can be adapted to a $\Delta$ML model.\\
     For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ are computed. }
     \label{fig:ErrorDistHessP}
 \end{figure}
+\begin{subequations}
+    
+\begin{align}
+    CN_A &= \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{1}{1+\exp\left(\dfrac{-16a\cdot 4 (R_{A,\mathrm{cov}}+R_{B,\mathrm{cov}})}{3R_{AB}-1}\right)} \\
+    CN^\mathrm{ext} &= \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{CN_B}{f_\mathrm{damp}(R_A,R_B)}\\
+    q_A &= Zg_A - \sum_{\mu \in A}^{N_\mathrm{BF}}\sum_{\nu}^{N_\mathrm{BF}} P_{\mu \nu} S_{\mu \nu}\\
+    q_A^\mathrm{ext} &= q_A + \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{q_B}{f_\mathrm{damp}}
+\end{align}
 
+\end{subequations}
