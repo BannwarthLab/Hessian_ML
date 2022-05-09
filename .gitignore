@@ -1,9 +1,6 @@
-*.xyz
 venv
 num_freq.py
 hessian
-*.txt
-*.csv
 h2_2/
 *.png
 *.svg

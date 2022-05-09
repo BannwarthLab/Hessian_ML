@@ -1,0 +1,7 @@
+Lennard
+Hückel
+wavenumber
+xy
+wavenumbers
+selfconsistend
+antisymmetry
