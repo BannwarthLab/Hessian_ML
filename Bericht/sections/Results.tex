@@ -125,8 +125,9 @@ At first the direct prediction of the hessian elements were investigated,
 and its distribution is shown in Fig~\ref{fig:ErrorDistHess}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess.eps}
-    \caption[Gaussian type distribution for the prediction of hessian elements.]{ Distribution of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ for different models.
+    \includegraphics[width =\textwidth]{ErrorDistGraphs/error_distribution_ml_hess.eps}
+    \caption[Gaussian type distribution for the prediction of hessian elements.]
+    { Distribution of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ for different models.
     In every model, the Extra Tree Regression was used.
     The distribution is assumed to be Gaussian type.
     For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ are computed. }
@@ -151,25 +152,35 @@ This might be the reason for the deviation.\\
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_wn.eps}
-    \caption[Gaussian type distribution for the prediction of wavenumbers.]{
-    Distribution of $\Delta \tilde{\nu}$ for different models.
+    \subfloat{\includegraphics[width = 0.5\textwidth]{ErrorDistGraphs/error_distribution_ml_wn.eps}}
+    \hfill
+    \subfloat{\includegraphics[width = 0.5\textwidth]{ErrorDistGraphs/WN_xTB_vs_ML.eps}}
+    \caption[Gaussian type distribution for the prediction of wave numbers and plot of ML wave numbers vs. xTB wave numbers.]{
+    On the left is the distribution of $\Delta \tilde{\nu}$ for different models.
     In every model, the Extra Tree Regression was used.
     The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \tilde{\nu}$ are computed.}
+    For this the median and standard deviation of $\Delta \tilde{\nu}$ are computed.
+    On the right is the $\tilde{\nu}_\mathrm{ML}$ plotted against $\tilde{\nu}_\mathrm{xTB}$.
+    The wave numbers are predicted with the ETR--Gen--Perm model.}
     \label{fig:ErrorDistWN}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_ZPE.eps}
-    \caption[Gaussian type distribution for the prediction of zero point energy.]
-    {Distribution of $\Delta \mathrm{ZPE}$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \mathrm{ZPE}$ are computed.}
-    \label{fig:ErrorDistZPE}
-\end{figure}
+The wave numbers $\tilde{\nu}$ of the harmonic frequencies of the molecules were calculated.
+The difference between the difference between the ML predicted $\tilde{\nu}_\mathrm{ML}$ and the via GFN2--xTB computed $\tilde{\nu}_\mathrm{xTB}$ was calculated.
+A Gaussian distribution was assumed.
+This is plotted in Fig.~\ref{fig:ErrorDistWN} for the four different varieties of the model.
+Furthermore, the plot of the $\tilde{\nu}_\mathrm{ML}$ vs. $\tilde{\nu}_\mathrm{xTB}$ is shown.
+The relative distributions of the four variations of the models are similar to the ones of the hessian elements.
+The ETR--Gen--Perm and ETR--Gen--Idx show a better performance than the ETR--Case--Perm and the ETR--Case--Idx.
+The mean is shifted to a negative $\Delta \tilde{\nu}$.
+In contrast to the Gaussian distribution of the hessian elements, the Idx models show a marginal better performance than the Perm model.
+The deviations of several $\mathrm{kcal \cdot mol^{-1}}$ are rather strong.
+These strong deviations might be due to a high extrapolation errors, which lead to high standard distribution
+For example at $\tilde{\nu}_\mathrm{xTB} \approx 65 \mathrm{kcal \cdot mol^{-1}}$ the deviation might be due to extrapolation.
+Hence, the difference of about $\Delta \tilde{\nu} \approx 20 \mathrm{kcal \cdot mol^{-1}}$  has a strong influence on the distribution,
+although ML is not customized for extrapolation problems.
+
+
 
 \section{Benchmarking the H$_\mathrm{\textbf{3}}$~system}
 Especially, the prediction of hessian matrices of fully unknown systems is of interest.
@@ -182,6 +193,7 @@ The force constants were also calculated via GFN2--xTB.\\
 Fig.~\ref{fig:FC_idx} shows the force constants calculated by GFN2--xTB and predicted via the ETR--Gen--Idx model.
 Interesting to point out is the symmetric behavior of the system.
 The ML model should, in principle, mimic this behavior.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{ForceConstants/force_const_H3_idx.eps}
@@ -195,6 +207,7 @@ The ML model should, in principle, mimic this behavior.
     }
     \label{fig:FC_idx}
 \end{figure}
+
 While this is overall the case, there are abbreviation from this behavior.
 For the example, the symmetry is not given in the case of $x(\mathrm{H2}) = 1.84~\si{\angstrom} $ and $x(\mathrm{H2}) = 2.15~\si{\angstrom}$.\\
 Fig.~\ref{fig:FC_perm} shows the prediction of the focre constants via the ETR--Gen--Perm model.
@@ -212,8 +225,10 @@ Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\ang
     The ML model ETR--Gen--Perm was used for the prediction.}
     \label{fig:FC_perm}
 \end{figure}
-Further investigations on the models are necessary, to locate the reason for the break of symmetry.
-Worth considering are the rotation proces, the homonuclear and heteronuclear model.
+
+Further investigations on the models are necessary,
+to locate the reason for the break of symmetry.
+Worth considering are the rotation process, the homonuclear and heteronuclear model.
 The rotation process can be neglected, as rotation is also done for the GFN2--xTB calculations.
 A decoupled investigation of the homonuclear and heteronuclear model is therefore necessary. \\
 \newpage
@@ -266,11 +281,23 @@ the model can be adapted to a $\Delta$ML model.\\
 \end{figure}
 \begin{subequations}
     
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_ZPE.eps}
+    \caption[Gaussian type distribution for the prediction of zero point energy.]
+    {Distribution of $\Delta \mathrm{ZPE}$ for different models.
+    In every model, the Extra Tree Regression was used.
+    The distribution is assumed to be Gaussian type.
+    For this the median and standard deviation of $\Delta \mathrm{ZPE}$ are computed.}
+    \label{fig:ErrorDistZPE}
+\end{figure}
+
 \begin{align}
     CN_A &= \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{1}{1+\exp\left(\dfrac{-16a\cdot 4 (R_{A,\mathrm{cov}}+R_{B,\mathrm{cov}})}{3R_{AB}-1}\right)} \\
     CN^\mathrm{ext} &= \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{CN_B}{f_\mathrm{damp}(R_A,R_B)}\\
     q_A &= Zg_A - \sum_{\mu \in A}^{N_\mathrm{BF}}\sum_{\nu}^{N_\mathrm{BF}} P_{\mu \nu} S_{\mu \nu}\\
     q_A^\mathrm{ext} &= q_A + \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{q_B}{f_\mathrm{damp}}
 \end{align}
+
 
 \end{subequations}
