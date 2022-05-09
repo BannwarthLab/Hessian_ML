@@ -1,5 +1,3 @@
-from msilib.schema import Feature
-from re import L
 from pyparsing import col
 from sklearn import preprocessing
 from sklearn.inspection import permutation_importance
@@ -482,9 +480,10 @@ def plot_non_diag_importances(regr_non_diag,col_name,info):
     return
 
 def plot_non_diag_perm_importances(model,X,y,col_name,info):
+    
+    N = 4
+    N_features = len(col_name) - 4
 
-    N_features = 40
-    N= 4
     importances = permutation_importance(model,X,y,n_repeats=15).importances_mean
     np.savetxt(f'plots/importances_non_diag_{info}',importances)
 
@@ -495,11 +494,13 @@ def plot_non_diag_perm_importances(model,X,y,col_name,info):
     ax.bar(ticks[2] ,importances[2],alpha=1.0, width=0.15,color = 'blue')
     ax.bar(ticks[3] ,importances[3],alpha=1.0, width=0.15,color = 'blue')
 
-    ax.bar(ticks[N:N_features+N]-0.3 ,importances[N:N_features+N],alpha=1.0, width=0.15, label = 'A')
-    ax.bar(ticks[N:N_features+N]-0.15,importances[N_features+N:2*N_features+N],alpha=1.0, width=0.15, label = 'B')#'atom A')
-    ax.bar(ticks[N:N_features+N]     , importances[2*N_features+N:3*N_features+N],alpha=1.0, width=0.15, label = 'arithmetic mean')#'atom B')
-    ax.bar(ticks[N:N_features+N]+0.15,importances[3*N_features+N:4*N_features+N],alpha=1.0, width=0.15, label = 'product')#'arithmetic mean')
-    ax.bar(ticks[N:N_features+N]+0.3 ,importances[4*N_features+N:5*N_features+N],alpha=1.0, width=0.15, label = 'absolute difference')
+    print(len(importances),(len(col_name)-N)*3+N)
+
+    #ax.bar(ticks[N:N_features+N]-0.3 ,importances[N:N_features+N],alpha=1.0, width=0.15, label = 'A')
+    #ax.bar(ticks[N:N_features+N]-0.15,importances[N_features+N:2*N_features+N],alpha=1.0, width=0.15, label = 'B')#'atom A')
+    ax.bar(ticks[N:N_features+N]-0.15      ,importances[0*N_features+N:1*N_features+N],alpha=1.0, width=0.15, label = 'arithmetic mean')#'atom B')
+    ax.bar(ticks[N:N_features+N]           ,importances[1*N_features+N:2*N_features+N],alpha=1.0, width=0.15, label = 'product')#'arithmetic mean')
+    ax.bar(ticks[N:N_features+N]+0.15      ,importances[2*N_features+N:3*N_features+N],alpha=1.0, width=0.15, label = 'absolute difference')
 
     #ax.bar(ticks[167:207]+0.3 ,importances[163:203],alpha=1.0, width=0.15, label = 'absolute difference')
 
@@ -516,18 +517,19 @@ def plot_non_diag_perm_importances(model,X,y,col_name,info):
 
     return
 
-def plot_diag_importances(regr_diag,col_name,info):
-    importances = regr_diag.feature_importances_
+def plot_diag_importances(model,col_name,info):
+    importances = model.feature_importances_
 
+    std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
     np.savetxt(f'plots/importances_diag_{info}',importances)
 
-    ticks = np.array(range(len(importances)+1))
+    ticks = np.array(range(len(importances)))
 
     fig ,ax = plt.subplots()
 
     ax.bar(ticks ,importances,alpha=1.0, width=0.15, color='orange')
     ax.set_xlabel('Features')
-    ax.set_ylabel('R² coefficient')
+    ax.set_ylabel('mean decrease in impurity')
     ax.set_xticks(ticks)
 
     ax.set_xticklabels(col_name,rotation=90)
@@ -551,7 +553,7 @@ def plot_diag_perm_importances(model,X,y,col_name,info):
 
     ax.bar(ticks ,importances,alpha=1.0, width=0.15, color='orange')
     ax.set_xlabel('Features')
-    ax.set_ylabel('R² coefficient')
+    ax.set_ylabel('mean decrease in impurity')
     ax.set_xticks(ticks)
 
     ax.set_xticklabels(col_name,rotation=90)

@@ -131,7 +131,7 @@ def gen_X_y_DF(molecules):
         feature_file_path = glob.glob(f'tests/{molecules[0]}/{molecules[0]}_*/')
         feature_path = os.path.join(feature_file_path[0],'init_coord/ml_feature.csv')
         feature_df = pd.read_csv(feature_path)
-
+        print(feature_file_path[0])
         col = extract_feature(feature_df.iloc[0],'yx')
 
         feature_name_full = get_feature_name(col.index.values.tolist())
