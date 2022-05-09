@@ -1,8 +1,15 @@
-[0] Config.pm:354> INFO - This is Biber 2.7
-[0] Config.pm:357> INFO - Logfile is 'main.blg'
-[51] biber-MSWIN64:303> INFO - === 
-[84] Biber.pm:359> INFO - Reading 'main.bcf'
-[217] Utils.pm:180> ERROR - Error: Found biblatex control file version 3.7, expected version 3.3.
-This means that your biber (2.7) and biblatex (3.14) versions are incompatible.
-See compat matrix in biblatex or biber PDF documentation.
-[217] Biber.pm:113> INFO - ERRORS: 1
+[0] Config.pm:307> INFO - This is Biber 2.17
+[0] Config.pm:310> INFO - Logfile is 'main.blg'
+[40] biber:340> INFO - === Mo Mai  9, 2022, 09:54:03
+[48] Biber.pm:418> INFO - Reading 'main.bcf'
+[87] Biber.pm:972> INFO - Found 6 citekeys in bib section 0
+[95] Biber.pm:4383> INFO - Processing section 0
+[101] Biber.pm:4574> INFO - Looking for bibtex file 'sections/literature.bib' for section 0
+[102] bibtex.pm:1713> INFO - LaTeX decoding ...
+[109] bibtex.pm:1518> INFO - Found BibTeX data source 'sections/literature.bib'
+[175] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[175] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[175] Biber.pm:4203> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[175] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[181] bbl.pm:654> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[189] bbl.pm:757> INFO - Output to main.bbl
