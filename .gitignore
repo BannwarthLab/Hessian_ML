@@ -10,7 +10,6 @@ N2/
 O2/
 *.png
 *.svg
-tests/
 xtb/
 __pycache__/
 tests/CO/CO_0.45/apf_coord/atoms_0_0CC/wbo
