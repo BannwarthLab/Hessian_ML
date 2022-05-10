@@ -1,16 +1,19 @@
 \chapter{Theory}
+For the computation of the features and target vectors for the ML models, the GFN2--xTB method is used. For a invariant system, a rotation of the features and the target is necessary.
+These rotations are done with Euler angles.
+As the target value are the hessian matrices, a short introduction to the matrices is done.
+At last two algorithms used for machine learning are discussed.
+
 \section{Euler Angles}
-One method of describing coordinate system transformations, are the Euler angles.
+One method of describing coordinate system (CS) transformations, are the Euler angles.
 They serve as a mathematical tool to connect one CS with another.\\
 The initial coordinate system $\textbf{x},\textbf{y},\textbf{z}$,
 shown in Fig. \ref{fig:EulerAngles} can be transformed into the $\textbf{x}',\textbf{y}',\textbf{z}'$ CS by three rotations.
 The three Euler angles $\alpha$, $\beta$ and $\gamma$ are defined as follows.
-The distance between the vectors $\textbf{L}_\mathrm{a}$ and $\textbf{L}_\mathrm{b}$ is shown in red.
-This is the cutting line $\textbf{L}$ between the $\textbf{xy}$ and $\textbf{x'y'}$ planes.
+The distance between the vectors $\textbf{L}_\mathrm{a}$ and $\textbf{L}_\mathrm{b}$ is shown in red,
+and is the cutting line $\textbf{L}$ between the $\textbf{xy}$ and $\textbf{x'y'}$ planes.
 Here, $\alpha$ is the angle between $\textbf{x}$ and $\textbf{L}_\mathrm{a}$ and $\beta$ is the angle between the two z--axes $\textbf{z}$ and $\textbf{z}'$.
-The angle $\gamma$ is the angle between $\textbf{L}_\mathrm{a}$ and $\textbf{x}'$. 
-The transformation of the CS requires three rotations in a specific order.\\
-
+The angle $\gamma$ is the angle between $\textbf{L}_\mathrm{a}$ and $\textbf{x}'$.\\
 \begin{figure}[H]
     \centering
 	\vspace*{-1.3cm}
@@ -20,13 +23,12 @@ The transformation of the CS requires three rotations in a specific order.\\
 			   The red cutting line of the $\textbf{xy}$ and $\textbf{x'y'}$ planes is between the vector $\textbf{L}_\mathrm{a}$ and $\textbf{L}_\mathrm{b}$.}
     \label{fig:EulerAngles}
 \end{figure}
-
 For the rotation of the CS it is necessary to apply the rotation matrices in a specific order.
-The first rotation is around $\textbf{z}$ by the angle $\gamma$, followed by the rotation $\textbf{x}$ by $\beta$.
-Then a rotation around the $\textbf{z}$ axis is done by the angle $\alpha$.
+The first rotation is around $\textbf{z}$ by the angle $\alpha$, followed by the rotation $\textbf{x}$ by $\beta$.
+Then a rotation around the $\textbf{z}$ axis is done by the angle $\gamma$.
 The rotation matrices $\textbf{R}_z(\theta)$, and $\textbf{R}_x(\theta)$ are mathematically described 
 in Eq.~\eqref{eq:rotMatZ} and Eq.~\eqref{eq:rotMatX}, respectively.
-These are the rotation matrices for a classical rotation around the $\textbf{z}$ and $\textbf{c}$ axes.
+These are the rotation matrices for a classical rotation around the $\textbf{z}$ and $\textbf{x}$ axes.
 \begin{align}
 	\label{eq:rotMatZ}
 	\textbf{R}_z (\theta)  = \left(\begin{matrix}
@@ -53,175 +55,181 @@ The full rotation of the coordinate system in dependency of the Euler angles is 
 \end{align}
 
 \section{Electronic Structure Theory}
-	In this report, properties derived from electronic structure theory are used for the training of the ML models.
-	Although GFN2--xTB is used for this purpose, a short introduction to the Hartree--Fock model and Density Functional Theory is given.
-	The introduction starts from the non--relativistic, stationary electronic Schrödinger--equation.
-	From this the Hartree--Fock model will be derived.
-	This is followed by Density Functional Theory, as this builds the theoretical basis of GFN2--xTB.
-	After that the tight--binding method will be introduced from which the semiempirical method GFN2--xTB is derived.
-	Atomic units are used for all equations in this section.
+In this report, properties derived from electronic structure theory are used for the training of the ML models.
+As GFN2--xTB is used for this purpose, a short introduction to the Hartree--Fock model and Density Functional Theory is given.
+The introduction starts from the non--relativistic, stationary electronic Schrödinger--equation.
+From this the Hartree--Fock model will be derived.
+This is followed by Density Functional Theory, as this builds the theoretical basis of GFN2--xTB.
+After that the tight--binding method will be introduced from which the semiempirical method GFN2--xTB is derived.
+Atomic units are used for all equations in this section.
 
-	\subsection{Hartree--Fock Model}
-	Molecular systems in quantum mechanics can be described by a many--body wave function eigenvalue problem.
-	The solution of this problem is given by solving the Schrödinger equation. The separation of its time--dependency, neglecting relativistic effects and
-	the introduction of the \mbox{Born--Oppenheimer (BO) approximation} results in the electronic Schrödinger equation (Eq.~\eqref{eq:eSGl}).
-	\begin{align}
-		\label{eq:eSGl}
-		\hat{H}_\mathrm{e} \Psi_\mathrm{e} = E_\mathrm{e} \Psi_\mathrm{e}
-	\end{align}
- 	The solution of this eigenvalue equation leads to the electronic energy $E_\mathrm{e}$.
-	The electronic many--body--wave function $\Psi_\mathrm{e}$ of the system can be described by the Slater determinant (Eq.~\eqref{eq:SlaterD}).
-	The use of the Slater determinant fulfills the condition of the antisymmetry of the wave function.
-	The condition is due to the Pauli exclusion principle.
-	The Slater determinant consists of $k$ spin--orbital wave functions $\phi_i$,
-	and every wave function is permuted with the coordinates $\textbf{r}_i$ of the $N$ electrons.
-	Furthermore, the wave function is normalized by the factor $(N!)^{-\frac{1}{2}}$.
-	\begin{align}
-		\label{eq:SlaterD}
-		\Psi_\mathrm{e} = \dfrac{1}{\sqrt{N!}} \begin{vmatrix}
-			\phi_1(\textbf{r}_1) & \phi_2(\textbf{r}_1)& \hdotsfor{1}&  \phi_k(\textbf{r}_1)\\
-			\phi_1(\textbf{r}_2) &  \phi_2(\textbf{r}_2) & & \vdots\\
-			\vdots& & \ddots& \vdots \\
-			\phi_1(\textbf{r}_N)& \hdotsfor{1}& \hdotsfor{1} & \phi_k(\textbf{r}_N)\\
-		\end{vmatrix}
-	\end{align}
-	The electronic Hamiltonian $\hat{H}_\mathrm{e}$ in the Hartree--Fock model is shown in Eq.~\eqref{eq:effHamiltonian}
-	and consists of the kinetic energy of the electrons and the potential energy between electrons and nuclei as also between the electrons.
-	Furthermore, the nuclear repulsion energy, which is approximated as a constant, is added.
-	The kinetic energy of the nuclei can is separated, due to the \mbox{BO--approximation}.
-	% Instead of the computation of every electron--electron interaction,
-	% the electrons are assumed to be in an effective electronic potential,
-	% which simplifies the hamiltonian to a sum of effective one--electron hamiltonians.
-	% This is depicted in Eq.~\eqref{eq:effHamiltonian}.
-	\begin{align}
-		\label{eq:effHamiltonian}
-		\hat{H}_\mathrm{e} = \sum_{A = 1}^{M} \sum_{i=1}^N \left( -\dfrac{1}{2}\nabla_i^2 - \dfrac{1}{|\textbf{R}_A - \textbf{r}_i|}\right) 
-		+ \sum_{i=1}^N \sum_{\substack{j = 1 \\ i>j}}^N \dfrac{1}{|\textbf{r}_{i} - \textbf{r}_{j}|} 
-		+ \sum_{A=1}^M \sum_{\substack{B=1\\ B>A}}^M \dfrac{Z_A Z_B}{|\textbf{R}_A - \textbf{R}_B|}
-	\end{align}
-	Here, $\textbf{R}_A$ is the coordinates of atom $A$, 
-	$\textbf{r}_i$ the coordinates of electron $i$ and $Z_A$ the nuclear charge.
-	While, $\nabla_i^2$ is the second derivative in respect to every coordinate of electron $i$.\\
-	The electronic energy can now be described with the Slater determinant and Hamiltonian in Eq.~\eqref{eq:ElectronicEnergy}
-	This leads to the description of the energy by the one--electron operator $h_i$,
-	the coulomb operator $\hat{J}_i$ and the exchange operator $\hat{K}$.
-	\begin{align}
-		\label{eq:ElectronicEnergy}
-		E_\mathrm{e} = \sum_{i=1}^N \braket{\phi_i | h_i | \phi_i} 
-		+ \dfrac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \left(\braket{\phi_j | \hat{J}_i | \phi_j} 
-		- \braket{\phi_j | \hat{K}_i | \phi_j}\right)
-	\end{align}
+\subsection{Hartree--Fock Model}
+Molecular systems in quantum mechanics can be described by a many--body wave function eigenvalue problem.
+The solution of this problem is given by solving the Schrödinger equation. The separation of its time--dependency, neglecting relativistic effects and
+the introduction of the \mbox{Born--Oppenheimer (BO) approximation} results in the electronic Schrödinger equation (Eq.~\eqref{eq:eSGl}).
+\begin{align}
+	\label{eq:eSGl}
+	\hat{H}_\mathrm{e} \Psi_\mathrm{e} = E_\mathrm{e} \Psi_\mathrm{e}
+\end{align}
+The solution of this eigenvalue equation leads to the electronic energy $E_\mathrm{e}$.
+The electronic many--body--wave function $\Psi_\mathrm{e}$ of the system can be described by the Slater determinant (Eq.~\eqref{eq:SlaterD}).
+The Pauli principle introduces the condition of the antisymmetry of the wave function.
+This condition is fulfilled by the Slater determinant.
+The Slater determinant consists of $k$ spin--orbital wave functions $\phi_i$,
+and every wave function is permuted with the coordinates $\textbf{r}_i$ of the $N$ electrons.
+Furthermore, the wave function is normalized by the factor $(N!)^{-\frac{1}{2}}$.
+\begin{align}
+	\label{eq:SlaterD}
+	\Psi_\mathrm{e} = \dfrac{1}{\sqrt{N!}} \begin{vmatrix}
+		\phi_1(\textbf{r}_1) & \phi_2(\textbf{r}_1)& \hdotsfor{1}&  \phi_k(\textbf{r}_1)\\
+		\phi_1(\textbf{r}_2) &  \phi_2(\textbf{r}_2) & & \vdots\\
+		\vdots& & \ddots& \vdots \\
+		\phi_1(\textbf{r}_N)& \hdots& \hdotsfor{0} & \phi_k(\textbf{r}_N)\\
+	\end{vmatrix}
+\end{align}
+The electronic Hamiltonian $\hat{H}_\mathrm{e}$ in the Hartree--Fock model is shown in Eq.~\eqref{eq:effHamiltonian}
+and consists of the kinetic energy of the electrons and the potential energy between electrons and nuclei as also between the electrons.
+Furthermore, the nuclear repulsion energy, which is approximated as a constant, is added.
+The kinetic energy of the nuclei is separated, due to the \mbox{BO--approximation}.
+% Instead of the computation of every electron--electron interaction,
+% the electrons are assumed to be in an effective electronic potential,
+% which simplifies the hamiltonian to a sum of effective one--electron hamiltonians.
+% This is depicted in Eq.~\eqref{eq:effHamiltonian}.
+\begin{align}
+	\label{eq:effHamiltonian}
+	\hat{H}_\mathrm{e} = \sum_{A = 1}^{M} \sum_{i=1}^N \left( -\dfrac{1}{2}\nabla_i^2 - \dfrac{1}{|\textbf{R}_A - \textbf{r}_i|}\right) 
+	+ \sum_{i=1}^N \sum_{\substack{j = 1 \\ i>j}}^N \dfrac{1}{|\textbf{r}_{i} - \textbf{r}_{j}|} 
+	+ \sum_{A=1}^M \sum_{\substack{B=1\\ B>A}}^M \dfrac{Z_A Z_B}{|\textbf{R}_A - \textbf{R}_B|}
+\end{align}
+Here, $\textbf{R}_A$ are the coordinates of atom $A$, 
+$\textbf{r}_i$ the coordinates of electron $i$ and $Z_A$ the nuclear charge.
+While, $\nabla_i^2$ is the second derivative in respect to every coordinate of electron $i$.\\
+The electronic energy can now be described with the Slater determinant and Hamiltonian in Eq.~\eqref{eq:ElectronicEnergy}.
+This leads to the description of the energy by the one--electron operator $\hat{h}_i$,
+the coulomb operator $\hat{J}_i$ and the exchange operator $\hat{K}_i$.
+\begin{align}
+	\label{eq:ElectronicEnergy}
+	E_\mathrm{e} = \sum_{i=1}^N \braket{\phi_i | \hat{h}_i | \phi_i} 
+	+ \dfrac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \left(\braket{\phi_j | \hat{J}_i | \phi_j} 
+	- \braket{\phi_j | \hat{K}_i | \phi_j}\right)
+\end{align}
 
-	The Rayleigh--Ritz variational principle (s. Eq.~\eqref{eq:RayleighRitzVP}) states,
-	that the total energy $E_0$ of the system is always beneath or equal
-	to the energy corresponding to the approximated wave function.
-	This allows the search of the exact energy by optimizing the wave function (or its parameters).
-	\begin{align}
-		\label{eq:RayleighRitzVP}
-		E_0 \leq \braket{\Psi | \hat{H} | \Psi}
-	\end{align}
-	Hence, the determination of the total energy of the system is an eigenvalue problem and can be solved by minimization.
-	To minimize the energy, Lagrangian optimization is employed, under the condition of orthonormal $\phi_i$.
-	The inner product of the wave function $\braket{\phi_i|\phi_j} = \delta_{ij}$ corresponds to the Kronecker delta. 
-	The Kronecker delta is $\delta_{ij} = 0$ if $i$ and $j$ are not equal, and $\delta_{ij} = 1$ if $i$ and $j$ are equal.
-	The derivative of the Lagrangian functional leads to the canonical Fock equation \eqref{eq:FockEquation},
-	which is a solution for the minimal energy.
+The Rayleigh--Ritz variational principle (s. Eq.~\eqref{eq:RayleighRitzVP}) states,
+that the total energy $E_0$ of the system is always beneath or equal
+to the energy corresponding to the approximated wave function.
+This allows the search of the exact energy by optimizing the wave function (or its parameters).
+\begin{align}
+	\label{eq:RayleighRitzVP}
+	E_0 \leq \braket{\Psi | \hat{H} | \Psi}
+\end{align}
+Hence, the determination of the total energy of the system is an eigenvalue problem and can be solved by minimization.
+To minimize the energy, Lagrangian optimization is employed, under the condition of orthonormal $\phi_i$.
+The inner product of the wave function $\braket{\phi_i|\phi_j} = \delta_{ij}$ corresponds to the Kronecker delta (Eq.~\eqref{eq:Orthonormal}). 
+\begin{align}
+	\label{eq:Orthonormal}
+	\braket{\phi_i|\phi_j} = \delta_{ij} =\begin{cases}
+		0 ~\mathrm{if}~~i\neq j \\
+		1 ~\mathrm{if}~~i=j \\
+	\end{cases}
+\end{align}
+The derivative of the Lagrangian functional leads to the canonical Fock equation \eqref{eq:FockEquation},
+which is a solution for the minimal energy.
 
-	\begin{align}
-		\hat{f}(\textbf{r}_i) \phi_k(\textbf{r}_i) &= \epsilon(\textbf{r}_i) \phi_k(\textbf{r}_i)
-		\label{eq:FockEquation}\\
-		\hat{f}(\textbf{r}_i) &= \hat{h} + \sum_{j=1}^N (2 \hat{J}_j - \hat{K}_j)
-	\end{align}
+\begin{align}
+	\hat{f}(\textbf{r}_i) \phi_k(\textbf{r}_i) &= \epsilon(\textbf{r}_i) \phi_k(\textbf{r}_i)
+	\label{eq:FockEquation}\\
+	\hat{f}(\textbf{r}_i) &= \hat{h} + \sum_{j=1}^N (2 \hat{J}_j - \hat{K}_j)
+\end{align}
 
-	The Fock--operator $\hat{f}(\textbf{r}_i)$ is an effective one--electron operator.
-	This enables the determination of the spin--orbital wave functions in an iterative manner,
-	as the Fock--operator itself depends on the spin--orbital wave functions.
-	The iterative search is possible due to the self--consistency of the Hartree--Fock equation.
-	Furthermore, the general optimization can be achieved due to the Rayleigh--Ritz variational principle.
-	Important to point out is that the Fock--operator consists of the one--electron operator, the exchange--operator
-	and the coulomb operator, while the correlation is not included. \\
-	The spin--orbital wave functions are described via a basis set approximation.
-	This LCAO--approach is shown in Eq.~\eqref{eq:BasisSet},
-	where the spin--orbital wave--functions are the sum of $K$ basis functions with an associated constant.
-	\begin{align}
-		\label{eq:BasisSet}
-		\phi_i(\textbf{r}) = \sum_\mu^K c_\mu \chi_\mu (\textbf{r})
-	\end{align}
-	Merging the basis--set approach into Eq.~\eqref{eq:FockEquation} leads to Roothaan--Hall equation shown in Eq.~\eqref{eq:FCSCe}.
-	Here, $\textbf{F}$ is the Fock matrix, $\textbf{C}$ a matrix of coefficients $c_\mu$,
-	$\textbf{S}$ the overlap matrix and $\bm{\upepsilon}$ the diagonal eigenvalue matrix.
-	This equation is used find a solution for the energy iteratively.
-	Starting with an initial guess of the Fock matrix,
-	the matrix $\textbf{C}$ is computed, with this matrix, the density matrix $\textbf{D}$ is calculated. 
-	From the matrix $\textbf{D}$, is then used for the calculation of the new Fock matrix.
-	\begin{align}
-		\label{eq:FCSCe}
-		\textbf{F} \textbf{C} = \textbf{S} \textbf{C} \bm{\upepsilon}
-	\end{align}
-	% \textcolor{blue}{There is an infinite large number of possible solutions for the spin--orbital wave functions,
-	% which leads to high computational cost and capacity for solving.
-	% For the simplification, a basis set of a LCAO--approach is used for the computation of the spin--orbital wave function.}
-	% \begin{align}
-	% 	\phi(\textbf{r}) = \sum_\mu^K c_\mu \chi_\mu(\textbf{r})
-	% \end{align}
-	% \subsection{Kohn--Sham Density Functional Theory}
-	% The molecule--orbital wave functions $\psi_i$ is approximated with basis sets, shown in Eq.~\eqref{eq:BasisSet}
-	% \begin{align}
-	% 	\label{eq:BasisSet}
-	% 	\psi_i = \sum^{A}_{i} \chi 
-	% \end{align}
-	\subsection{Kohn--Sham Density Functional Theory}
-	As mentioned above, the correlation between electrons is not described in the Hartree--Fock model,
-	due to the use of a single Slater determinant.\\
-	The correlation energy can be described by two different approaches.
-	Instead of using one single Slater determinant, a linear combination of Slater determinants can be used.
-	This leads to the post--Hartree--Fock methods like Full--CI or MP2.
-	The second approach is the Density Functional Theory (DFT).\\
-	The Hohenberg--Kohn theorems build the basis for the DFT.
-	These two theorems postulate, that the energy is a functional of the density,
-	and that this functional follows the variational principle.\\
-	The description of the energy can therefore be done via the density of the electrons,
-	which is defined in Eq.~\eqref{eq:Density}.
-	Where, $n_\mathrm{occ}$ is the occupation number of the spin--orbital wave function.
-	\begin{align}
-		\label{eq:Density}
-		\rho(\textbf{r}) = n_\mathrm{occ} \sum_{i=1}^n  |\phi_i(\textbf{r})|^2
-	\end{align}
-	The general approach is to describe the energy in dependence of the electron density $E[\rho]$.
-	There are different approaches for this connection. 
-	The most known approach, Kohn--Sham Density Functional Theory (KS--DFT), will be discussed.
-	The energy in KS--DFT consists of the inexact kinetic energy, coulomb integral,
-	the exchange correlation energy and the potential field.
-	The kinetic energy is inexact, due to the assumption of non--interacting electrons.
-	The energy $E_\mathrm{XC}$ consists mainly of the correlation energy and the exchange energy.
-	In theory, the energy $E_\mathrm{XC}$ should also include the self interaction energy and a correction to the kinetic energy.
-	\begin{align}
-		\label{eq:EnergyDFT}
-		E[\{\phi_i\}] = T[\{\phi_i\}] + J[\rho] + E_\mathrm{XC}[\rho] + \int v(\textbf{r}) \rho(\textbf{r}) \mathrm{d}\textbf{r}
-	\end{align}
-	The minimization of the energy is done by a Lagrangian optimization with analogue conditions compared to Hartree--Fock.
-	This leads to the Kohn--Sham operator and a new eigenequation, which is shown in Eq~\eqref{eq:KSEigeneq}.
-	\begin{align}
-		\hat{f}^\mathrm{KS}(\textbf{r}_i) \phi_k(\textbf{r}_i) &= \epsilon(\textbf{r}_i) \phi_k(\textbf{r}_i)\label{eq:KSEigeneq}\\
-		\hat{f}^\mathrm{KS}(\textbf{r}_i) &= \hat{h}_i + 2 \sum^n_{j=1} \hat{J}_j + \hat{v}_\mathrm{xc} 
-	\end{align}
-	In comparison to the Fock operator, $\hat{f}^\mathrm{KS}(\textbf{r}_i)$ includes an exchange--correlation term, instead of the exchange operator.
-	With a basis set approach analogue to the HF model,
-	an eigenvalue equation similar to the Roothaan--Hall equation is derived.
-	% The spin--orbital wave functions are described via a basis set approximation.
-	% This LCAO--approach is shown in Eq.~\eqref{eq:BasisSet},
-	% where the spin--orbital wave--functions are the sum of $K$ basis functions with an associated constant.
-	% \begin{align}
-	% 	\label{eq:BasisSet}
-	% 	\phi_i(\textbf{r}) = \sum_\mu^K c_\mu \chi_\mu (\textbf{r})
-	% \end{align}
-	% Merging the basis--set approach into the Kohn--Sham eigenequation leads to a matrix eigenequation shown in Eq.~\eqref{eq:FCSCe}.
-	% Here, $\textbf{F}$ is the Fock matrix, $\textbf{C}$ a matrix of coefficients,
-	% $\textbf{S}$ the overlap matrix and $\bm{\upepsilon}$ the diagonal eigenvalue matrix.
-	% This equation can now be used to find a solution for the energy iteratively.
-	% Starting with an initial guess of the Fock matrix,
-	% the matrix $\textbf{C}$ is computed, with this matrix, the density matrix $\textbf{D}$ is calculated. 
-	% From the matrix $\textbf{D}$, is then used for the calculation of the new Fock matrix.
+The Fock--operator $\hat{f}(\textbf{r}_i)$ is an effective one--electron operator.
+This enables the determination of the spin--orbital wave functions in an iterative manner,
+as the Fock--operator itself depends on the spin--orbital wave functions.
+The iterative search is possible due to the self--consistency of the Hartree--Fock equation. 
+Furthermore, the general optimization can be achieved due to the Rayleigh--Ritz variational principle.
+Important to point out is that the Fock--operator consists of the one--electron operator, the exchange--operator
+and the coulomb operator, while the correlation is not included. \\
+The spin--orbital wave functions are described via a basis set approximation.
+This LCAO--approach is shown in Eq.~\eqref{eq:BasisSet},
+where the spin--orbital wave--functions are the sum of $K$ basis functions with an associated constant.
+\begin{align}
+	\label{eq:BasisSet}
+	\phi_i(\textbf{r}) = \sum_\mu^K c_\mu \chi_\mu (\textbf{r})
+\end{align}
+Merging the basis--set approach into Eq.~\eqref{eq:FockEquation} leads to Roothaan--Hall equation shown in Eq.~\eqref{eq:FCSCe}.
+Here, $\textbf{F}$ is the Fock matrix, $\textbf{C}$ a matrix of coefficients $c_\mu$,
+$\textbf{S}$ the overlap matrix and $\bm{\upepsilon}$ the diagonal eigenvalue matrix.
+This equation is used find a solution for the energy iteratively.
+Starting with an initial guess of the Fock matrix,
+the matrix $\textbf{C}$ is computed, with this matrix, the density matrix $\textbf{D}$ is calculated. 
+The density matrix $\textbf{D}$, is then used for the calculation of the new Fock matrix.
+\begin{align}
+	\label{eq:FCSCe}
+	\textbf{F} \textbf{C} = \textbf{S} \textbf{C} \bm{\upepsilon}
+\end{align}
+% \textcolor{blue}{There is an infinite large number of possible solutions for the spin--orbital wave functions,
+% which leads to high computational cost and capacity for solving.
+% For the simplification, a basis set of a LCAO--approach is used for the computation of the spin--orbital wave function.}
+% \begin{align}
+% 	\phi(\textbf{r}) = \sum_\mu^K c_\mu \chi_\mu(\textbf{r})
+% \end{align}
+% \subsection{Kohn--Sham Density Functional Theory}
+% The molecule--orbital wave functions $\psi_i$ is approximated with basis sets, shown in Eq.~\eqref{eq:BasisSet}
+% \begin{align}
+% 	\label{eq:BasisSet}
+% 	\psi_i = \sum^{A}_{i} \chi 
+% \end{align}
+\subsection{Kohn--Sham Density Functional Theory}
+As mentioned above, the correlation between electrons is not described in the Hartree--Fock model,
+due to the use of a single Slater determinant.\\
+The correlation energy can be described by two different approaches.
+Instead of using one single Slater determinant, a linear combination of Slater determinants can be used.
+This leads to the post--Hartree--Fock methods like Full--CI or MP2.
+The second approach is the Density Functional Theory (DFT).\\
+The Hohenberg--Kohn theorems build the basis for the DFT.
+These two theorems postulate, that the energy is a functional of the density,
+and that this functional follows the variational principle.\\
+The description of the energy can therefore be done via the density of the electrons,
+which is defined in Eq.~\eqref{eq:Density}.
+Where, $n_\mathrm{occ}$ is the occupation number of the spin--orbital wave function.
+\begin{align}
+	\label{eq:Density}
+	\rho(\textbf{r}) = n_\mathrm{occ} \sum_{i=1}^n  |\phi_i(\textbf{r})|^2
+\end{align}
+The general approach is to describe the energy in dependence of the electron density $E[\rho]$.
+There are different approaches for this connection. 
+The most known approach, Kohn--Sham Density Functional Theory (KS--DFT), will be discussed.
+The energy in KS--DFT consists of the inexact kinetic energy, coulomb integral,
+the exchange correlation energy and the potential field.
+The kinetic energy is inexact, due to the assumption of non--interacting electrons.
+The energy $E_\mathrm{XC}$ consists mainly of the correlation energy and the exchange energy.
+In theory, the energy $E_\mathrm{XC}$ should also include the self interaction energy and a correction to the kinetic energy.
+\begin{align}
+	\label{eq:EnergyDFT}
+	E[\{\phi_i\}] = T[\{\phi_i\}] + J[\rho] + E_\mathrm{XC}[\rho] + \int v(\textbf{r}) \rho(\textbf{r}) \mathrm{d}\textbf{r}
+\end{align}
+The minimization of the energy is done by a Lagrangian optimization with analogue conditions compared to Hartree--Fock.
+This leads to the Kohn--Sham operator and a new eigenequation, which is shown in Eq~\eqref{eq:KSEigeneq}.
+\begin{align}
+	\hat{f}^\mathrm{KS}(\textbf{r}_i) \phi_k(\textbf{r}_i) &= \epsilon(\textbf{r}_i) \phi_k(\textbf{r}_i)\label{eq:KSEigeneq}\\
+	\hat{f}^\mathrm{KS}(\textbf{r}_i) &= \hat{h}_i + 2 \sum^n_{j=1} \hat{J}_j + \hat{v}_\mathrm{xc} 
+\end{align}
+In comparison to the Fock operator, $\hat{f}^\mathrm{KS}(\textbf{r}_i)$ includes an exchange--correlation term, instead of the exchange operator.
+With a basis set approach analogue to the HF model,
+an eigenvalue equation similar to the Roothaan--Hall equation is derived.
+% The spin--orbital wave functions are described via a basis set approximation.
+% This LCAO--approach is shown in Eq.~\eqref{eq:BasisSet},
+% where the spin--orbital wave--functions are the sum of $K$ basis functions with an associated constant.
+% \begin{align}
+% 	\label{eq:BasisSet}
+% 	\phi_i(\textbf{r}) = \sum_\mu^K c_\mu \chi_\mu (\textbf{r})
+% \end{align}
+% Merging the basis--set approach into the Kohn--Sham eigenequation leads to a matrix eigenequation shown in Eq.~\eqref{eq:FCSCe}.
+% Here, $\textbf{F}$ is the Fock matrix, $\textbf{C}$ a matrix of coefficients,
+% $\textbf{S}$ the overlap matrix and $\bm{\upepsilon}$ the diagonal eigenvalue matrix.
+% This equation can now be used to find a solution for the energy iteratively.
+% Starting with an initial guess of the Fock matrix,
+% the matrix $\textbf{C}$ is computed, with this matrix, the density matrix $\textbf{D}$ is calculated. 
+% From the matrix $\textbf{D}$, is then used for the calculation of the new Fock matrix.
 	\begin{align}
 		\label{eq:FCSCe}
 		\textbf{F} \textbf{C} = \textbf{S} \textbf{C} \bm{\upepsilon}
@@ -244,7 +252,7 @@ The full rotation of the coordinate system in dependency of the Euler angles is 
 		\label{eq:GFN2:Rho0}
 		\rho_0 = \sum_A \rho_{0,A}
 	\end{align}
-	The energy is following expanded by a Taylor series around the electron density $\rho_0$.
+	The energy is expanded by a Taylor series around the electron density $\rho_0$.
 	In GFN2--xTB the expansion is done up to the third order.
 	\begin{align}
 		\label{eq:GFN2:EnergyPerturbation}
@@ -325,8 +333,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 
 
     \section{Hessian Matrices}
-	Hessian matrices are required for several uses like the computation of wave numbers or thermodynamic quantities.
-	Furthermore, they are necessary for the transition state search.
+	The hessian matrices are the target for the ML model.
+	Therefore, a brief introduction to the hessian elements and its projection and mass weighting is given.\\
 	The hessian matrix is a $3M \times 3M$ matrix of second derivatives
 	of the energy in respect to every permuted atom coordinate pair in the system.
 	\begin{align}
@@ -339,8 +347,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 			\dfrac{\partial^2 E}{\partial z_N \partial x_A}  & \hdotsfor{0} & & \dfrac{\partial^2 E}{\partial z_M \partial z_M} 
 		\end{matrix}\right)
 	\end{align}
-	The hessian matrix can be divided into $M^2$ $3 \times 3$ block matrices,
-	where each depends on the coordinates of an atom pair.
+	\textbf{H} can also be described by $M^2$ $3 \times 3$ block matrices,
+	where each $3 \times 3$~matrix depends on the coordinates of an atom pair.
 	Theses $3 \times 3$ block matrices are beneficial for the prediction, as they only depend on two atoms.
 	Hence, only information about the two atoms need to be given to the machine learning model to predict the block matrix.
 	\begin{align}
@@ -388,7 +396,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 			\textbf{r}_A^y & -\textbf{r}_A^x & 0 
 		\end{matrix} \right)
 	\end{align}
-	For a system of $N$ atoms, the full overlap matrix is shown in Eq.~\eqref{eq:RotTransMatFull}
+	For a system of $N$ atoms, the full matrix $\textbf{O}$ is shown in Eq.~\eqref{eq:RotTransMatFull}
 	\begin{align}
 		\label{eq:RotTransMatFull}
 		\textbf{O} = \left(\begin{matrix}
@@ -396,12 +404,12 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\end{matrix}
 		\right)
 	\end{align}
-	After that, the rotation and translation matrix is normalized to $\textbf{O}_n$.
+	After that, the rotation and translation matrix is normalized to $\textbf{O}_\mathrm{n}$.
 	For the detection, the overlap matrix $\textbf{M}$ between the normalized rotation and translation matrix and the hessian matrix is computed (s. Eq.~\eqref{eq:OverlapMatProj}).
 	The multiplication of the $6\times 3N$ and $3N \times 3N$ matrix leads to $6 \times 3N$ matrix.
 	\begin{align}
 		\label{eq:OverlapMatProj}
-		\textbf{M} = \textbf{O} \times \textbf{H}
+		\textbf{M} = \textbf{O}_\mathrm{n} \times \textbf{H}
 	\end{align}
 	The columns of \textbf{M} are summed up, which leads to a $3N$ vector.
 	The maximum values of this vector corresponds to the highest overlap between a row in the Hessian matrix and the translations and rotation matrix.
@@ -414,8 +422,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\begin{align}
 		\textbf{H}^\mathrm{proj} =\textbf{H} - \sum_{i \in \textbf{v}} \bm{\uplambda}_i \cdot{\textbf{Q}^\intercal}_i \otimes \left({\textbf{Q}^\intercal}_i\right)^\intercal
 	\end{align}
-	At last, the hessian needs to be mass weighted. Every element is multiplied by a specifc factor,
-	which depends on the mass $m_A$ of the atoms $A$ of the coordinates.
+	At last, the hessian needs to be mass weighted.
 	\begin{align}
 		\label{eq:MassWeightedHess}
 		\textbf{H}_{AB}^\mathrm{proj,w} = \dfrac{1}{\sqrt{m_A m_B}} \textbf{H}_{AB}^\mathrm{proj}
@@ -428,7 +435,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	In this section, decision tree based algorithms will be discussed,
 	and the differences between the ETR and RFR will be emphasized.\\
 	Often these decision tree based algorithms are based on the Classification and Regression Tree (CART) algorithm.
-	For an example, a response $Y$ that depends on two variables $X1$ and $X2$ is assumed.
+	The CART algorithm will be explained with an example. Assuming a response $Y$ that depends on two variables $X1$ and $X2$ is assumed.
 	The variables $X1$ and $X2$ are called features.
 	A tree based model splits the space of this function into several recursive binary partitions.
 	Recursive binary means in this case, that the splits are orthogonal to the axis of the features.
@@ -441,6 +448,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\label{fig:ML_Split}
 	\end{figure}
 	In each partition $Y$ is modeled with a function or constant $R_i$.
+	This can also be depicted in a more familiar approach, which is the decision tree.
+	This is shown in Fig.~\ref*{fig:ML_Split}. Both depictions lead to the same result.\\
 	The splitting points $t_1$ to $t_4$ are chosen differently for the RFR and ETR.
 	In RFR, the splitting point is determined by choosing the best feature and of this feature the best split value.
 	Hence, it is a two dimensional search.

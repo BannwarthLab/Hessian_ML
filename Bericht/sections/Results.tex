@@ -6,12 +6,12 @@ Both models were further investigated by three adjustments,
 namely the algorithms, the labeling and a generalization.\\
 At first, as described in the Chapter Theory,
 the RFR and ETR are used as the different algorithms for the fitting of the ML model.
-For the labeling the two possible cases of the labeling,
-which are the indexed and permuted case were discussed. These are abbreviated with Idx(Indexed) and Perm(Permuted).
-At last, it is investigated,
-how the performance changes if instead of fitting the ML model only case--specific
-the ML model is fitted to a general model, that predicts all cases.
-For this differentiation, the abbreviations Case (case--specific) and Gen (general) are used.
+Secondly, there are two possibility for the labeling.
+Either the indexed (Idx) case is used or the permuted (Perm) case.
+The third adjustment is the distinction between a case specific (Case) and a general (Gen) model.
+For the case specific models, only one molecular system with different structures is used for the training of a model.
+While in the general model all molecular systems are used to train one single model. 
+For the further discussion, abbreviations are used for the description of the different variations of the model.
 As an example, the abbreviation for the model with the ETR as the algorithm, the indexed labeling and general case is ETR--Gen--Idx.\\
 A data set for benchmarking the ML model was constructed. The set consists of eight different molecules.
 These are namely $\mathrm{H}_2$, $\mathrm{N}_2$, $\mathrm{O}_2$, $\mathrm{F}_2$, $\mathrm{HF}$, $\mathrm{CO}$,
@@ -21,15 +21,20 @@ Only the distance of one bond was changed for each molecule.
 This lead into 103 different structures. These structures were split into a training set of 75\% and a test set of 25\%.
 The split is done structure wise to achieve the possibility to compare other quantities then the hessian elements.
 For each structure, the hessian and feature were calculated with the GFN2--xTB method.\\
+Moreover, the performance of the model to a complete unknown system is of interest.
+Therefore, a H$_3$--system was used for this which is predicted by the model.
+The full data set named above was used as a training set for the model,
+while the H$_3$--system was used as the test set.
+
 \section{The $\mathrm{\textbf{H}}_\mathrm{\textbf{2}}$ system}
-As a first approach, the ETR--Case--Perm model was used for the subset of the hydrogen molecule.
-For this the wave numbers $\tilde{\nu}_\mathrm{ML}$ were predicted and plotted against the wave numbers $\tilde{\nu}_\mathrm{xTB}$ calculated via GFN2--xTB.
+As a first approach,
+the ETR--Case--Perm model was used for the subset of the hydrogen molecule.
+Here, the wave numbers $\tilde{\nu}_\mathrm{ML}$ were predicted and plotted against the via GFN2--xTB calculated wave numbers $\tilde{\nu}_\mathrm{xTB}$.
 This is done for 5 random states and is shown in Fig.~\ref{fig:WN_H2}.
 The black line is the diagonal, on which the data points would appear for a perfect prediction.
 Furthermore, the wave number increases with the decrease of the bond length.
 For the approximated range of $1800~\mathrm{cm^{-1}} < \tilde{\nu}_\mathrm{xTB}< 7500~\mathrm{cm^{-1}}$
-there are abbreviations from the diagonal and therefore a sufficient prediction.
-In respect to the small data set of only eleven structures for the full subset of hydrogen, the prediction is 
+there are abbreviations from the diagonal and therefore, in respect to the small data set of eleven structures, a sufficient prediction.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{H2_single/Clean.eps}
@@ -42,6 +47,7 @@ In respect to the small data set of only eleven structures for the full subset o
 \end{figure}
 The abbreviations are stronger in the cases of $1800~\mathrm{cm^{-1}} > \tilde{\nu}_\mathrm{xTB}$ and $\tilde{\nu}_\mathrm{xTB} > 7500~\mathrm{cm^{-1}}$.
 These predictions are probably done for cases, where the training set does not include molecules, which have a lower or higher distance, respectively.
+Hence, it can be assumed, that the error is due to extrapolation of the ML model.
 This assumption is underlined by the fact, that the predicted values correspond to the next higher or lower value.
 For example, the next lowest value in the case of the prediction at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$ is $\tilde{\nu}_\mathrm{xTB} \approx 7\cdot 10^4 \mathrm{cm^{-1}}$.
 This in the same order as the predicted value $\tilde{\nu}_\mathrm{ML}\approx 6.4\cdot 10^4 \mathrm{cm^{-1}}$ at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$.
@@ -54,10 +60,11 @@ For the comparison of the algorithms, the RFR--Gen-Perm and ETR--Gen--Perm model
 These models are compared to each other by testing there dependency on the amount of training set used.
 As the quantity for testing the performance the MSE 
 between the predicted hessian and the hessian computed via GFN2--xTB is used.
-The MSE was calculated for ten different random states and the mean of these MSE was calculated.\\
-It is expected, that the performance of the ML model should increase, the more data it is trained with. 
+The MSE was calculated for ten different random states and the mean and standard deviation of these MSE was calculated.\\
+It is expected, that the performance of the ML model should increase, the more data it is trained with.
+This can be interpreted as a statistical learning behavior. 
 To verify this behavior, the training set was increased successively.
-The full training set is 75~\% of the full data set. Thus, test set is 25~\%.
+The full training set is 75~\% of the full data set. Thus, the test set is 25~\% of the data set.
 While keeping the test set constant, the training set is changed successively between 7.5~\% of the data set to 75~\%.
 Fig~\ref{fig:Comparison_RFR_ETR} shows the MSE in the dependency of the amount of training set used for the ETR (on the left)
 and the RFR (on the right). The error bars indicate the standard deviation.
@@ -115,9 +122,9 @@ that the ML model learns statistically from the features used for the prediction
 
 \section{Comparison of Permutation Model and Indexed Model}
 Beside the different algorithms for the construction of the trees,
-the Case and Gen as also Idx and Perm models were compared to another.
-The models ETR--Gen--Perm, ETR--Gen--Idx, ETR--Case--Perm and ETR--Case--Idx are investigated.
-The quantities for measuring are the hessian elements, the wave numbers and the zero point vibrational energy.
+the models with the variations of Gen/Case and Idx/Perm were compared.
+Here, the models ETR--Gen--Perm, ETR--Gen--Idx, ETR--Case--Perm and ETR--Case--Idx are investigated.
+The quantities for measuring are the hessian elements and the wave numbers of the harmonic vibration.
 The difference between the predicted and via GFN2--xTB computed quantities were computed.
 From these differences the standard deviation as also the mean were calculated,
 and a Gaussian distribution was assumed.
@@ -137,7 +144,7 @@ and its distribution is shown in Fig~\ref{fig:ErrorDistHess}.
 Comparing the \mbox{ETR--Case--Perm} and \mbox{ETR--Case--Idx},
 as also \mbox{ETR--Gen--Perm} and \mbox{ETR--Gen--Idx} shows,
 that both approaches for the labeling of the features do not differ significantly.
-Thus, both approaches are in good agreement with another.
+Hence, both approaches are in good agreement with another.
 This shows, on the one hand,
 the strength of the decision tree algorithms.
 They cannot overfit and seem to be capable of describing this complex system with a simple differentiation by indexes.
@@ -175,18 +182,19 @@ The ETR--Gen--Perm and ETR--Gen--Idx show a better performance than the ETR--Cas
 The mean is shifted to a negative $\Delta \tilde{\nu}$.
 In contrast to the Gaussian distribution of the hessian elements, the Idx models show a marginal better performance than the Perm model.
 The deviations of several $\mathrm{kcal \cdot mol^{-1}}$ are rather strong.
-These strong deviations might be due to a high extrapolation errors, which lead to high standard distribution
+These strong deviations might be due to high extrapolation errors, which lead to high standard distribution.
 For example at $\tilde{\nu}_\mathrm{xTB} \approx 65 \mathrm{kcal \cdot mol^{-1}}$ the deviation might be due to extrapolation.
 Hence, the difference of about $\Delta \tilde{\nu} \approx 20 \mathrm{kcal \cdot mol^{-1}}$  has a strong influence on the distribution,
 although ML is not customized for extrapolation problems.
-
-
-
+Contrary to the extrapolation errors are the wave numbers, which correspond to rotation and translation.
+These wave numbers are approximately zero and have large contribution to number of wave numbers.
+Therefore, the narrow the standard deviation, and shift the mean to zero. Further investigations are necessary,
+to see whether the extrapolation or the wave numbers, corresponding to rotation and translation, have a higher impact onto the mean and standard deviation.\\
 \section{Benchmarking the H$_\mathrm{\textbf{3}}$~system}
 Especially, the prediction of hessian matrices of fully unknown systems is of interest.
 Hence, the ETR-Gen-Perm and ETR-Gen-Idx models were tested on the performance on a new, for the model unknown, system.
 For the $\mathrm{H}_3$ system the outer hydrogen atoms were fixed,
-while the hydrogen atom was shift from one hydrogen to another.
+while the inner hydrogen atom was shift from one hydrogen to another.
 For each position of the hydrogen atom,
 the force constants of the systems were predict via the ML model.
 The force constants were also calculated via GFN2--xTB.\\
