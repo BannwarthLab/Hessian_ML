@@ -39,6 +39,7 @@
 	\setstretch {1.433}%
 	\fi
 }
+
 \newcommand{\MSdoublespacing}{%
 	\setstretch {1.92}%  default
 	\ifcase \@ptsize \relax % 10pt
@@ -49,6 +50,7 @@
 	\setstretch {1.902}%
 	\fi
 }
+
 \usepackage{etoolbox}
 \patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
 \makeatother
