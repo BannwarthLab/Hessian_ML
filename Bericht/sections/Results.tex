@@ -25,7 +25,7 @@ Moreover, the performance of the model to a complete unknown system is of intere
 Therefore, a H$_3$--system was used for this which is predicted by the model.
 The full data set named above was used as a training set for the model,
 while the H$_3$--system was used as the test set.
-
+\newpage
 \section{The H$_\mathrm{\textbf{2}}$ system}
 As a first approach,
 the \mbox{ETR--Case--Perm} model was used for the subset of the hydrogen molecule.
@@ -146,7 +146,7 @@ as also \mbox{ETR--Gen--Perm} and \mbox{ETR--Gen--Idx} shows,
 that both approaches for the labeling of the features do not differ significantly.
 Hence, both approaches are in good agreement with another.
 This shows, on the one hand,
-the strength of the decision tree algorithms.
+the strength of the decision tree algorithms.\newpage
 They cannot overfit and seem to be capable of describing this complex system with a simple differentiation by indexes.
 On the other hand, the permuted model does the same prediction for the model,
 but may be useful for other machine learning algorithms or even neural networks.\\
@@ -186,6 +186,7 @@ These strong deviations might be due to high extrapolation errors, which lead to
 For example at $\tilde{\nu}_\mathrm{xTB} \approx 65 \mathrm{kcal \cdot mol^{-1}}$ the deviation might be due to extrapolation.
 Hence, the difference of about $\Delta \tilde{\nu} \approx 20 \mathrm{kcal \cdot mol^{-1}}$  has a strong influence on the distribution,
 although ML is not customized for extrapolation problems.
+\newpage
 Contrary to the extrapolation errors are the wave numbers, which correspond to rotation and translation.
 These wave numbers are approximately zero and have large contribution to number of wave numbers.
 Therefore, the narrow the standard deviation, and shift the mean to zero. Further investigations are necessary,
@@ -204,7 +205,7 @@ The ML model should, in principle, mimic this behavior.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{ForceConstants/force_const_H3_idx.eps}
+    \includegraphics[width = 0.8\textwidth]{ForceConstants/force_const_H3_idx.eps}
     \caption[Force constants predicted by the indexed multimodel and calculated with
     \mbox{GFN2--xTB} for $\mathrm{H}_3$~system]{
     Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
@@ -224,7 +225,7 @@ Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\ang
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{ForceConstants/force_const_H3_perm.eps}
+    \includegraphics[width = 0.8\textwidth]{ForceConstants/force_const_H3_perm.eps}
     \caption[Force constants predicted by the permuted multimodel and calculated with
     \mbox{GFN2--xTB} for $\mathrm{H}_3$~system]{Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
     The force constants are shown for the \mbox{GFN2--xTB} calculation (red),
@@ -233,7 +234,8 @@ Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\ang
     The ML model \mbox{ETR--Gen--Perm} was used for the prediction.}
     \label{fig:FC_perm}
 \end{figure}
-
+An overall sufficient prediction of the force constants was achieved,
+though there are still errors in the symmetry.
 Further investigations on the models are necessary,
 to locate the reason for the break of symmetry.
 Worth considering are the rotation process, the homonuclear and heteronuclear model.
@@ -287,7 +289,6 @@ the model can be adapted to a $\Delta$ML model.\\
     For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ are computed. }
     \label{fig:ErrorDistHessP}
 \end{figure}
-\begin{subequations}
     
 \begin{figure}[H]
     \centering
@@ -300,12 +301,28 @@ the model can be adapted to a $\Delta$ML model.\\
     \label{fig:ErrorDistZPE}
 \end{figure}
 
+\begin{subequations}
+
 \begin{align}
     CN_A &= \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{1}{1+\exp\left(\dfrac{-16a\cdot 4 (R_{A,\mathrm{cov}}+R_{B,\mathrm{cov}})}{3R_{AB}-1}\right)} \\
     CN^\mathrm{ext} &= \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{CN_B}{f_\mathrm{damp}(R_A,R_B)}\\
     q_A &= Zg_A - \sum_{\mu \in A}^{N_\mathrm{BF}}\sum_{\nu}^{N_\mathrm{BF}} P_{\mu \nu} S_{\mu \nu}\\
-    q_A^\mathrm{ext} &= q_A + \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{q_B}{f_\mathrm{damp}}
+    q_A^\mathrm{ext} &= q_A + \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{q_B}{f_\mathrm{damp}}\\
+    E_{A,\mathrm{EHT}} &= \sum_{k \in A} \sum_k P_{k\lambda} H_{k\lambda}\\
+    E_{A,\mathrm{rep}} &= \sum_{B \neq A}^{M} \dfrac{1}{2} \dfrac{Y_{A}^\mathrm{eff}Y_{B}^\mathrm{eff}}{R_{AB}}
+    \cdot \exp \left(\alpha_A \alpha_B \right)^{0.5} R_{AB}^{k_\mathrm{rep}}\\
+    E_{A,\mathrm{disp}}^{(2)} &= \sum_{A \neq B} \sum_{n=6,8} -s_n \dfrac{1}{2}
+    \dfrac{C_n^{AB}(q_a,CN_\mathrm{cov}^A,q_b,CN_\mathrm{cov}^B)}{R_{AB}^n} f_{n}^\mathrm{damp,BJ}(R_{AB})\\
+    E_{A,\mathrm{disp}}^{(3)} &= \sum_{B \neq A} \sum_{C \neq B \neq A} 
+    -s_9 \dfrac{1}{3} 
+    \dfrac{(3 \cos(\theta_{ABC}) \cos(\theta_{BCA} \cos(\theta_{CBA}) + 1))}{(R_{AB}R_{AC}R_{BC})^3} \nonumber\\ 
+    &\cdot  C_9^{ABC}(CN_\mathrm{cov}^A,CN_\mathrm{cov}^B,CN_\mathrm{cov}^C) \cdot 
+    f_{9}^\mathrm{damp,zero}(R_{AB},R_{AC},R_{BC})\\
+    E_{A,\mathrm{AES}} &= E_{A,q\mu} + E_{A,q\theta} + E_{A,\mu\mu} \nonumber \\
+    &= \sum_{B \neq A} \dfrac{1}{2} \bigg(f_3(R_{AB})\big[q_A(\bm{\mu}_B^\intercal\textbf{R}_{BA}) + q_B (\bm{\upmu}_A^\intercal)\textbf{R}_{AB} \big] \nonumber\\
+    &+ f_5(R_{AB}) \big[q_A\bm{R}_{BA}^\intercal \bm{\Uptheta}_B \bm{R}_{BA} +q_B\bm{R}_{BA}^\intercal \bm{\Uptheta}_A \bm{R}_{BA} \nonumber \\
+    &- 3 (\bm{\upmu}_A^\intercal\bm{R}_{AB})(\bm{\upmu}_B^\intercal\bm{R}_{AB}) +  (\bm{\upmu}_A^\intercal \bm{\upmu}_B R_{AB}^2)  \big] \bigg)\\
+    E_{A,\mathrm{AXS}} &= \left( f_{\mathrm{XC}^{\mu_A}|\bm{\upmu}_A|^2 } + f_{\mathrm{XC}^{\Theta_A}||\bm{\Uptheta}_A||^2 } \right) \\
+    E_{A,\mathrm{IES+IXC}} &= \dfrac{1}{2} \sum_{B \neq A} \sum_{l \in A} \sum_{l' \in B} q_{A,l} q_{B,l'} \gamma_{AB,ll'} + \dfrac{1}{3} \sum_{l \in A} \Gamma_{A,l} q_{A,l}^3
 \end{align}
-
-
 \end{subequations}

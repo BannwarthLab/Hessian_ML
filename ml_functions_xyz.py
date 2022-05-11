@@ -495,13 +495,13 @@ def plot_non_diag_perm_importances(model,X,y,col_name,info):
     ax.bar(ticks[3] ,importances[3],alpha=1.0, width=0.15,color = 'blue')
 
     print(len(importances),(len(col_name)-N)*3+N)
+    print(col_name[0],col_name[N_features+3])
 
     #ax.bar(ticks[N:N_features+N]-0.3 ,importances[N:N_features+N],alpha=1.0, width=0.15, label = 'A')
     #ax.bar(ticks[N:N_features+N]-0.15,importances[N_features+N:2*N_features+N],alpha=1.0, width=0.15, label = 'B')#'atom A')
     ax.bar(ticks[N:N_features+N]-0.15      ,importances[0*N_features+N:1*N_features+N],alpha=1.0, width=0.15, label = 'arithmetic mean')#'atom B')
     ax.bar(ticks[N:N_features+N]           ,importances[1*N_features+N:2*N_features+N],alpha=1.0, width=0.15, label = 'product')#'arithmetic mean')
     ax.bar(ticks[N:N_features+N]+0.15      ,importances[2*N_features+N:3*N_features+N],alpha=1.0, width=0.15, label = 'absolute difference')
-
     #ax.bar(ticks[167:207]+0.3 ,importances[163:203],alpha=1.0, width=0.15, label = 'absolute difference')
 
     ax.legend()

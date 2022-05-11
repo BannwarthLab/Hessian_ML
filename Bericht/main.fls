@@ -1563,9 +1563,9 @@ INPUT ./main.out
 INPUT main.run.xml
 OUTPUT main.run.xml
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-rm.enc
-INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/euler/eurb10.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/euler/eurb10.pfb
@@ -1587,6 +1587,8 @@ INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi6.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi6.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi8.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi8.pfb
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmib10.pfb
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmib10.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr10.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr10.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr12.pfb
@@ -1603,6 +1605,8 @@ INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmssbx10.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmssbx10.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy10.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy10.pfb
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy6.pfb
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy6.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy8.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy8.pfb
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmtt10.pfb
