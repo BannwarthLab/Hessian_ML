@@ -1,5 +1,5 @@
 \chapter{Theory}
-For the computation of the features and target vectors for the ML models, the GFN2--xTB method is used. For a invariant system, a rotation of the features and the target is necessary.
+For the computation of the features and target vectors for the ML models, the \mbox{GFN2--xTB} method is used. For a invariant system, a rotation of the features and the target is necessary.
 These rotations are done with Euler angles.
 As the target value are the hessian matrices, a short introduction to the matrices is done.
 At last two algorithms used for machine learning are discussed.
@@ -56,11 +56,11 @@ The full rotation of the coordinate system in dependency of the Euler angles is 
 
 \section{Electronic Structure Theory}
 In this report, properties derived from electronic structure theory are used for the training of the ML models.
-As GFN2--xTB is used for this purpose, a short introduction to the Hartree--Fock model and Density Functional Theory is given.
+As \mbox{GFN2--xTB} is used for this purpose, a short introduction to the Hartree--Fock model and Density Functional Theory is given.
 The introduction starts from the non--relativistic, stationary electronic Schrödinger--equation.
 From this the Hartree--Fock model will be derived.
-This is followed by Density Functional Theory, as this builds the theoretical basis of GFN2--xTB.
-After that the tight--binding method will be introduced from which the semiempirical method GFN2--xTB is derived.
+This is followed by Density Functional Theory, as this builds the theoretical basis of \mbox{GFN2--xTB}.
+After that the tight--binding method will be introduced from which the semiempirical method \mbox{GFN2--xTB} is derived.
 Atomic units are used for all equations in this section.
 
 \subsection{Hartree--Fock Model}
@@ -240,11 +240,11 @@ an eigenvalue equation similar to the Roothaan--Hall equation is derived.
 	% -energie ist also funktional der dichte
 	% -operator einführen
 	% -FC = SCe enführen zum schluss --> lösung beschreiben
-	% -WF die verwendet werden --> erst bei GFN2--xTB
+	% -WF die verwendet werden --> erst bei \mbox{GFN2--xTB}
 	% -Basissatznäherung auch mit rein 
 
-	\subsection{GFN2--xTB Electronic Structure Method}
-	GFN2--xTB is a Density Functional Tight Binding (DFTB) method,
+	\subsection{\mbox{GFN2--xTB} Electronic Structure Method}
+	\mbox{GFN2--xTB} is a Density Functional Tight Binding (DFTB) method,
 	that is optimized for \textbf{G}eomteries,
 	\textbf{F}requencies and \textbf{N}oncovalent interaction energies.
 	In these DFTB methods, the electron density $\rho_0$ is a linear combination of atomic electron densities $\rho_{0,A}$.
@@ -253,7 +253,7 @@ an eigenvalue equation similar to the Roothaan--Hall equation is derived.
 		\rho_0 = \sum_A \rho_{0,A}
 	\end{align}
 	The energy is expanded by a Taylor series around the electron density $\rho_0$.
-	In GFN2--xTB the expansion is done up to the third order.
+	In \mbox{GFN2--xTB} the expansion is done up to the third order.
 	\begin{align}
 		\label{eq:GFN2:EnergyPerturbation}
 		E[\rho] = E^{(0)}[\rho_0] + E^{(1)}[\rho_0,(\delta \rho)]
@@ -302,7 +302,7 @@ an eigenvalue equation similar to the Roothaan--Hall equation is derived.
 The second order energy perturbation $E^{(2)}[\rho_0,(\delta \rho)^2]$ is described by the contribution of dispersion,
 electrostatics and exchange correlation energies.
 The exchange and correlation energy~$E_\mathrm{XC}^{(2)}$
-and electrostatic energy~$E_\mathrm{ES}^{(2)}$ are described in GFN2--xTB with an isotropic as also an anisotropic contribution.
+and electrostatic energy~$E_\mathrm{ES}^{(2)}$ are described in \mbox{GFN2--xTB} with an isotropic as also an anisotropic contribution.
 This is in contrast to other DFTB methods, where only a monopole approximation is done.
 Hence, there is only an isotropic description in other methods.
 	\begin{align}

@@ -3,7 +3,7 @@
 \section{Feature Overview}
 	In this section an overview of the used features is given.
 	The quantities used for the feature vector are depicted in Tab.~\ref{tab:Feature}
-	and are generated with the GFN2--xTB method. The features are mostly atom centered quantities
+	and are generated with the \mbox{GFN2--xTB} method. The features are mostly atom centered quantities
 	and are based on geometry, density or energy.
 	The features were calculated for the systems in the APF CS.\\
 	There are quantities, which also have an extended version.
@@ -373,17 +373,17 @@ The procedure of the projection and mass--weighting is described in the chapter 
 
 \section{Quantities for Measuring}
 The mean squared error~MSE was chosen for the quantification of the learning process of the ML models.
-The ML models are trained with GFN2--xTB based information. Therefore, the reference is also GFN2--xTB.
+The ML models are trained with \mbox{GFN2--xTB} based information. Therefore, the reference is also \mbox{\mbox{GFN2--xTB}}.
 In Eq.~\eqref{eq:MSE} is the MSE shown.
-Here, $y$ corresponds to the hessian elements, calculated with GFN2--xTB and predicted with the ML model.
+Here, $y$ corresponds to the hessian elements, calculated with \mbox{GFN2--xTB} and predicted with the ML model.
 The number of data points is $n$.
 \begin{align}
 	\label{eq:MSE}
 	\mathrm{MSE} =  \dfrac{1}{n} \sum_{i=1}^n \left( y_{i\mathrm{,ML}} - y_{i\mathrm{,xTB}} \right)^2
 \end{align}
-For the comparison of the different models (e.g. ETR--Case--Perm, RFR--Gen--Idx, etc.) the comparison is done by assuming a normal distribution.
+For the comparison of the different models (e.g. \mbox{ETR--Case--Perm}, \mbox{RFR--Gen--Idx}, etc.) the comparison is done by assuming a normal distribution.
 
-For this the difference between the GFN2--xTB computation and ML model prediction is calculated.
+For this the difference between the \mbox{GFN2--xTB} computation and ML model prediction is calculated.
 Furthermore, the standard deviation and mean is computed. After that a normal distribution is assumed.
 This normal distribution is computed with Eq.~\eqref{eq:NormalDistribution}.
 \begin{align}
@@ -415,7 +415,7 @@ planck constant $h$, reduced planck constant $\hbar$, speed of light $c$ and the
 
 \section{Computational Methods}
 
-All electronic structure computations were performed with GFN2--xTB\supercite{Bannwarth2019_GFN2xTB}, for this \textit{xtb}\supercite{Bannwarth2021_xTB} was used.
-The computation of the information for the feature vector and target vector are done with GFN2--xTB level calculation.
-For this the GFN2--xTB code was used. For transformation of the coordinates and the ML models python was used.
+All electronic structure computations were performed with \mbox{GFN2--xTB}\supercite{Bannwarth2019_GFN2xTB}, for this \textit{xtb}\supercite{Bannwarth2021_xTB} was used.
+The computation of the information for the feature vector and target vector are done with \mbox{GFN2--xTB} level calculation.
+For this the \mbox{GFN2--xTB} code was used. For transformation of the coordinates and the ML models python was used.
 Especially, the packages \textit{sklearn}\supercite{scikit-learn}, \textit{numpy}\supercite{numpy} and \textit{pandas}\supercite{pandas.Paper,pandas.software} were used for this project.
