@@ -358,3 +358,28 @@ the model can be adapted to a $\Delta$ML model.\\
         \end{tabular}
     \label{tab:Indices}
 \end{table}
+
+	
+\begin{table}[H]
+    \centering
+    \caption[]{Permutation of the coordinates for each Hessian element.}
+        \begin{tabular}{c c c c c}
+            \hline
+            Hessian Element & x & y & z \\
+            \hline \\[-1em]
+            $\dfrac{\partial^2 E}{\partial x_A \partial x_A}$ & x & y & z & \\ [+0.7em]
+            $\dfrac{\partial^2 E}{\partial x_A \partial y_A}$ & y & x & $-$z & \\[+0.7em]
+            $\dfrac{\partial^2 E}{\partial x_A \partial z_A}$ & z & x & y & \\[+0.7em]
+
+            $\dfrac{\partial^2 E}{\partial y_A \partial x_A}$ & x & y & z & \\[+0.7em]
+            $\dfrac{\partial^2 E}{\partial y_A \partial y_A}$ & y & z & x & \\[+0.7em]
+            $\dfrac{\partial^2 E}{\partial y_A \partial z_A}$ & z & y & $-$x & \\[+0.7em]
+
+            $\dfrac{\partial^2 E}{\partial z_A \partial x_A}$ & x & z & $-$y & \\[+0.7em]
+            $\dfrac{\partial^2 E}{\partial z_A \partial y_A}$ & y & z & x & \\[+0.7em]
+            $\dfrac{\partial^2 E}{\partial z_A \partial z_A}$ & z & x & y & \\[+0.7em]
+            \hline
+
+        \end{tabular}
+    \label{tab:Permutation}
+\end{table}

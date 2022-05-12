@@ -14,8 +14,8 @@
 \contentsline {section}{\numberline {3.4}Machine Learning}{11}{section.3.4}%
 \contentsline {chapter}{\numberline {4}Methods}{13}{chapter.4}%
 \contentsline {section}{\numberline {4.1}ML Model Construction}{13}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Feature Overview old}{15}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Transformation of Coordinates}{17}{section.4.3}%
+\contentsline {section}{\numberline {4.2}Feature Overview old}{14}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Transformation of Coordinates}{16}{section.4.3}%
 \contentsline {section}{\numberline {4.4}Quantities for Measuring}{21}{section.4.4}%
 \contentsline {section}{\numberline {4.5}Computational Methods}{22}{section.4.5}%
 \contentsline {chapter}{\numberline {5}Results and Discussion}{23}{chapter.5}%

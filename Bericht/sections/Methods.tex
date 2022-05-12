@@ -8,9 +8,6 @@ Furthermore, they are all computed for each hessian matrix block $\textbf{H}_{AB
 Beside atom based quantities, features are implemented for the differentiation between the elements of a block $\textbf{H}_{AB}$.
 Two approaches are used for the differentiation.
 These are the \textbf{indexed} and \textbf{permuted} approach.
-The quantities computed with GFN2--xTB are listed in Tab.~\ref{tab:Feature} with a short description.
-There is an extended version for some quantities. If this is the case, the column Extension is ticked.
-The mathematical descriptions of all quantities from GFN2--xTB are shown in the Appendix in Eq.~\eqref{eq:Feature} 
 \begin{table}[H]
 	\centering
 	\caption{List of quantities used for the ML models as features.
@@ -54,11 +51,13 @@ The mathematical descriptions of all quantities from GFN2--xTB are shown in the 
 		\end{tabular}
 	\label{tab:Feature}
 \end{table}
-
+The quantities computed with GFN2--xTB are listed in Tab.~\ref{tab:Feature} with a short description.
+There is an extended version for some quantities. If this is the case, the column Extension is ticked.
+The mathematical descriptions of all quantities from GFN2--xTB are shown in the Appendix in Eq.~\eqref{eq:Feature}\\
 The features are computed for every hessian matrix block $\textbf{H}_{AB}$.
-$\textbf{H}_{AB}$ depends on the coordinates of the atoms $A$ and $B$.
-Hence, the atom based quantities of $A$ and $B$ are used for the computation of the features.
-There is done a differentiation for the case of $A = B$ and $A \neq B$, due to two reasons.
+As these depend only on the atoms $A$ and $B$,
+the atom based quantities of $A$ and $B$ are used for the computation of the features.
+Two different models are used for the case of $A = B$ and $A \neq B$, due to two reasons.
 At first the chosen orientation between those cases differ.
 Secondly the length of the feature vector are differently.
 For the case $A \neq B$, the features are computed from the GFN2--xTB quantities with Eq.~\eqref{eq:FeatureProcess}.
@@ -76,15 +75,24 @@ There is used one further feature, which is the distance between the atoms $R_{A
 In the case of $A = B$ the quantities are used directly, and it is called homonuclear.
 Here, the hessian and features only depend on one atom.\\
 Connecting the hessian elements to the features at this point leads to following problem.
-The features for all elements in a hessian matrix block $\textbf{H}_{AB}$.
+The features for all elements in a hessian matrix block $\textbf{H}_{AB}$ are the same.
 Therefore, the ML model would predict the same value for every element.
 Hence, a differentiation is needed for the elements.
 The first approach is to use three further features $x_i, y_i, z_i$.
 These are indices, which differentiate between each element.
 In the Appendix in Tab.~\ref{tab:Indices} are all indices shown in dependence on the element.\\
 The second approach is the permutation of the coordinate system 
-and with it the vector/matrix quantities from GFN2--xTB, in dependence of the hessian elements that shall be learned.
-
+and with it the vector/matrix quantities from GFN2--xTB,
+in dependence of the hessian elements that shall be learned.
+The coordinate system is always adjusted,
+so that the to be learned hessian element is on the spot of the element  $\dfrac{\partial^2 E }{\partial y_A \partial x_A}$
+For example, if the element $\dfrac{\partial^2 E }{\partial x_A \partial z_A}$ is to be learned.
+The new coordinate system is permuted from $x,y,z$ to $z,x,-y$.
+The permutation is done in a manner, that the new coordinate system is right--handed.
+This connection of new and old coordinate system is depcited in Fig.~\ref{}.
+Furthermore, all permutations are described in the Appendix in Tab.~\ref{tab:Permutation}.
+For the homonuclear this concludes in 37 or 35 features for each hessian element for the indexed or permuted case, respectively.
+And for the heteronuclear model there are 106 or 104 features for each hessian element for the indexed or permuted case, respectively.
 
 \section{Feature Overview old}
 	In this section an overview of the used features is given.
@@ -161,15 +169,15 @@ and with it the vector/matrix quantities from GFN2--xTB, in dependence of the he
 	it is independent for every element in a hessian matrix block $\textbf{H}_{AB}$.
 	Hence, the ML model is not able to distinguish the elements.
 	Two ways were developed and tested, which distinguish the elements.
-	At first, the feature is increased by indices specific for each element. The indices are shown in Tab.~\ref{tab:Indices}
-
-
+	At first, the feature is increased by indices specific for each element.
+	The indices are shown in Tab.~\ref{tab:Indices}.
 	The feature vector is expanded with these indices
 	$ X  = \{x^\mathrm{idx},y^\mathrm{idx},z^\mathrm{idx},X_\mathrm{Arith},X_\mathrm{Prod},X_\mathrm{AbsDiff}\}$.
 	This labeling is called \textbf{indexed} (idx).\\
 	In another approach, the hessian matrix is further rotated,
 	so that the hessian elements are on the same spot for every prediction.
-	In the same way, the feature quantities are adapted. The adapted matrix and coordinate system are shown in the Appendix 
+	In the same way, the feature quantities are adapted.
+	The adapted matrix and coordinate system are shown in the Appendix 
 
 	
 	\begin{table}[H]
@@ -441,7 +449,7 @@ For the comparison of the different models (e.g. \mbox{ETR--Case--Perm}, \mbox{R
 
 For this the difference between the \mbox{GFN2--xTB} computation and ML model prediction is calculated.
 Furthermore, the standard deviation and mean is computed. After that a normal distribution is assumed.
-This normal distribution is computed with Eq.~\eqref{eq:NormalDistribution}.
+This normal distribution is computed with Eq.~\eqref{eq:NormalDistribution}. 
 \begin{align}
 	\label{eq:NormalDistribution}
 	f(x)  = \dfrac{1}{\sigma \sqrt{2\pi}} \exp\left({-\dfrac{1}{2} \left(\dfrac{x-\mu}{\sigma}\right)^2}\right)
