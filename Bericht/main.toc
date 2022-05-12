@@ -1,7 +1,7 @@
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{\nonumberline List of Figures}{iii}{chapter*.2}%
 \contentsline {chapter}{\nonumberline List of Tables}{iii}{chapter*.3}%
-\contentsline {chapter}{\nonumberline List of abbreviations}{iii}{chapter*.4}%
+\contentsline {chapter}{\nonumberline List of abbreviations}{iv}{chapter*.4}%
 \contentsline {chapter}{\numberline {1}Aim}{1}{chapter.1}%
 \contentsline {chapter}{\numberline {2}Motivation}{1}{chapter.2}%
 \contentsline {chapter}{\numberline {3}Theory}{2}{chapter.3}%
@@ -13,17 +13,18 @@
 \contentsline {section}{\numberline {3.3}Hessian Matrices}{9}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Machine Learning}{11}{section.3.4}%
 \contentsline {chapter}{\numberline {4}Methods}{13}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Feature Overview}{13}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Transformation of Coordinates}{15}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Quantities for Measuring}{20}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Computational Methods}{21}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Results and Discussion}{22}{chapter.5}%
-\contentsline {section}{\numberline {5.1}The ML Models and Data Set}{22}{section.5.1}%
-\contentsline {section}{\numberline {5.2}The H$_\mathrm {\textbf {2}}$ system}{23}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Comparison of RFR and ETR}{24}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Comparison of Permutation Model and Indexed Model}{26}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Benchmarking the H$_\mathrm {\textbf {3}}$~system}{28}{section.5.5}%
-\contentsline {chapter}{\numberline {6}Conclusion \& Outlook}{30}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Appendix}{31}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Bibliography}{35}{chapter.8}%
+\contentsline {section}{\numberline {4.1}ML Model Construction}{13}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Feature Overview old}{15}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Transformation of Coordinates}{17}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Quantities for Measuring}{21}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Computational Methods}{22}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Results and Discussion}{23}{chapter.5}%
+\contentsline {section}{\numberline {5.1}The ML Models and Data Set}{23}{section.5.1}%
+\contentsline {section}{\numberline {5.2}The H$_\mathrm {\textbf {2}}$ system}{24}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Comparison of RFR and ETR}{25}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Comparison of Permutation Model and Indexed Model}{27}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Benchmarking the H$_\mathrm {\textbf {3}}$~system}{29}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Conclusion \& Outlook}{31}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Appendix}{32}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Bibliography}{37}{chapter.8}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

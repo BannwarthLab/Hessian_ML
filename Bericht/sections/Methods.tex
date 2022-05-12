@@ -1,6 +1,92 @@
 \chapter{Methods}
+\section{ML Model Construction}
+The supervised ML models have to be trained with a set of features and targets.
+The features are mainly derived from atom based quantities based on geometry, density and energy. 
+The hessian matrix is the target.
+The atom based quantities and hessian matrix are generated with the GFN2--xTB method.
+Furthermore, they are all computed for each hessian matrix block $\textbf{H}_{AB}$ in its own APF CS.
+Beside atom based quantities, features are implemented for the differentiation between the elements of a block $\textbf{H}_{AB}$.
+Two approaches are used for the differentiation.
+These are the \textbf{indexed} and \textbf{permuted} approach.
+The quantities computed with GFN2--xTB are listed in Tab.~\ref{tab:Feature} with a short description.
+There is an extended version for some quantities. If this is the case, the column Extension is ticked.
+The mathematical descriptions of all quantities from GFN2--xTB are shown in the Appendix in Eq.~\eqref{eq:Feature} 
+\begin{table}[H]
+	\centering
+	\caption{List of quantities used for the ML models as features.
+			The quantities are divided into geometry,
+			density and energy based quantities.}
+		\begin{tabular}{l l l}
+			\hline
+			Feature &  Description& Extension\\
+			\hline
+			\textbf{Geometry} & & \\
+			$R_{AB}$ &  & \checkmark \\
 
-\section{Feature Overview}
+			$CN$ & Coordination Number & \checkmark \\
+			\hline
+
+			\textbf{Density} && \\
+			$\bm{\upmu}$ & Dipole Moment & \checkmark \\
+			$\bm{\upmu}_\mathrm{Z}$ & Dipole Moment, only Z direction & \\
+			$\bm{\uptheta}$ & Quadrupole Moment & \checkmark\\
+			\hline
+
+			\textbf{Energy} && \\
+			$E_\mathrm{resp}$ & Response& \\
+			$E_\mathrm{gap}$ & HOMO -- LUMO gap& \checkmark\\
+
+			$\mu_\mathrm{pot}$& Chemical Potential & \checkmark\\
+
+			$\epsilon_\mathrm{HOAO}$ & Atomic HOMO & \checkmark \\
+
+			$\epsilon_\mathrm{LUAO}$ & Atomic LUMO & \checkmark \\
+
+			$E_\mathrm{rep}$ & Repulsion & \\
+			$E_\mathrm{EHT}$ & extended Hückel theory& \\
+			$E_\mathrm{disp}^{(2)}$ & Dispersion 2$^\mathrm{nd}$ order & \\
+			$E_\mathrm{disp}^{(3)}$ & Dispersion 3$^\mathrm{rd}$ order & \\
+			$E_\mathrm{IES+IXC}$ & Isotropic ES and XC & \\
+			$E_\mathrm{AES}$ & Anisotropic ES& \\
+			$E_\mathrm{AXC}$ & Anisotropic XC & \\
+			$E_\mathrm{tot}$ & Total Energy & \\
+			\hline 
+		\end{tabular}
+	\label{tab:Feature}
+\end{table}
+
+The features are computed for every hessian matrix block $\textbf{H}_{AB}$.
+$\textbf{H}_{AB}$ depends on the coordinates of the atoms $A$ and $B$.
+Hence, the atom based quantities of $A$ and $B$ are used for the computation of the features.
+There is done a differentiation for the case of $A = B$ and $A \neq B$, due to two reasons.
+At first the chosen orientation between those cases differ.
+Secondly the length of the feature vector are differently.
+For the case $A \neq B$, the features are computed from the GFN2--xTB quantities with Eq.~\eqref{eq:FeatureProcess}.
+Where $x$ is a placeholder for any of the quantities shown in Tab.~\ref{tab:Feature}.
+This case is called heteronuclear, as the hessian and features depend on two atoms.
+\begin{subequations}
+	\label{eq:FeatureProcess}
+	\begin{align}
+		x_\mathrm{Arith}&= \dfrac{x_A + x_B}{2}\\
+		x_\mathrm{Prod}&= x_A \cdot x_B \\
+		x_\mathrm{AbsDiff}&= | x_A - x_B | 
+	\end{align}
+\end{subequations}
+There is used one further feature, which is the distance between the atoms $R_{AB}$.
+In the case of $A = B$ the quantities are used directly, and it is called homonuclear.
+Here, the hessian and features only depend on one atom.\\
+Connecting the hessian elements to the features at this point leads to following problem.
+The features for all elements in a hessian matrix block $\textbf{H}_{AB}$.
+Therefore, the ML model would predict the same value for every element.
+Hence, a differentiation is needed for the elements.
+The first approach is to use three further features $x_i, y_i, z_i$.
+These are indices, which differentiate between each element.
+In the Appendix in Tab.~\ref{tab:Indices} are all indices shown in dependence on the element.\\
+The second approach is the permutation of the coordinate system 
+and with it the vector/matrix quantities from GFN2--xTB, in dependence of the hessian elements that shall be learned.
+
+
+\section{Feature Overview old}
 	In this section an overview of the used features is given.
 	The quantities used for the feature vector are depicted in Tab.~\ref{tab:Feature}
 	and are generated with the \mbox{GFN2--xTB} method. The features are mostly atom centered quantities
@@ -54,7 +140,7 @@
 				$E_\mathrm{tot}$ & Total Energy & \\
 				\hline 
 			\end{tabular}
-		\label{tab:Feature}
+		\label{tab:FeatureOld}
 	\end{table}
 	Each quantity is atom specific, thus each quantity is there from atom $A$ and $B$.
 	The quantities shown in Tab.~\ref{tab:Feature} are all further processed for the use as features.
@@ -76,37 +162,7 @@
 	Hence, the ML model is not able to distinguish the elements.
 	Two ways were developed and tested, which distinguish the elements.
 	At first, the feature is increased by indices specific for each element. The indices are shown in Tab.~\ref{tab:Indices}
-	\begin{table}[H]
-		\centering
-		\caption{Indices used for the different elements in a hessian matrix block to differ between the elements.}
-			\begin{tabular}{c c c c | c }
-				\hline
-				& &  Indexed& & Permuted \\
-				Hessian element &  $x^\mathrm{idx}$ & $y^\mathrm{idx}$ & $z^\mathrm{idx}$ & Index\\
-				\hline
-				\\[-1em]
-				$\dfrac{\partial^2 E}{\partial x_A \partial x_A}$ & 2 & 0 & 0 & 0\\
-				\\[-1em]
-				$\dfrac{\partial^2 E}{\partial x_A \partial y_A}$ & 1 & -1 &  0 & 1\\
-				\\[-1em] 
-				$\dfrac{\partial^2 E}{\partial x_A \partial z_A}$ & 1 & 0 &  -1 & 2\\
-				\\[-1em]
-				$\dfrac{\partial^2 E}{\partial y_A \partial x_A}$ & -1 & 1 &  0 & 1\\
-				\\[-1em]
-				$\dfrac{\partial^2 E}{\partial y_A \partial y_A}$ & 0 & 2 &  0 & 0\\
-				\\[-1em]
-				$\dfrac{\partial^2 E}{\partial y_A \partial z_A}$ & 0 & 1 &  -1 & 2\\
-				\\[-1em]
-				$\dfrac{\partial^2 E}{\partial z_A \partial x_A}$ & -1 & 0 &  1 & 2\\
-				\\[-1em]
-				$\dfrac{\partial^2 E}{\partial z_A \partial y_A}$ & 0 & -1 &  1 & 2\\
-				\\[-1em]
-				$\dfrac{\partial^2 E}{\partial z_A \partial z_A}$ & 0 & 0 &  2 & 3\\
-				\\[-1em]
-				\hline 
-			\end{tabular}
-		\label{tab:Indices}
-	\end{table}
+
 
 	The feature vector is expanded with these indices
 	$ X  = \{x^\mathrm{idx},y^\mathrm{idx},z^\mathrm{idx},X_\mathrm{Arith},X_\mathrm{Prod},X_\mathrm{AbsDiff}\}$.

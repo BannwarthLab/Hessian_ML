@@ -482,9 +482,9 @@ def plot_non_diag_importances(regr_non_diag,col_name,info):
 def plot_non_diag_perm_importances(model,X,y,col_name,info):
     
     N = 4
-    N_features = len(col_name) - 4
+    N_features = len(col_name) -4 
 
-    importances = permutation_importance(model,X,y,n_repeats=15).importances_mean
+    importances = permutation_importance(model,X,y,n_repeats=30).importances_mean
     np.savetxt(f'plots/importances_non_diag_{info}',importances)
 
     ticks = np.array(range(N_features+N))
@@ -494,7 +494,7 @@ def plot_non_diag_perm_importances(model,X,y,col_name,info):
     ax.bar(ticks[2] ,importances[2],alpha=1.0, width=0.15,color = 'blue')
     ax.bar(ticks[3] ,importances[3],alpha=1.0, width=0.15,color = 'blue')
 
-    print(len(importances),(len(col_name)-N)*3+N)
+    print(len(importances),3*N_features+N)
     print(col_name[0],col_name[N_features+3])
 
     #ax.bar(ticks[N:N_features+N]-0.3 ,importances[N:N_features+N],alpha=1.0, width=0.15, label = 'A')
@@ -506,7 +506,7 @@ def plot_non_diag_perm_importances(model,X,y,col_name,info):
 
     ax.legend()
     ax.set_xlabel('Features')
-    ax.set_ylabel('R² coefficient')
+    ax.set_ylabel('mean decrease in impurity')
     ax.set_xticks(ticks)
     ax.set_xticklabels(col_name[:N_features+N],rotation=90)
     plt.gcf().subplots_adjust(bottom=0.45)
@@ -543,7 +543,7 @@ def plot_diag_importances(model,col_name,info):
 
 def plot_diag_perm_importances(model,X,y,col_name,info):
 
-    importances = permutation_importance(model,X,y,n_repeats=15).importances_mean
+    importances = permutation_importance(model,X,y,n_repeats=30).importances_mean
 
     np.savetxt(f'plots/importances_diag_{info}',importances)
 

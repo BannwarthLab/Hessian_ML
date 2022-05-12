@@ -1,0 +1,1 @@
+{"rule":"HOLDER_COMPOUNDS","sentence":"^\\QWhere \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q is a place holder for any \\E(?:Dummy|Ina|Jimmy-)[0-9]+$"}

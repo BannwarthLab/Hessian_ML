@@ -1301,7 +1301,6 @@ INPUT ./main.lot
 INPUT main.lot
 INPUT main.lot
 OUTPUT main.lot
-INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/lm/ec-lmr17.tfm
 INPUT ./sections/Theory.tex
 INPUT ./sections/Theory.tex
 INPUT ./sections/Theory.tex
