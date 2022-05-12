@@ -5,3 +5,4 @@ h2_2/
 *.svg
 xtb/
 __pycache__/
+test/
