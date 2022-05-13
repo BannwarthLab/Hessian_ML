@@ -2,22 +2,21 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Depiction of two Coordinate systems for description of Euler Angles.}}{3}{figure.caption.6}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{12}{figure.caption.7}%
-\addvspace {10\p@ }
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Plot of wavenumbers from \mbox {GFN2--xTB} $\tilde {\nu }_\mathrm {xTB}$ against wavenumbers predicted by a ML model $\tilde {\nu }_\mathrm {ML}$.}}{24}{figure.caption.11}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Learning plots of the ETR and RFR for an increasing size of the training set}}{25}{figure.caption.12}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Learning plot for hessian elements with an increase of randomness on $\textbf {x}$}}{26}{figure.caption.13}%
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Gaussian type distribution for the prediction of hessian elements.}}{27}{figure.caption.14}%
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Gaussian type distribution for the prediction of wave numbers and plot of ML wave numbers vs. xTB wave numbers.}}{28}{figure.caption.15}%
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Force constants predicted by the indexed multimodel and calculated with \mbox {GFN2--xTB} for $\mathrm {H}_3$~system}}{29}{figure.caption.16}%
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Force constants predicted by the permuted multimodel and calculated with \mbox {GFN2--xTB} for $\mathrm {H}_3$~system}}{30}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Depiction of two Coordinate systems for description of Euler Angles.}}{3}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{12}{figure.caption.7}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Gaussian type distribution for the prediction of weighted projected hessian elements.}}{32}{figure.caption.18}%
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Gaussian type distribution for the prediction of projected hessian elements.}}{33}{figure.caption.19}%
-\contentsline {figure}{\numberline {7.3}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{34}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Plot of wavenumbers from \mbox {GFN2--xTB} $\tilde {\nu }_\mathrm {xTB}$ against wavenumbers predicted by a ML model $\tilde {\nu }_\mathrm {ML}$.}}{24}{figure.caption.11}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Learning plots of the ETR and RFR for an increasing size of the training set}}{25}{figure.caption.12}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Learning plot for hessian elements with an increase of randomness on $\textbf {x}$}}{26}{figure.caption.13}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Gaussian type distribution for the prediction of hessian elements.}}{27}{figure.caption.14}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Gaussian type distribution for the prediction of wave numbers and plot of ML wave numbers vs. xTB wave numbers.}}{28}{figure.caption.15}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Force constants predicted by the indexed multimodel and calculated with \mbox {GFN2--xTB} for $\mathrm {H}_3$~system}}{29}{figure.caption.16}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Force constants predicted by the permuted multimodel and calculated with \mbox {GFN2--xTB} for $\mathrm {H}_3$~system}}{30}{figure.caption.17}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Gaussian type distribution for the prediction of weighted projected hessian elements.}}{32}{figure.caption.18}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Gaussian type distribution for the prediction of projected hessian elements.}}{33}{figure.caption.19}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{34}{figure.caption.20}%
 \addvspace {10\p@ }
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
