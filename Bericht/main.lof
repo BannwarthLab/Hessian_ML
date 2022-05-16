@@ -7,7 +7,7 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features.}}{24}{figure.caption.11}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Plot of wave numbers from \mbox {GFN2--xTB} $\tilde {\nu }_\mathrm {xTB}$ against wave numbers predicted by a ML model $\tilde {\nu }_\mathrm {ML}$.}}{26}{figure.caption.12}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Plot of wave numbers from \mbox {GFN2--xTB} $\tilde {\nu }_\mathrm {xTB}$ against wave numbers predicted by a ML model $\tilde {\nu }_\mathrm {ML}$.}}{25}{figure.caption.12}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Learning plots of the ETR and RFR for an increasing size of the training set}}{27}{figure.caption.13}%
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Learning plot for hessian elements with an increase of randomness on $\textbf {x}$}}{28}{figure.caption.14}%
 \contentsline {figure}{\numberline {4.5}{\ignorespaces Gaussian type distribution for the prediction of hessian elements.}}{29}{figure.caption.15}%

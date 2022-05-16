@@ -45,8 +45,10 @@ Ten features with the highest scores are shown in Fig.~\ref{fig:PCC} for the hom
 The highest correlation in the homonuclear model has $E_\mathrm{rep}$.
 For the heteronuclear model, the product of the repulsion energies has the highest correlation and third highest is the arithmetic mean.
 Hence, the repulsion seems to be an important feature for the prediction of the hessian elements. 
-Another high correlation feature is the chemical potential $\mu_\mathrm{chem}$. While, the potential itself is has the second highest correlation,
+Another high correlation feature is the chemical potential $\mu_\mathrm{chem}$.
+While, the potential itself is has the second highest correlation,
 its extension has the third highest for the homonuclear model.
+\newpage
 Furthermore, the three variations of $\mu_\mathrm{chem}$ appear also in the heteronuclear model (5., 6., 8.).
 At last, variations of $E_\mathrm{gap}$ and $\epsilon_\mathrm{LUAO}$ are represented in the highest correlations for both models.\\
 Both models show a correlation of one index $y_i$ or $z_i$.
@@ -67,7 +69,7 @@ For the approximated range of $1800~\mathrm{cm^{-1}} < \tilde{\nu}_\mathrm{xTB}<
 there are abbreviations from the diagonal and therefore, in respect to the small data set of eleven structures, a sufficient prediction.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{H2_single/Clean.eps}
+    \includegraphics[width = 0.9\textwidth]{H2_single/Clean.eps}
     \caption[Plot of wave numbers from \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$ against wave numbers predicted by a ML model $\tilde{\nu}_\mathrm{ML}$.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
     is plotted against the wave number calculated via \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$.
     The model uses the Extra Tree Regression.
@@ -128,9 +130,10 @@ For this, the features are scattered with a random factor.
 The intensity of the scattering is amplified by the factor $\sigma$.
 It is expected, that a model that learns from the features performs worse,
 if the scattering of the data points increases.
+The performance of the model \mbox{ETR--Multi--Perm} was tested for this and is shown in Fig~\ref{fig:MSE_sigma}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = \textwidth]{MSE/MSE_vs_sigma.eps}
+    \includegraphics[width = 0.9\textwidth]{MSE/MSE_vs_sigma.eps}
     \caption[Learning plot for hessian elements with an increase of randomness on $\textbf{x}$]{
     Learning plots for predicting hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
     for a variation of the factor~$\sigma$.
@@ -139,7 +142,7 @@ if the scattering of the data points increases.
     The plots are done for the homonuclear model (blue) and heteronuclear model (red).}
     \label{fig:MSE_sigma}
 \end{figure}
-The performance of the model \mbox{ETR--Multi--Perm} was tested for this. 
+ 
 The prediction was done for ten different random states.
 The MSE between the predicted hessian elements and the via \mbox{GFN2--xTB} calculated ones was investigated.
 For the investigated range of $0 \leq \sigma \leq 2.5$ the MSE increases monotonically.
@@ -149,7 +152,7 @@ The ETR shows overall a better performance than the RFR.
 Furthermore, it could be verified,
 that the ML model learns statistically from the features used for the prediction of the hessian matrices.
 
-
+\newpage
 \section{Comparison of Permutation Model and Indexed Model}
 Beside the different algorithms for the construction of the trees,
 the models with the variations of Gen/Case and Idx/Perm were compared.
@@ -246,7 +249,7 @@ The ML model should, in principle, mimic this behavior.
     }
     \label{fig:FC_idx}
 \end{figure}
-
+\newpage
 While this is overall the case, there are abbreviation from this behavior.
 For the example, the symmetry is not given in the case of $x(\mathrm{H2}) = 1.84~\si{\angstrom} $ and $x(\mathrm{H2}) = 2.15~\si{\angstrom}$.\\
 Fig.~\ref{fig:FC_perm} shows the prediction of the focre constants via the \mbox{ETR--Gen--Perm} model.
@@ -292,6 +295,9 @@ which could, with some minor errors, be depicted by the ML models.\\
 The next necessary approaches for this research, is the improvement of the models in there symmetric behavior.
 Although, for the $\mathrm{H}_3$ system the errors in symmetry are minor,
 the adjustment to a full symmetric behavior is mandatory.
+As the correlation of the features is low,
+investigations in towards higher correlating features might increase the performance of the ML models.
+Here, new functions could be used achieve a linear correlation between the features and target.
 In addition, a set of 103 structures is small for a ML model.
 Hence, the date set size should be increased and tests on benchmark data sets should be done for a comparison to literature. 
 When the prediction of the hessian matrix on \mbox{GFN2--xTB} level is sufficient,

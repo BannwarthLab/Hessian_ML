@@ -1507,6 +1507,9 @@ INPUT ./H2_single/Clean-eps-converted-to.pdf
 INPUT ./H2_single/Clean-eps-converted-to.pdf
 INPUT ./H2_single/Clean-eps-converted-to.pdf
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmfbx12.tfm
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/vf/public/sansmathfonts/cmsmf12.vf
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/cm/cmss12.tfm
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmfIPiXi12.tfm
 INPUT ./MSE/MSE_ETR.eps
 INPUT ./MSE/MSE_ETR.eps
 INPUT MSE/MSE_ETR.eps
@@ -1531,9 +1534,6 @@ INPUT ./MSE/MSE_RFR-eps-converted-to.pdf
 INPUT ./MSE/MSE_RFR-eps-converted-to.pdf
 INPUT ./MSE/MSE_RFR-eps-converted-to.pdf
 INPUT ./MSE/MSE_RFR-eps-converted-to.pdf
-INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/vf/public/sansmathfonts/cmsmf12.vf
-INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/cm/cmss12.tfm
-INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmfIPiXi12.tfm
 INPUT ./MSE/MSE_vs_sigma.eps
 INPUT ./MSE/MSE_vs_sigma.eps
 INPUT MSE/MSE_vs_sigma.eps
