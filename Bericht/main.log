@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  13 MAY 2022 12:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  16 MAY 2022 15:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -168,9 +168,9 @@ File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of 
 Language: english 2017/06/06 v3.3r English support from the babel system
 )) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/base/fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 112.
- (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lm/t1lmr.fd
-File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 112.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lm/t1lmss.fd
+File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \heavyrulewidth=\dimen140
@@ -510,6 +510,58 @@ Package upgreek Info: Using Euler Roman for upright Greek on input line 31.
 \symugrf@m=\mathgroup9
 LaTeX Font Info:    Overwriting symbol font `ugrf@m' in version `bold'
 (Font)                  U/eur/m/n --> U/eur/b/n on input line 38.
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/sansmathfonts.sty
+Package: sansmathfonts 2021/06/22
+
+
+Package sansmathfonts Warning: The [I] package option is only compatible with the OT1 and U font encodings. I will ignore the [I] package option. on input line 47.
+
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 76.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/lmr/m/n --> OT1/cmsmf/m/n on input line 76.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/lmr/bx/n --> OT1/cmsmf/m/n on input line 76.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 77.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/lmm/m/it --> OML/cmssm/m/it on input line 77.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/lmm/b/it --> OML/cmssm/m/it on input line 77.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 78.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/lmsy/m/n --> OMS/cmsssy/m/n on input line 78.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/lmsy/b/n --> OMS/cmsssy/m/n on input line 78.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 79.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/lmex/m/n --> OMX/cmssex/m/n on input line 79.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/lmex/m/n --> OMX/cmssex/m/n on input line 79.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmsmf/m/n --> OT1/cmsmf/bx/n on input line 80.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmssm/m/it --> OML/cmssm/b/it on input line 81.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsssy/m/n --> OMS/cmsssy/b/n on input line 82.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 129.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 130.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/lmr/m/it --> OT1/cmsmf/m/it on input line 130.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/lmr/bx/it --> OT1/cmsmf/m/it on input line 130.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 131.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/lmtt/m/n --> OT1/cmtt/m/n on input line 131.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/lmtt/m/n --> OT1/cmtt/m/n on input line 131.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/lmss/bx/n --> OT1/cmsmf/bx/n on input line 132.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmsmf/m/it --> OT1/cmsmf/bx/it on input line 133.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 138.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/lmss/m/n --> OT1/cmsmf/m/n on input line 138.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmsmf/bx/n --> OT1/cmsmf/m/n on input line 138.
 ) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
  (/home/gfeldmann/.miktex/texmfs/install/tex/generic/iftex/ifvtex.sty
@@ -849,7 +901,7 @@ Package biblatex Info: ... and expl3
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/blx-case-expl3.sty
 Package: blx-case-expl3 2022/02/02 v3.17 expl3 case changing code for biblatex
 ))
-Package biblatex Info: Redefining '\supercite' on input line 69.
+Package biblatex Info: Redefining '\supercite' on input line 70.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 ) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/listings/lstmisc.sty
@@ -859,7 +911,10 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
- (main.aux (sections/Motivation.aux) (sections/Theory.aux
+LaTeX Font Info:    Trying to load font information for T1+xcmss on input line 122.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/t1xcmss.fd
+File: t1xcmss.fd 2021/06/22
+) (main.aux (sections/Motivation.aux) (sections/Theory.aux
 
 LaTeX Warning: Label `eq:FCSCe' multiply defined.
 
@@ -874,28 +929,44 @@ LaTeX Warning: Label `tab:Permutation' multiply defined.
 ))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 121.
-LaTeX Font Info:    ... okay on input line 121.
-Package scrbase Info: activating english \contentsname on input line 121.
-Package scrbase Info: activating english \listfigurename on input line 121.
-Package scrbase Info: activating english \listtablename on input line 121.
-Package hyperref Info: Link coloring OFF on input line 121.
+LaTeX Font Info:    Checking defaults for OML/cmssm/m/it on input line 122.
+LaTeX Font Info:    Trying to load font information for OML+cmssm on input line 122.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/omlcmssm.fd
+File: omlcmssm.fd 2019/04/04
+)
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OMS/cmsssy/m/n on input line 122.
+LaTeX Font Info:    Trying to load font information for OMS+cmsssy on input line 122.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/omscmsssy.fd
+File: omscmsssy.fd 2019/04/04
+)
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OMX/cmssex/m/n on input line 122.
+LaTeX Font Info:    Trying to load font information for OMX+cmssex on input line 122.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/omxcmssex.fd
+File: omxcmssex.fd 2021/06/22
+)
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for U/xcmss/m/n on input line 122.
+LaTeX Font Info:    Trying to load font information for U+xcmss on input line 122.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/uxcmss.fd
+File: uxcmss.fd 2021/06/22
+)
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+Package scrbase Info: activating english \contentsname on input line 122.
+Package scrbase Info: activating english \listfigurename on input line 122.
+Package scrbase Info: activating english \listtablename on input line 122.
+Package hyperref Info: Link coloring OFF on input line 122.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/refcount/refcount.sty
@@ -905,9 +976,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count467
 )
-LaTeX Info: Redefining \ref on input line 121.
-LaTeX Info: Redefining \pageref on input line 121.
-LaTeX Info: Redefining \nameref on input line 121.
+LaTeX Info: Redefining \ref on input line 122.
+LaTeX Info: Redefining \pageref on input line 122.
+LaTeX Info: Redefining \nameref on input line 122.
  (main.out) (main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
@@ -919,7 +990,7 @@ Class scrreprt Info: loading recommended package `bookmark'.
 (scrreprt)           `bookmarkpackage=false' before \begin{document} and
 (scrreprt)           you can avoid this message adding:
 (scrreprt)             \usepackage{bookmark}
-(scrreprt)           before \begin{document} on input line 121.
+(scrreprt)           before \begin{document} on input line 122.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2020-11-06 v1.29 PDF bookmarks (HO)
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/bookmark/bkm-pdftex.def
@@ -928,7 +999,7 @@ File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
 )) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/translations/dicts/translations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
-Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 121.
+Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 122.
  (/home/gfeldmann/.miktex/texmfs/install/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count469
@@ -948,6 +1019,16 @@ Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Redeclaring symbol font `AMSa' on input line 122.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `normal'
+(Font)                  U/msa/m/n --> U/ssmsa/m/n on input line 122.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `bold'
+(Font)                  U/msa/m/n --> U/ssmsa/m/n on input line 122.
+LaTeX Font Info:    Redeclaring symbol font `AMSb' on input line 122.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `normal'
+(Font)                  U/msb/m/n --> U/ssmsb/m/n on input line 122.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `bold'
+(Font)                  U/msb/m/n --> U/ssmsb/m/n on input line 122.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -991,14 +1072,14 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 )
-LaTeX Info: Redefining \celsius on input line 121.
-Package gensymb Info: Faking symbols for \degree and \celsius on input line 121.
+LaTeX Info: Redefining \celsius on input line 122.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 122.
 
 
 Package gensymb Warning: Not defining \perthousand.
 
-LaTeX Info: Redefining \ohm on input line 121.
-Package gensymb Info: Using \Omega for \ohm on input line 121.
+LaTeX Info: Redefining \ohm on input line 122.
+Package gensymb Info: Using \Omega for \ohm on input line 122.
 
 Package gensymb Warning: Not defining \micro.
 
@@ -1015,18 +1096,44 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
  (main.bbl)
-Package biblatex Info: Reference section=0 on input line 121.
-Package biblatex Info: Reference segment=0 on input line 121.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 130.
+Package biblatex Info: Reference section=0 on input line 122.
+Package biblatex Info: Reference segment=0 on input line 122.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 131.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [1
+)
+
+LaTeX Font Warning: Font shape `T1/xcmss/b/n' in size <10.95> not available
+(Font)              Font shape `T1/xcmss/bx/n' tried instead on input line 138.
+
+
+LaTeX Font Warning: Font shape `T1/xcmss/b/n' in size <24.88> not available
+(Font)              Font shape `T1/xcmss/bx/n' tried instead on input line 138.
+
+
+LaTeX Font Warning: Font shape `T1/xcmss/b/n' in size <14.4> not available
+(Font)              Font shape `T1/xcmss/bx/n' tried instead on input line 144.
+
+[1
 
 {/home/gfeldmann/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 180.
- (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lm/t1lmss.fd
-File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) (main.toc
+
+LaTeX Font Warning: Font shape `T1/xcmss/b/n' in size <20.74> not available
+(Font)              Font shape `T1/xcmss/bx/n' tried instead on input line 181.
+
+(main.toc
+LaTeX Font Info:    Trying to load font information for OT1+cmsmf on input line 7.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/ot1cmsmf.fd
+File: ot1cmsmf.fd 2021/06/22
+)
+LaTeX Font Info:    Trying to load font information for U+ssmsa on input line 7.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/ussmsa.fd
+File: ussmsa.fd 2019/04/04
+)
+LaTeX Font Info:    Trying to load font information for U+ssmsb on input line 7.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/sansmathfonts/ussmsb.fd
+File: ussmsb.fd 2019/04/04
+)
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 7.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -1038,39 +1145,11 @@ File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 7.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 7.
- (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lm/omxlmex.fd
-File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 7.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 7.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 7.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 7.
- (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 7.
- (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
+) [1])
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
- [1] [2] (main.lof
-Overfull \hbox (14.67743pt too wide) in paragraph at lines 14--14
- [][] [][]\T1/lmr/m/n/10.95 Force constants predicted by the indexed multimodel and calculated with [] 
- []
-
-
-Overfull \hbox (23.52818pt too wide) in paragraph at lines 15--15
- [][] [][]\T1/lmr/m/n/10.95 Force constants predicted by the permuted multimodel and calculated with [] 
- []
-
-)
+ [2] (main.lof)
 \tf@lof=\write6
 \openout6 = `main.lof'.
 
@@ -1104,7 +1183,7 @@ chapter 1.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.204 ^^I\include{sections/Motivation}
+l.205 ^^I\include{sections/Motivation}
                                        [1
 
 ]
@@ -1121,13 +1200,15 @@ Package epstopdf Info: Source file: <sections/TheoryGraphs/EulerAngle.eps>
 (epstopdf)             Command: <miktex-epstopdf --outfile=sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf sections/TheoryGraphs/EulerAngle.eps>
 (epstopdf)             \includegraphics on input line 20.
 Package epstopdf Info: Output file is already uptodate.
-<sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf, id=130, 397.485pt x 397.485pt>
+<sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf, id=135, 397.485pt x 397.485pt>
 File: sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf Graphic file (type pdf)
 <use sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf>
 Package pdftex.def Info: sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf  used on input line 20.
 (pdftex.def)             Requested size: 364.19672pt x 364.20468pt.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 23.
+
+LaTeX Font Warning: Font shape `T1/xcmss/b/n' in size <12> not available
+(Font)              Font shape `T1/xcmss/bx/n' tried instead on input line 23.
+
 
 Underfull \hbox (badness 10000) in paragraph at lines 8--25
 
@@ -1138,18 +1219,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--25
 
 
 ] [3 <./sections/TheoryGraphs/EulerAngle-eps-converted-to.pdf>]
-Overfull \hbox (16.70056pt too wide) in paragraph at lines 67--70
-[] \T1/lmr/m/n/10.95 results in the electronic Schr^^f6dinger equation (Eq. []). 
+Overfull \hbox (71.36893pt too wide) in paragraph at lines 67--70
+\T1/xcmss/m/n/10.95 its time--dependency, neglecting relativistic effects and the introduction of the []
  []
 
-[4] [5] [6]
-Overfull \hbox (3.21533pt too wide) in paragraph at lines 278--286
-\T1/lmr/m/n/10.95 Lennard--Jones potentials. The dispersion term arises, due to the non--local correlation functional.
+
+Overfull \hbox (0.93747pt too wide) in paragraph at lines 103--110
+\T1/xcmss/m/n/10.95 The electronic energy can now be described with the Slater determinant and Hamiltonian in Eq. [].
  []
 
-[7]
-Overfull \hbox (4.5957pt too wide) in paragraph at lines 302--308
-[]\T1/lmr/m/n/10.95 The second order energy perturbation $\OML/lmm/m/it/10.95 E[]\OT1/lmr/m/n/10.95 [\OML/lmm/m/it/10.95 ^^Z[]; \OT1/lmr/m/n/10.95 (\OML/lmm/m/it/10.95 ^^N^^Z\OT1/lmr/m/n/10.95 )[]]$ \T1/lmr/m/n/10.95 is described by the contribution of dispersion,
+[4] [5]
+Overfull \hbox (2.5694pt too wide) in paragraph at lines 157--165
+\T1/xcmss/m/n/10.95 Merging the basis--set approach into Eq. [] leads to Roothaan--Hall equation shown in Eq. [].
+ []
+
+[6] [7]
+Overfull \hbox (10.23329pt too wide) in paragraph at lines 302--308
+\T1/xcmss/m/n/10.95 electrostatic energy $\OML/cmssm/m/it/10.95 E[]$ \T1/xcmss/m/n/10.95 are described in [] with an isotropic as also an anisotropic contribution.
+ []
+
+
+Overfull \hbox (0.13522pt too wide) in paragraph at lines 329--333
+\T1/xcmss/m/n/10.95 similar to KS--DFT and Hartree Fock. The Roothaan--Hall type Eq. [] is solved in a selfconsistent
  []
 
 [8] [9] [10]
@@ -1162,12 +1253,12 @@ Package epstopdf Info: Source file: <sections/TheoryGraphs/ZeichnungDecisionTree
 (epstopdf)             Command: <miktex-epstopdf --outfile=sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle.eps>
 (epstopdf)             \includegraphics on input line 445.
 Package epstopdf Info: Output file is already uptodate.
-<sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf, id=253, 564.1075pt x 238.8925pt>
+<sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf, id=259, 564.1075pt x 238.8925pt>
 File: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf Graphic file (type pdf)
 <use sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf>
 Package pdftex.def Info: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf  used on input line 445.
 (pdftex.def)             Requested size: 455.24417pt x 192.79105pt.
- [11]) [12 <./sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf>]
+ [11 <./sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf>]) [12]
 \openout2 = `sections/Methods.aux'.
 
  (sections/Methods.tex
@@ -1180,49 +1271,85 @@ chapter 3.
 
 LaTeX Warning: Reference `' on page 14 undefined on input line 92.
 
-[14] [15] [16] [17]
+[14]
+Overfull \hbox (47.88405pt too wide) in paragraph at lines 165--181
+\T1/xcmss/m/n/10.95 shown in Tab. []6.1[]. The feature vector is expanded with these indices $\OML/cmssm/m/it/10.95 X \OT1/cmsmf/m/n/10.95 = \OMS/cmsssy/m/n/10.95 f\OML/cmssm/m/it/10.95 x[]; y[]; z[]; X[]; X[]; X[]\OMS/cmsssy/m/n/10.95 g$\T1/xcmss/m/n/10.95 .
+ []
+
+[15] [16] [17]
 Underfull \hbox (badness 10000) in paragraph at lines 296--302
 
  []
 
 [18] [19] [20]
-Overfull \hbox (11.02586pt too wide) in paragraph at lines 450--453
-[]\T1/lmr/m/n/10.95 For this the difference between the [] computation and ML model prediction is calculated.
+Overfull \hbox (2.08946pt too wide) in paragraph at lines 447--449
+\T1/xcmss/m/n/10.95 For the comparison of the different models (e.g. [], [], etc.) the comparison
  []
 
-[21]) [22]
+) [21] [22]
 \openout2 = `sections/Results.aux'.
 
  (sections/Results.tex
 chapter 4.
-
-Overfull \hbox (6.26862pt too wide) in paragraph at lines 3--28
-\T1/lmr/m/n/10.95 For every prediction of the hessian matrix, it is necessary to use the homonuclear and heteronuclear
- []
-
 [23
 
 
 
 ]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 29.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 29.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 29.
+Package epstopdf Info: Source file: <PearsonCorrelationCoeffiecient/PCC_diag.eps>
+(epstopdf)                    date: 2022-05-16 15:22:08
+(epstopdf)                    size: 27792 bytes
+(epstopdf)             Output file: <PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-05-16 15:22:10
+(epstopdf)                    size: 17395 bytes
+(epstopdf)             Command: <miktex-epstopdf --outfile=PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf PearsonCorrelationCoeffiecient/PCC_diag.eps>
+(epstopdf)             \includegraphics on input line 37.
+Package epstopdf Info: Output file is already uptodate.
+
+
+pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf, id=425, 371.3875pt x 652.4375pt>
+File: PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf Graphic file (type pdf)
+<use PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf>
+Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf  used on input line 37.
+(pdftex.def)             Requested size: 227.62209pt x 399.88777pt.
+Package epstopdf Info: Source file: <PearsonCorrelationCoeffiecient/PCC_ndiag.eps>
+(epstopdf)                    date: 2022-05-16 15:05:54
+(epstopdf)                    size: 32218 bytes
+(epstopdf)             Output file: <PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-05-16 15:05:56
+(epstopdf)                    size: 19843 bytes
+(epstopdf)             Command: <miktex-epstopdf --outfile=PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf PearsonCorrelationCoeffiecient/PCC_ndiag.eps>
+(epstopdf)             \includegraphics on input line 38.
+Package epstopdf Info: Output file is already uptodate.
+
+
+pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf, id=426, 391.4625pt x 682.55pt>
+File: PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf Graphic file (type pdf)
+<use PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf>
+Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf  used on input line 38.
+(pdftex.def)             Requested size: 227.62209pt x 396.8791pt.
+[24 <./PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf> <./PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf>]
+
+LaTeX Font Warning: Font shape `T1/xcmss/b/n' in size <10> not available
+(Font)              Font shape `T1/xcmss/bx/n' tried instead on input line 59.
+
+
+LaTeX Font Warning: Font shape `T1/xcmss/b/n' in size <7> not available
+(Font)              Font shape `T1/xcmss/bx/n' tried instead on input line 59.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 29.
+(hyperref)                removing `math shift' on input line 59.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 29.
+(hyperref)                removing `subscript' on input line 59.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 29.
+(hyperref)                removing `math shift' on input line 59.
 
 Package epstopdf Info: Source file: <H2_single/Clean.eps>
 (epstopdf)                    date: 2022-05-04 20:17:53
@@ -1231,19 +1358,14 @@ Package epstopdf Info: Source file: <H2_single/Clean.eps>
 (epstopdf)                    date: 2022-05-04 20:17:53
 (epstopdf)                    size: 14812 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=H2_single/Clean-eps-converted-to.pdf H2_single/Clean.eps>
-(epstopdf)             \includegraphics on input line 40.
+(epstopdf)             \includegraphics on input line 70.
 Package epstopdf Info: Output file is already uptodate.
-<H2_single/Clean-eps-converted-to.pdf, id=420, 691.58376pt x 453.695pt>
+<H2_single/Clean-eps-converted-to.pdf, id=533, 691.58376pt x 453.695pt>
 File: H2_single/Clean-eps-converted-to.pdf Graphic file (type pdf)
 <use H2_single/Clean-eps-converted-to.pdf>
-Package pdftex.def Info: H2_single/Clean-eps-converted-to.pdf  used on input line 40.
+Package pdftex.def Info: H2_single/Clean-eps-converted-to.pdf  used on input line 70.
 (pdftex.def)             Requested size: 455.24417pt x 298.65735pt.
-
-Overfull \hbox (14.65211pt too wide) in paragraph at lines 30--47
-\T1/lmr/m/n/10.95 Furthermore, the wave number increases with the decrease of the bond length. For the approximated
- []
-
-[24 <./H2_single/Clean-eps-converted-to.pdf>]
+[25]
 Package epstopdf Info: Source file: <MSE/MSE_ETR.eps>
 (epstopdf)                    date: 2022-05-09 15:42:51
 (epstopdf)                    size: 28509 bytes
@@ -1251,15 +1373,15 @@ Package epstopdf Info: Source file: <MSE/MSE_ETR.eps>
 (epstopdf)                    date: 2022-05-09 15:44:04
 (epstopdf)                    size: 15526 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=MSE/MSE_ETR-eps-converted-to.pdf MSE/MSE_ETR.eps>
-(epstopdf)             \includegraphics on input line 73.
+(epstopdf)             \includegraphics on input line 103.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./MSE/MSE_ETR-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<MSE/MSE_ETR-eps-converted-to.pdf, id=454, 649.42625pt x 455.7025pt>
+<MSE/MSE_ETR-eps-converted-to.pdf, id=541, 649.42625pt x 455.7025pt>
 File: MSE/MSE_ETR-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_ETR-eps-converted-to.pdf>
-Package pdftex.def Info: MSE/MSE_ETR-eps-converted-to.pdf  used on input line 73.
+Package pdftex.def Info: MSE/MSE_ETR-eps-converted-to.pdf  used on input line 103.
 (pdftex.def)             Requested size: 227.62209pt x 159.72076pt.
 Package epstopdf Info: Source file: <MSE/MSE_RFR.eps>
 (epstopdf)                    date: 2022-05-09 15:42:21
@@ -1268,16 +1390,17 @@ Package epstopdf Info: Source file: <MSE/MSE_RFR.eps>
 (epstopdf)                    date: 2022-05-09 15:44:04
 (epstopdf)                    size: 15556 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=MSE/MSE_RFR-eps-converted-to.pdf MSE/MSE_RFR.eps>
-(epstopdf)             \includegraphics on input line 75.
+(epstopdf)             \includegraphics on input line 105.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./MSE/MSE_RFR-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<MSE/MSE_RFR-eps-converted-to.pdf, id=455, 649.42625pt x 455.7025pt>
+<MSE/MSE_RFR-eps-converted-to.pdf, id=542, 649.42625pt x 455.7025pt>
 File: MSE/MSE_RFR-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_RFR-eps-converted-to.pdf>
-Package pdftex.def Info: MSE/MSE_RFR-eps-converted-to.pdf  used on input line 75.
+Package pdftex.def Info: MSE/MSE_RFR-eps-converted-to.pdf  used on input line 105.
 (pdftex.def)             Requested size: 227.62209pt x 159.72076pt.
+[26 <./H2_single/Clean-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <MSE/MSE_vs_sigma.eps>
 (epstopdf)                    date: 2022-05-09 15:43:19
 (epstopdf)                    size: 23866 bytes
@@ -1285,17 +1408,17 @@ Package epstopdf Info: Source file: <MSE/MSE_vs_sigma.eps>
 (epstopdf)                    date: 2022-05-09 15:44:05
 (epstopdf)                    size: 13290 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=MSE/MSE_vs_sigma-eps-converted-to.pdf MSE/MSE_vs_sigma.eps>
-(epstopdf)             \includegraphics on input line 103.
+(epstopdf)             \includegraphics on input line 133.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./MSE/MSE_vs_sigma-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<MSE/MSE_vs_sigma-eps-converted-to.pdf, id=456, 637.38126pt x 455.7025pt>
+<MSE/MSE_vs_sigma-eps-converted-to.pdf, id=575, 637.38126pt x 455.7025pt>
 File: MSE/MSE_vs_sigma-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_vs_sigma-eps-converted-to.pdf>
-Package pdftex.def Info: MSE/MSE_vs_sigma-eps-converted-to.pdf  used on input line 103.
+Package pdftex.def Info: MSE/MSE_vs_sigma-eps-converted-to.pdf  used on input line 133.
 (pdftex.def)             Requested size: 455.24417pt x 325.47713pt.
-[25 <./MSE/MSE_ETR-eps-converted-to.pdf> <./MSE/MSE_RFR-eps-converted-to.pdf>] [26 <./MSE/MSE_vs_sigma-eps-converted-to.pdf>]
+[27 <./MSE/MSE_ETR-eps-converted-to.pdf> <./MSE/MSE_RFR-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess.eps>
 (epstopdf)                    date: 2022-05-09 15:40:10
 (epstopdf)                    size: 39213 bytes
@@ -1303,23 +1426,23 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess.
 (epstopdf)                    date: 2022-05-09 15:41:06
 (epstopdf)                    size: 22712 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_hess.eps>
-(epstopdf)             \includegraphics on input line 135.
+(epstopdf)             \includegraphics on input line 165.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf, id=569, 576.1525pt x 475.7775pt>
+<ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf, id=653, 576.1525pt x 475.7775pt>
 File: ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf  used on input line 135.
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf  used on input line 165.
 (pdftex.def)             Requested size: 341.43312pt x 281.96222pt.
-
-Overfull \hbox (5.68532pt too wide) in paragraph at lines 144--149
-[]\T1/lmr/m/n/10.95 Comparing the [] and [], as also [] and []
+[28 <./MSE/MSE_vs_sigma-eps-converted-to.pdf>] [29 <./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf>]
+Overfull \hbox (11.65022pt too wide) in paragraph at lines 180--189
+[]\T1/xcmss/m/n/10.95 They cannot overfit and seem to be capable of describing this complex system with a simple differentiation
  []
 
-[27 <./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 150--159
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--189
 
  []
 
@@ -1330,15 +1453,15 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_wn.ep
 (epstopdf)                    date: 2022-05-09 15:41:07
 (epstopdf)                    size: 22022 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_wn.eps>
-(epstopdf)             \includegraphics on input line 162.
+(epstopdf)             \includegraphics on input line 192.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf, id=626, 576.1525pt x 451.6875pt>
+<ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf, id=744, 576.1525pt x 451.6875pt>
 File: ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf  used on input line 162.
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf  used on input line 192.
 (pdftex.def)             Requested size: 227.62209pt x 178.4525pt.
 Package epstopdf Info: Source file: <ErrorDistGraphs/WN_xTB_vs_ML.eps>
 (epstopdf)                    date: 2022-05-09 15:33:12
@@ -1347,32 +1470,37 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/WN_xTB_vs_ML.eps>
 (epstopdf)                    date: 2022-05-09 15:33:51
 (epstopdf)                    size: 68101 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf ErrorDistGraphs/WN_xTB_vs_ML.eps>
-(epstopdf)             \includegraphics on input line 164.
+(epstopdf)             \includegraphics on input line 194.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf, id=627, 645.41125pt x 459.7175pt>
+<ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf, id=745, 645.41125pt x 459.7175pt>
 File: ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf  used on input line 164.
+Package pdftex.def Info: ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf  used on input line 194.
 (pdftex.def)             Requested size: 227.62209pt x 162.1311pt.
-[28 <./ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf> <./ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 190--194
+[30 <./ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf> <./ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf>]
+Overfull \hbox (5.11284pt too wide) in paragraph at lines 220--224
+[]\T1/xcmss/m/n/10.95 Contrary to the extrapolation errors are the wave numbers, which correspond to rotation and translation.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 220--224
 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 194.
+(hyperref)                removing `math shift' on input line 224.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 194.
+(hyperref)                removing `subscript' on input line 224.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 194.
+(hyperref)                removing `math shift' on input line 224.
 
 Package epstopdf Info: Source file: <ForceConstants/force_const_H3_idx.eps>
 (epstopdf)                    date: 2022-05-09 15:46:47
@@ -1381,15 +1509,15 @@ Package epstopdf Info: Source file: <ForceConstants/force_const_H3_idx.eps>
 (epstopdf)                    date: 2022-05-09 15:50:36
 (epstopdf)                    size: 17257 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=ForceConstants/force_const_H3_idx-eps-converted-to.pdf ForceConstants/force_const_H3_idx.eps>
-(epstopdf)             \includegraphics on input line 208.
+(epstopdf)             \includegraphics on input line 238.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ForceConstants/force_const_H3_idx-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ForceConstants/force_const_H3_idx-eps-converted-to.pdf, id=730, 675.52374pt x 459.7175pt>
+<ForceConstants/force_const_H3_idx-eps-converted-to.pdf, id=848, 675.52374pt x 459.7175pt>
 File: ForceConstants/force_const_H3_idx-eps-converted-to.pdf Graphic file (type pdf)
 <use ForceConstants/force_const_H3_idx-eps-converted-to.pdf>
-Package pdftex.def Info: ForceConstants/force_const_H3_idx-eps-converted-to.pdf  used on input line 208.
+Package pdftex.def Info: ForceConstants/force_const_H3_idx-eps-converted-to.pdf  used on input line 238.
 (pdftex.def)             Requested size: 364.19672pt x 247.85092pt.
 
 Package siunitx Warning: Unit macro \angstrom has been deprecated in this
@@ -1401,7 +1529,7 @@ Package siunitx Warning: Unit macro \angstrom has been deprecated in this
 (siunitx)                
 (siunitx)                \DeclareSIUnit\angstrom{\text {^^c3^^85}}
 
-[29 <./ForceConstants/force_const_H3_idx-eps-converted-to.pdf>]
+[31 <./ForceConstants/force_const_H3_idx-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <ForceConstants/force_const_H3_perm.eps>
 (epstopdf)                    date: 2022-05-09 15:48:15
 (epstopdf)                    size: 25390 bytes
@@ -1409,34 +1537,34 @@ Package epstopdf Info: Source file: <ForceConstants/force_const_H3_perm.eps>
 (epstopdf)                    date: 2022-05-09 15:50:36
 (epstopdf)                    size: 17342 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=ForceConstants/force_const_H3_perm-eps-converted-to.pdf ForceConstants/force_const_H3_perm.eps>
-(epstopdf)             \includegraphics on input line 228.
+(epstopdf)             \includegraphics on input line 258.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ForceConstants/force_const_H3_perm-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ForceConstants/force_const_H3_perm-eps-converted-to.pdf, id=781, 675.52374pt x 459.7175pt>
+<ForceConstants/force_const_H3_perm-eps-converted-to.pdf, id=899, 675.52374pt x 459.7175pt>
 File: ForceConstants/force_const_H3_perm-eps-converted-to.pdf Graphic file (type pdf)
 <use ForceConstants/force_const_H3_perm-eps-converted-to.pdf>
-Package pdftex.def Info: ForceConstants/force_const_H3_perm-eps-converted-to.pdf  used on input line 228.
+Package pdftex.def Info: ForceConstants/force_const_H3_perm-eps-converted-to.pdf  used on input line 258.
 (pdftex.def)             Requested size: 364.19672pt x 247.85092pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--244
+Underfull \hbox (badness 10000) in paragraph at lines 267--274
 
  []
 
-[30 <./ForceConstants/force_const_H3_perm-eps-converted-to.pdf>]
+[32 <./ForceConstants/force_const_H3_perm-eps-converted-to.pdf>]
 chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 246--261
+Underfull \hbox (badness 10000) in paragraph at lines 276--291
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--269
+Underfull \hbox (badness 10000) in paragraph at lines 292--299
 
  []
 
-[31]
+[33]
 chapter 6.
 Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess_w.eps>
 (epstopdf)                    date: 2022-05-09 15:40:11
@@ -1445,15 +1573,15 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess_
 (epstopdf)                    date: 2022-05-09 15:41:07
 (epstopdf)                    size: 23235 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_hess_w.eps>
-(epstopdf)             \includegraphics on input line 274.
+(epstopdf)             \includegraphics on input line 304.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf, id=835, 576.1525pt x 477.785pt>
+<ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf, id=954, 576.1525pt x 477.785pt>
 File: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf  used on input line 274.
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf  used on input line 304.
 (pdftex.def)             Requested size: 455.24417pt x 377.5335pt.
 Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess_p.eps>
 (epstopdf)                    date: 2022-05-09 15:40:11
@@ -1462,17 +1590,17 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_hess_
 (epstopdf)                    date: 2022-05-09 15:41:08
 (epstopdf)                    size: 23495 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_hess_p.eps>
-(epstopdf)             \includegraphics on input line 284.
+(epstopdf)             \includegraphics on input line 314.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf, id=836, 576.1525pt x 475.7775pt>
+<ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf, id=955, 576.1525pt x 475.7775pt>
 File: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf  used on input line 284.
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf  used on input line 314.
 (pdftex.def)             Requested size: 455.24417pt x 375.9472pt.
-[32 <./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>]
+[34 <./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_ZPE.eps>
 (epstopdf)                    date: 2022-05-09 15:40:09
 (epstopdf)                    size: 36934 bytes
@@ -1480,34 +1608,24 @@ Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_ZPE.e
 (epstopdf)                    date: 2022-05-09 15:41:07
 (epstopdf)                    size: 21355 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf ErrorDistGraphs/error_distribution_ml_ZPE.eps>
-(epstopdf)             \includegraphics on input line 295.
+(epstopdf)             \includegraphics on input line 325.
 Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf, id=898, 576.1525pt x 445.665pt>
+<ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf, id=1016, 576.1525pt x 445.665pt>
 File: ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>
-Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf  used on input line 295.
+Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf  used on input line 325.
 (pdftex.def)             Requested size: 455.24417pt x 352.15309pt.
-[33 <./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>] [34 <./ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>] [35]) [36]
+[35 <./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>] [36 <./ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>] [37]) [38]
 chapter 7.
 
-Overfull \hbox (10.81247pt too wide) in paragraph at lines 218--218
-[]\T1/lmr/m/n/10.95 C. Bannwarth, S. Ehlert, and S. Grimme, ^^P  GFN2-xTB^^Van accurate and broadly parametrized
+Overfull \hbox (4.41928pt too wide) in paragraph at lines 219--219
+[]\T1/xcmss/m/n/10.95 C. Bannwarth \T1/xcmss/m/it/10.95 et al.\T1/xcmss/m/n/10.95 , ^^P  Extended tight-binding quantum chemistry methods,^^Q \T1/xcmss/m/it/10.95 WIREs Computational
  []
 
-
-Overfull \hbox (35.47627pt too wide) in paragraph at lines 218--218
-[]\T1/lmr/m/n/10.95 C. Bannwarth \T1/lmr/m/it/10.95 et al.\T1/lmr/m/n/10.95 , ^^P  Extended tight-binding quantum chemistry methods,^^Q \T1/lmr/m/it/10.95 WIREs Computational
- []
-
-
-Overfull \hbox (0.90552pt too wide) in paragraph at lines 218--218
-[]\T1/lmr/m/n/10.95 F. Pedregosa \T1/lmr/m/it/10.95 et al.\T1/lmr/m/n/10.95 , ^^P  Scikit-learn: Machine learning in Python,^^Q \T1/lmr/m/it/10.95 Journal of Machine Learning
- []
-
-[37
+[39
 
 
 ] (main.aux (sections/Motivation.aux) (sections/Theory.aux) (sections/Methods.aux) (sections/Results.aux))
@@ -1524,17 +1642,17 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 31735 strings out of 480554
- 627897 string characters out of 2894676
- 1459445 words of memory out of 3000000
- 48979 multiletter control sequences out of 15000+600000
- 591419 words of font info for 119 fonts, out of 8000000 for 9000
+ 31971 strings out of 480554
+ 635159 string characters out of 2894676
+ 1461013 words of memory out of 3000000
+ 49166 multiletter control sequences out of 15000+600000
+ 531219 words of font info for 145 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
- 108i,19n,106p,10678b,2033s stack positions out of 10000i,1000n,20000p,200000b,80000s
-{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-rm.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathex.enc}</home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/euler/eurb10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmbx10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmbx12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmbx8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmcsc10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmex10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmib10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr17.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmri10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmssbx10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmtt10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/symbols/msam10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (42 pages, 1323066 bytes).
+ 108i,19n,106p,10678b,2655s stack positions out of 10000i,1000n,20000p,200000b,80000s
+{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc} </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss2488.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2074.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1440.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2488.pk></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsmfIPiXi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssex10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1095.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1200.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/euler/eurb10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmib10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmtt10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsam10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsbm10.pfb>
+Output written on main.pdf (44 pages, 1293290 bytes).
 PDF statistics:
- 1283 PDF objects out of 1440 (max. 8388607)
- 185 named destinations out of 1000 (max. 500000)
- 287 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1806 PDF objects out of 2073 (max. 8388607)
+ 191 named destinations out of 1000 (max. 500000)
+ 305 words of extra memory for PDF output out of 10000 (max. 10000000)
 

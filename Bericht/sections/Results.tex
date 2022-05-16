@@ -5,7 +5,7 @@ it is necessary to use the homonuclear and heteronuclear model.
 Both models were further investigated by three adjustments,
 namely the algorithms, the labeling and a generalization.\\
 At first, as described in the Chapter Theory,
-the RFR and ETR are used as the different algorithms for the fitting of the ML model.
+the RFR and ETR are used as the different algorithms for fitting the ML model.
 Secondly, there are two possibility for the labeling.
 Either the indexed (Idx) case is used or the permuted (Perm) case.
 The third adjustment is the distinction between a case specific (Case) and a general (Gen) model.
@@ -19,13 +19,43 @@ $\mathrm{H}_2\mathrm{O}$, and $\mathrm{NH}_3$.
 For each molecule, structures with different bond length were generated.
 Only the distance of one bond was changed for each molecule.
 This lead into 103 different structures. These structures were split into a training set of 75\% and a test set of 25\%.
-The split is done structure wise to achieve the possibility to compare other quantities then the hessian elements.
+The split is done structure wise to achieve the possibility to compare other quantities than the hessian elements.
 For each structure, the hessian and feature were calculated with the \mbox{GFN2--xTB} method.\\
 Moreover, the performance of the model to a complete unknown system is of interest.
 Therefore, a H$_3$--system was used for this which is predicted by the model.
 The full data set named above was used as a training set for the model,
 while the H$_3$--system was used as the test set.
 \newpage
+\section{Feature--Target Correlation}
+For the preparation of the ML models first investigations are done on the linear correlation between the features and target.
+Thus, the Pearson Correlation Coefficient $R^2$ was computed for each feature. The used model is Gen--Idx.
+No algorithm is used, as only the correlation of the computed target and features is investigated.
+The range of the coefficient is $0 \leq R^2 \leq 1$. 
+Ten features with the highest scores are shown in Fig.~\ref{fig:PCC} for the homonuclear and heteronuclear model.
+\begin{figure}[H]
+    \centering
+    \subfloat{\includegraphics[width = 0.5\textwidth]{PearsonCorrelationCoeffiecient/PCC_diag.eps}}
+    \subfloat{\includegraphics[width = 0.5\textwidth]{PearsonCorrelationCoeffiecient/PCC_ndiag.eps}}
+    \caption[Pearson Correlation Coefficient for the ten most important features.]{
+                Pearson Correlation Coefficient for the features used for the homonuclear and heteronuclear model.
+                The ten features with the highest coefficients are shown for each model.
+                }
+    \label{fig:PCC}
+\end{figure}
+The highest correlation in the homonuclear model has $E_\mathrm{rep}$.
+For the heteronuclear model, the product of the repulsion energies has the highest correlation and third highest is the arithmetic mean.
+Hence, the repulsion seems to be an important feature for the prediction of the hessian elements. 
+Another high correlation feature is the chemical potential $\mu_\mathrm{chem}$. While, the potential itself is has the second highest correlation,
+its extension has the third highest for the homonuclear model.
+Furthermore, the three variations of $\mu_\mathrm{chem}$ appear also in the heteronuclear model (5., 6., 8.).
+At last, variations of $E_\mathrm{gap}$ and $\epsilon_\mathrm{LUAO}$ are represented in the highest correlations for both models.\\
+Both models show a correlation of one index $y_i$ or $z_i$.
+While only the homonuclear model shows a high correlation on the coordination number $CN_A$ and the atomic dipole moments $\mu$,
+the heteronuclear shows a correlation on the atomic isotropic exchange and correlation energy $E_\mathsf{IES+IXC}$.
+However, the correlations are in general rather low.
+Here, further research is necessary, to improve the correlation of the feature and target, to increase the performance of the ML model.
+For example, other functions can be used for further processing, like exponential or logarithmic functions.\\
+
 \section{The H$_\mathrm{\textbf{2}}$ system}
 As a first approach,
 the \mbox{ETR--Case--Perm} model was used for the subset of the hydrogen molecule.
@@ -38,8 +68,8 @@ there are abbreviations from the diagonal and therefore, in respect to the small
 \begin{figure}[H]
     \centering
     \includegraphics[width = \textwidth]{H2_single/Clean.eps}
-    \caption[Plot of wavenumbers from \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$ against wavenumbers predicted by a ML model $\tilde{\nu}_\mathrm{ML}$.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
-    is plotted against the wavenumber calculated via \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$.
+    \caption[Plot of wave numbers from \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$ against wave numbers predicted by a ML model $\tilde{\nu}_\mathrm{ML}$.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
+    is plotted against the wave number calculated via \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$.
     The model uses the Extra Tree Regression.
     The sample set is $\mathrm{H}_2$ and the training set is 75~\% of the whole set.
     The prediction were done for 5 random states.}
