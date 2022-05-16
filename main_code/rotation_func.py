@@ -261,3 +261,29 @@ def vector_rot(coord_var,rotM):
     for i in range(len(coord_var.iloc[:,1])):
         coord_var_new.iloc[i,:] = matmul(rotM,coord_var.iloc[i,:])
     return coord_var_new
+
+
+def calc_R(coord):
+     ############
+     ########### Rotation of coordinates and hessian into intermediate position
+     # Calculating center of mass 
+     s = center_mass(coord) 
+
+     # Translation of coordinate system int center of mass
+     coord_new = vec_trans(coord,s)
+     #vec_trans(dipm,s)
+     # Calculating moment of inertia
+     I = inert_tensor(coord_new)
+
+     # Calculating eigenvalues and eigenvectors 
+     eig_val,eig_vec = linalg.eigh(I)
+
+     # Check if the coordinate system is right-handed --> important for chirality
+
+     eig_vec = check_eig_vec(eig_vec)
+
+     # Rotating eigenvectors, so that highest values are positive
+
+     eig_vec = eig_vec_rot(eig_vec)
+
+     return eig_vec

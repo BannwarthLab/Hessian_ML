@@ -378,7 +378,7 @@ def import_files(file_path_mol,feature_name_full):
                 # X.extend(X_A)
                 X.extend( (X_A + X_B )/ 2)
                 X.extend(X_A * X_B)
-                X.extend(np.abs(X_A - X_B))
+                X.extend(np.abs(X_A - X_B)) 
 
             else:
 

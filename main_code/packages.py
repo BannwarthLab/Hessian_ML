@@ -1,7 +1,6 @@
 #Computations
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy import linalg
 from operator import matmul
 from math import log10 , floor
