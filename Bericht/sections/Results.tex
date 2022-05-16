@@ -358,7 +358,7 @@ the model can be adapted to a $\Delta$ML model.\\
     &= \sum_{B \neq A} \dfrac{1}{2} \bigg(f_3(R_{AB})\big[q_A(\bm{\mu}_B^\intercal\textbf{R}_{BA}) + q_B (\bm{\upmu}_A^\intercal)\textbf{R}_{AB} \big] \nonumber\\
     &+ f_5(R_{AB}) \big[q_A\bm{R}_{BA}^\intercal \bm{\Uptheta}_B \bm{R}_{BA} +q_B\bm{R}_{BA}^\intercal \bm{\Uptheta}_A \bm{R}_{BA} \nonumber \\
     &- 3 (\bm{\upmu}_A^\intercal\bm{R}_{AB})(\bm{\upmu}_B^\intercal\bm{R}_{AB}) +  (\bm{\upmu}_A^\intercal \bm{\upmu}_B R_{AB}^2)  \big] \bigg)\\
-    E_{A,\mathrm{AXS}} &= \left( f_{\mathrm{XC}^{\mu_A}|\bm{\upmu}_A|^2 } + f_{\mathrm{XC}^{\Theta_A}||\bm{\Uptheta}_A||^2 } \right) \\
+    E_{A,\mathrm{AXS}} &= \left( f_\mathrm{XC}^{\mu_A}|\bm{\upmu}_A|^2  + f_\mathrm{XC}^{\Theta_A}||\bm{\Uptheta}_A||^2  \right) \\
     E_{A,\mathrm{IES+IXC}} &= \dfrac{1}{2} \sum_{B \neq A} \sum_{l \in A} \sum_{l' \in B} q_{A,l} q_{B,l'} \gamma_{AB,ll'} + \dfrac{1}{3} \sum_{l \in A} \Gamma_{A,l} q_{A,l}^3
 \end{align}
 \end{subequations}
@@ -395,27 +395,30 @@ the model can be adapted to a $\Delta$ML model.\\
     \label{tab:Indices}
 \end{table}
 
-	
 \begin{table}[H]
     \centering
-    \caption[]{Permutation of the coordinates for each Hessian element.}
-        \begin{tabular}{c c c c c}
-            \hline
-            Hessian Element & x & y & z \\
-            \hline \\[-1em]
-            $\dfrac{\partial^2 E}{\partial x_A \partial x_A}$ & x & y & z & \\ [+0.7em]
-            $\dfrac{\partial^2 E}{\partial x_A \partial y_A}$ & y & x & $-$z & \\[+0.7em]
-            $\dfrac{\partial^2 E}{\partial x_A \partial z_A}$ & z & x & y & \\[+0.7em]
-
-            $\dfrac{\partial^2 E}{\partial y_A \partial x_A}$ & x & y & z & \\[+0.7em]
-            $\dfrac{\partial^2 E}{\partial y_A \partial y_A}$ & y & z & x & \\[+0.7em]
-            $\dfrac{\partial^2 E}{\partial y_A \partial z_A}$ & z & y & $-$x & \\[+0.7em]
-
-            $\dfrac{\partial^2 E}{\partial z_A \partial x_A}$ & x & z & $-$y & \\[+0.7em]
-            $\dfrac{\partial^2 E}{\partial z_A \partial y_A}$ & y & z & x & \\[+0.7em]
-            $\dfrac{\partial^2 E}{\partial z_A \partial z_A}$ & z & x & y & \\[+0.7em]
-            \hline
-
+    \caption[]{Permutation of the coordinates for each Hessian element.
+    At first the permutation of the coordinates is shown.
+    After that, the change of the elements of a matrix, for example, for the quadrupole moment is shown.}
+        \begin{tabular}{c c c c c c c c c c}
+            \hline\\[-1em]
+            Element &
+            $\dfrac{\partial^2 E}{\partial x_A \partial x_A}$ & $\dfrac{\partial^2 E}{\partial x_A \partial y_A}$ &
+            $\dfrac{\partial^2 E}{\partial x_A \partial z_A}$ &$\dfrac{\partial^2 E}{\partial y_A \partial x_A}$ &
+            $\dfrac{\partial^2 E}{\partial y_A \partial y_A}$ &$\dfrac{\partial^2 E}{\partial y_A \partial z_A}$ &
+            $\dfrac{\partial^2 E}{\partial z_A \partial x_A}$ & $\dfrac{\partial^2 E}{\partial z_A \partial y_A}$ &
+            $\dfrac{\partial^2 E}{\partial z_A \partial z_A}$ \\[+0.7em]
+            x &  x  &  y    & z  & x   &y   & z     &x     & y  & z\\ 
+            y &  y  &  x    & x  & y   & z  & y     & z    & z  & x \\
+            z &  z  & $-$z  & y  & z   &x   &$-$x   & $-$y & x  & y\\
+            \hline 
+            xx & xx & yy    & zz & xx  & yy & zz    & xx   & yy & zz \\
+            yy & xy & xx    & xx & yy  & zz & yy    & zz   & zz & xx \\
+            zz & xz & zz    & yy & zz  & xx & xx    & yy   & xx & yy \\
+            xy & xy & xy    & xz & xy  & yz & yz    & xz   & yz & xz \\
+            xz & xz & $-$yz & yz & xz  & xy & $-$xz & $-$xy& xy & yz \\
+            yz & yz & $-$xz & xy & yz  & xz & $-$xy & $-$yz& xz & xy \\
+            \hline 
         \end{tabular}
     \label{tab:Permutation}
 \end{table}
