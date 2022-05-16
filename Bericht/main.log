@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  16 MAY 2022 15:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  16 MAY 2022 16:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1330,6 +1330,11 @@ File: PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf Graphic file
 <use PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf  used on input line 38.
 (pdftex.def)             Requested size: 227.62209pt x 396.8791pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 45--58
+
+ []
+
 [24 <./PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf> <./PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf>]
 
 LaTeX Font Warning: Font shape `T1/xcmss/b/n' in size <10> not available
@@ -1650,7 +1655,7 @@ Here is how much of TeX's memory you used:
  0 hyphenation exceptions out of 8191
  108i,19n,106p,10678b,2655s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc} </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss2488.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2074.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1440.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2488.pk></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsmfIPiXi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssex10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1095.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1200.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/euler/eurb10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmib10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmtt10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsam10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsbm10.pfb>
-Output written on main.pdf (44 pages, 1293290 bytes).
+Output written on main.pdf (44 pages, 1293292 bytes).
 PDF statistics:
  1806 PDF objects out of 2073 (max. 8388607)
  191 named destinations out of 1000 (max. 500000)
