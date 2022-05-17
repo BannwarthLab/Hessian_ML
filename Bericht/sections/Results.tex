@@ -398,20 +398,23 @@ the model can be adapted to a $\Delta$ML model.\\
 \begin{table}[H]
     \centering
     \caption[]{Permutation of the coordinates for each Hessian element.
-    At first the permutation of the coordinates is shown.
+    At first the permutation of the vectors is shown.
     After that, the change of the elements of a matrix, for example, for the quadrupole moment is shown.}
         \begin{tabular}{c c c c c c c c c c}
             \hline\\[-1em]
-            Element &
-            $\dfrac{\partial^2 E}{\partial x_A \partial x_A}$ & $\dfrac{\partial^2 E}{\partial x_A \partial y_A}$ &
+            Hessian &\\
+            &$\dfrac{\partial^2 E}{\partial x_A \partial x_A}$ & $\dfrac{\partial^2 E}{\partial x_A \partial y_A}$ &
             $\dfrac{\partial^2 E}{\partial x_A \partial z_A}$ &$\dfrac{\partial^2 E}{\partial y_A \partial x_A}$ &
             $\dfrac{\partial^2 E}{\partial y_A \partial y_A}$ &$\dfrac{\partial^2 E}{\partial y_A \partial z_A}$ &
             $\dfrac{\partial^2 E}{\partial z_A \partial x_A}$ & $\dfrac{\partial^2 E}{\partial z_A \partial y_A}$ &
             $\dfrac{\partial^2 E}{\partial z_A \partial z_A}$ \\[+0.7em]
+            \hline
+            Vector\\
             x &  x  &  y    & z  & x   &y   & z     &x     & y  & z\\ 
             y &  y  &  x    & x  & y   & z  & y     & z    & z  & x \\
             z &  z  & $-$z  & y  & z   &x   &$-$x   & $-$y & x  & y\\
             \hline 
+            Matrix\\
             xx & xx & yy    & zz & xx  & yy & zz    & xx   & yy & zz \\
             yy & xy & xx    & xx & yy  & zz & yy    & zz   & zz & xx \\
             zz & xz & zz    & yy & zz  & xx & xx    & yy   & xx & yy \\

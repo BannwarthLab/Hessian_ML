@@ -1332,6 +1332,7 @@ INPUT ./main.lot
 INPUT main.lot
 INPUT main.lot
 OUTPUT main.lot
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/jknappen/ec/ecss2074.tfm
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/vf/public/sansmathfonts/cmsmf10.vf
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/cm/cmss10.tfm
 INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmfIPiXi10.tfm
