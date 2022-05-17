@@ -4,6 +4,27 @@ They are used for the computation of infrared and Raman spectra, as also for the
 Furthermore, they are necessary for the transition state search.\\
 The computation of HVF is costly due to the need of the hessian matrix, which is a matrix of second derivatives.
 The acceleration of the computation is therefore of great interest.
-There are different approaches for the accelerated computation of hessian matrices in literature.
-Spicher and Grimme developed an approach, based on a bias on the energy to compute hessian matrices in high--level geometries with low--level methods.
-The geometry optimization is compared to the computation of 
+In general, the computation is done on a multi--level approach,
+as the computation of single--point energies or optimized geometries is cheap compared to frequency calculation.
+Therefore, the computation of frequencies has to be done on low--level methods. 
+There are different approaches for the either accelerating the computation or to increase the precision of hessian matrices in literature.\\
+Spicher and Grimme developed an approach to force the geometries of low--level methods into the geometries of higher--level methods.
+A bias depending on the root--mean--squared--distance (RMSD) is added to the potential energy surface (PES) of the low--level method,
+thus the energy is minimized at the geometry of the high--level method.
+On this new PES the hessian matrix is computed, as the HO--approximation is applicable and, the geometry is optimized.
+The contributions of the bias energy is then detached from the hessian.\supercite{SpicherSHP2021}\\
+Sanders et al. proposed another approach, which is based on the assumption, that the hessian matrix is a sparse matrix.
+They use a matrix, that describes the sparse matrix in an incoherent basis.
+The sparse matrix is approximated by using the matrix in the incoherent basis partially.
+Hence, instead of computing the full matrix only a part of it needs to be computed.
+This can be either used to accelerate the computation or to increase the precision by using high--level methods.\supercite{Sanders2015}\\
+%An parametrized force--field approach for the computation is proposed by Lindh et al.
+%Advantageous to other methods is, that the force constants of large distances is zero and therefore the computational cost increases more slowly. \supercite{Lindh1995}\\
+In the last decades, the amount of information in chemistry is increasing rapidly.
+This is beneficial for, for example, semi--empirical methods, as those depend on empirical derived data.
+But also in chemistry the interest in new tools like machine learning have risen.
+Furthermore, due to the increase of information it is of interest, to emphasize the data--supported approach.
+Therefore, in this research an approach was chosen,
+to predict the hessian matrix by ML models to make the high--level methods more affordable.
+It was chosen to use supervised ML.
+The features of the models are computed from atomic--based quantities.
