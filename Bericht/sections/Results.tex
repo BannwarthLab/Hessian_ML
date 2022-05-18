@@ -33,9 +33,11 @@ No algorithm is used, as only the correlation of the computed target and feature
 The range of the coefficient is $0 \leq R^2 \leq 1$. 
 Ten features with the highest scores are shown in Fig.~\ref{fig:PCC} for the homonuclear and heteronuclear model.
 \begin{figure}[H]
-    \centering
-    \subfloat{\includegraphics[width = 0.5\textwidth]{PearsonCorrelationCoeffiecient/PCC_diag.eps}}
-    \subfloat{\includegraphics[width = 0.5\textwidth]{PearsonCorrelationCoeffiecient/PCC_ndiag.eps}}
+    \hspace*{-0.25cm}
+    \subfloat[homonuclear model]
+    {\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_diag.eps}}
+    \hspace*{0.25cm}
+    \subfloat[heteronuclear model]{\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_ndiag.eps}}
     \caption[Pearson Correlation Coefficient for the ten most important features.]{
                 Pearson Correlation Coefficient for the features used for the homonuclear and heteronuclear model.
                 The ten features with the highest coefficients are shown for each model.
@@ -66,10 +68,10 @@ This is done for 5 random states and is shown in Fig.~\ref{fig:WN_H2}.
 The black line is the diagonal, on which the data points would appear for a perfect prediction.
 Furthermore, the wave number increases with the decrease of the bond length.
 For the approximated range of $1800~\mathrm{cm^{-1}} < \tilde{\nu}_\mathrm{xTB}< 7500~\mathrm{cm^{-1}}$
-there are abbreviations from the diagonal and therefore, in respect to the small data set of eleven structures, a sufficient prediction.
+there are deviations from the diagonal and therefore, in respect to the small data set of eleven structures, a sufficient prediction.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = 0.9\textwidth]{H2_single/Clean.eps}
+    \includegraphics[width = 0.9\textwidth]{H2_single/WN_xTB_vs_ML.eps}
     \caption[Plot of wave numbers from \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$ against wave numbers predicted by a ML model $\tilde{\nu}_\mathrm{ML}$.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
     is plotted against the wave number calculated via \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$.
     The model uses the Extra Tree Regression.
@@ -77,8 +79,8 @@ there are abbreviations from the diagonal and therefore, in respect to the small
     The prediction were done for 5 random states.}
     \label{fig:WN_H2}
 \end{figure}
-The abbreviations are stronger in the cases of $1800~\mathrm{cm^{-1}} > \tilde{\nu}_\mathrm{xTB}$ and $\tilde{\nu}_\mathrm{xTB} > 7500~\mathrm{cm^{-1}}$.
-These predictions are probably done for cases, where the training set does not include molecules, which have a lower or higher distance, respectively.
+The deviations are stronger in the cases of $1800~\mathrm{cm^{-1}} > \tilde{\nu}_\mathrm{xTB}$. For $\tilde{\nu}_\mathrm{xTB} > 7500~\mathrm{cm^{-1}}$ there is an outlier.
+These predictions are done for cases, where the training set does not include molecules, which have a lower or higher distance, respectively.
 Hence, it can be assumed, that the error is due to extrapolation of the ML model.
 This assumption is underlined by the fact, that the predicted values correspond to the next higher or lower value.
 For example, the next lowest value in the case of the prediction at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$ is $\tilde{\nu}_\mathrm{xTB} \approx 7\cdot 10^4 \mathrm{cm^{-1}}$.
@@ -89,7 +91,7 @@ It could also be shown, that the prediction fails for extrapolation.
 
 \section{Comparison of RFR and ETR}
 For the comparison of the algorithms, the \mbox{RFR--Gen-Perm} and \mbox{ETR--Gen--Perm} models were used.
-These models are compared to each other by testing there dependency on the amount of training set used.
+These models are compared to each other by testing their dependency on the amount of training set used.
 As the quantity for testing the performance the MSE 
 between the predicted hessian and the hessian computed via \mbox{GFN2--xTB} is used.
 The MSE was calculated for ten different random states and the mean and standard deviation of these MSE was calculated.\\
@@ -97,7 +99,8 @@ It is expected, that the performance of the ML model should increase, the more d
 This can be interpreted as a statistical learning behavior. 
 To verify this behavior, the training set was increased successively.
 The full training set is 75~\% of the full data set. Thus, the test set is 25~\% of the data set.
-While keeping the test set constant, the training set is changed successively between 7.5~\% of the data set to 75~\%.
+The \textit{Amount of Training set used}~$=1$ corresponds to 75~\%.  
+While keeping the test set constant, the amount of training set is changed successively between 0.1 of the data set to 1.0.
 Fig~\ref{fig:Comparison_RFR_ETR} shows the MSE in the dependency of the amount of training set used for the ETR (on the left)
 and the RFR (on the right). The error bars indicate the standard deviation.
 \begin{figure}[H]
@@ -120,7 +123,7 @@ This behavior is also recognizable in the case of the RFR.
 In comparison to the ETR, the RFR shows a higher standard deviation for the data points.
 Thus, the RFR depends more strongly on the random state than the ETR. 
 Furthermore, the ETR has, especially for the homonuclear model, lower MSE values for any amount of training set.
-At the full amount of training set and at 90\% of the training set,
+At the full amount of training set and at 0.9 of the training set,
 the RFR and ETR show a similar performance for the heteronuclear model.
 All in all, the ETR shows a better performance for the whole investigated range.\\
 There is the possibility, that the ML model has so much information in the features,
@@ -222,7 +225,7 @@ although ML is not customized for extrapolation problems.
 \newpage
 Contrary to the extrapolation errors are the wave numbers, which correspond to rotation and translation.
 These wave numbers are approximately zero and have large contribution to number of wave numbers.
-Therefore, the narrow the standard deviation, and shift the mean to zero. Further investigations are necessary,
+Therefore, they narrow the standard deviation, and shift the mean to zero. Further investigations are necessary,
 to see whether the extrapolation or the wave numbers, corresponding to rotation and translation, have a higher impact onto the mean and standard deviation.\\
 \section{Benchmarking the H$_\mathrm{\textbf{3}}$~system}
 Especially, the prediction of hessian matrices of fully unknown systems is of interest.
@@ -250,11 +253,11 @@ The ML model should, in principle, mimic this behavior.
     \label{fig:FC_idx}
 \end{figure}
 \newpage
-While this is overall the case, there are abbreviation from this behavior.
+While this is overall the case, there are deviations from this behavior.
 For the example, the symmetry is not given in the case of $x(\mathrm{H2}) = 1.84~\si{\angstrom} $ and $x(\mathrm{H2}) = 2.15~\si{\angstrom}$.\\
 Fig.~\ref{fig:FC_perm} shows the prediction of the focre constants via the \mbox{ETR--Gen--Perm} model.
 Similar to the \mbox{ETR--Gen--Idx} model, the symmetry is in general achieved.
-Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\angstrom}$ and $x(\mathrm{H2}) = 3.08 ~\si{\angstrom}$ show abbreviations from oneanother.
+Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\angstrom}$ and $x(\mathrm{H2}) = 3.08 ~\si{\angstrom}$ show deviations from oneanother.
 
 \begin{figure}[H]
     \centering
@@ -280,24 +283,24 @@ The goal of the research was the prediction of hessian matrices by a machine lea
 The machine learning model was based on atomic features and the prediction of the elements of the hessian matrices was done atom pair wise.
 The model was benchmarked by a small data set of 8 molecules with 103 different structures.
 The computations of the hessian matrices and features for these systems was done with the \mbox{GFN2--xTB} method.\\
-In first place, the general learning of the model was investigated.
+In the first place, the general learning of the model was investigated.
 A statistical learning behavior of the ML models \mbox{RFR--Gen--Perm} and \mbox{ETR--Gen--Perm} could be observed.
 Compared to another, the \mbox{ETR--Gen--Perm} model showed a better performance.
 Furthermore, a physical correlation could be presented for the \mbox{ETR--Gen--Perm} model.\\
-Moreover, 4 variations of the model were investigated and compared to another, which are the models \mbox{ETR--Gen/Case--Perm/Idx}.
-Here a similar behavior for different labeling approaches (Indexed and Permuted) was shown.
+Moreover, four variations of the model were investigated and compared to another, which are the models \mbox{ETR--Gen/Case--Perm/Idx}.
+Here, a similar behavior for different labeling approaches (Indexed and Permuted) was shown.
 The general models show a better prediction than the case--specific models.
-Here, the hessian elements, zero point vibrational energy and wave numbers were predicted.\\
+For this, the hessian elements, zero point vibrational energy and wave numbers were predicted.\\
 In addition, the set was used for the prediction of a system, that is unknown to the ML model.\\
-The data set of the new $\mathrm{H}_3$ system shows a symmetric behavior for the force constants,
+The data set of the new $\mathrm{H}_3$ system shows an almost symmetric behavior for the force constants,
 which could, with some minor errors, be depicted by the ML models.\\
 
-The next necessary approaches for this research, is the improvement of the models in there symmetric behavior.
+The next necessary approaches for this research, is the improvement of the models in their symmetric behavior.
 Although, for the $\mathrm{H}_3$ system the errors in symmetry are minor,
 the adjustment to a full symmetric behavior is mandatory.
 As the correlation of the features is low,
-investigations in towards higher correlating features might increase the performance of the ML models.
-Here, new functions could be used achieve a linear correlation between the features and target.
+investigations towards higher correlating features might increase the performance of the ML models.
+Here, new functions could be used, which achieve a linear correlation between the features and target.
 In addition, a set of 103 structures is small for a ML model.
 Hence, the date set size should be increased and tests on benchmark data sets should be done for a comparison to literature. 
 When the prediction of the hessian matrix on \mbox{GFN2--xTB} level is sufficient,

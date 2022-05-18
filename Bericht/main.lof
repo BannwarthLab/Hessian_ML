@@ -7,6 +7,8 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features.}}{23}{figure.caption.9}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{23}{subfigure.1.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{23}{subfigure.1.2}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Plot of wave numbers from \mbox {GFN2--xTB} $\tilde {\nu }_\mathrm {xTB}$ against wave numbers predicted by a ML model $\tilde {\nu }_\mathrm {ML}$.}}{24}{figure.caption.10}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Learning plots of the ETR and RFR for an increasing size of the training set}}{26}{figure.caption.11}%
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Learning plot for hessian elements with an increase of randomness on $\textbf {x}$}}{27}{figure.caption.12}%
