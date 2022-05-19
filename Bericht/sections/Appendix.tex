@@ -77,7 +77,17 @@
      1~\mathrm{if}: \alpha = \beta \\
      0~\mathrm{if}: \alpha \neq \beta\\   
     \end{cases} \nonumber \\
+    \bm{\uptheta}_A &= \left(\begin{matrix}
+        \theta_A^{\mathrm{xx}} & \theta_A^{\mathrm{xy}} & \theta_A^{\mathrm{xz}} \\
+        \theta_A^{\mathrm{xy}} & \theta_A^{\mathrm{yy}} & \theta_A^{\mathrm{yz}} \\
+        \theta_A^{\mathrm{xz}} & \theta_A^{\mathrm{yz}} & \theta_A^{\mathrm{yz}} \\
+    \end{matrix}\right) \times \textbf{1}\\
     \theta_A^{\mathrm{ext},\alpha \beta} &= \theta_A^{\alpha \beta} + \dfrac{\theta^{\alpha \beta}_B + \delta \theta^{\alpha \beta}_B}{f_\mathrm{damp}(CN_B+1) }\\
+    \bm{\uptheta}_A^\mathrm{ext} &= \left(\begin{matrix}
+        \theta_A^{\mathrm{ext,xx}} & \theta_A^{\mathrm{ext,xy}} & \theta_A^{\mathrm{ext,xz}} \\
+        \theta_A^{\mathrm{ext,xy}} & \theta_A^{\mathrm{ext,yy}} & \theta_A^{\mathrm{ext,yz}} \\
+        \theta_A^{\mathrm{ext,xz}} & \theta_A^{\mathrm{ext,yz}} & \theta_A^{\mathrm{ext,yz}} \\
+    \end{matrix}\right) \times \textbf{1}
 \end{align}
 
 \begin{align}
