@@ -1,6 +1,6 @@
 \chapter{Results and Discussion}
 \section{The ML Models and Data Set}
-For every prediction of the hessian matrix,
+For every prediction of the Hessian matrix,
 it is necessary to use the homonuclear and heteronuclear model.
 Both models were further investigated by three adjustments,
 namely the algorithms, the labeling and a generalization.\\
@@ -19,8 +19,8 @@ $\mathrm{H}_2\mathrm{O}$, and $\mathrm{NH}_3$.
 For each molecule, structures with different bond length were generated.
 Only the distance of one bond was changed for each molecule.
 This lead into 103 different structures. These structures were split into a training set of 75\% and a test set of 25\%.
-The split is done structure wise to achieve the possibility to compare other quantities than the hessian elements.
-For each structure, the hessian and feature were calculated with the \mbox{GFN2--xTB} method.\\
+The split is done structure wise to achieve the possibility to compare other quantities than the Hessian elements.
+For each structure, the Hessian and feature were calculated with the \mbox{GFN2--xTB} method.\\
 Moreover, the performance of the model to a complete unknown system is of interest.
 Therefore, a H$_3$--system was used for this which is predicted by the model.
 The full data set named above was used as a training set for the model,
@@ -46,7 +46,7 @@ Ten features with the highest scores are shown in Fig.~\ref{fig:PCC} for the hom
 \end{figure}
 The highest correlation in the homonuclear model has $E_\mathrm{rep}$.
 For the heteronuclear model, the product of the repulsion energies has the highest correlation and third highest is the arithmetic mean.
-Hence, the repulsion seems to be an important feature for the prediction of the hessian elements. 
+Hence, the repulsion seems to be an important feature for the prediction of the Hessian elements. 
 Another high correlation feature is the chemical potential $\mu_\mathrm{chem}$.
 While, the potential itself is has the second highest correlation,
 its extension has the third highest for the homonuclear model.
@@ -57,9 +57,43 @@ Both models show a correlation of one index $y_i$ or $z_i$.
 While only the homonuclear model shows a high correlation on the coordination number $CN_A$ and the atomic dipole moments $\mu$,
 the heteronuclear shows a correlation on the atomic isotropic exchange and correlation energy $E_\mathsf{IES+IXC}$.
 However, the correlations are in general rather low.
-Here, further research is necessary, to improve the correlation of the feature and target, to increase the performance of the ML model.
-For example, other functions can be used for further processing, like exponential or logarithmic functions.\\
+One possible reason is, that the Hessian matrix is sparse, therefore many elements $\frac{\partial^2 E}{\partial a_A \partial b_B} \approx 0$
+are approximately zero and do not correlate with the given features. This can reduce $R^2$ significantly.
+Furthermore, the correlation is computed for all Hessian elements.
+If the feature correlations of the elements differ from another, the overall correlation is also decreased.\\
+To investigate the last aspect, the target vector was split Hessian element wise. 
+For each Hessian element $\frac{\partial^2 E}{\partial a_A \partial b_B}$ the Pearson Correlation Coefficients $R^2$ of the features were computed.
+For obvious reasons, the indices $x_i$, $y_i$ and $z_i$ are not included for this correlation.
+\begin{figure}[H]
+    \hspace*{-0.25cm}
+    \subfloat[homonuclear model]
+    {\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_diag.eps}}
+    \hspace*{0.25cm}
+    \subfloat[heteronuclear model]{\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag.eps}}
+    \caption[Element wise computed Pearson Correlation Coefficient shown for the best features of each element.]{
+        Highest Pearson Correlation Coefficient specifically computed for each Hessian element for the homo-- and heteronuclear model.
+        The abbreviation ab corresponds to the elements $\frac{\partial^2 E}{\partial a_A \partial b_B}$. 
+                }
+    \label{fig:PCC_elementwise}
+\end{figure}
+\newpage
+Fig~\ref{fig:PCC_elementwise} shows the highest $R^2$ for each Hessian element for the homo-- and heteronuclear model.
+The elements are abbreviated with the coordinates of the derivative.
+Comparing the highest $R^2$ in Fig~\ref{fig:PCC} with $R^2$ in Fig~\ref{fig:PCC_elementwise},
+there is a significant increase of $R^2$ for the homonuclear and heteronuclear model.
+For the heteronuclear model, there are two exceptions, namely for yx and xz.
+Though the element wise $R^2$ is larger than for the general correlation,
+those $R^2$ are still in the magnitude of the general correlation. 
+Interesting to point out, is that most of the features which show element wise the highest correlation
+are also presented in the ten highest $R^2$ for the general correlation. Exceptions are for the homonuclear model $\epsilon_\mathrm{HAOA}$,
+and for the heteronuclear model ${\mu_A^\mathrm{x,ext}}_\mathrm{Arith}$, ${\mu_{A,p}^\mathrm{x,ext}}_\mathrm{Prod}$, ${E_\mathrm{rep}}_\mathrm{Abs.Diff}$.
+Regarding only the element wise $R^2$ for the homonuclear model, the element pairs (xy,yx), (zx,xz) and (zy,yz) have the same correlation.
+This is due to the fact, that the Hessian matrix block $\textbf{H}_{AA}$ is symmetric. 
+Moreover, the highest correlations do differ from another for each element, except for the symmetric element pairs.
+This is especially important for the machine learning, as this suggest, that the elements can be differentiated with the used features.
+The computations are also done for the model Gen--Perm and shown in Fig~\ref{fig:PCC_perm} and Fig~\ref{fig:PCC_elementwise_Perm}.
 
+\newpage
 \section{The H$_\mathrm{\textbf{2}}$ system}
 As a first approach,
 the \mbox{ETR--Case--Perm} model was used for the subset of the hydrogen molecule.
@@ -67,7 +101,7 @@ Here, the wave numbers $\tilde{\nu}_\mathrm{ML}$ were predicted and plotted agai
 This is done for 5 random states and is shown in Fig.~\ref{fig:WN_H2}.
 The black line is the diagonal, on which the data points would appear for a perfect prediction.
 Furthermore, the wave number increases with the decrease of the bond length.
-For the approximated range of $1800~\mathrm{cm^{-1}} < \tilde{\nu}_\mathrm{xTB}< 7500~\mathrm{cm^{-1}}$
+For the approximated range of $1800~\mathrm{cm^{-1}}~<~\tilde{\nu}_\mathrm{xTB}~<~7500~\mathrm{cm^{-1}}$
 there are deviations from the diagonal and therefore, in respect to the small data set of eleven structures, a sufficient prediction.
 \begin{figure}[H]
     \centering
@@ -93,7 +127,7 @@ It could also be shown, that the prediction fails for extrapolation.
 For the comparison of the algorithms, the \mbox{RFR--Gen-Perm} and \mbox{ETR--Gen--Perm} models were used.
 These models are compared to each other by testing their dependency on the amount of training set used.
 As the quantity for testing the performance the MSE 
-between the predicted hessian and the hessian computed via \mbox{GFN2--xTB} is used.
+between the predicted Hessian and the Hessian computed via \mbox{GFN2--xTB} is used.
 The MSE was calculated for ten different random states and the mean and standard deviation of these MSE was calculated.\\
 It is expected, that the performance of the ML model should increase, the more data it is trained with.
 This can be interpreted as a statistical learning behavior. 
@@ -109,7 +143,7 @@ and the RFR (on the right). The error bars indicate the standard deviation.
     \hfill
     \subfloat{\includegraphics[width = 0.5\textwidth ]{MSE/MSE_RFR.eps}}
     \caption[Learning plots of the ETR and RFR for an increasing size of the training set]{
-    Learning plots for the predicting hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
+    Learning plots for the predicting Hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
     for an increase of the amount of training set used.
     On the left is the learning plot of the Extra Tree Regression and on the right the plot of the Random Forest Regression shown.
     The full training set is 75~\% of the sample set.
@@ -136,9 +170,9 @@ if the scattering of the data points increases.
 The performance of the model \mbox{ETR--Multi--Perm} was tested for this and is shown in Fig~\ref{fig:MSE_sigma}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width = 0.9\textwidth]{MSE/MSE_vs_sigma.eps}
-    \caption[Learning plot for hessian elements with an increase of randomness on $\textbf{x}$]{
-    Learning plots for predicting hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
+    \includegraphics[width = 0.75\textwidth]{MSE/MSE_vs_sigma.eps}
+    \caption[Learning plot for Hessian elements with an increase of randomness on $\textbf{x}$]{
+    Learning plots for predicting Hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
     for a variation of the factor~$\sigma$.
     The full sample set, excluding the $\mathrm{H}_3$~system, is used for the Ml models.
     The mean of ten random states were used for the MSE.
@@ -147,29 +181,29 @@ The performance of the model \mbox{ETR--Multi--Perm} was tested for this and is 
 \end{figure}
  
 The prediction was done for ten different random states.
-The MSE between the predicted hessian elements and the via \mbox{GFN2--xTB} calculated ones was investigated.
+The MSE between the predicted Hessian elements and the via \mbox{GFN2--xTB} calculated ones was investigated.
 For the investigated range of $0 \leq \sigma \leq 2.5$ the MSE increases monotonically.
 Hence, this shows, that the model learns from the features and is not purely random.\\
 In this section a comparison of the RFR and ETR was done.
 The ETR shows overall a better performance than the RFR.
 Furthermore, it could be verified,
-that the ML model learns statistically from the features used for the prediction of the hessian matrices.
+that the ML model learns statistically from the features used for the prediction of the Hessian matrices.
 
 \newpage
 \section{Comparison of Permutation Model and Indexed Model}
 Beside the different algorithms for the construction of the trees,
 the models with the variations of Gen/Case and Idx/Perm were compared.
 Here, the models \mbox{ETR--Gen--Perm}, \mbox{ETR--Gen--Idx}, \mbox{ETR--Case--Perm} and \mbox{ETR--Case--Idx} are investigated.
-The quantities for measuring are the hessian elements and the wave numbers of the harmonic vibration.
+The quantities for measuring are the Hessian elements and the wave numbers of the harmonic vibration.
 The difference between the predicted and via \mbox{GFN2--xTB} computed quantities were computed.
 From these differences the standard deviation as also the mean were calculated,
 and a Gaussian distribution was assumed.
-At first the direct prediction of the hessian elements were investigated,
+At first the direct prediction of the Hessian elements were investigated,
 and its distribution is shown in Fig~\ref{fig:ErrorDistHess}.
 \begin{figure}[H]
     \centering
     \includegraphics[width =0.75\textwidth]{ErrorDistGraphs/error_distribution_ml_hess.eps}
-    \caption[Gaussian type distribution for the prediction of hessian elements.]
+    \caption[Gaussian type distribution for the prediction of Hessian elements.]
     { Distribution of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ for different models.
     In every model, the Extra Tree Regression was used.
     The distribution is assumed to be Gaussian type.
@@ -213,10 +247,10 @@ The difference between the difference between the ML predicted $\tilde{\nu}_\mat
 A Gaussian distribution was assumed.
 This is plotted in Fig.~\ref{fig:ErrorDistWN} for the four different varieties of the model.
 Furthermore, the plot of the $\tilde{\nu}_\mathrm{ML}$ vs. $\tilde{\nu}_\mathrm{xTB}$ is shown.
-The relative distributions of the four variations of the models are similar to the ones of the hessian elements.
+The relative distributions of the four variations of the models are similar to the ones of the Hessian elements.
 The \mbox{ETR--Gen--Perm} and \mbox{ETR--Gen--Idx} show a better performance than the \mbox{ETR--Case--Perm} and the \mbox{ETR--Case--Idx}.
 The mean is shifted to a negative $\Delta \tilde{\nu}$.
-In contrast to the Gaussian distribution of the hessian elements, the Idx models show a marginal better performance than the Perm model.
+In contrast to the Gaussian distribution of the Hessian elements, the Idx models show a marginal better performance than the Perm model.
 The deviations of several $\mathrm{kcal \cdot mol^{-1}}$ are rather strong.
 These strong deviations might be due to high extrapolation errors, which lead to high standard distribution.
 For example at $\tilde{\nu}_\mathrm{xTB} \approx 65 \mathrm{kcal \cdot mol^{-1}}$ the deviation might be due to extrapolation.
@@ -228,7 +262,7 @@ These wave numbers are approximately zero and have large contribution to number 
 Therefore, they narrow the standard deviation, and shift the mean to zero. Further investigations are necessary,
 to see whether the extrapolation or the wave numbers, corresponding to rotation and translation, have a higher impact onto the mean and standard deviation.\\
 \section{Benchmarking the H$_\mathrm{\textbf{3}}$~system}
-Especially, the prediction of hessian matrices of fully unknown systems is of interest.
+Especially, the prediction of Hessian matrices of fully unknown systems is of interest.
 Hence, the ETR-Gen-Perm and ETR-Gen-Idx models were tested on the performance on a new, for the model unknown, system.
 For the $\mathrm{H}_3$ system the outer hydrogen atoms were fixed,
 while the inner hydrogen atom was shift from one hydrogen to another.
@@ -279,10 +313,10 @@ The rotation process can be neglected, as rotation is also done for the \mbox{GF
 A decoupled investigation of the homonuclear and heteronuclear model is therefore necessary. \\
 \newpage
 \chapter{Conclusion \& Outlook}
-The goal of the research was the prediction of hessian matrices by a machine learning model.
-The machine learning model was based on atomic features and the prediction of the elements of the hessian matrices was done atom pair wise.
+The goal of the research was the prediction of Hessian matrices by a machine learning model.
+The machine learning model was based on atomic features and the prediction of the elements of the Hessian matrices was done atom pair wise.
 The model was benchmarked by a small data set of 8 molecules with 103 different structures.
-The computations of the hessian matrices and features for these systems was done with the \mbox{GFN2--xTB} method.\\
+The computations of the Hessian matrices and features for these systems was done with the \mbox{GFN2--xTB} method.\\
 In the first place, the general learning of the model was investigated.
 A statistical learning behavior of the ML models \mbox{RFR--Gen--Perm} and \mbox{ETR--Gen--Perm} could be observed.
 Compared to another, the \mbox{ETR--Gen--Perm} model showed a better performance.
@@ -290,7 +324,7 @@ Furthermore, a physical correlation could be presented for the \mbox{ETR--Gen--P
 Moreover, four variations of the model were investigated and compared to another, which are the models \mbox{ETR--Gen/Case--Perm/Idx}.
 Here, a similar behavior for different labeling approaches (Indexed and Permuted) was shown.
 The general models show a better prediction than the case--specific models.
-For this, the hessian elements, zero point vibrational energy and wave numbers were predicted.\\
+For this, the Hessian elements, zero point vibrational energy and wave numbers were predicted.\\
 In addition, the set was used for the prediction of a system, that is unknown to the ML model.\\
 The data set of the new $\mathrm{H}_3$ system shows an almost symmetric behavior for the force constants,
 which could, with some minor errors, be depicted by the ML models.\\
@@ -303,128 +337,5 @@ investigations towards higher correlating features might increase the performanc
 Here, new functions could be used, which achieve a linear correlation between the features and target.
 In addition, a set of 103 structures is small for a ML model.
 Hence, the date set size should be increased and tests on benchmark data sets should be done for a comparison to literature. 
-When the prediction of the hessian matrix on \mbox{GFN2--xTB} level is sufficient,
+When the prediction of the Hessian matrix on \mbox{GFN2--xTB} level is sufficient,
 the model can be adapted to a $\Delta$ML model.\\
-\newpage
-
-\chapter{Appendix}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_w.eps}
-    \caption[Gaussian type distribution for the prediction of weighted projected hessian elements.]{
-    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ are computed. }    \label{fig:ErrorDistHessW}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_p.eps}
-    \caption[Gaussian type distribution for the prediction of projected hessian elements.]{
-    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ are computed. }
-    \label{fig:ErrorDistHessP}
-\end{figure}
-    
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_ZPE.eps}
-    \caption[Gaussian type distribution for the prediction of zero point energy.]
-    {Distribution of $\Delta \mathrm{ZPE}$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \mathrm{ZPE}$ are computed.}
-    \label{fig:ErrorDistZPE}
-\end{figure}
-
-\begin{subequations}
-    \label{eq:Feature}
-\begin{align}
-    CN_A &= \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{1}{1+\exp\left(\dfrac{-16a\cdot 4 (R_{A,\mathrm{cov}}+R_{B,\mathrm{cov}})}{3R_{AB}-1}\right)} \\
-    CN^\mathrm{ext} &= \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{CN_B}{f_\mathrm{damp}(R_A,R_B)}\\
-    q_A &= Zg_A - \sum_{\mu \in A}^{N_\mathrm{BF}}\sum_{\nu}^{N_\mathrm{BF}} P_{\mu \nu} S_{\mu \nu}\\
-    q_A^\mathrm{ext} &= q_A + \sum_{B \neq A}^{N_\mathrm{atoms}} \dfrac{q_B}{f_\mathrm{damp}}\\
-    E_{A,\mathrm{EHT}} &= \sum_{k \in A} \sum_k P_{k\lambda} H_{k\lambda}\\
-    E_{A,\mathrm{rep}} &= \sum_{B \neq A}^{M} \dfrac{1}{2} \dfrac{Y_{A}^\mathrm{eff}Y_{B}^\mathrm{eff}}{R_{AB}}
-    \cdot \exp \left(\alpha_A \alpha_B \right)^{0.5} R_{AB}^{k_\mathrm{rep}}\\
-    E_{A,\mathrm{disp}}^{(2)} &= \sum_{A \neq B} \sum_{n=6,8} -s_n \dfrac{1}{2}
-    \dfrac{C_n^{AB}(q_a,CN_\mathrm{cov}^A,q_b,CN_\mathrm{cov}^B)}{R_{AB}^n} f_{n}^\mathrm{damp,BJ}(R_{AB})\\
-    E_{A,\mathrm{disp}}^{(3)} &= \sum_{B \neq A} \sum_{C \neq B \neq A} 
-    -s_9 \dfrac{1}{3} 
-    \dfrac{(3 \cos(\theta_{ABC}) \cos(\theta_{BCA} \cos(\theta_{CBA}) + 1))}{(R_{AB}R_{AC}R_{BC})^3} \nonumber\\ 
-    &\cdot  C_9^{ABC}(CN_\mathrm{cov}^A,CN_\mathrm{cov}^B,CN_\mathrm{cov}^C) \cdot 
-    f_{9}^\mathrm{damp,zero}(R_{AB},R_{AC},R_{BC})\\
-    E_{A,\mathrm{AES}} &= E_{A,q\mu} + E_{A,q\theta} + E_{A,\mu\mu} \nonumber \\
-    &= \sum_{B \neq A} \dfrac{1}{2} \bigg(f_3(R_{AB})\big[q_A(\bm{\mu}_B^\intercal\textbf{R}_{BA}) + q_B (\bm{\upmu}_A^\intercal)\textbf{R}_{AB} \big] \nonumber\\
-    &+ f_5(R_{AB}) \big[q_A\bm{R}_{BA}^\intercal \bm{\Uptheta}_B \bm{R}_{BA} +q_B\bm{R}_{BA}^\intercal \bm{\Uptheta}_A \bm{R}_{BA} \nonumber \\
-    &- 3 (\bm{\upmu}_A^\intercal\bm{R}_{AB})(\bm{\upmu}_B^\intercal\bm{R}_{AB}) +  (\bm{\upmu}_A^\intercal \bm{\upmu}_B R_{AB}^2)  \big] \bigg)\\
-    E_{A,\mathrm{AXS}} &= \left( f_\mathrm{XC}^{\mu_A}|\bm{\upmu}_A|^2  + f_\mathrm{XC}^{\Theta_A}||\bm{\Uptheta}_A||^2  \right) \\
-    E_{A,\mathrm{IES+IXC}} &= \dfrac{1}{2} \sum_{B \neq A} \sum_{l \in A} \sum_{l' \in B} q_{A,l} q_{B,l'} \gamma_{AB,ll'} + \dfrac{1}{3} \sum_{l \in A} \Gamma_{A,l} q_{A,l}^3
-\end{align}
-\end{subequations}
-
-\begin{table}[H]
-    \centering
-    \caption{Indices used for the different elements in a hessian matrix block to differ between the elements.}
-        \begin{tabular}{c c c c | c }
-            \hline
-            & &  Indexed& & Permuted \\
-            Hessian element &  $x^\mathrm{idx}$ & $y^\mathrm{idx}$ & $z^\mathrm{idx}$ & Index\\
-            \hline
-            \\[-1em]
-            $\dfrac{\partial^2 E}{\partial x_A \partial x_B}$ & 2 & 0 & 0 & 0\\
-            \\[-1em]
-            $\dfrac{\partial^2 E}{\partial x_A \partial y_B}$ & 1 & -1 &  0 & 1\\
-            \\[-1em] 
-            $\dfrac{\partial^2 E}{\partial x_A \partial z_B}$ & 1 & 0 &  -1 & 2\\
-            \\[-1em]
-            $\dfrac{\partial^2 E}{\partial y_A \partial x_B}$ & -1 & 1 &  0 & 1\\
-            \\[-1em]
-            $\dfrac{\partial^2 E}{\partial y_A \partial y_B}$ & 0 & 2 &  0 & 0\\
-            \\[-1em]
-            $\dfrac{\partial^2 E}{\partial y_A \partial z_B}$ & 0 & 1 &  -1 & 2\\
-            \\[-1em]
-            $\dfrac{\partial^2 E}{\partial z_A \partial x_B}$ & -1 & 0 &  1 & 2\\
-            \\[-1em]
-            $\dfrac{\partial^2 E}{\partial z_A \partial y_B}$ & 0 & -1 &  1 & 2\\
-            \\[-1em]
-            $\dfrac{\partial^2 E}{\partial z_A \partial z_B}$ & 0 & 0 &  2 & 3\\
-            \\[-1em]
-            \hline 
-        \end{tabular}
-    \label{tab:Indices}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption[]{Permutation of the coordinates for each Hessian element.
-    At first the permutation of the vectors is shown.
-    After that, the change of the elements of a matrix, for example, for the quadrupole moment is shown.}
-        \begin{tabular}{c c c c c c c c c c}
-            \hline\\[-1em]
-            Hessian &\\
-            &$\dfrac{\partial^2 E}{\partial x_A \partial x_A}$ & $\dfrac{\partial^2 E}{\partial x_A \partial y_A}$ &
-            $\dfrac{\partial^2 E}{\partial x_A \partial z_A}$ &$\dfrac{\partial^2 E}{\partial y_A \partial x_A}$ &
-            $\dfrac{\partial^2 E}{\partial y_A \partial y_A}$ &$\dfrac{\partial^2 E}{\partial y_A \partial z_A}$ &
-            $\dfrac{\partial^2 E}{\partial z_A \partial x_A}$ & $\dfrac{\partial^2 E}{\partial z_A \partial y_A}$ &
-            $\dfrac{\partial^2 E}{\partial z_A \partial z_A}$ \\[+0.7em]
-            \hline
-            Vector\\
-            x &  x  &  y    & z  & x   &y   & z     &x     & y  & z\\ 
-            y &  y  &  x    & x  & y   & z  & y     & z    & z  & x \\
-            z &  z  & $-$z  & y  & z   &x   &$-$x   & $-$y & x  & y\\
-            \hline 
-            Matrix\\
-            xx & xx & yy    & zz & xx  & yy & zz    & xx   & yy & zz \\
-            yy & xy & xx    & xx & yy  & zz & yy    & zz   & zz & xx \\
-            zz & xz & zz    & yy & zz  & xx & xx    & yy   & xx & yy \\
-            xy & xy & xy    & xz & xy  & yz & yz    & xz   & yz & xz \\
-            xz & xz & $-$yz & yz & xz  & xy & $-$xz & $-$xy& xy & yz \\
-            yz & yz & $-$xz & xy & yz  & xz & $-$xy & $-$yz& xz & xy \\
-            \hline 
-        \end{tabular}
-    \label{tab:Permutation}
-\end{table}

@@ -1,7 +1,7 @@
 \chapter{Theory}
 For the computation of the features and target vectors for the ML models, the \mbox{GFN2--xTB} method is used. For a invariant system, a rotation of the features and the target is necessary.
 These rotations are done with Euler angles.
-As the target value are the hessian matrices, a short introduction to the matrices is done.
+As the target value are the Hessian matrices, a short introduction to the matrices is done.
 At last two algorithms used for machine learning are discussed.
 
 \section{Euler Angles}
@@ -66,7 +66,7 @@ Atomic units are used for all equations in this section.
 \subsection{Hartree--Fock Model}
 Molecular systems in quantum mechanics can be described by a many--body wave function eigenvalue problem.
 The solution of this problem is given by solving the Schrödinger equation. The separation of its time--dependency, neglecting relativistic effects and
-the introduction of the \mbox{Born--Oppenheimer (BO) approximation} results in the electronic Schrödinger equation (Eq.~\eqref{eq:eSGl}).
+the introduction of the \mbox{Born--Oppenheimer (BO)} approximation results in the electronic Schrödinger equation (Eq.~\eqref{eq:eSGl}).
 \begin{align}
 	\label{eq:eSGl}
 	\hat{H}_\mathrm{e} \Psi_\mathrm{e} = E_\mathrm{e} \Psi_\mathrm{e}
@@ -333,9 +333,9 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 
 
     \section{Hessian Matrices}
-	The hessian matrices are the target for the ML model.
-	Therefore, a brief introduction to the hessian elements and its projection and mass weighting is given.\\
-	The hessian matrix is a $3M \times 3M$ matrix of second derivatives
+	The Hessian matrices are the target for the ML model.
+	Therefore, a brief introduction to the Hessian elements and its projection and mass weighting is given.\\
+	The Hessian matrix is a $3M \times 3M$ matrix of second derivatives
 	of the energy in respect to every permuted atom coordinate pair in the system.
 	\begin{align}
 		\textbf{H} =
@@ -365,7 +365,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\label{eq:Hess:HABBA}
 		\textbf{H}_{BA} = \left({\textbf{H}_{AB}}\right)^\intercal
 	\end{align}
-	Therefore, the only information needed for the hessian is a triangular matrix (s.~Eq.~\eqref{eq:Hess:TriangularMat}).
+	Therefore, the only information needed for the Hessian is a triangular matrix (s.~Eq.~\eqref{eq:Hess:TriangularMat}).
 	\begin{align}
 		\label{eq:Hess:TriangularMat}
 		\textbf{H} =
@@ -376,9 +376,9 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 			 &  &  & \textbf{H}_{MM} 
 		\end{matrix}\right)
 	\end{align}
-	The hessian matrix needs to be projected for the computation of physical quantities like the harmonic frequencies,
+	The Hessian matrix needs to be projected for the computation of physical quantities like the harmonic frequencies,
 	zero point vibrational energy.
-	For the projection the rotational and translational parts of the hessian need to be detected.
+	For the projection the rotational and translational parts of the Hessian need to be detected.
 	A $6 \times 3N$ matrix is constructed, that describes the rotation and translation of each atom.
 	For one atom, the overlap is depicted in Eq.~\eqref{eq:RotTransMat}.
 	The translation correspond to the first 3 rows of the matrix $\textbf{O}_A$.
@@ -405,7 +405,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\right)
 	\end{align}
 	After that, the rotation and translation matrix is normalized to $\textbf{O}_\mathrm{n}$.
-	For the detection, the overlap matrix $\textbf{M}$ between the normalized rotation and translation matrix and the hessian matrix is computed (s. Eq.~\eqref{eq:OverlapMatProj}).
+	For the detection, the overlap matrix $\textbf{M}$ between the normalized rotation and translation matrix and the Hessian matrix is computed (s. Eq.~\eqref{eq:OverlapMatProj}).
 	The multiplication of the $6\times 3N$ and $3N \times 3N$ matrix leads to $6 \times 3N$ matrix.
 	\begin{align}
 		\label{eq:OverlapMatProj}
@@ -422,12 +422,12 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\begin{align}
 		\textbf{H}^\mathrm{proj} =\textbf{H} - \sum_{i \in \textbf{v}} \bm{\uplambda}_i \cdot{\textbf{Q}^\intercal}_i \otimes \left({\textbf{Q}^\intercal}_i\right)^\intercal
 	\end{align}
-	At last, the hessian needs to be mass weighted.
+	At last, the Hessian needs to be mass weighted.
 	\begin{align}
 		\label{eq:MassWeightedHess}
 		\textbf{H}_{AB}^\mathrm{proj,w} = \dfrac{1}{\sqrt{m_A m_B}} \textbf{H}_{AB}^\mathrm{proj}
 	\end{align}
-	Eq.~\eqref{eq:MassWeightedHess} is applied to every hessian matrix block $\textbf{H}_{AB}$ in the full Hessian matrix $\textbf{H}$,
+	Eq.~\eqref{eq:MassWeightedHess} is applied to every Hessian matrix block $\textbf{H}_{AB}$ in the full Hessian matrix $\textbf{H}$,
 	which leads to the projected mass weighted Hessian matrix $\textbf{H}^\mathrm{proj,w}$.
 	\section{Machine Learning}
 	Extra Tree Regression (ETR) and Random Forest Regression (RFR) are used as ML algorithms in this research.
