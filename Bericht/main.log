@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  19 MAY 2022 16:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  19 MAY 2022 17:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1175,7 +1175,7 @@ chapter 1.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.197 ^^I\include{sections/Motivation}
+l.198 ^^I\include{sections/Motivation}
                                        [1
 
 ]
@@ -1226,12 +1226,12 @@ Overfull \hbox (2.5694pt too wide) in paragraph at lines 157--165
  []
 
 [6] [7]
-Overfull \hbox (10.23329pt too wide) in paragraph at lines 302--308
+Overfull \hbox (10.23329pt too wide) in paragraph at lines 303--309
 \T1/xcmss/m/n/10.95 electrostatic energy $\OML/cmssm/m/it/10.95 E[]$ \T1/xcmss/m/n/10.95 are described in [] with an isotropic as also an anisotropic contribution.
  []
 
 
-Overfull \hbox (0.13522pt too wide) in paragraph at lines 329--333
+Overfull \hbox (0.13522pt too wide) in paragraph at lines 330--334
 \T1/xcmss/m/n/10.95 similar to KS--DFT and Hartree Fock. The Roothaan--Hall type Eq. [] is solved in a selfconsistent
  []
 
@@ -1243,12 +1243,12 @@ Package epstopdf Info: Source file: <sections/TheoryGraphs/ZeichnungDecisionTree
 (epstopdf)                    date: 2022-05-04 20:17:53
 (epstopdf)                    size: 13360 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle.eps>
-(epstopdf)             \includegraphics on input line 445.
+(epstopdf)             \includegraphics on input line 447.
 Package epstopdf Info: Output file is already uptodate.
-<sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf, id=270, 564.1075pt x 238.8925pt>
+<sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf, id=273, 564.1075pt x 238.8925pt>
 File: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf Graphic file (type pdf)
 <use sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf>
-Package pdftex.def Info: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf  used on input line 445.
+Package pdftex.def Info: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf  used on input line 447.
 (pdftex.def)             Requested size: 455.24417pt x 192.79105pt.
  [11 <./sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf>]) [12]
 \openout2 = `sections/Methods.aux'.
@@ -1286,7 +1286,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf, id=424, 371.3875pt x 652.4375pt>
+<PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf, id=428, 371.3875pt x 652.4375pt>
 File: PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf Graphic file (type pdf)
 <use PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_diag-eps-converted-to.pdf  used on input line 38.
@@ -1303,7 +1303,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf, id=425, 391.4625pt x 682.55pt>
+<PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf, id=429, 391.4625pt x 682.55pt>
 File: PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf Graphic file (type pdf)
 <use PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_ndiag-eps-converted-to.pdf  used on input line 40.
@@ -1321,7 +1321,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_element_specific_diag-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<PearsonCorrelationCoeffiecient/PCC_element_specific_diag-eps-converted-to.pdf, id=532, 397.485pt x 652.4375pt>
+<PearsonCorrelationCoeffiecient/PCC_element_specific_diag-eps-converted-to.pdf, id=536, 397.485pt x 652.4375pt>
 File: PearsonCorrelationCoeffiecient/PCC_element_specific_diag-eps-converted-to.pdf Graphic file (type pdf)
 <use PearsonCorrelationCoeffiecient/PCC_element_specific_diag-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_element_specific_diag-eps-converted-to.pdf  used on input line 70.
@@ -1338,7 +1338,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag-eps-converted-to.pdf, id=533, 415.5525pt x 682.55pt>
+<PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag-eps-converted-to.pdf, id=537, 415.5525pt x 682.55pt>
 File: PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag-eps-converted-to.pdf Graphic file (type pdf)
 <use PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag-eps-converted-to.pdf  used on input line 72.
@@ -1376,7 +1376,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./H2_single/WN_xTB_vs_ML-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<H2_single/WN_xTB_vs_ML-eps-converted-to.pdf, id=648, 691.58376pt x 453.695pt>
+<H2_single/WN_xTB_vs_ML-eps-converted-to.pdf, id=652, 691.58376pt x 453.695pt>
 File: H2_single/WN_xTB_vs_ML-eps-converted-to.pdf Graphic file (type pdf)
 <use H2_single/WN_xTB_vs_ML-eps-converted-to.pdf>
 Package pdftex.def Info: H2_single/WN_xTB_vs_ML-eps-converted-to.pdf  used on input line 108.
@@ -1394,7 +1394,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./MSE/MSE_ETR-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<MSE/MSE_ETR-eps-converted-to.pdf, id=699, 649.42625pt x 455.7025pt>
+<MSE/MSE_ETR-eps-converted-to.pdf, id=703, 649.42625pt x 455.7025pt>
 File: MSE/MSE_ETR-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_ETR-eps-converted-to.pdf>
 Package pdftex.def Info: MSE/MSE_ETR-eps-converted-to.pdf  used on input line 142.
@@ -1411,7 +1411,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./MSE/MSE_RFR-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<MSE/MSE_RFR-eps-converted-to.pdf, id=700, 649.42625pt x 455.7025pt>
+<MSE/MSE_RFR-eps-converted-to.pdf, id=704, 649.42625pt x 455.7025pt>
 File: MSE/MSE_RFR-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_RFR-eps-converted-to.pdf>
 Package pdftex.def Info: MSE/MSE_RFR-eps-converted-to.pdf  used on input line 144.
@@ -1428,7 +1428,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./MSE/MSE_vs_sigma-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<MSE/MSE_vs_sigma-eps-converted-to.pdf, id=702, 631.35875pt x 449.68pt>
+<MSE/MSE_vs_sigma-eps-converted-to.pdf, id=706, 631.35875pt x 449.68pt>
 File: MSE/MSE_vs_sigma-eps-converted-to.pdf Graphic file (type pdf)
 <use MSE/MSE_vs_sigma-eps-converted-to.pdf>
 Package pdftex.def Info: MSE/MSE_vs_sigma-eps-converted-to.pdf  used on input line 173.
@@ -1446,7 +1446,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf, id=815, 582.175pt x 463.7325pt>
+<ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf, id=819, 582.175pt x 463.7325pt>
 File: ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf>
 Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess-eps-converted-to.pdf  used on input line 205.
@@ -1473,7 +1473,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf, id=872, 649.42625pt x 451.6875pt>
+<ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf, id=876, 649.42625pt x 451.6875pt>
 File: ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf>
 Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_wn-eps-converted-to.pdf  used on input line 232.
@@ -1490,7 +1490,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf, id=873, 645.41125pt x 459.7175pt>
+<ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf, id=877, 645.41125pt x 459.7175pt>
 File: ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf>
 Package pdftex.def Info: ErrorDistGraphs/WN_xTB_vs_ML-eps-converted-to.pdf  used on input line 234.
@@ -1529,7 +1529,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ForceConstants/force_const_H3_idx-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ForceConstants/force_const_H3_idx-eps-converted-to.pdf, id=975, 675.52374pt x 459.7175pt>
+<ForceConstants/force_const_H3_idx-eps-converted-to.pdf, id=979, 675.52374pt x 459.7175pt>
 File: ForceConstants/force_const_H3_idx-eps-converted-to.pdf Graphic file (type pdf)
 <use ForceConstants/force_const_H3_idx-eps-converted-to.pdf>
 Package pdftex.def Info: ForceConstants/force_const_H3_idx-eps-converted-to.pdf  used on input line 278.
@@ -1557,7 +1557,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ForceConstants/force_const_H3_perm-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ForceConstants/force_const_H3_perm-eps-converted-to.pdf, id=1026, 675.52374pt x 459.7175pt>
+<ForceConstants/force_const_H3_perm-eps-converted-to.pdf, id=1030, 675.52374pt x 459.7175pt>
 File: ForceConstants/force_const_H3_perm-eps-converted-to.pdf Graphic file (type pdf)
 <use ForceConstants/force_const_H3_perm-eps-converted-to.pdf>
 Package pdftex.def Info: ForceConstants/force_const_H3_perm-eps-converted-to.pdf  used on input line 298.
@@ -1575,31 +1575,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 316--331
  []
 
 )
-Underfull \hbox (badness 10000) in paragraph at lines 332--203
+Underfull \hbox (badness 10000) in paragraph at lines 332--204
 
  []
 
 [33]
 chapter 6.
 
-Overfull \hbox (11.90384pt too wide) in paragraph at lines 211--211
+Overfull \hbox (17.34384pt too wide) in paragraph at lines 212--212
 \T1/xcmss/m/n/10.95 and rigid-rotor-harmonic-oscillator thermodynamics,^^Q \T1/xcmss/m/it/10.95 Journal of Chemical Theory and Computation\T1/xcmss/m/n/10.95 ,
  []
 
 
-Overfull \hbox (7.59361pt too wide) in paragraph at lines 211--211
-[]\T1/xcmss/m/n/10.95 P. Steinbach, ^^P  A $\OT1/cmsmf/m/n/10.95 ^^A$\T1/xcmss/m/n/10.95 -machine learning quantum chemical approach based on semiempirical electronic
+Overfull \hbox (1.60457pt too wide) in paragraph at lines 212--212
+\T1/xcmss/m/n/10.95 self-consistent tight-binding quantum chemical method with multipole electrostatics and density-
  []
 
 
-Overfull \hbox (4.41928pt too wide) in paragraph at lines 211--211
+Overfull \hbox (9.85928pt too wide) in paragraph at lines 212--212
 []\T1/xcmss/m/n/10.95 C. Bannwarth \T1/xcmss/m/it/10.95 et al.\T1/xcmss/m/n/10.95 , ^^P  Extended tight-binding quantum chemistry methods,^^Q \T1/xcmss/m/it/10.95 WIREs Computational
  []
 
 [34
 
 
-] [35]
+]
 \openout2 = `sections/Appendix.aux'.
 
  (sections/Appendix.tex
@@ -1616,7 +1616,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf, id=1109, 582.175pt x 465.74pt>
+<ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf, id=1097, 582.175pt x 465.74pt>
 File: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>
 Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf  used on input line 4.
@@ -1633,12 +1633,12 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf, id=1110, 582.175pt x 463.7325pt>
+<ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf, id=1098, 582.175pt x 463.7325pt>
 File: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>
 Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf  used on input line 14.
 (pdftex.def)             Requested size: 455.24417pt x 362.62976pt.
-[36
+[35
 
  <./ErrorDistGraphs/error_distribution_ml_hess_w-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <ErrorDistGraphs/error_distribution_ml_ZPE.eps>
@@ -1653,12 +1653,12 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf, id=1170, 582.175pt x 445.665pt>
+<ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf, id=1158, 582.175pt x 445.665pt>
 File: ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf Graphic file (type pdf)
 <use ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>
 Package pdftex.def Info: ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf  used on input line 25.
 (pdftex.def)             Requested size: 455.24417pt x 348.50134pt.
-[37 <./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>]
+[36 <./ErrorDistGraphs/error_distribution_ml_hess_p-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <PearsonCorrelationCoeffiecient/PCC_diag_perm.eps>
 (epstopdf)                    date: 2022-05-19 11:28:55
 (epstopdf)                    size: 27490 bytes
@@ -1671,7 +1671,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_diag_perm-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<PearsonCorrelationCoeffiecient/PCC_diag_perm-eps-converted-to.pdf, id=1229, 371.3875pt x 652.4375pt>
+<PearsonCorrelationCoeffiecient/PCC_diag_perm-eps-converted-to.pdf, id=1217, 371.3875pt x 652.4375pt>
 File: PearsonCorrelationCoeffiecient/PCC_diag_perm-eps-converted-to.pdf Graphic file (type pdf)
 <use PearsonCorrelationCoeffiecient/PCC_diag_perm-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_diag_perm-eps-converted-to.pdf  used on input line 38.
@@ -1688,12 +1688,12 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_ndiag_perm-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<PearsonCorrelationCoeffiecient/PCC_ndiag_perm-eps-converted-to.pdf, id=1230, 391.4625pt x 682.55pt>
+<PearsonCorrelationCoeffiecient/PCC_ndiag_perm-eps-converted-to.pdf, id=1218, 391.4625pt x 682.55pt>
 File: PearsonCorrelationCoeffiecient/PCC_ndiag_perm-eps-converted-to.pdf Graphic file (type pdf)
 <use PearsonCorrelationCoeffiecient/PCC_ndiag_perm-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_ndiag_perm-eps-converted-to.pdf  used on input line 40.
 (pdftex.def)             Requested size: 218.51524pt x 381.00685pt.
-[38 <./ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>]
+[37 <./ErrorDistGraphs/error_distribution_ml_ZPE-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm.eps>
 (epstopdf)                    date: 2022-05-19 11:30:25
 (epstopdf)                    size: 27219 bytes
@@ -1706,7 +1706,7 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm-eps-converted-to.pdf, id=1285, 399.4925pt x 652.4375pt>
+<PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm-eps-converted-to.pdf, id=1272, 399.4925pt x 652.4375pt>
 File: PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm-eps-converted-to.pdf Graphic file (type pdf)
 <use PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm-eps-converted-to.pdf  used on input line 52.
@@ -1723,17 +1723,17 @@ Package epstopdf Info: Output file is already uptodate.
 
 
 pdfTeX warning: pdflatex (file ./PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm-eps-converted-to.pdf, id=1286, 415.5525pt x 682.55pt>
+<PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm-eps-converted-to.pdf, id=1273, 415.5525pt x 682.55pt>
 File: PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm-eps-converted-to.pdf Graphic file (type pdf)
 <use PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm-eps-converted-to.pdf>
 Package pdftex.def Info: PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm-eps-converted-to.pdf  used on input line 54.
 (pdftex.def)             Requested size: 218.51524pt x 358.91693pt.
-[39 <./PearsonCorrelationCoeffiecient/PCC_diag_perm-eps-converted-to.pdf> <./PearsonCorrelationCoeffiecient/PCC_ndiag_perm-eps-converted-to.pdf>] [40 <./PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm-eps-converted-to.pdf> <./PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm-eps-converted-to.pdf>] [41] [42]
+[38 <./PearsonCorrelationCoeffiecient/PCC_diag_perm-eps-converted-to.pdf> <./PearsonCorrelationCoeffiecient/PCC_ndiag_perm-eps-converted-to.pdf>] [39 <./PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm-eps-converted-to.pdf> <./PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm-eps-converted-to.pdf>] [40] [41]
 Overfull \hbox (32.93542pt too wide) in paragraph at lines 140--164
  [][] 
  []
 
-) [43] (main.aux (sections/Motivation.aux) (sections/Theory.aux) (sections/Methods.aux) (sections/Results.aux) (sections/Appendix.aux))
+) [42] (main.aux (sections/Motivation.aux) (sections/Theory.aux) (sections/Methods.aux) (sections/Results.aux) (sections/Appendix.aux))
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -1744,17 +1744,17 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 32073 strings out of 480554
- 640093 string characters out of 2894676
- 1464263 words of memory out of 3000000
- 49238 multiletter control sequences out of 15000+600000
+ 32081 strings out of 480554
+ 640388 string characters out of 2894676
+ 1463371 words of memory out of 3000000
+ 49245 multiletter control sequences out of 15000+600000
  532630 words of font info for 148 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
  108i,19n,106p,10678b,2635s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc} </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0900.pk>{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc} </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss2488.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2074.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1440.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2488.pk></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsmfIPiXi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssex10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1095.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1200.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/euler/eurb10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmib10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmtt10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsam10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsbm10.pfb>
-Output written on main.pdf (48 pages, 1419028 bytes).
+Output written on main.pdf (47 pages, 1420176 bytes).
 PDF statistics:
- 2185 PDF objects out of 2487 (max. 8388607)
- 207 named destinations out of 1000 (max. 500000)
+ 2181 PDF objects out of 2487 (max. 8388607)
+ 208 named destinations out of 1000 (max. 500000)
  327 words of extra memory for PDF output out of 10000 (max. 10000000)
 

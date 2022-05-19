@@ -22,13 +22,13 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Gaussian type distribution for the prediction of weighted projected Hessian elements.}}{36}{figure.caption.19}%
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Gaussian type distribution for the prediction of projected Hessian elements.}}{37}{figure.caption.20}%
-\contentsline {figure}{\numberline {7.3}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{38}{figure.caption.21}%
-\contentsline {figure}{\numberline {7.4}{\ignorespaces Pearson Correlation Coefficient for the ten most important features (Gen--Perm model).}}{39}{figure.caption.22}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{39}{subfigure.4.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{39}{subfigure.4.2}%
-\contentsline {figure}{\numberline {7.5}{\ignorespaces Element wise computed Pearson Correlation Coefficient shown for the best features of each element (Gen--Perm model).}}{40}{figure.caption.23}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{40}{subfigure.5.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{40}{subfigure.5.2}%
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Gaussian type distribution for the prediction of weighted projected Hessian elements.}}{35}{figure.caption.19}%
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Gaussian type distribution for the prediction of projected Hessian elements.}}{36}{figure.caption.20}%
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{37}{figure.caption.21}%
+\contentsline {figure}{\numberline {7.4}{\ignorespaces Pearson Correlation Coefficient for the ten most important features (Gen--Perm model).}}{38}{figure.caption.22}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{38}{subfigure.4.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{38}{subfigure.4.2}%
+\contentsline {figure}{\numberline {7.5}{\ignorespaces Element wise computed Pearson Correlation Coefficient shown for the best features of each element (Gen--Perm model).}}{39}{figure.caption.23}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{39}{subfigure.5.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{39}{subfigure.5.2}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

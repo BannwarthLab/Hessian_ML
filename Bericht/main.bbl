@@ -53,15 +53,6 @@
       \verb{doi}
       \verb 10.1021/acs.jctc.0c01306
       \endverb
-      \verb{eprint}
-      \verb https://doi.org/10.1021/acs.jctc.0c01306
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1021/acs.jctc.0c01306
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1021/acs.jctc.0c01306
-      \endverb
     \endentry
     \entry{Sanders2015}{article}{}
       \name{author}{3}{}{%
@@ -105,12 +96,72 @@
       \verb{doi}
       \verb 10.1021/oc5000404
       \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1021/oc5000404
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1021/oc5000404
-      \endverb
+    \endentry
+    \entry{Jensen2013}{book}{}
+      \name{author}{1}{}{%
+        {{hash=07272f7b37bc95d4f9e9ac01efc83dcf}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York}%
+      }
+      \list{publisher}{1}{%
+        {John Wiley \& Sons}%
+      }
+      \strng{namehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{fullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{bibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authorbibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authornamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authorfullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-1-118-68162-6}
+      \field{title}{Introduction to Computational Chemistry}
+      \field{year}{2013}
+    \endentry
+    \entry{Hastie2009}{book}{}
+      \name{author}{3}{}{%
+        {{hash=0cb8fe4210baa81c4b0e67913b4d2768}{%
+           family={Hastie},
+           familyi={H\bibinitperiod},
+           given={Trevor},
+           giveni={T\bibinitperiod}}}%
+        {{hash=88eea600247d798f8b2ce0b2dc614492}{%
+           family={Tibshirani},
+           familyi={T\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=971cf69058b64a94326dea0f2a8bbcce}{%
+           family={Friedman},
+           familyi={F\bibinitperiod},
+           given={Jerome},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer Science \& Business Media}%
+      }
+      \strng{namehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{fullhash}{7ca1bfe876d5e037b6aed69704221267}
+      \strng{bibnamehash}{7ca1bfe876d5e037b6aed69704221267}
+      \strng{authorbibnamehash}{7ca1bfe876d5e037b6aed69704221267}
+      \strng{authornamehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{authorfullhash}{7ca1bfe876d5e037b6aed69704221267}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-0-387-84858-7}
+      \field{title}{The Elements of Statistical Learning - Data Mining, Inference, and Prediction, Second Edition}
+      \field{year}{2009}
     \endentry
     \entry{PitMA}{thesis}{}
       \name{author}{1}{}{%
@@ -129,8 +180,8 @@
       \strng{authorbibnamehash}{70c181d8e4c016b3bd17df1b9caf3101}
       \strng{authornamehash}{70c181d8e4c016b3bd17df1b9caf3101}
       \strng{authorfullhash}{70c181d8e4c016b3bd17df1b9caf3101}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{A $\Delta$-Machine Learning Quantum Chemical Approach Based on Semiempirical Electronic Structure Theory}
@@ -165,8 +216,8 @@
       \strng{authornamehash}{cd4754e13476c7b6d3d23ff40703b8e0}
       \strng{authorfullhash}{65e37102f2f154edf6257ba13974a36e}
       \field{extraname}{1}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Chemical Theory and Computation}
@@ -179,12 +230,6 @@
       \range{pages}{20}
       \verb{doi}
       \verb 10.1021/acs.jctc.8b01176
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1021/acs.jctc.8b01176
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1021/acs.jctc.8b01176
       \endverb
     \endentry
     \entry{Bannwarth2021_xTB}{article}{}
@@ -237,8 +282,8 @@
       \strng{authornamehash}{cd4754e13476c7b6d3d23ff40703b8e0}
       \strng{authorfullhash}{5555f82330d353f6d9ec3adcdbf1c074}
       \field{extraname}{2}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Abstract This review covers a family of atomistic, mostly quantum chemistry (QC) based semiempirical methods for the fast and reasonably accurate description of large molecules in gas and condensed phase. The theory is derived from a density functional (DFT) perturbation expansion of the electron density in fluctuation terms to various orders similar to the original density functional tight binding model. The term “eXtended” in their name (xTB) emphasizes the parameter availability for almost the entire periodic table of elements (Z ≤ 86) and improvements of the underlying theory regarding, for example, the atomic orbital basis set, the level of multipole approximation and the treatment of the important electrostatic and dispersion interactions. A common feature of most members is their consistent parameterization on accurate gas phase theoretical reference data for geometries, vibrational frequencies and noncovalent interactions, which are the primary properties of interest in typical applications to systems composed of up to a few thousand atoms. Further specialized versions were developed for the description of electronic spectra and corresponding response properties. Besides a provided common theoretical background with some important implementation details in the efficient and free xtb program, various benchmarks for structural and thermochemical properties including (transition-)metal systems are discussed. The review is completed by recent extensions of the model to the force-field (FF) level as well as its application to solids under periodic boundary conditions. The general applicability together with the excellent cost-accuracy ratio and the high robustness make the xTB family of methods very attractive for various fields of computer-aided chemical research. This article is categorized under: Electronic Structure Theory > Ab Initio Electronic Structure Methods Electronic Structure Theory > Semiempirical Electronic Structure Methods Software > Quantum Chemistry}
@@ -251,15 +296,6 @@
       \range{pages}{-1}
       \verb{doi}
       \verb https://doi.org/10.1002/wcms.1493
-      \endverb
-      \verb{eprint}
-      \verb https://wires.onlinelibrary.wiley.com/doi/pdf/10.1002/wcms.1493
-      \endverb
-      \verb{urlraw}
-      \verb https://wires.onlinelibrary.wiley.com/doi/abs/10.1002/wcms.1493
-      \endverb
-      \verb{url}
-      \verb https://wires.onlinelibrary.wiley.com/doi/abs/10.1002/wcms.1493
       \endverb
       \keyw{density functional tight-binding theory,multilevel quantum chemistry,semiempirical molecular orbital theory}
     \endentry
@@ -352,8 +388,8 @@
       \strng{authorbibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authornamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authorfullhash}{7a67607c66e4af944b5f16461d6d0a87}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Machine Learning Research}
@@ -512,8 +548,8 @@
       \strng{authorbibnamehash}{754b3dec5e203c19b9a5798bbb902222}
       \strng{authornamehash}{754b3dec5e203c19b9a5798bbb902222}
       \strng{authorfullhash}{bba1ae456b2655ba67cf6cee2d142dfc}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature}
@@ -526,12 +562,6 @@
       \range{pages}{6}
       \verb{doi}
       \verb 10.1038/s41586-020-2649-2
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1038/s41586-020-2649-2
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1038/s41586-020-2649-2
       \endverb
     \endentry
     \entry{pandas.Paper}{inproceedings}{}
@@ -565,8 +595,8 @@
       \strng{editorbibnamehash}{07817129a96c7184fd96e5b40e4ff059}
       \strng{editornamehash}{07817129a96c7184fd96e5b40e4ff059}
       \strng{editorfullhash}{07817129a96c7184fd96e5b40e4ff059}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{{P}roceedings of the 9th {P}ython in {S}cience {C}onference}
@@ -578,41 +608,164 @@
       \verb 10.25080/Majora-92bf1922-00a
       \endverb
     \endentry
-    \entry{pandas.software}{software}{}
-      \name{author}{1}{}{%
-        {{hash=9a1f9219d00cef023c61c6fd71576d04}{%
-           family={team},
-           familyi={t\bibinitperiod},
-           given={The},
-           giveni={T\bibinitperiod},
-           prefix={pandas\bibnamedelima development},
-           prefixi={p\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+    \entry{pandas.software}{misc}{}
+      \name{author}{30}{}{%
+        {{hash=88cea9aa14a14b77b77c448ed339cf89}{%
+           family={Reback},
+           familyi={R\bibinitperiod},
+           given={Jeff},
+           giveni={J\bibinitperiod}}}%
+        {{hash=0fa2de4afde6f6ce625f9fd8c033cf02}{%
+           family={{Jbrockmendel}},
+           familyi={J\bibinitperiod}}}%
+        {{hash=27ca77940a5e8c07c5d89d0f3fb11d75}{%
+           family={McKinney},
+           familyi={M\bibinitperiod},
+           given={Wes},
+           giveni={W\bibinitperiod}}}%
+        {{hash=d0d379365636f8aff7fababea695d5bf}{%
+           family={Van\bibnamedelimb Den\bibnamedelima Bossche},
+           familyi={V\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim B\bibinitperiod},
+           given={Joris},
+           giveni={J\bibinitperiod}}}%
+        {{hash=bbb9cae798de875fe375cd78fdbc05e8}{%
+           family={Augspurger},
+           familyi={A\bibinitperiod},
+           given={Tom},
+           giveni={T\bibinitperiod}}}%
+        {{hash=48bdfdba683afce467f4559c881080f7}{%
+           family={Roeschke},
+           familyi={R\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+        {{hash=05a873b337f2c6603299a4eab9c72bce}{%
+           family={Hawkins},
+           familyi={H\bibinitperiod},
+           given={Simon},
+           giveni={S\bibinitperiod}}}%
+        {{hash=abc7b63653501dcb1794fe47649d32fb}{%
+           family={Cloud},
+           familyi={C\bibinitperiod},
+           given={Phillip},
+           giveni={P\bibinitperiod}}}%
+        {{hash=344bc406fde6523a12ad6355eaae76a4}{%
+           family={{Gfyoung}},
+           familyi={G\bibinitperiod}}}%
+        {{hash=dd396216bc8e4f0e57427ec2f40a063c}{%
+           family={{Sinhrks}},
+           familyi={S\bibinitperiod}}}%
+        {{hash=88420caab90f52433be5b4e7e5eee043}{%
+           family={Hoefler},
+           familyi={H\bibinitperiod},
+           given={Patrick},
+           giveni={P\bibinitperiod}}}%
+        {{hash=21b3ea5a26c08468a71447b0480ba5e0}{%
+           family={Klein},
+           familyi={K\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=60f393f599889eff8b5b956eedbf7e6f}{%
+           family={{Terji Petersen}},
+           familyi={T\bibinitperiod}}}%
+        {{hash=b2cd15c7b8d39b42c79b601904fe9110}{%
+           family={Tratner},
+           familyi={T\bibinitperiod},
+           given={Jeff},
+           giveni={J\bibinitperiod}}}%
+        {{hash=e5b2df24fc3f9501192f6fa8c86a8373}{%
+           family={She},
+           familyi={S\bibinitperiod},
+           given={Chang},
+           giveni={C\bibinitperiod}}}%
+        {{hash=665dc01efe9b675a766324925065b8b6}{%
+           family={Ayd},
+           familyi={A\bibinitperiod},
+           given={William},
+           giveni={W\bibinitperiod}}}%
+        {{hash=d778dbea95432900c71270fb38745cc0}{%
+           family={Naveh},
+           familyi={N\bibinitperiod},
+           given={Shahar},
+           giveni={S\bibinitperiod}}}%
+        {{hash=be83d808a1932386cbf0ba8185166189}{%
+           family={{JHM Darbyshire}},
+           familyi={J\bibinitperiod}}}%
+        {{hash=df1d62a915f9a5c2173c22f3ea49126a}{%
+           family={Garcia},
+           familyi={G\bibinitperiod},
+           given={Marc},
+           giveni={M\bibinitperiod}}}%
+        {{hash=dfa20f9ef0c89e7df11a0545dee21383}{%
+           family={Shadrach},
+           familyi={S\bibinitperiod},
+           given={Richard},
+           giveni={R\bibinitperiod}}}%
+        {{hash=4de45d2a9753098448d3ac1300d20295}{%
+           family={Schendel},
+           familyi={S\bibinitperiod},
+           given={Jeremy},
+           giveni={J\bibinitperiod}}}%
+        {{hash=8cb6fdf3ed3fa0c34b89d9963b71b831}{%
+           family={Hayden},
+           familyi={H\bibinitperiod},
+           given={Andy},
+           giveni={A\bibinitperiod}}}%
+        {{hash=bb340b8100ad532f076751d9dc3d9269}{%
+           family={Saxton},
+           familyi={S\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+        {{hash=c32150a4147da564d040ff06ed4bab43}{%
+           family={Gorelli},
+           familyi={G\bibinitperiod},
+           given={Marco\bibnamedelima Edward},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=c37916ea23c7f4b8b8118737ba8e9643}{%
+           family={{Fangchen Li}},
+           familyi={F\bibinitperiod}}}%
+        {{hash=3253055655224c59d6186468ccc46fd0}{%
+           family={Zeitlin},
+           familyi={Z\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+        {{hash=4493983240f034b1591aacbf7a02a5e1}{%
+           family={Jancauskas},
+           familyi={J\bibinitperiod},
+           given={Vytautas},
+           giveni={V\bibinitperiod}}}%
+        {{hash=cdd1bcb6a739b20b5e9b24955267172f}{%
+           family={McMaster},
+           familyi={M\bibinitperiod},
+           given={Ali},
+           giveni={A\bibinitperiod}}}%
+        {{hash=df2755d04cdc13ded6c6347fe5a704af}{%
+           family={Wörtwein},
+           familyi={W\bibinitperiod},
+           given={Torsten},
+           giveni={T\bibinitperiod}}}%
+        {{hash=cf8522fe7e08c0bd7420988c289c2e06}{%
+           family={Battiston},
+           familyi={B\bibinitperiod},
+           given={Pietro},
+           giveni={P\bibinitperiod}}}%
       }
       \list{publisher}{1}{%
         {Zenodo}%
       }
-      \strng{namehash}{9a1f9219d00cef023c61c6fd71576d04}
-      \strng{fullhash}{9a1f9219d00cef023c61c6fd71576d04}
-      \strng{bibnamehash}{9a1f9219d00cef023c61c6fd71576d04}
-      \strng{authorbibnamehash}{9a1f9219d00cef023c61c6fd71576d04}
-      \strng{authornamehash}{9a1f9219d00cef023c61c6fd71576d04}
-      \strng{authorfullhash}{9a1f9219d00cef023c61c6fd71576d04}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \strng{namehash}{65bc8de17d9fc3f38d448b6bcb2d28a2}
+      \strng{fullhash}{fabcab2a3724f4a7c9078cb1c04d722c}
+      \strng{bibnamehash}{65bc8de17d9fc3f38d448b6bcb2d28a2}
+      \strng{authorbibnamehash}{65bc8de17d9fc3f38d448b6bcb2d28a2}
+      \strng{authornamehash}{65bc8de17d9fc3f38d448b6bcb2d28a2}
+      \strng{authorfullhash}{fabcab2a3724f4a7c9078cb1c04d722c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{month}{2}
-      \field{title}{pandas-dev/pandas: Pandas}
-      \field{version}{latest}
-      \field{year}{2020}
+      \field{title}{pandas-dev/pandas: Pandas 1.4.2}
+      \field{year}{2022}
       \verb{doi}
-      \verb 10.5281/zenodo.3509134
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.5281/zenodo.3509134
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.5281/zenodo.3509134
+      \verb 10.5281/ZENODO.3509134
       \endverb
     \endentry
   \enddatalist

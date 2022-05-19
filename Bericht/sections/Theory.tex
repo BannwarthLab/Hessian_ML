@@ -61,7 +61,7 @@ The introduction starts from the non--relativistic, stationary electronic Schrö
 From this the Hartree--Fock model will be derived.
 This is followed by Density Functional Theory, as this builds the theoretical basis of \mbox{GFN2--xTB}.
 After that the tight--binding method will be introduced from which the semiempirical method \mbox{GFN2--xTB} is derived.
-Atomic units are used for all equations in this section.
+Atomic units are used for all equations in this section. This introduction is based on the following reference.\supercite{Jensen2013}
 
 \subsection{Hartree--Fock Model}
 Molecular systems in quantum mechanics can be described by a many--body wave function eigenvalue problem.
@@ -178,6 +178,7 @@ The density matrix $\textbf{D}$, is then used for the calculation of the new Foc
 % 	\label{eq:BasisSet}
 % 	\psi_i = \sum^{A}_{i} \chi 
 % \end{align}
+
 \subsection{Kohn--Sham Density Functional Theory}
 As mentioned above, the correlation between electrons is not described in the Hartree--Fock model,
 due to the use of a single Slater determinant.\\
@@ -430,6 +431,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	Eq.~\eqref{eq:MassWeightedHess} is applied to every Hessian matrix block $\textbf{H}_{AB}$ in the full Hessian matrix $\textbf{H}$,
 	which leads to the projected mass weighted Hessian matrix $\textbf{H}^\mathrm{proj,w}$.
 	\section{Machine Learning}
+	This section deals with basics of the ML and is based on the following reference.\supercite{Hastie2009}
 	Extra Tree Regression (ETR) and Random Forest Regression (RFR) are used as ML algorithms in this research.
 	Both algorithms are ensemble methods based on decision trees as individual estimators.
 	In this section, decision tree based algorithms will be discussed,
