@@ -253,7 +253,8 @@ an eigenvalue equation similar to the Roothaan--Hall equation is derived.
 		\label{eq:GFN2:Rho0}
 		\rho_0 = \sum_A \rho_{0,A}
 	\end{align}
-	The energy is expanded by a Taylor series around the electron density $\rho_0$.
+	The energy is expanded by a Taylor series around the electron density $\rho_0$ up to the third order.
+	The bonding is then described as a perturbation of this density.
 	In \mbox{GFN2--xTB} the expansion is done up to the third order.
 	\begin{align}
 		\label{eq:GFN2:EnergyPerturbation}
@@ -336,8 +337,11 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
     \section{Hessian Matrices}
 	The Hessian matrices are the target for the ML model.
 	Therefore, a brief introduction to the Hessian elements and its projection and mass weighting is given.\\
-	The Hessian matrix is a $3M \times 3M$ matrix of second derivatives
-	of the energy in respect to every permuted atom coordinate pair in the system.
+	The Hessian is of interest, due to its need for the computation of harmonic vibrational frequencies of molecules and thermodynamic quantities.
+	The harmonic vibrational frequencies can be used for the computation of wave numbers, with which IR spectra can be constructed.
+	Furthermore, they can be used for the transition state search, as imaginary harmonic vibrational frequencies indicate a transition state.\\
+	The Hessian matrix is a $3M \times 3M$ matrix ($M$ is the number of atoms) of second derivatives
+	of the energy in respect to every atom coordinate pair in the system.
 	\begin{align}
 		\textbf{H} =
 		\left(\begin{matrix}
@@ -366,7 +370,10 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\label{eq:Hess:HABBA}
 		\textbf{H}_{BA} = \left({\textbf{H}_{AB}}\right)^\intercal
 	\end{align}
-	Therefore, the only information needed for the Hessian is a triangular matrix (s.~Eq.~\eqref{eq:Hess:TriangularMat}).
+	Therefore, the information of the Hessian can be stored as a triangular matrix.
+	
+	
+	the only information needed for the Hessian is a triangular matrix (s.~Eq.~\eqref{eq:Hess:TriangularMat}).
 	\begin{align}
 		\label{eq:Hess:TriangularMat}
 		\textbf{H} =
@@ -407,7 +414,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\end{align}
 	After that, the rotation and translation matrix is normalized to $\textbf{O}_\mathrm{n}$.
 	For the detection, the overlap matrix $\textbf{M}$ between the normalized rotation and translation matrix and the Hessian matrix is computed (s. Eq.~\eqref{eq:OverlapMatProj}).
-	The multiplication of the $6\times 3N$ and $3N \times 3N$ matrix leads to $6 \times 3N$ matrix.
+	The multiplication of the $6\times 3M$ and $3M \times 3M$ matrix leads to $6 \times 3M$ matrix.
 	\begin{align}
 		\label{eq:OverlapMatProj}
 		\textbf{M} = \textbf{O}_\mathrm{n} \times \textbf{H}

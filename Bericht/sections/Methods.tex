@@ -104,9 +104,10 @@ And for the heteronuclear model there are 106 or 104 features for each Hessian e
 	while both atoms are on the z--Axis.
 	In this section,
 	the transformation of the initial coordinate system into the atom pair focused CS will be discussed.\\
-	The initial CS is not fixed to any constraints.
-	Therefore, the initial CS is transformed into the main inertia system,
-	from which the transformation to the atom pair focused coordinate systems is performed.\\
+	The CS of the molecule is deliberate,
+	therefore a transformation to a welldefined reference coordinate system is necessary.
+	As a reference coordinate system is main inertia coordinate system (MI CS) is chosen.
+	In a second step the transformation to the atom pair focused coordinate system (APF CS) is performed.\\
 	At first a translation of the origin of the initial CS to the center of mass is done by Eq.~\eqref{eq:TransIinitCenterMass}.
 	
 	\begin{align}
@@ -187,7 +188,7 @@ And for the heteronuclear model there are 106 or 104 features for each Hessian e
 		\textbf{r}^\mathsf{mi,c}_C = \textbf{r}^\mathsf{mi}_C -
 		 \left(\dfrac{1}{2} \textbf{r}^\mathsf{mi}_A + 
 		 \dfrac{1}{2}\textbf{r}^\mathsf{mi}_B \right) 
-		 \mathsf{for}~A,B,C \in A, B, ..., N
+		 \mathsf{for}~C \in A, B, ..., N
 		\label{eq:TranslationInertiaAPF}
 	\end{align}
 	After this operation, the origin of the CS is in the center of the atom pair.
@@ -203,13 +204,13 @@ And for the heteronuclear model there are 106 or 104 features for each Hessian e
 		\textbf{x} = \textbf{z} \times ( \mathsf{\bm{\upmu}_{A}} + \mathsf{\bm{\upmu}_{B}})
 		\label{eq:x_axis}
 	\end{align}
-	The cutting line $\textbf{L}$ of the xy--plane of the atom pair focused CS and xy--plane of the centered main inertia CS
+	The intersection  $\textbf{L}$ of the xy--plane of the atom pair focused CS and xy--plane of the centered main inertia CS
 	is described with Eq.~\eqref{eq:EulerLL}.
 	\begin{align}
 		\label{eq:EulerLL}
 		\mathbf{L} = \mathbf{x} \times \mathbf{z}^\mathsf{mi,c}
 	\end{align}
-	The cutting line $\textbf{L}$, the axes $\textbf{x},\textbf{z},\textbf{x}^\mathsf{mi,c}$ and $ \textbf{z}^\mathsf{mi,c}$ are then used for the computation of the Euler angles  $\alpha, \beta$ and $\gamma$ via Eq.~\eqref{eq:EulerAnglesDiscrete}.
+	The intersection $\textbf{L}$, the axes $\textbf{x},\textbf{z},\textbf{x}^\mathsf{mi,c}$ and $ \textbf{z}^\mathsf{mi,c}$ are then used for the computation of the Euler angles  $\alpha, \beta$ and $\gamma$ via Eq.~\eqref{eq:EulerAnglesDiscrete}.
 	\begin{subequations}
 	\label{eq:EulerAnglesDiscrete}
 	\begin{align}
@@ -267,7 +268,7 @@ For the case of a homonuclear atom pair,
 the procedure is the same up to the translation of the coordinates into the centered inertial main CS.
 The z--axes of APF CS and centered inertial main CS are aligned.
 Therefore, the Euler angle $\beta$ is zero. Furthermore, the xy--planes are the same,
-and there is no cutting line of the xy--planes.
+and there is no intersection of the xy--planes.
 Thus, only one angle $\alpha$ or $\gamma$ is necessary for the rotation.
 Therefore, $\gamma$ is the angle between the x--axis of the centered main inertial CS
 and the APF CS. To provide consistency in the rotation of the coordinates,

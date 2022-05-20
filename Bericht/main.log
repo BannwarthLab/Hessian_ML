@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  19 MAY 2022 18:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  20 MAY 2022 09:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1226,12 +1226,12 @@ Overfull \hbox (2.5694pt too wide) in paragraph at lines 157--165
  []
 
 [6] [7]
-Overfull \hbox (10.23329pt too wide) in paragraph at lines 303--309
+Overfull \hbox (10.23329pt too wide) in paragraph at lines 304--310
 \T1/xcmss/m/n/10.95 electrostatic energy $\OML/cmssm/m/it/10.95 E[]$ \T1/xcmss/m/n/10.95 are described in [] with an isotropic as also an anisotropic contribution.
  []
 
 
-Overfull \hbox (0.13522pt too wide) in paragraph at lines 330--334
+Overfull \hbox (0.13522pt too wide) in paragraph at lines 331--335
 \T1/xcmss/m/n/10.95 similar to KS--DFT and Hartree Fock. The Roothaan--Hall type Eq. [] is solved in a selfconsistent
  []
 
@@ -1243,12 +1243,12 @@ Package epstopdf Info: Source file: <sections/TheoryGraphs/ZeichnungDecisionTree
 (epstopdf)                    date: 2022-05-04 20:17:53
 (epstopdf)                    size: 13360 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle.eps>
-(epstopdf)             \includegraphics on input line 447.
+(epstopdf)             \includegraphics on input line 454.
 Package epstopdf Info: Output file is already uptodate.
-<sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf, id=273, 564.1075pt x 238.8925pt>
+<sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf, id=272, 564.1075pt x 238.8925pt>
 File: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf Graphic file (type pdf)
 <use sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf>
-Package pdftex.def Info: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf  used on input line 447.
+Package pdftex.def Info: sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf  used on input line 454.
 (pdftex.def)             Requested size: 455.24417pt x 192.79105pt.
  [11 <./sections/TheoryGraphs/ZeichnungDecisionTree_Rectangle-eps-converted-to.pdf>]) [12]
 \openout2 = `sections/Methods.aux'.
@@ -1260,7 +1260,7 @@ chapter 3.
 
 
 ] [14] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 180--186
+Underfull \hbox (badness 10000) in paragraph at lines 181--187
 
  []
 
@@ -1746,13 +1746,13 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 Here is how much of TeX's memory you used:
  32082 strings out of 480554
  640403 string characters out of 2894676
- 1467371 words of memory out of 3000000
+ 1467372 words of memory out of 3000000
  49245 multiletter control sequences out of 15000+600000
  532630 words of font info for 148 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
  108i,19n,106p,10678b,2635s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc} </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0900.pk>{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc} </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss2488.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2074.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1440.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2488.pk></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsmfIPiXi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssex10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1095.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1200.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/euler/eurb10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmib10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmtt10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsam10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsbm10.pfb>
-Output written on main.pdf (47 pages, 1420817 bytes).
+Output written on main.pdf (47 pages, 1421420 bytes).
 PDF statistics:
  2182 PDF objects out of 2487 (max. 8388607)
  209 named destinations out of 1000 (max. 500000)
