@@ -1,99 +1,5 @@
 \chapter{Methods}
-\section{ML Model Construction}
-The supervised ML models have to be trained with a set of features and targets.
-The features are in general derived from atom based quantities based on geometry, density and energy.
-The features originate mainly from Steinbach's work.\supercite{PitMA} Some adaptations are done.
-Here, the cartesian dipole moment and quadrupole moment elements are used as features instead of its norm.
-This applies also for the extended versions.
-The Hessian matrix is the target.
-The atom based quantities and Hessian matrix are generated with the GFN2--xTB method.
-Furthermore, they are all computed for each Hessian matrix block $\textbf{H}_{AB}$ in its own APF CS.
-Beside atom based quantities, features are implemented for the differentiation between the elements of a block $\textbf{H}_{AB}$.
-Two approaches are used for the differentiation.
-These are the \textbf{indexed} and \textbf{permuted} approach.
-\begin{table}[H]
-	\centering
-	\caption{List of quantities used for the ML models as features.
-			The quantities are divided into geometry,
-			density and energy based quantities.}
-		\begin{tabular}{l l l}
-			\hline
-			Feature &  Description& Extension\\
-			\hline
-			\textbf{Geometry} & & \\
-			$R_{AB}$ &  &  \\
 
-			$CN_A$ & Coordination Number & \checkmark \\
-			\hline
-
-			\textbf{Density} && \\
-			$\bm{\upmu}_{A}$ & Dipole Moment & \checkmark \\
-			$\bm{\upmu}_{A,\mathsf{p}}$ & Dipole Moment on A, due to distribution on p and $\mu$ on other atoms & \\
-			$\bm{\uptheta}_{A}$ & Quadrupole Moment & \checkmark\\
-			\hline
-			\textbf{Energy} && \\
-			%$E_{A,\mathsf{resp}}$ & Response& \\
-			$E_{A,\mathsf{gap}}$ & HOMO -- LUMO gap& \checkmark\\
-
-			$\mu_{A,\mathsf{pot}}$& Chemical Potential & \checkmark\\
-
-			$\epsilon_{A,\mathsf{HOAO}}$ & Atomic HOMO & \checkmark \\
-
-			$\epsilon_{A,\mathsf{LUAO}}$ & Atomic LUMO & \checkmark \\
-
-			$E_{A,\mathsf{rep}}$ & Repulsion & \\
-			$E_{A,\mathsf{EHT}}$ & extended Hückel theory& \\
-			$E_{A,\mathsf{disp}}^{(2)}$ & Dispersion 2$^\mathsf{nd}$ order & \\
-			$E_{A,\mathsf{disp}}^{(3)}$ & Dispersion 3$^\mathsf{rd}$ order & \\
-			$E_{A,\mathsf{IES+IXC}}$ & Isotropic ES and XC & \\
-			$E_{A,\mathsf{AES}}$ & Anisotropic ES& \\
-			$E_{A,\mathsf{AXC}}$ & Anisotropic XC & \\
-			$E_{A,\mathsf{tot}}$ & Total Energy & \\
-			\hline 
-		\end{tabular}
-	\label{tab:Feature}
-\end{table}
-The quantities computed with GFN2--xTB are listed in Tab.~\ref{tab:Feature} with a short description.
-There is an extended version for some quantities. If this is the case, the column Extension is ticked.
-The mathematical descriptions of all quantities from GFN2--xTB are shown in the Appendix in Eq.~\eqref{eq:Feature}\\
-The features are computed for every Hessian matrix block $\textbf{H}_{AB}$.
-As these depend only on the atoms $A$ and $B$,
-the atom based quantities of $A$ and $B$ are used for the computation of the features.
-Two different models are used for the case of $A = B$ and $A \neq B$, due to two reasons.
-At first the chosen orientation in the CS between those cases differ.
-Secondly the length of the feature vectors are differently.
-For the case $A \neq B$, the features are computed from the GFN2--xTB quantities with Eq.~\eqref{eq:FeatureProcess}.
-Where $x$ is a placeholder for any of the quantities shown in Tab.~\ref{tab:Feature}.
-This case is called heteronuclear, as the Hessian and features depend on two atoms.
-\begin{subequations}
-	\label{eq:FeatureProcess}
-	\begin{align}
-		x_\mathsf{Arith}&= \dfrac{x_A + x_B}{2}\\
-		x_\mathsf{Prod}&= x_A \cdot x_B \\
-		x_\mathsf{AbsDiff}&= | x_A - x_B | 
-	\end{align}
-\end{subequations}
-There is used one further feature, which is the distance between the atoms $R_{AB}$.
-In the case of $A = B$ the quantities are used directly, and it is called homonuclear.
-Here, the Hessian and features only depend on one atom.\\
-Connecting the Hessian elements to the features at this point leads to following problem.
-The features for all elements in a Hessian matrix block $\textbf{H}_{AB}$ are the same.
-Therefore, the ML model would predict the same value for every element.
-Hence, a differentiation is needed for the elements.\\
-The first approach (\textbf{indexed}) is to use three further features $x_i, y_i, z_i$.
-These are indices, which differentiate between each element.
-In the Appendix in Tab.~\ref{tab:Indices} are all indices shown in dependence on the element.\\
-The second approach (\textbf{permuted}) is the permutation of the coordinate system 
-and with it the vector/matrix quantities from GFN2--xTB,
-in dependence of the Hessian elements that shall be learned.
-The coordinate system is always adjusted,
-so that the to be learned Hessian element is on the spot of the element  $\frac{\partial^2 E }{\partial y_A \partial x_A}$
-For example, if the element $\frac{\partial^2 E }{\partial x_A \partial z_A}$ is to be learned.
-The new coordinate system is permuted from $\{x,y,z\}$ to $\{z,x,-y\}$.
-The permutation is done in a manner, that the new coordinate system is right--handed.
-All permutations are described in the Appendix in Tab.~\ref{tab:Permutation}.
-For the homonuclear this concludes in 37 or 35 features for each Hessian element for the indexed or permuted case, respectively.
-And for the heteronuclear model there are 106 or 104 features for each Hessian element for the indexed or permuted case, respectively.
 	%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 	\section{Transformation of Coordinates}
 	The Hessian matrix and some features depend on the orientation of the coordinate~system~(CS).
@@ -320,7 +226,101 @@ The procedure of the projection and mass--weighting is described in the chapter 
 % The rotation matrix $\textbf{P}_\mathsf{mi}^\mathsf{APF}$
 % is constructed the same as the rotation matrix $\textbf{P}_\mathsf{init}^\mathsf{mi}$.
 \newpage
+\section{ML Model Construction}
+The supervised ML models have to be trained with a set of features and targets.
+The features are in general derived from atom based quantities based on geometry, density and energy.
+The features originate mainly from Steinbach's work.\supercite{PitMA} Some adaptations are done.
+Here, the cartesian dipole moment and quadrupole moment elements are used as features instead of its norm.
+This applies also for the extended versions.
+The Hessian matrix is the target.
+The atom based quantities and Hessian matrix are generated with the GFN2--xTB method.
+Furthermore, they are all computed for each Hessian matrix block $\textbf{H}_{AB}$ in its own APF CS.
+Beside atom based quantities, features are implemented for the differentiation between the elements of a block $\textbf{H}_{AB}$.
+Two approaches are used for the differentiation.
+These are the \textbf{indexed} and \textbf{permuted} approach.
+\begin{table}[H]
+	\centering
+	\caption{List of quantities used for the ML models as features.
+			The quantities are divided into geometry,
+			density and energy based quantities.}
+		\begin{tabular}{l l l}
+			\hline
+			Feature &  Description& Extension\\
+			\hline
+			\textbf{Geometry} & & \\
+			$R_{AB}$ &  &  \\
 
+			$CN_A$ & Coordination Number & \checkmark \\
+			\hline
+
+			\textbf{Density} && \\
+			$\bm{\upmu}_{A}$ & Dipole Moment & \checkmark \\
+			$\bm{\upmu}_{A,\mathsf{p}}$ & Dipole Moment on A, due to distribution on p and $\mu$ on other atoms & \\
+			$\bm{\uptheta}_{A}$ & Quadrupole Moment & \checkmark\\
+			\hline
+			\textbf{Energy} && \\
+			%$E_{A,\mathsf{resp}}$ & Response& \\
+			$E_{A,\mathsf{gap}}$ & HOMO -- LUMO gap& \checkmark\\
+
+			$\mu_{A,\mathsf{pot}}$& Chemical Potential & \checkmark\\
+
+			$\epsilon_{A,\mathsf{HOAO}}$ & Atomic HOMO & \checkmark \\
+
+			$\epsilon_{A,\mathsf{LUAO}}$ & Atomic LUMO & \checkmark \\
+
+			$E_{A,\mathsf{rep}}$ & Repulsion & \\
+			$E_{A,\mathsf{EHT}}$ & extended Hückel theory& \\
+			$E_{A,\mathsf{disp}}^{(2)}$ & Dispersion 2$^\mathsf{nd}$ order & \\
+			$E_{A,\mathsf{disp}}^{(3)}$ & Dispersion 3$^\mathsf{rd}$ order & \\
+			$E_{A,\mathsf{IES+IXC}}$ & Isotropic ES and XC & \\
+			$E_{A,\mathsf{AES}}$ & Anisotropic ES& \\
+			$E_{A,\mathsf{AXC}}$ & Anisotropic XC & \\
+			$E_{A,\mathsf{tot}}$ & Total Energy & \\
+			\hline 
+		\end{tabular}
+	\label{tab:Feature}
+\end{table}
+The quantities computed with GFN2--xTB are listed in Tab.~\ref{tab:Feature} with a short description.
+There is an extended version for some quantities. If this is the case, the column Extension is ticked.
+The mathematical descriptions of all quantities from GFN2--xTB are shown in the Appendix in Eq.~\eqref{eq:Feature}\\
+The features are computed for every Hessian matrix block $\textbf{H}_{AB}$.
+As these depend only on the atoms $A$ and $B$,
+the atom based quantities of $A$ and $B$ are used for the computation of the features.
+Two different models are used for the case of $A = B$ and $A \neq B$, due to two reasons.
+At first the chosen orientation in the CS between those cases differ.
+Secondly the length of the feature vectors are differently.
+For the case $A \neq B$, the features are computed from the GFN2--xTB quantities with Eq.~\eqref{eq:FeatureProcess}.
+Where $x$ is a placeholder for any of the quantities shown in Tab.~\ref{tab:Feature}.
+This case is called heteronuclear, as the Hessian and features depend on two atoms.
+\begin{subequations}
+	\label{eq:FeatureProcess}
+	\begin{align}
+		x_\mathsf{Arith}&= \dfrac{x_A + x_B}{2}\\
+		x_\mathsf{Prod}&= x_A \cdot x_B \\
+		x_\mathsf{AbsDiff}&= | x_A - x_B | 
+	\end{align}
+\end{subequations}
+There is used one further feature, which is the distance between the atoms $R_{AB}$.
+In the case of $A = B$ the quantities are used directly, and it is called homonuclear.
+Here, the Hessian and features only depend on one atom.\\
+Connecting the Hessian elements to the features at this point leads to following problem.
+The features for all elements in a Hessian matrix block $\textbf{H}_{AB}$ are the same.
+Therefore, the ML model would predict the same value for every element.
+Hence, a differentiation is needed for the elements.\\
+The first approach (\textbf{indexed}) is to use three further features $x_i, y_i, z_i$.
+These are indices, which differentiate between each element.
+In the Appendix in Tab.~\ref{tab:Indices} are all indices shown in dependence on the element.\\
+The second approach (\textbf{permuted}) is the permutation of the coordinate system 
+and with it the vector/matrix quantities from GFN2--xTB,
+in dependence of the Hessian elements that shall be learned.
+The coordinate system is always adjusted,
+so that the to be learned Hessian element is on the spot of the element  $\frac{\partial^2 E }{\partial y_A \partial x_A}$
+For example, if the element $\frac{\partial^2 E }{\partial x_A \partial z_A}$ is to be learned.
+The new coordinate system is permuted from $\{x,y,z\}$ to $\{z,x,-y\}$.
+The permutation is done in a manner, that the new coordinate system is right--handed.
+All permutations are described in the Appendix in Tab.~\ref{tab:Permutation}.
+For the homonuclear this concludes in 37 or 35 features for each Hessian element for the indexed or permuted case, respectively.
+And for the heteronuclear model there are 106 or 104 features for each Hessian element for the indexed or permuted case, respectively.
 \section{Quantities for Measuring}
 For first insights on the dependence of the target on the features, the Pearson Correlation Coefficient $R^2$ (s.~Eq.~\eqref{eq:PCC}) can be computed.
 It describes the linear correlation of the target and the feature.

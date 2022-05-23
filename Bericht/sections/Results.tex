@@ -70,7 +70,7 @@ For obvious reasons, the indices $x_i$, $y_i$ and $z_i$ are not included for thi
     {\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_diag.eps}}
     \hspace*{0.25cm}
     \subfloat[heteronuclear model]{\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag.eps}}
-    \caption[Element wise computed Pearson Correlation Coefficient shown for the best features of each element.]{
+    \caption[Best Pearson Correlation Coefficient computed element wise.]{
         Highest Pearson Correlation Coefficient specifically computed for each Hessian element for the homo-- and heteronuclear model.
         The abbreviation ab corresponds to the elements $\frac{\partial^2 E}{\partial a_A \partial b_B}$. 
                 }
@@ -106,7 +106,7 @@ there are deviations from the diagonal and therefore, in respect to the small da
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.9\textwidth]{H2_single/WN_xTB_vs_ML.eps}
-    \caption[Plot of wave numbers from \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$ against wave numbers predicted by a ML model $\tilde{\nu}_\mathrm{ML}$.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
+    \caption[Comparison of wave numbers from GFN2--xTB and the ML model.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
     is plotted against the wave number calculated via \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$.
     The model uses the Extra Tree Regression.
     The sample set is $\mathrm{H}_2$ and the training set is 75~\% of the whole set.
@@ -261,11 +261,12 @@ Contrary to the extrapolation errors are the wave numbers, which correspond to r
 These wave numbers are approximately zero and have large contribution to number of wave numbers.
 Therefore, they narrow the standard deviation, and shift the mean to zero. Further investigations are necessary,
 to see whether the extrapolation or the wave numbers, corresponding to rotation and translation, have a higher impact onto the mean and standard deviation.\\
-\section{Benchmarking the H$_\mathrm{\textbf{3}}$~system}
+\section{Benchmarking with the H$_\mathrm{\textbf{3}}$~system}
 Especially, the prediction of Hessian matrices of fully unknown systems is of interest.
 Hence, the ETR-Gen-Perm and ETR-Gen-Idx models were tested on the performance on a new, for the model unknown, system.
 For the $\mathrm{H}_3$ system the outer hydrogen atoms were fixed,
 while the inner hydrogen atom was shift from one hydrogen to another.
+H1 is fixed at $x(\mathrm{H1})= 0.0~\si{\angstrom}$ and H3 at $x(\mathrm{H1})= 4.0~\si{\angstrom} $
 For each position of the hydrogen atom,
 the force constants of the systems were predict via the ML model.
 The force constants were also calculated via \mbox{GFN2--xTB}.\\
@@ -279,6 +280,7 @@ The ML model should, in principle, mimic this behavior.
     \caption[Force constants predicted by the indexed multimodel and calculated with
     \mbox{GFN2--xTB} for $\mathrm{H}_3$~system]{
     Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
+    H1 is located at $x(\mathrm{H1})= 0.0~\si{\angstrom} $ and H3 at $x(\mathrm{H1})= 4.0~\si{\angstrom} $.
     The force constants are shown for the \mbox{GFN2--xTB} calculation (red),
     as also the via the ML model predicted values (blue).
     The full sample set, excluding the $\mathrm{H}_3$~system, was used for the ML model.
@@ -298,6 +300,7 @@ Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\ang
     \includegraphics[width = 0.8\textwidth]{ForceConstants/force_const_H3_perm.eps}
     \caption[Force constants predicted by the permuted multimodel and calculated with
     \mbox{GFN2--xTB} for $\mathrm{H}_3$~system]{Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
+    H1 is located at $x(\mathrm{H1})= 0.0~\si{\angstrom} $ and H3 at $x(\mathrm{H1})= 4.0~\si{\angstrom}$
     The force constants are shown for the \mbox{GFN2--xTB} calculation (red),
     as also the via the ML model predicted values (blue).
     The full sample set, excluding the $\mathrm{H}_3$~system, was used for the ML model.

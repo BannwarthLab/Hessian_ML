@@ -2,7 +2,6 @@ venv
 num_freq.py
 h2_2/
 *.png
-*.svg
 xtb/
 __pycache__/
 test/
