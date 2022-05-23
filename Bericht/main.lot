@@ -3,11 +3,11 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces List of quantities used for the ML models as features. The quantities are divided into geometry, density and energy based quantities.\relax }}{18}{table.caption.8}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Python modules used for the computation, data storing, constructing the ML model and plotting graphs.\relax }}{21}{table.caption.9}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces List of Quantities used for the ML model features.}}{18}{table.caption.8}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces List of Python models used.}}{21}{table.caption.9}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {7.1}{\ignorespaces Indices used for the different elements in a Hessian matrix block to differ between the elements.\relax }}{42}{table.caption.24}%
+\contentsline {table}{\numberline {7.1}{\ignorespaces List of indices used for the differentiation of Hessian elements.}}{43}{table.caption.24}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -1,17 +1,21 @@
 \chapter{Theory}
-For the computation of the features and target vectors for the ML models, the \mbox{GFN2--xTB} method is used. For a invariant system, a rotation of the features and the target is necessary.
-These rotations are done with Euler angles.
-As the target value are the Hessian matrices, a short introduction to the matrices is done.
-At last two algorithms used for machine learning are discussed.
-
+Four topics will be discussed in the Theory as this research relies on those.
+Supervised Machine Learning models rely on the two quantities feature and target.
+Features are information given to the model, which then predicts the target value.
+To train the model features and targets are computed via GFN2--xTB method.
+To achieve a deliberate system a transformation of coordinates is necessary,
+for which the Euler angles are used.
+As already introduced the Hessian matrix is the target. 
+In the last part of this chapter,
+the two ML algorithms used in this research will be discussed.
 \section{Euler Angles}
 One method of describing coordinate system (CS) transformations, are the Euler angles.
-They serve as a mathematical tool to connect one CS with another.\\
+They serve as a mathematical tool to connect one CS with another and will be explained in the following with an example.\\
 The initial coordinate system $\textbf{x},\textbf{y},\textbf{z}$,
 shown in Fig. \ref{fig:EulerAngles} can be transformed into the $\textbf{x}',\textbf{y}',\textbf{z}'$ CS by three rotations.
-The three Euler angles $\alpha$, $\beta$ and $\gamma$ are defined as follows.
 The distance between the vectors $\textbf{L}_\mathrm{a}$ and $\textbf{L}_\mathrm{b}$ is shown in red,
-and is the cutting line $\textbf{L}$ between the $\textbf{xy}$ and $\textbf{x'y'}$ planes.
+and is the intersection $\textbf{L}$ between the $\textbf{xy}$ and $\textbf{x'y'}$ planes.
+The three Euler angles $\alpha$, $\beta$ and $\gamma$ are defined as follows.
 Here, $\alpha$ is the angle between $\textbf{x}$ and $\textbf{L}_\mathrm{a}$ and $\beta$ is the angle between the two z--axes $\textbf{z}$ and $\textbf{z}'$.
 The angle $\gamma$ is the angle between $\textbf{L}_\mathrm{a}$ and $\textbf{x}'$.\\
 \begin{figure}[H]
@@ -20,7 +24,7 @@ The angle $\gamma$ is the angle between $\textbf{L}_\mathrm{a}$ and $\textbf{x}'
     \includegraphics[width = 0.8\textwidth]{sections/TheoryGraphs/EulerAngle.eps}
 	\vspace*{-2cm}
     \caption[Depiction of two Coordinate systems for description of Euler Angles.]{ Depiction of two coordinate systems  $\textbf{x},\textbf{y},\textbf{z}$ (black) and $\textbf{x}',\textbf{y}',\textbf{z}'$ (blue). 
-			   The red cutting line of the $\textbf{xy}$ and $\textbf{x'y'}$ planes is between the vector $\textbf{L}_\mathrm{a}$ and $\textbf{L}_\mathrm{b}$.}
+			   The red intersection of the $\textbf{xy}$ and $\textbf{x'y'}$ planes is between the vector $\textbf{L}_\mathrm{a}$ and $\textbf{L}_\mathrm{b}$.}
     \label{fig:EulerAngles}
 \end{figure}
 For the rotation of the CS it is necessary to apply the rotation matrices in a specific order.
@@ -61,7 +65,7 @@ The introduction starts from the non--relativistic, stationary electronic Schrö
 From this the Hartree--Fock model will be derived.
 This is followed by Density Functional Theory, as this builds the theoretical basis of \mbox{GFN2--xTB}.
 After that the tight--binding method will be introduced from which the semiempirical method \mbox{GFN2--xTB} is derived.
-Atomic units are used for all equations in this section. This introduction is based on the following reference.\supercite{Jensen2013}
+Atomic units are used for all equations in this section. This introduction of Hartree Fock and Density Functional Theory is based on the following reference.\supercite{Jensen2013}
 
 \subsection{Hartree--Fock Model}
 Molecular systems in quantum mechanics can be described by a many--body wave function eigenvalue problem.
@@ -71,13 +75,13 @@ the introduction of the \mbox{Born--Oppenheimer (BO)} approximation results in t
 	\label{eq:eSGl}
 	\hat{H}_\mathrm{e} \Psi_\mathrm{e} = E_\mathrm{e} \Psi_\mathrm{e}
 \end{align}
-The solution of this eigenvalue equation leads to the electronic energy $E_\mathrm{e}$.
-The electronic many--body--wave function $\Psi_\mathrm{e}$ of the system can be described by the Slater determinant (Eq.~\eqref{eq:SlaterD}).
+The solution of this eigenvalue equation leads to the electronic energy~$E_\mathrm{e}$.
+The electronic many--body--wave function~$\Psi_\mathrm{e}$ of the system can be described by the Slater determinant (Eq.~\eqref{eq:SlaterD}).
 The Pauli principle introduces the condition of the antisymmetry of the wave function.
 This condition is fulfilled by the Slater determinant.
-The Slater determinant consists of $k$ spin--orbital wave functions $\phi_i$,
-and every wave function is permuted with the coordinates $\textbf{r}_i$ of the $N$ electrons.
-Furthermore, the wave function is normalized by the factor $(N!)^{-\frac{1}{2}}$.
+The Slater determinant consists of $k$~spin--orbital wave functions~$\phi_i$,
+and every wave function is permuted with the coordinates~$\textbf{r}_i$ of the $N$ electrons.
+Furthermore, the wave function is normalized by the factor~$(N!)^{-\frac{1}{2}}$.
 \begin{align}
 	\label{eq:SlaterD}
 	\Psi_\mathrm{e} = \dfrac{1}{\sqrt{N!}} \begin{vmatrix}
@@ -87,7 +91,7 @@ Furthermore, the wave function is normalized by the factor $(N!)^{-\frac{1}{2}}$
 		\phi_1(\textbf{r}_N)& \hdots& \hdotsfor{0} & \phi_k(\textbf{r}_N)\\
 	\end{vmatrix}
 \end{align}
-The electronic Hamiltonian $\hat{H}_\mathrm{e}$ in the Hartree--Fock model is shown in Eq.~\eqref{eq:effHamiltonian}
+The electronic Hamiltonian~$\hat{H}_\mathrm{e}$ in the Hartree--Fock model is shown in Eq.~\eqref{eq:effHamiltonian}
 and consists of the kinetic energy of the electrons and the potential energy between electrons and nuclei as also between the electrons.
 Furthermore, the nuclear repulsion energy, which is approximated as a constant, is added.
 The kinetic energy of the nuclei is separated, due to the \mbox{BO--approximation}.
@@ -101,7 +105,7 @@ The kinetic energy of the nuclei is separated, due to the \mbox{BO--approximatio
 	+ \sum_{i=1}^N \sum_{\substack{j = 1 \\ i>j}}^N \dfrac{1}{|\textbf{r}_{i} - \textbf{r}_{j}|} 
 	+ \sum_{A=1}^M \sum_{\substack{B=1\\ B>A}}^M \dfrac{Z_A Z_B}{|\textbf{R}_A - \textbf{R}_B|}
 \end{align}
-Here, $\textbf{R}_A$ are the coordinates of atom $A$, 
+Here, $\textbf{R}_A$ are the coordinates of atom~$A$, 
 $\textbf{r}_i$ the coordinates of electron $i$ and $Z_A$ the nuclear charge.
 While, $\nabla_i^2$ is the second derivative in respect to every coordinate of electron $i$.\\
 The electronic energy can now be described with the Slater determinant and Hamiltonian in Eq.~\eqref{eq:ElectronicEnergy}.
@@ -122,9 +126,9 @@ This allows the search of the exact energy by optimizing the wave function (or i
 	\label{eq:RayleighRitzVP}
 	E_0 \leq \braket{\Psi | \hat{H} | \Psi}
 \end{align}
-Hence, the determination of the total energy of the system is an eigenvalue problem and can be solved by minimization.
+The determination of the total energy of the system is an eigenvalue problem and can be solved by minimization.
 To minimize the energy, Lagrangian optimization is employed, under the condition of orthonormal $\phi_i$.
-The inner product of the wave function $\braket{\phi_i|\phi_j} = \delta_{ij}$ corresponds to the Kronecker delta (Eq.~\eqref{eq:Orthonormal}). 
+Hence, the inner product of the wave function $\braket{\phi_i|\phi_j} = \delta_{ij}$ corresponds to the Kronecker delta (Eq.~\eqref{eq:Orthonormal}). 
 \begin{align}
 	\label{eq:Orthonormal}
 	\braket{\phi_i|\phi_j} = \delta_{ij} =\begin{cases}
@@ -155,10 +159,10 @@ where the spin--orbital wave--functions are the sum of $K$ basis functions with 
 	\label{eq:BasisSet}
 	\phi_i(\textbf{r}) = \sum_\mu^K c_\mu \chi_\mu (\textbf{r})
 \end{align}
-Merging the basis--set approach into Eq.~\eqref{eq:FockEquation} leads to Roothaan--Hall equation shown in Eq.~\eqref{eq:FCSCe}.
+Merging the basis--set approach into Eq.~\eqref{eq:FockEquation} leads to the Roothaan--Hall equation shown in Eq.~\eqref{eq:FCSCe}.
 Here, $\textbf{F}$ is the Fock matrix, $\textbf{C}$ a matrix of coefficients $c_\mu$,
 $\textbf{S}$ the overlap matrix and $\bm{\upepsilon}$ the diagonal eigenvalue matrix.
-This equation is used find a solution for the energy iteratively.
+This equation is used to find a solution for the energy iteratively.
 Starting with an initial guess of the Fock matrix,
 the matrix $\textbf{C}$ is computed, with this matrix, the density matrix $\textbf{D}$ is calculated. 
 The density matrix $\textbf{D}$, is then used for the calculation of the new Fock matrix.
@@ -253,7 +257,7 @@ an eigenvalue equation similar to the Roothaan--Hall equation is derived.
 		\label{eq:GFN2:Rho0}
 		\rho_0 = \sum_A \rho_{0,A}
 	\end{align}
-	The energy is expanded by a Taylor series around the electron density $\rho_0$ up to the third order.
+	The energy is expanded by a Taylor series around the electron density $\rho_0$.
 	The bonding is then described as a perturbation of this density.
 	In \mbox{GFN2--xTB} the expansion is done up to the third order.
 	\begin{align}
@@ -282,6 +286,7 @@ an eigenvalue equation similar to the Roothaan--Hall equation is derived.
 	These contributions will be briefly discussed.
 	The zeroth order term shown in Eq.~\eqref{eq:GFN2:E_0} consists of the repulsion energy~$E_\mathrm{rep}^{(0)}$ and
 	dispersion energy~$E_\mathrm{disp}^{(0)}$. These are typically described by Buckingham or Lennard--Jones potentials.
+	In GFN2--xTB a classical parametrized repulsion energy is used, which depends on the distance between to atoms.
 	The dispersion term arises, due to the non--local correlation functional.
     Furthermore, the zeroth order term energy of the valence electrons $E_\mathrm{A,valence}^{(0)}$
 	and core electron $E_\mathrm{A,core}^{(0)}$ is summed, though the energy of the core electrons is defined as zero.
@@ -336,17 +341,17 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 
     \section{Hessian Matrices}
 	The Hessian matrices are the target for the ML model.
-	Therefore, a brief introduction to the Hessian elements and its projection and mass weighting is given.\\
 	The Hessian is of interest, due to its need for the computation of harmonic vibrational frequencies of molecules and thermodynamic quantities.
 	The harmonic vibrational frequencies can be used for the computation of wave numbers, with which IR spectra can be constructed.
-	Furthermore, they can be used for the transition state search, as imaginary harmonic vibrational frequencies indicate a transition state.\\
+	Furthermore, they can be used for the transition state search, as imaginary harmonic vibrational frequencies indicate a transition state.
+	Therefore, a brief introduction to the Hessian elements and its projection and mass weighting is given.\\
 	The Hessian matrix is a $3M \times 3M$ matrix ($M$ is the number of atoms) of second derivatives
 	of the energy in respect to every atom coordinate pair in the system.
 	\begin{align}
 		\textbf{H} =
 		\left(\begin{matrix}
 			\dfrac{\partial^2 E}{\partial x_A \partial x_A} & \hdotsfor{1} & \dfrac{\partial^2 E}{\partial x_A \partial y_M} &
-			\dfrac{\partial^2 E}{\partial x_A \partial z_M} \\	
+			\dfrac{\partial^2 E}{\partial x_A \partial z_M} \vspace*{2pt} \\
 			\dfrac{\partial^2 E}{\partial x_A \partial y_A} & \ddots & & \vdots \\
 			\vdots & & \ddots & \vdots \\
 			\dfrac{\partial^2 E}{\partial z_N \partial x_A}  & \hdotsfor{0} & & \dfrac{\partial^2 E}{\partial z_M \partial z_M} 
@@ -370,10 +375,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\label{eq:Hess:HABBA}
 		\textbf{H}_{BA} = \left({\textbf{H}_{AB}}\right)^\intercal
 	\end{align}
-	Therefore, the information of the Hessian can be stored as a triangular matrix.
-	
-	
-	the only information needed for the Hessian is a triangular matrix (s.~Eq.~\eqref{eq:Hess:TriangularMat}).
+	Therefore, the information of the Hessian can be stored as a triangular matrix (s.~Eq.~\eqref{eq:Hess:TriangularMat}).
 	\begin{align}
 		\label{eq:Hess:TriangularMat}
 		\textbf{H} =
@@ -384,11 +386,10 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 			 &  &  & \textbf{H}_{MM} 
 		\end{matrix}\right)
 	\end{align}
-	The Hessian matrix needs to be projected for the computation of physical quantities like the harmonic frequencies,
-	zero point vibrational energy.
+	The Hessian matrix needs to be projected for the computation harmonic frequencies.
 	For the projection the rotational and translational parts of the Hessian need to be detected.
 	A $6 \times 3N$ matrix is constructed, that describes the rotation and translation of each atom.
-	For one atom, the overlap is depicted in Eq.~\eqref{eq:RotTransMat}.
+	For an atom $A$, the overlap is depicted in Eq.~\eqref{eq:RotTransMat}.
 	The translation correspond to the first 3 rows of the matrix $\textbf{O}_A$.
 	While the contribution of the rotation is given in the lower 3 rows.
 	For example, the rotation around the x--axis leads to the translation of the y--coordinate $\textbf{r}^y_A$ by $\textbf{r}^z_A$.
@@ -412,9 +413,9 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\end{matrix}
 		\right)
 	\end{align}
-	After that, the rotation and translation matrix is normalized to $\textbf{O}_\mathrm{n}$.
+	After that, the rotation and translation matrix is normalized to $\textbf{O}_\mathrm{n}$ by the 1--norm.
 	For the detection, the overlap matrix $\textbf{M}$ between the normalized rotation and translation matrix and the Hessian matrix is computed (s. Eq.~\eqref{eq:OverlapMatProj}).
-	The multiplication of the $6\times 3M$ and $3M \times 3M$ matrix leads to $6 \times 3M$ matrix.
+	The multiplication of the $6\times 3M$ and $3M \times 3M$ matrix leads to a $6 \times 3M$ matrix.
 	\begin{align}
 		\label{eq:OverlapMatProj}
 		\textbf{M} = \textbf{O}_\mathrm{n} \times \textbf{H}
@@ -425,7 +426,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	For a linear molecule only the five highest values are searched.
 	The differentiation between linear and non--linear molecules is done by
 	the norm of the coordinates~$\left\| \textbf{r}^x \right\|$,$\left\| \textbf{r}^y \right\|$ and~$\left\| \textbf{r}^z \right\|$.
-	If the sum of  the norm of two coordinates is below a threshold of $1 \cdot 10^{-6}$ a linear molecule is assumed.\\
+	If the sum of the norm of two coordinates is below a threshold of $ \left\| \textbf{r}^{x,y,z} \right\| < 1 \cdot 10^{-6}$ a linear molecule is assumed.\\
 	For the projection itself, the eigenvectors $\textbf{Q}$ of the Hessian matrix  and its eigenvalues $\bm{\uplambda}$ are required.
 	\begin{align}
 		\textbf{H}^\mathrm{proj} =\textbf{H} - \sum_{i \in \textbf{v}} \bm{\uplambda}_i \cdot{\textbf{Q}^\intercal}_i \otimes \left({\textbf{Q}^\intercal}_i\right)^\intercal
@@ -437,15 +438,18 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\end{align}
 	Eq.~\eqref{eq:MassWeightedHess} is applied to every Hessian matrix block $\textbf{H}_{AB}$ in the full Hessian matrix $\textbf{H}$,
 	which leads to the projected mass weighted Hessian matrix $\textbf{H}^\mathrm{proj,w}$.
+
+
+
 	\section{Machine Learning}
-	This section deals with basics of the ML and is based on the following reference.\supercite{Hastie2009}
+	This section deals with basics of the ML algorithms and is based on the following reference.\supercite{Hastie2009}
 	Extra Tree Regression (ETR) and Random Forest Regression (RFR) are used as ML algorithms in this research.
 	Both algorithms are ensemble methods based on decision trees as individual estimators.
 	In this section, decision tree based algorithms will be discussed,
 	and the differences between the ETR and RFR will be emphasized.\\
 	Often these decision tree based algorithms are based on the Classification and Regression Tree (CART) algorithm.
-	The CART algorithm will be explained with an example. Assuming a response $Y$ that depends on two variables $X1$ and $X2$ is assumed.
-	The variables $X1$ and $X2$ are called features.
+	The CART algorithm will be explained with an example. Assuming a response $Y$ that depends on two variables $X_1$ and $X_2$ is assumed.
+	The variables $X_1$ and $X_2$ are called features.
 	A tree based model splits the space of this function into several recursive binary partitions.
 	Recursive binary means in this case, that the splits are orthogonal to the axis of the features.
 	This split is shown on the left in Fig.~\ref{fig:ML_Split}.
@@ -474,7 +478,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	Here, $\hat{f}(X)$ is the function that describes the response $Y$.
 	Each region $m$ has a corresponding constant $c_m$. The function $I$ can either be $I=1$,
 	if the features $X_1$ and $X_2$ are in the rectangle $R_m$, or it is $I=0$, if it is not the case.
-	Originally, the ETR and RFR have another difference, which is that the ETR did not use bootstrapping.
+	Originally, the ETR and RFR have another difference, which is that the ETR did not use bootstrapping.\supercite{Geurts2006}
 	Bootstrapping uses the training set and makes several new training sets from this.
 	The new training sets are randomly filled with the datasets of the original training set.
-
+	This differentiation is not necessarily done anymore.
+	In software like \texttt{sklearn}\supercite{scikit-learn} it is choosable to use bootstrapping or not.
