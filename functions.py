@@ -14,6 +14,9 @@ atomic_mass_unit = 1.6605390666e-27 # in kg
 hplanck = 6.62607015e-34 # hplank Js
 conv_J_to_eV = (1.602176634e-19)**-1 #eV/J
 
+
+
+
 def angle_two_vec(a,b):
 
      if linalg.norm(a) == 0. or linalg.norm(b) == 0.:

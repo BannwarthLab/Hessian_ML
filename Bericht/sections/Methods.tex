@@ -229,7 +229,7 @@ The procedure of the projection and mass--weighting is described in the chapter 
 \section{ML Model Construction}
 The supervised ML models have to be trained with a set of features and targets.
 The features are in general derived from atom based quantities based on geometry, density and energy.
-Also, they originate mainly from Steinbach's work.\supercite{PitMA} Some adaptations are done.
+This feature selection criteria is based on Steinbach's work.\supercite{PitMA} Some adaptations are done.
 Here, the cartesian dipole moment and quadrupole moment elements are used as features instead of its norm.
 This applies also for the extended versions.
 The Hessian matrix is the target.
@@ -288,7 +288,7 @@ As these depend only on the atoms $A$ and $B$,
 the atom based quantities of $A$ and $B$ are used for the computation of the features.
 Two different models are used for the case of $A = B$ and $A \neq B$, due to two reasons.
 At first the chosen orientation in the CS between those cases differ.
-Secondly the length of the feature vectors are differently.
+Secondly the feature vectors have a different size.
 For the case $A \neq B$, the features are computed from the GFN2--xTB quantities with Eq.~\eqref{eq:FeatureProcess}.
 Where $x$ is a placeholder for any of the quantities shown in Tab.~\ref{tab:Feature}, but $R_{AB}$.
 This case is called \textbf{heteronuclear}, as the Hessian and features depend on two atoms.
@@ -308,12 +308,12 @@ Therefore, the ML model would predict the same value for every element.
 Hence, a differentiation is needed for the elements.\\
 The first approach (\textbf{indexed}) is the use of three further features $x_i, y_i, z_i$.
 These are indices, which differentiate between each element.
-In the Appendix in Tab.~\ref{tab:Indices} are all indices shown in dependence on the element.\\
+In the Appendix in Tab.~\ref{tab:Indices} are all indices are shown with respect to their dependency on the element.\\
 The second approach (\textbf{permuted}) is the permutation of the coordinate system 
 and with it the vector/matrix quantities from GFN2--xTB,
 in dependence of the Hessian elements that shall be learned.
 The coordinate system is always adjusted,
-so that the to be learned Hessian element is on the spot of the element  $\frac{\partial^2 E }{\partial y_A \partial x_A}$
+so that the to be learned Hessian element is on the spot of the element  $\frac{\partial^2 E }{\partial y_A \partial x_A}$.
 For example, if the element $\frac{\partial^2 E }{\partial x_A \partial z_A}$ is to be learned.
 The new coordinate system is permuted from $\{x,y,z\}$ to $\{z,x,-y\}$.
 The permutation is done in a manner, that the new coordinate system is right--handed.
