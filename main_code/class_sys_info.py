@@ -73,8 +73,8 @@ class sys_info:
     def connect_Feature_Target(self):
         #self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms)
 
-        self.features.get_Feature_heteronuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,xyz = self.xyz)
-        self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms)
+        self.features.get_Feature_heteronuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,xyz = self.xyz,init_R_MI=self.init_R_MI)
+        self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,init_R_MI=self.init_R_MI)
 
         return self.features.Feature_AB, self.H_AB_vec, self.features.Feature_AA, self.H_AA_vec
 
@@ -135,18 +135,24 @@ class Feature:
                 j = 0
 
                 for i in [atom_A,atom_B]:
-                    dipm_atom = matmul(R_MI_APF,self.dipm_atom[i])
-                    dipm_delta = matmul(R_MI_APF,self.dipm_delta[i])
-                    dipm_only_mull = matmul(R_MI_APF,self.dipm_only_mull[i])
+
+                    dipm_atom = matmul(init_R_MI,self.dipm_atom[i])
+                    dipm_delta = matmul(init_R_MI,self.dipm_delta[i])
+                    dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[i])
+
+                    dipm_atom = matmul(R_MI_APF,dipm_atom)
+                    dipm_delta = matmul(R_MI_APF,dipm_delta)
+                    dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
 
                     qm_atom = matmul(matmul(init_R_MI,self.qm_atom[i]),np.transpose(init_R_MI))
-                    qm_atom = matmul(matmul(init_R_MI,self.qm_delta[i]),np.transpose(init_R_MI))
+                    qm_delta = matmul(matmul(init_R_MI,self.qm_delta[i]),np.transpose(init_R_MI))
 
                     qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
                     qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
                     
 
                     if atom_A ==2 and atom_B == 3:
+                        print(dipm_atom)
                         print(qm_atom)
 
                     qm_atom = matmul(qm_atom,vector_of_ones)
@@ -156,6 +162,7 @@ class Feature:
                     Quantity_AB[j].extend(dipm_atom)
                     Quantity_AB[j].extend(dipm_delta)
                     Quantity_AB[j].extend(dipm_only_mull)
+
                     Quantity_AB[j].extend(qm_atom)
                     Quantity_AB[j].extend(qm_delta)
                     Quantity_AB[j].extend(self.energy_based[i])
@@ -182,7 +189,7 @@ class Feature:
 
 
 
-    def get_Feature_homonuclear(self, R_MI_APF_mat=None, N_atoms = None):
+    def get_Feature_homonuclear(self, R_MI_APF_mat=None, N_atoms = None,init_R_MI = None):
 
         index = [[2,0,0],
                 [1,-1,0],
@@ -205,6 +212,9 @@ class Feature:
             Quantity_A = []
 
             vector_of_ones = np.array([1,1,1])
+            dipm_atom = matmul(init_R_MI,self.dipm_atom[atom_A])
+            dipm_delta = matmul(init_R_MI,self.dipm_delta[atom_A])
+            dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[atom_A])
 
             dipm_atom = matmul(R_MI_APF,self.dipm_atom[atom_A])
             dipm_delta = matmul(R_MI_APF,self.dipm_delta[atom_A])
