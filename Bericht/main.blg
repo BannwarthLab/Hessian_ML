@@ -1,24 +1,8 @@
-[0] Config.pm:307> INFO - This is Biber 2.17
-[0] Config.pm:310> INFO - Logfile is 'main.blg'
-[34] biber:340> INFO - === Do Mai 19, 2022, 18:37:38
-[42] Biber.pm:418> INFO - Reading 'main.bcf'
-[81] Biber.pm:972> INFO - Found 11 citekeys in bib section 0
-[89] Biber.pm:4383> INFO - Processing section 0
-[94] Biber.pm:4574> INFO - Looking for bibtex file 'sections/literature.bib' for section 0
-[95] bibtex.pm:1713> INFO - LaTeX decoding ...
-[106] bibtex.pm:1518> INFO - Found BibTeX data source 'sections/literature.bib'
-[216] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[216] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[216] Biber.pm:4203> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
-[216] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
-[221] bbl.pm:654> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[233] bbl.pm:757> INFO - Output to main.bbl
-[233] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_kXzO/a42497fa0f805ce74b9af7d16715cbd8_5575.utf8, line 16, warning: 47 characters of junk seen at toplevel
-[233] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_kXzO/a42497fa0f805ce74b9af7d16715cbd8_5575.utf8, line 32, warning: 143 characters of junk seen at toplevel
-[233] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_kXzO/a42497fa0f805ce74b9af7d16715cbd8_5575.utf8, line 46, warning: 46 characters of junk seen at toplevel
-[233] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_kXzO/a42497fa0f805ce74b9af7d16715cbd8_5575.utf8, line 61, warning: 40 characters of junk seen at toplevel
-[233] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_kXzO/a42497fa0f805ce74b9af7d16715cbd8_5575.utf8, line 79, warning: 51 characters of junk seen at toplevel
-[233] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_kXzO/a42497fa0f805ce74b9af7d16715cbd8_5575.utf8, line 104, warning: 47 characters of junk seen at toplevel
-[233] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_kXzO/a42497fa0f805ce74b9af7d16715cbd8_5575.utf8, line 118, warning: 40 characters of junk seen at toplevel
-[233] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_kXzO/a42497fa0f805ce74b9af7d16715cbd8_5575.utf8, line 154, warning: 96 characters of junk seen at toplevel
-[233] Biber.pm:132> INFO - WARNINGS: 8
+[1] Config.pm:354> INFO - This is Biber 2.7
+[2] Config.pm:357> INFO - Logfile is 'main.blg'
+[76] biber-MSWIN64:303> INFO - === 
+[133] Biber.pm:359> INFO - Reading 'main.bcf'
+[408] Utils.pm:180> ERROR - Error: Found biblatex control file version 3.7, expected version 3.3.
+This means that your biber (2.7) and biblatex (3.14) versions are incompatible.
+See compat matrix in biblatex or biber PDF documentation.
+[408] Biber.pm:113> INFO - ERRORS: 1
