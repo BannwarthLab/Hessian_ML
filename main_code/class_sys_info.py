@@ -51,12 +51,12 @@ class Feature:
         self.dipm_atom = np.array(GFN2_quantities.loc[:,['dipm_atom_x','dipm_atom_y','dipm_atom_z']].values.tolist())
         self.dipm_delta = np.array(GFN2_quantities.loc[:,['dipm_delta_x','dipm_delta_y','dipm_delta_z']].values.tolist())
         self.dipm_only_mull = np.array(GFN2_quantities.loc[:,['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']].values.tolist())
-        self.qm_atom = qm_matrix(np.array(GFN2_quantities.loc[:,['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']].values.tolist()),'qm_atom_')
-        self.qm_delta = qm_matrix(np.array(GFN2_quantities.loc[:,['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']].values.tolist()),'qm_delta_')
+        self.qm_atom = qm_matrix(np.array(GFN2_quantities.loc[:,['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_zx','qm_atom_yz']].values.tolist()))
+        self.qm_delta = qm_matrix(np.array(GFN2_quantities.loc[:,['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_zx','qm_delta_yz']].values.tolist()))
         self.energy_based = np.array(GFN2_quantities.loc[:,['response (a.u.)','gap (eV)','chem.pot (eV)','HOAO (eV)','LUAO (eV)',
                                     'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']].values.tolist())
-        self.names = self.GFN2_quantities.columns.tolist()
+        self.names = GFN2_quantities.columns.tolist()
 
     def feature(self,label='indexed'):
         return
@@ -69,17 +69,20 @@ class Feature:
 
 
 
-def qm_matrix(qm_atom,name):
+def qm_matrix(qm_atom):
+    qm_matrix_list = []
+    for i in range(len(qm_atom)):
+        xx = qm_atom[i,0]
+        xy = qm_atom[i,1]
+        yy = qm_atom[i,2]
+        xz = qm_atom[i,3]
+        zz = qm_atom[i,4]
+        yz = qm_atom[i,5]
 
-     xx = qm_atom.loc[f'{name}xx']
-     xy = qm_atom.loc[f'{name}xy']
-     yy = qm_atom.loc[f'{name}yy']
-     xz = qm_atom.loc[f'{name}xz']
-     zz = qm_atom.loc[f'{name}zz']
-     yz = qm_atom.loc[f'{name}yz']
+        qm_matrix = np.array([[xx,xy,xz],
+                        [xy,yy,yz],
+                        [xz,yz,zz]])
 
-     qm_matrix = np.array([[xx,xy,xz],
-                          [xy,yy,yz],
-                          [xz,yz,zz]])
+        qm_matrix_list.append(qm_matrix)
 
-     return qm_matrix
+    return qm_matrix_list

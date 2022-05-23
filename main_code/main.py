@@ -19,17 +19,18 @@ H_APF_l = []
 
 for mol in range(len(mol_sys_dirs)):
     #Gathering for each molecular systems all directories of diffrent structures
-    struc_sys_dirs = glob.glob(f'{cwd}\\{mol_sys_dirs[mol]}/*/')
-
+    mol_dir = f'{cwd}/{mol_sys_dirs[mol]}/'
+    struc_sys_dirs = [ name for name in os.listdir(mol_dir) if os.path.isdir(os.path.join(mol_dir, name)) ]
+    print(struc_sys_dirs)
     #For every structure of every molecular system
     for sys in range(len(struc_sys_dirs)):
 
-        system = sys_info(folder=f'{struc_sys_dirs[sys]}\\init_coord\\',molecule=mol,variation=sys)
+        system = sys_info(folder=f'{mol_dir}{struc_sys_dirs[sys]}/init_coord/',molecule=mol,variation=sys)
 
         system.rot_init_inert()
 
         print(f'Molecule No. {mol} \nSystem No.{sys}')
-        feature = Feature(folder = f'{struc_sys_dirs[sys]}\\init_coord\\')
+        feature = Feature(folder = f'{mol_dir}{struc_sys_dirs[sys]}/init_coord/')
         #Matrix filled with 3x3 rotation matrices for MI to APF
         R_MI_APF_mat = np.zeros([3*len(system.xyz['atoms']),3*len(system.xyz['atoms'])])
         #Matrix filled with hessian for each APF
@@ -59,5 +60,6 @@ for mol in range(len(mol_sys_dirs)):
 
         R_MI_APF_l.append(R_MI_APF_mat)
 
+print(H_APF_l)
 
         

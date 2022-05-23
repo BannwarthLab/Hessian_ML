@@ -5,7 +5,7 @@ do
 	for files in atoms_*/
 	do
 		cd $files
-		xtb coord.xyz --hess --gfn2
+		xtb coord.xyz --chrg 1 --hess --gfn2
 		~/git/xtb/xtb_ml/build/xtb coord.xyz --ml_feature
 		cd ..
 	done

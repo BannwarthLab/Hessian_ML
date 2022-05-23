@@ -21,7 +21,7 @@
  reduced masses (AMU), force constants (mDyne/A) and normal coordinates:
                       1                      2                      3
                         a                      a                      a 
- Frequencies --  -899.5505              1085.7271              1223.3734
+ Frequencies --  -899.5505              1085.7271              1223.3737
  Red. masses --     1.9154                 2.7515                 1.5597
  Frc consts  --     0.0000                 0.0000                 0.0000
  IR Inten    --     6.5545                87.6680                 8.0391
@@ -34,7 +34,7 @@
    4   1    -0.01   0.04   0.01     0.04   0.32   0.48     0.09  -0.06  -0.54
                       4                      5                      6
                         a                      a                      a 
- Frequencies --  1456.9987              3401.1457              3445.4650
+ Frequencies --  1456.9987              3401.1457              3445.4653
  Red. masses --     2.0611                 1.5032                 2.1437
  Frc consts  --     0.0000                 0.0000                 0.0000
  IR Inten    --    44.2563                 0.1972                10.3330
