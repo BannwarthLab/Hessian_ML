@@ -19,12 +19,12 @@
  reduced masses (AMU), force constants (mDyne/A) and normal coordinates:
                       1
                         a 
- Frequencies --   257.8002
+ Frequencies --   257.7976
  Red. masses --    15.9994
  Frc consts  --     0.0000
  IR Inten    --     0.0000
  Raman Activ --     0.0000
  Depolar     --     0.0000
  Atom AN      X      Y      Z        X      Y      Z        X      Y      Z
-   1   8     0.00   0.50  -0.50
-   2   8    -0.00  -0.50   0.50
+   1   8    -0.00   0.00  -0.71
+   2   8     0.00  -0.00   0.71
