@@ -10,7 +10,7 @@ In the last part of this chapter,
 the two ML algorithms used in this research will be discussed.
 \section{Euler Angles}
 One method of describing coordinate system (CS) transformations, are the Euler angles.
-They serve as a mathematical tool to connect one CS with another and will be explained in the following with an example.\\
+They serve as a mathematical tool to connect one CS with another and will be explained in the following with an example.\supercite{Stone2016}\\
 The initial coordinate system $\textbf{x},\textbf{y},\textbf{z}$,
 shown in Fig. \ref{fig:EulerAngles} can be transformed into the $\textbf{x}',\textbf{y}',\textbf{z}'$ CS by three rotations.
 The distance between the vectors $\textbf{L}_\mathrm{a}$ and $\textbf{L}_\mathrm{b}$ is shown in red,
@@ -349,7 +349,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	Furthermore, they can be used for the transition state search, as imaginary harmonic vibrational frequencies indicate a transition state.
 	Therefore, a brief introduction to the Hessian elements and its projection and mass weighting is given.\\
 	The Hessian matrix is a $3M \times 3M$ matrix ($M$ is the number of atoms) of second derivatives
-	of the energy in respect to every atom coordinate pair in the system.
+	of the energy in respect to every atom coordinate pair in the system.\supercite{Jensen2013}
 	\begin{align}
 		\textbf{H} =
 		\left(\begin{matrix}
@@ -357,7 +357,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 			\dfrac{\partial^2 E}{\partial x_A \partial z_M} \vspace*{2pt} \\
 			\dfrac{\partial^2 E}{\partial x_A \partial y_A} & \ddots & & \vdots \\
 			\vdots & & \ddots & \vdots \\
-			\dfrac{\partial^2 E}{\partial z_N \partial x_A}  & \hdotsfor{0} & & \dfrac{\partial^2 E}{\partial z_M \partial z_M} 
+			\dfrac{\partial^2 E}{\partial z_M \partial x_A}  & \hdotsfor{0} & & \dfrac{\partial^2 E}{\partial z_M \partial z_M} 
 		\end{matrix}\right)
 	\end{align}
 	The Hessian \textbf{H} can also be described by $M^2$ $3 \times 3$ block matrices,
@@ -480,8 +480,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	Here, $\hat{f}(X)$ is the function that describes the response $Y$.
 	Each region $m$ has a corresponding constant $c_m$. The function $I$ can either be $I=1$,
 	if the features $X_1$ and $X_2$ are in the rectangle $R_m$, or it is $I=0$, if it is not the case.
-	Originally, the ETR and RFR have another difference, which is that the ETR did not use bootstrapping.\supercite{Geurts2006}
+	Originally, the ETR and RFR have another difference, which is that for ETR bootstrapping was not used.\supercite{Geurts2006}
 	Bootstrapping uses the training set and makes several new training sets from this.
-	The new training sets are randomly filled with the datasets of the original training set.
+	The new training sets are randomly filled with the datasets of the original training set.\supercite{Hastie2009}
 	This differentiation is not necessarily done anymore.
-	In software like \texttt{sklearn}\supercite{scikit-learn} it is choosable to use bootstrapping or not.
+	In software like \texttt{sklearn}\supercite{scikit-learn} it is eligible to use bootstrapping.

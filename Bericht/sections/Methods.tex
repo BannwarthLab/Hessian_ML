@@ -320,9 +320,10 @@ The permutation is done in a manner, that the new coordinate system is right--ha
 All permutations are described in the Appendix in Tab.~\ref{tab:Permutation}.\\
 For the homonuclear this concludes in 37 or 35 features for each Hessian element for the indexed or permuted case, respectively.
 And for the heteronuclear model there are 106 or 104 features for each Hessian element for the indexed or permuted case, respectively.
+
 \section{Quantities for Measuring}
 For first insights on the dependence of the target on the features, the Pearson Correlation Coefficient $R^2$ (s.~Eq.~\eqref{eq:PCC}) can be computed.
-It describes the linear correlation of the target and the feature.
+It describes the linear correlation between the target and the feature.
 Here, $x$ is a feature, $y$ the target and $\sigma_i$ the standard deviation and $\bar{i}$ the mean of the feature or target.
 The values for $R^2$ are in the range of $0 \leq R^2 \leq 1$.
 \begin{align}
@@ -332,7 +333,7 @@ The values for $R^2$ are in the range of $0 \leq R^2 \leq 1$.
 \\
 For the quantification of the learning process of the ML models the mean squared error~MSE (s. Eq.~\eqref{eq:MSE}) was chosen.
 The ML models are trained with \mbox{GFN2--xTB} based information. Therefore, the reference is also \mbox{\mbox{GFN2--xTB}}.
-Here, the target $y$ corresponds to the Hessian elements, calculated with \mbox{GFN2--xTB} and predicted with the ML model.
+In this report, the target $y$ corresponds to the Hessian elements, calculated with \mbox{GFN2--xTB} and predicted with the ML model.
 The number of data points is $n$.
 \begin{align}
 	\label{eq:MSE}
@@ -346,7 +347,7 @@ After that a normal distribution is assumed and computed with Eq.~\eqref{eq:Norm
 	\label{eq:NormalDistribution}
 	f(x)  = \dfrac{1}{\sigma \sqrt{2\pi}} \exp\left({-\dfrac{1}{2} \left(\dfrac{q-\overline{\Delta q}}{\sigma}\right)^2}\right)
 \end{align}
-Here, $q$ is an investigated physical quantity. In this report, the investigated quantities $q$ the Hessian elements and the wave number $\tilde{\nu}$.\\
+The investigated quantities $q$ are the Hessian elements and the wave number $\tilde{\nu}$.\\
 In addition to the Hessian elements and the $\tilde{\nu}$ (s. Eq.~\eqref{eq:WN})  the force constant $k$ (Eq.~\eqref{eq:FC}) was examined.
 Here, $\lambda$ are the eigenvalues of the mass weighted projected Hessian matrix $\textbf{H}^\mathsf{proj,w|mi}$ and $m_i$ the mass of each atom.
 For the transformation into SI--units, the Hartree Energy $E_\mathsf{h}$,
