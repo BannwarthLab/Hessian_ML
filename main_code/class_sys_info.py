@@ -27,9 +27,11 @@ class sys_info:
         self.coord_state[0], self.coord_state[1] = self.coord_state[1],self.coord_state[0]
         self.init_R_MI = np.transpose(self.init_R_MI)
         self.init_P_MI = np.transpose(self.init_P_MI)
+
         self.xyz = coord_rot(self.xyz,self.init_R_MI)
         self.dipm = coord_rot(self.dipm,self.init_R_MI)
         self.hessian = matmul(matmul(self.init_P_MI,self.hessian),np.transpose(self.init_P_MI))
+        
         return
 
     def rot_inert_apf(self):
@@ -70,10 +72,10 @@ class sys_info:
         return
 
 
-    def connect_Feature_Target(self):
+    def connect_Feature_Target(self,folder=None):
         #self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms)
 
-        self.features.get_Feature_heteronuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,xyz = self.xyz,init_R_MI=self.init_R_MI)
+        self.features.get_Feature_heteronuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,xyz = self.xyz,init_R_MI=self.init_R_MI,folder=folder)
         self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,init_R_MI=self.init_R_MI)
 
         return self.features.Feature_AB, self.H_AB_vec, self.features.Feature_AA, self.H_AA_vec
@@ -94,8 +96,8 @@ class Feature:
         self.dipm_atom = np.array(GFN2_quantities.loc[:,['dipm_atom_x','dipm_atom_y','dipm_atom_z']].values.tolist())
         self.dipm_delta = np.array(GFN2_quantities.loc[:,['dipm_delta_x','dipm_delta_y','dipm_delta_z']].values.tolist())
         self.dipm_only_mull = np.array(GFN2_quantities.loc[:,['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']].values.tolist())
-        self.qm_atom = qm_matrix(np.array(GFN2_quantities.loc[:,['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_zx','qm_atom_yz']].values.tolist()))
-        self.qm_delta = qm_matrix(np.array(GFN2_quantities.loc[:,['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_zx','qm_delta_yz']].values.tolist()))
+        self.qm_atom = qm_matrix(np.array(GFN2_quantities.loc[:,['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']].values.tolist()))
+        self.qm_delta = qm_matrix(np.array(GFN2_quantities.loc[:,['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']].values.tolist()))
         self.energy_based = np.array(GFN2_quantities.loc[:,['gap (eV)','chem.pot (eV)','HOAO (eV)','LUAO (eV)',
                                     'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']].values.tolist())
@@ -104,7 +106,7 @@ class Feature:
         self.Feature_AB = []
         self.Feature_AA = []
 
-    def get_Feature_heteronuclear(self, label=None, R_MI_APF_mat=None, N_atoms = None,xyz = None,init_R_MI=None):
+    def get_Feature_heteronuclear(self, label=None, R_MI_APF_mat=None, N_atoms = None,xyz = None,init_R_MI=None,folder=None):
 
         index = [[2,0,0],
                 [1,-1,0],
@@ -139,25 +141,19 @@ class Feature:
                     dipm_atom = matmul(init_R_MI,self.dipm_atom[i])
                     dipm_delta = matmul(init_R_MI,self.dipm_delta[i])
                     dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[i])
+                        
+                    qm_atom = matmul(matmul(init_R_MI,self.qm_atom[i]),np.transpose(init_R_MI))
+                    qm_delta = matmul(matmul(init_R_MI,self.qm_delta[i]),np.transpose(init_R_MI))
 
                     dipm_atom = matmul(R_MI_APF,dipm_atom)
                     dipm_delta = matmul(R_MI_APF,dipm_delta)
                     dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
 
-                    qm_atom = matmul(matmul(init_R_MI,self.qm_atom[i]),np.transpose(init_R_MI))
-                    qm_delta = matmul(matmul(init_R_MI,self.qm_delta[i]),np.transpose(init_R_MI))
-
                     qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
                     qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
-                    
-
-                    if atom_A ==2 and atom_B == 3:
-                        print(dipm_atom)
-                        print(qm_atom)
 
                     qm_atom = matmul(qm_atom,vector_of_ones)
                     qm_delta = matmul(qm_delta,vector_of_ones)
-
 
                     Quantity_AB[j].extend(dipm_atom)
                     Quantity_AB[j].extend(dipm_delta)
@@ -255,8 +251,8 @@ def qm_matrix(qm_atom):
         yz = qm_atom[i,5]
 
         qm_matrix = np.array([[xx,xy,xz],
-                        [xy,yy,yz],
-                        [xz,yz,zz]])
+                              [xy,yy,yz],
+                              [xz,yz,zz]])
 
         qm_matrix_list.append(qm_matrix)
 

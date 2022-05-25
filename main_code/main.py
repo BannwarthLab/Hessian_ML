@@ -11,7 +11,7 @@ from class_sys_info import *
 cwd = os.getcwd()
 
 #Gathering all directories of all molecular systems 
-mol_sys_dirs = os.listdir(cwd)
+mol_sys_dirs = sorted(os.listdir(cwd))
 
 #For every molecular system
 X_heteronuclear = []
@@ -30,11 +30,11 @@ Traget_lentth_homonuclear = []
 for mol in range(len(mol_sys_dirs)):
     #Gathering for each molecular systems all directories of diffrent structures
     mol_dir = f'{cwd}/{mol_sys_dirs[mol]}/'
-    struc_sys_dirs = [ name for name in os.listdir(mol_dir) if os.path.isdir(os.path.join(mol_dir, name)) ]
+    struc_sys_dirs = sorted([ name for name in os.listdir(mol_dir) if os.path.isdir(os.path.join(mol_dir, name)) ])
     print(f'Molecule No. {mol}')
     #For every structure of every molecular system
     for sys in range(len(struc_sys_dirs)):
-        print(f'System No. {sys}')
+        #print(f'System No. {sys}')
 
         system = sys_info(folder=f'{mol_dir}{struc_sys_dirs[sys]}/init_coord/',molecule=mol,variation=sys)
 
@@ -50,7 +50,7 @@ for mol in range(len(mol_sys_dirs)):
 
         system.gen_Hessian_vector()
 
-        Feature_heteronuclear, Target_heteronuclear, Feature_homonuclear, Target_homonuclear = system.connect_Feature_Target()
+        Feature_heteronuclear, Target_heteronuclear, Feature_homonuclear, Target_homonuclear = system.connect_Feature_Target(folder=f'{struc_sys_dirs[sys]}')
 
         mol_idx_heteronuclear.append(len(y_heteronuclear))
         mol_idx_homonuclear.append(len(y_homonuclear))

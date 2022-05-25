@@ -5,6 +5,9 @@ from math import log10 , floor
 import numpy as np
 from operator import matmul
 import pandas as pd
+import glob as glob
+import os
+
 
 bohr2angs = 0.52917721067
 speed_of_light = 2.9979e10   # in cm/s
@@ -14,6 +17,184 @@ atomic_mass_unit = 1.6605390666e-27 # in kg
 hplanck = 6.62607015e-34 # hplank Js
 conv_J_to_eV = (1.602176634e-19)**-1 #eV/J
 
+def project_hess(hess_v,coord):
+    idx,lamb,Q = find_trans_rot(hess_v.copy(),coord.copy())
+    hess_projected_v = hess_v.copy()
+
+    for i in idx:
+        i = int(i)
+        hess_projected_v -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
+
+    return hess_projected_v,Q
+
+def find_trans_rot(hess,coord):
+    Nat = len(coord)
+
+    overlap_mat = np.zeros([6,3*Nat])
+    
+    trans_x = np.array([1.,0.,0.])
+    trans_y = np.array([0.,1.,0.])
+    trans_z = np.array([0.,0.,1.])
+
+    for i in range(Nat):
+        overlap_mat[0,3*i:3*i+3] = trans_x
+        overlap_mat[1,3*i:3*i+3] = trans_y
+        overlap_mat[2,3*i:3*i+3] = trans_z
+
+        overlap_mat[3,3*i:3*i+3] = np.array([0.,coord.loc[i,'z'],-coord.loc[i,'y']])
+        overlap_mat[4,3*i:3*i+3] = np.array([-coord.loc[i,'z'],0.,coord.loc[i,'x']])
+        overlap_mat[5,3*i:3*i+3] = np.array([coord.loc[i,'y'],-coord.loc[i,'x'],0.])
+
+    overlap_mat = overlap_mat / Nat
+    overlap_mat = 1/(linalg.norm(overlap_mat,1)) * overlap_mat
+
+
+    lamb, Q = linalg.eigh(hess)
+
+    M = matmul(overlap_mat,Q)
+
+    norm_x = np.array(linalg.norm(coord.loc[:,'x']))
+    
+    norm_y = np.array(linalg.norm(coord.loc[:,'y']))
+
+    norm_z = np.array(linalg.norm(coord.loc[:,'z']))
+
+    idx_len = 6 
+
+    if (norm_x + norm_y) < 1e-6 or (norm_y + norm_z) < 1e-6 or (norm_z + norm_x)< 1e-6:
+        idx_len = 5
+
+    M_sum = np.zeros(3*Nat)
+    for i in range(len(M_sum)):
+        M_sum[i] = np.sum(np.abs(M[:,i]))
+
+    idx_list = np.zeros(idx_len)
+    for i in range(idx_len):
+        idx = np.where(M_sum == np.amax(M_sum))[0][0]
+        idx_list[i] = int(idx)
+        M_sum[idx] -= M_sum[idx]
+
+    return idx_list,lamb,Q
+
+def wavenumber(lamb):
+    freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
+    return freq_val
+
+def frequency(lamb):
+    freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi))
+    return freq_val
+
+def force_constant(lamb,atoms):
+    m_sum = 0
+    for i in range(len(atoms)):
+        m_sum += 1/elements_dict[atoms[i]]
+    mu = 1/m_sum
+    fc = mu*lamb
+    return fc
+
+def freq_extract(freq):
+    freq = freq.copy()
+    list_freq = []
+    while np.amax(freq) > 1e-3 :
+        idx = np.where(freq == np.amax(freq))[0][0]
+        list_freq.append(freq[idx])
+        freq[idx] = 0
+
+    return list(list_freq)
+
+
+
+def gen_full_hess_mat_from_vector(y_df,hess_diag_pred,hess_non_diag_pred,num_atoms,mol,file_num,rot_arr):
+
+    lenH = 3 * int(num_atoms)
+    clean_hess = np.zeros([lenH,lenH])
+    idx_mol_var = y_df.loc[(y_df['molecule'] == mol) & (y_df['variation'] == file_num) & (y_df['y_idx'] == 'xx')].index.values.tolist()
+    mat_list = np.arange(int(num_atoms+(num_atoms**2 - num_atoms)/2))#gen_sym_mat_list(int(num_atoms))
+
+    o = 0
+    for l in range(len(idx_mol_var)):
+
+        i = idx_mol_var[l]
+
+        A = int(y_df.loc[i,'atom1'])
+        B = int(y_df.loc[i,'atom2'])
+
+        k = mat_list[l]
+        if A == B:
+            rot = rot_arr[k]
+            hess_vec = hess_diag_pred[9*A:9*A+9]
+
+            hess_mat = hess_vec_to_hess_block(hess_vec)
+            clean_hess[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot),hess_mat),(rot))
+
+            
+        elif A != B:
+            hess_vec = hess_non_diag_pred[o:o+9]
+            o += 9
+            rot = rot_arr[k]
+            hess_mat = hess_vec_to_hess_block(hess_vec)
+
+            clean_hess[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot),hess_mat),(rot))
+
+            hess_mat = hess_vec_to_hess_block(hess_vec)
+            clean_hess[3*B:3*B+3,3*A:3*A+3] = np.transpose(matmul(matmul(np.transpose(rot),hess_mat),(rot)))
+
+
+    return clean_hess
+
+def get_grps(X_diag_prep,X_non_diag_prep):
+
+    grps_diag = np.array(X_diag_prep['mol_idx'])
+    grps_non_diag = np.array(X_non_diag_prep['mol_idx'])
+
+    return grps_diag,grps_non_diag
+    
+def gen_rot_arr(path_variation):
+    path_apf_list = glob.glob(f'{path_variation}'+'apf_coord/atoms_*')
+    rot_arr = []
+    for path_apf in path_apf_list:
+        rot = np.genfromtxt(os.path.join(path_apf,'R_inert_apf.txt'))
+        rot_arr.append(rot)
+    return rot_arr
+
+def gen_sym_mat_list(N):
+    idx_list = []
+    k = N
+    l = 0
+    m = 1
+    while k > 0:
+        for _ in range(k):
+            idx_list.append(l)
+            l+= 1 
+        o = N -1
+
+        if k >1:
+
+            for _ in range(N-k+1):
+                idx_list.append(m)
+                m += o
+                o-= 1
+        m = N-k+2
+        k -= 1
+    return idx_list
+
+def hess_block_to_hess_vec(hess_mat,A,B):
+    k = 0
+    hess_vec = np.zeros(9)
+    for i in range(3):
+        for j in range(3):
+            hess_vec[k] =  hess_mat[3*int(A)+i,3*int(B)+j]
+            k+=1
+    return hess_vec
+
+def hess_vec_to_hess_block(hess_vec):
+    k = 0 
+    hess_mat = np.zeros([3,3])
+    for i in range(3):
+        for j in range(3):
+            hess_mat[i,j] = hess_vec[k]
+            k += 1
+    return hess_mat
 
 
 
