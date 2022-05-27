@@ -1,0 +1,1 @@
+Zahl hinter dem Molekül ist hier das Vielfache der anfänglichen Bindungslänge
