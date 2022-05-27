@@ -57,8 +57,8 @@ Both models show a correlation of one index $y_i$ or $z_i$.
 While only the homonuclear model shows a high correlation on the coordination number $CN_A$ and the atomic dipole moments $\mu$,
 the heteronuclear shows a correlation on the atomic isotropic exchange and correlation energy $E_\mathsf{IES+IXC}$.
 However, the correlations are in general rather low.
-One possible reason is, that the Hessian matrix is sparse, therefore many elements $\frac{\partial^2 E}{\partial a_A \partial b_B} \approx 0$
-are approximately zero and do not correlate with the given features. This can reduce $R^2$ significantly.
+One possible reason is, that the Hessian matrix is sparse, therefore many elements are $\frac{\partial^2 E}{\partial a_A \partial b_B} \approx 0$
+and do not correlate with the given features. This can reduce $R^2$ significantly.
 Furthermore, the correlation is computed for all Hessian elements.
 If the feature correlations of the elements differ from another, the overall correlation is also decreased.\\
 To investigate the last aspect, the target vector was split Hessian element wise. 
@@ -83,7 +83,7 @@ Comparing the highest $R^2$ in Fig~\ref{fig:PCC} with $R^2$ in Fig~\ref{fig:PCC_
 there is a significant increase of $R^2$ for the homonuclear and heteronuclear model.
 For the heteronuclear model, there are two exceptions, namely for yx and xz.
 Though the element wise $R^2$ is larger than for the general correlation,
-those $R^2$ are still in the magnitude of the general correlation. 
+the $R^2$ for yx and xz are still in the magnitude of the general correlation. 
 Interesting to point out, is that most of the features which show element wise the highest correlation
 are also presented in the ten highest $R^2$ for the general correlation. Exceptions are for the homonuclear model $\epsilon_\mathrm{HAOA}$,
 and for the heteronuclear model ${\mu_A^\mathrm{x,ext}}_\mathrm{Arith}$, ${\mu_{A,p}^\mathrm{x,ext}}_\mathrm{Prod}$, ${E_\mathrm{rep}}_\mathrm{Abs.Diff}$.
@@ -102,7 +102,7 @@ This is done for 5 random states and is shown in Fig.~\ref{fig:WN_H2}.
 The black line is the diagonal, on which the data points would appear for a perfect prediction.
 Furthermore, the wave number increases with the decrease of the bond length.
 For the approximated range of $1800~\mathrm{cm^{-1}}~<~\tilde{\nu}_\mathrm{xTB}~<~7500~\mathrm{cm^{-1}}$
-there are deviations from the diagonal and therefore, in respect to the small data set of eleven structures, a sufficient prediction.
+there are small deviations from the diagonal and therefore, in respect to the small data set of eleven structures, a sufficient prediction.
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.9\textwidth]{H2_single/WN_xTB_vs_ML.eps}
@@ -139,9 +139,9 @@ Fig~\ref{fig:Comparison_RFR_ETR} shows the MSE in the dependency of the amount o
 and the RFR (on the right). The error bars indicate the standard deviation.
 \begin{figure}[H]
     \centering
-    \subfloat{\includegraphics[width = 0.5\textwidth ]{MSE/MSE_ETR.eps}}
+    \subfloat[Extra Tree Regression]{\includegraphics[width = 0.5\textwidth ]{MSE/MSE_ETR.eps}}
     \hfill
-    \subfloat{\includegraphics[width = 0.5\textwidth ]{MSE/MSE_RFR.eps}}
+    \subfloat[Random Forest Regression]{\includegraphics[width = 0.5\textwidth ]{MSE/MSE_RFR.eps}}
     \caption[Learning plots of the ETR and RFR for an increasing size of the training set]{
     Learning plots for the predicting Hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
     for an increase of the amount of training set used.
@@ -157,7 +157,7 @@ This behavior is also recognizable in the case of the RFR.
 In comparison to the ETR, the RFR shows a higher standard deviation for the data points.
 Thus, the RFR depends more strongly on the random state than the ETR. 
 Furthermore, the ETR has, especially for the homonuclear model, lower MSE values for any amount of training set.
-At the full amount of training set and at 0.9 of the training set,
+For the Amount of Training Set used $\geq 0.9$,
 the RFR and ETR show a similar performance for the heteronuclear model.
 All in all, the ETR shows a better performance for the whole investigated range.\\
 There is the possibility, that the ML model has so much information in the features,
@@ -203,7 +203,7 @@ and its distribution is shown in Fig~\ref{fig:ErrorDistHess}.
 \begin{figure}[H]
     \centering
     \includegraphics[width =0.75\textwidth]{ErrorDistGraphs/error_distribution_ml_hess.eps}
-    \caption[Gaussian type distribution for the prediction of Hessian elements.]
+    \caption[Gaussian type Distribution for the prediction of Hessian elements.]
     { Distribution of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ for different models.
     In every model, the Extra Tree Regression was used.
     The distribution is assumed to be Gaussian type.
@@ -232,7 +232,7 @@ This might be the reason for the deviation.\\
     \subfloat{\includegraphics[width = 0.5\textwidth]{ErrorDistGraphs/error_distribution_ml_wn.eps}}
     \hfill
     \subfloat{\includegraphics[width = 0.5\textwidth]{ErrorDistGraphs/WN_xTB_vs_ML.eps}}
-    \caption[Gaussian type distribution for the prediction of wave numbers and plot of ML wave numbers vs. xTB wave numbers.]{
+    \caption[Error Distribution for the prediction of wave numbers.]{
     On the left is the distribution of $\Delta \tilde{\nu}$ for different models.
     In every model, the Extra Tree Regression was used.
     The distribution is assumed to be Gaussian type.
@@ -277,8 +277,7 @@ The ML model should, in principle, mimic this behavior.
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.8\textwidth]{ForceConstants/force_const_H3_idx.eps}
-    \caption[Force constants predicted by the indexed multimodel and calculated with
-    \mbox{GFN2--xTB} for $\mathrm{H}_3$~system]{
+    \caption[Force constants from the indexed multimodel and \mbox{GFN2--xTB} for the $\mathrm{H}_3$~system]{
     Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
     H1 is located at $x(\mathrm{H1})= 0.0~\si{\angstrom} $ and H3 at $x(\mathrm{H1})= 4.0~\si{\angstrom} $.
     The force constants are shown for the \mbox{GFN2--xTB} calculation (red),
@@ -298,8 +297,7 @@ Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\ang
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.8\textwidth]{ForceConstants/force_const_H3_perm.eps}
-    \caption[Force constants predicted by the permuted multimodel and calculated with
-    \mbox{GFN2--xTB} for $\mathrm{H}_3$~system]{Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
+    \caption[Force constants from the permuted multimodel and \mbox{GFN2--xTB} for the $\mathrm{H}_3$~system]{Force constants predicted for the $\mathrm{H}_3$~systems in dependence of the distance between H1 and H2 are shown.
     H1 is located at $x(\mathrm{H1})= 0.0~\si{\angstrom} $ and H3 at $x(\mathrm{H1})= 4.0~\si{\angstrom}$
     The force constants are shown for the \mbox{GFN2--xTB} calculation (red),
     as also the via the ML model predicted values (blue).

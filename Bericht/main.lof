@@ -8,6 +8,7 @@
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{11}{figure.caption.7}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+<<<<<<< HEAD
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features.}}{23}{figure.caption.10}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{23}{subfigure.1.1}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{23}{subfigure.1.2}
@@ -33,3 +34,33 @@
 \contentsline {figure}{\numberline {7.5}{\ignorespaces Element wise computed Pearson Correlation Coefficient shown for the best features of each element (Gen--Perm model).}}{39}{figure.caption.23}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{39}{subfigure.5.1}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{39}{subfigure.5.2}
+=======
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features.}}{23}{figure.caption.10}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{23}{subfigure.1.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{23}{subfigure.1.2}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Best Pearson Correlation Coefficient computed element wise.}}{24}{figure.caption.11}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{24}{subfigure.2.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{24}{subfigure.2.2}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Comparison of wave numbers from GFN2--xTB and the ML model.}}{26}{figure.caption.12}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Learning plots of the ETR and RFR for an increasing size of the training set}}{27}{figure.caption.13}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Extra Tree Regression}}}{27}{subfigure.4.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Random Forest Regression}}}{27}{subfigure.4.2}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Learning plot for Hessian elements with an increase of randomness on $\textbf {x}$}}{28}{figure.caption.14}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Gaussian type Distribution for the prediction of Hessian elements.}}{29}{figure.caption.15}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Error Distribution for the prediction of wave numbers.}}{30}{figure.caption.16}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Force constants from the indexed multimodel and \mbox {GFN2--xTB} for the $\mathrm {H}_3$~system}}{31}{figure.caption.17}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Force constants from the permuted multimodel and \mbox {GFN2--xTB} for the $\mathrm {H}_3$~system}}{32}{figure.caption.18}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Gaussian type distribution for the prediction of weighted projected Hessian elements.}}{36}{figure.caption.19}%
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Gaussian type distribution for the prediction of projected Hessian elements.}}{37}{figure.caption.20}%
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{38}{figure.caption.21}%
+\contentsline {figure}{\numberline {7.4}{\ignorespaces Pearson Correlation Coefficient for the ten most important features (Gen--Perm model).}}{39}{figure.caption.22}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{39}{subfigure.4.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{39}{subfigure.4.2}%
+\contentsline {figure}{\numberline {7.5}{\ignorespaces Best Pearson Correlation Coefficient computed element wise (Gen--Perm model).}}{40}{figure.caption.23}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{40}{subfigure.5.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{40}{subfigure.5.2}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
+>>>>>>> 7adba9a80f5813d24f5daf7d2d3ac66159bc9c7b

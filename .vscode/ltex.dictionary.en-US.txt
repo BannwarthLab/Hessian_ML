@@ -1,1 +1,6 @@
 welldefined
+heteronuclear
+homonuclear
+Eq
+cartesian
+Hartree

@@ -11,55 +11,110 @@ from class_sys_info import *
 cwd = os.getcwd()
 
 #Gathering all directories of all molecular systems 
-mol_sys_dirs = os.listdir(cwd)
+mol_sys_dirs = sorted(os.listdir(cwd))
 
 #For every molecular system
-R_MI_APF_l = []
-H_APF_l = []
+X_heteronuclear = []
+y_heteronuclear = []
+
+X_homonuclear  = []
+y_homonuclear = []
+
+Systems = []
+mol_idx_heteronuclear = []
+mol_idx_homonuclear = []
+
+Target_length_heteronuclear = []
+Traget_lentth_homonuclear = []
 
 for mol in range(len(mol_sys_dirs)):
     #Gathering for each molecular systems all directories of diffrent structures
     mol_dir = f'{cwd}/{mol_sys_dirs[mol]}/'
-    struc_sys_dirs = [ name for name in os.listdir(mol_dir) if os.path.isdir(os.path.join(mol_dir, name)) ]
-    print(struc_sys_dirs)
+    struc_sys_dirs = sorted([ name for name in os.listdir(mol_dir) if os.path.isdir(os.path.join(mol_dir, name)) ])
+    print(f'Molecule No. {mol}')
     #For every structure of every molecular system
     for sys in range(len(struc_sys_dirs)):
+        #print(f'System No. {sys}')
 
         system = sys_info(folder=f'{mol_dir}{struc_sys_dirs[sys]}/init_coord/',molecule=mol,variation=sys)
 
         system.rot_init_inert()
 
-        print(f'Molecule No. {mol} \nSystem No.{sys}')
-        feature = Feature(folder = f'{mol_dir}{struc_sys_dirs[sys]}/init_coord/')
         #Matrix filled with 3x3 rotation matrices for MI to APF
         R_MI_APF_mat = np.zeros([3*len(system.xyz['atoms']),3*len(system.xyz['atoms'])])
+
         #Matrix filled with hessian for each APF
         H_APF_mat = np.zeros([3*len(system.xyz['atoms']),3*len(system.xyz['atoms'])])
 
-        for atom_A in range(len(system.xyz['atoms'])):
-            for atom_B in range(atom_A,len(system.xyz['atoms'])):
-                print(f'Atoms: {system.xyz.iloc[atom_A,0]} {atom_A} and {system.xyz.iloc[atom_B,0]} {atom_B}')
+        system.rot_inert_apf()
 
-                R_MI_APF = get_R_euler(system.xyz,system.dipm,atom_A,atom_B)
+        system.gen_Hessian_vector()
 
-                H_APF = np.zeros([3,3])
-                
-                #Generate the final hessian
-                i0 = 3*atom_A
-                i3 = 3*atom_A + 3
-                j0 = 3*atom_B 
-                j3 = 3*atom_B + 3
+        Feature_heteronuclear, Target_heteronuclear, Feature_homonuclear, Target_homonuclear = system.connect_Feature_Target(folder=f'{struc_sys_dirs[sys]}')
 
-                H_APF = matmul(matmul(R_MI_APF,system.hessian[i0:i3,j0:j3].copy()),(np.transpose(R_MI_APF)))
+        mol_idx_heteronuclear.append(len(y_heteronuclear))
+        mol_idx_homonuclear.append(len(y_homonuclear))
 
-                
-                H_APF_mat[i0:i3,j0:j3] = H_APF
-                R_MI_APF_mat[i0:i3,j0:j3] = R_MI_APF
+        Target_length_heteronuclear.append(len(Target_heteronuclear))
+        Traget_lentth_homonuclear.append(len(Target_homonuclear))
 
-        H_APF_l.append(H_APF_mat)
+        X_heteronuclear.extend(Feature_heteronuclear)
+        y_heteronuclear.extend(Target_heteronuclear)
 
-        R_MI_APF_l.append(R_MI_APF_mat)
+        X_homonuclear.extend(Feature_homonuclear)
+        y_homonuclear.extend(Target_homonuclear)
 
-print(H_APF_l)
+        Systems.append(system)
 
-        
+X_heteronuclear = np.array(X_heteronuclear)
+y_heteronuclear = np.array(y_heteronuclear)
+
+X_homonuclear = np.array(X_homonuclear)
+y_homonuclear = np.array(y_homonuclear)
+
+
+def gen_grp(list):
+    full_list = []
+    for i in range(len(list)):
+        for _ in range(list[i]):
+            full_list.append(i)
+    return full_list
+
+
+grp_heteronuclear = gen_grp(Target_length_heteronuclear)
+grp_homonuclear = gen_grp(Traget_lentth_homonuclear)
+
+rnd_state = 42
+
+gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state = rnd_state)
+
+idx_homonuclear = list(gss.split(X_homonuclear, y_homonuclear, grp_homonuclear))
+idx_heteronuclear= list(gss.split(X_heteronuclear,y_heteronuclear,grp_heteronuclear))
+
+X_homonuclear_train= X_homonuclear[idx_homonuclear[0][0]]
+y_homonuclear_train= y_homonuclear[idx_homonuclear[0][0]]
+ 
+X_homonuclear_test = X_homonuclear[idx_homonuclear[0][1]]
+y_homonuclear_test = y_homonuclear[idx_homonuclear[0][1]]
+
+X_heteronuclear_train = X_heteronuclear[idx_heteronuclear[0][0]]
+y_heteronuclear_train = y_heteronuclear[idx_heteronuclear[0][0]]
+
+X_heteronuclear_test = X_heteronuclear[idx_heteronuclear[0][1]]
+y_heteronuclear_test = y_heteronuclear[idx_heteronuclear[0][1]]
+
+
+regr_homonuclear=  ExtraTreesRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=False) 
+regr_heteronuclear = ExtraTreesRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False)
+
+regr_homonuclear.fit(X_homonuclear_train,y_homonuclear_train)
+regr_heteronuclear.fit(X_heteronuclear_train,y_heteronuclear_train)
+
+
+y_homonuclear_pred = regr_homonuclear.predict(X_homonuclear_test)
+
+y_heteronuclear_pred = regr_heteronuclear.predict(X_heteronuclear_test)
+
+MSE_heteronuclear  = mean_squared_error(y_homonuclear_test,y_homonuclear_pred)
+
+print(MSE_heteronuclear)

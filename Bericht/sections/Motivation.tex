@@ -1,18 +1,18 @@
 \chapter{Motivation}
 The harmonic vibrational frequencies (HVF) are valuable quantities due to its important fields of application.
 They are used for the computation of infrared and Raman spectra, as also for the prediction of thermodynamic quantities.
-Furthermore, they are necessary for the transition state search.\\
+Furthermore, they are necessary for the transition state search.
 The computation of HVF is costly due to the need of the Hessian matrix, which is a matrix of second derivatives.
-The acceleration of the computation is therefore of great interest.
+The acceleration of the computation is therefore of great interest.\supercite{SpicherSHP2021}\\
 In general, the computation is done on a multi--level approach,
-as the computation of single--point energies or optimized geometries is cheap compared to frequency calculation.
-Therefore, the computation of frequencies has to be done on low--level methods. 
-There are different approaches for the either accelerating the computation or to increase the precision of Hessian matrices in literature.\\
+as the computation of single--point energies or optimized geometries is cheap compared to frequency calculations.
+As the HVF calculation is costly, the used methods need to be cheap.
+There are different approaches in literature for either accelerating the computation or to increase the precision of Hessian matrices.\\
 Spicher and Grimme developed an approach to force the geometries of low--level methods into the geometries of higher--level methods.
 A bias depending on the root--mean--squared--distance (RMSD) is added to the potential energy surface (PES) of the low--level method,
 thus the energy is minimized at the geometry of the high--level method.
 On this new PES the Hessian matrix is computed, as the HO--approximation is applicable and, the geometry is optimized.
-The contributions of the bias energy is then detached from the Hessian.\supercite{SpicherSHP2021}\\
+The contributions of the bias energy is then detached from the Eigenvalues.\supercite{SpicherSHP2021}\\
 Sanders et al. proposed another approach, which is based on the assumption, that the Hessian matrix is a sparse matrix.
 They use a matrix, that describes the sparse matrix in an incoherent basis.
 The sparse matrix is approximated by using the matrix in the incoherent basis partially.
@@ -21,10 +21,10 @@ This can be either used to accelerate the computation or to increase the precisi
 %An parametrized force--field approach for the computation is proposed by Lindh et al.
 %Advantageous to other methods is, that the force constants of large distances is zero and therefore the computational cost increases more slowly. \supercite{Lindh1995}\\
 In the last decades, the amount of information in chemistry is increasing rapidly.
-This is beneficial for, for example, semi--empirical methods, as those depend on empirical derived data.
+This is beneficial regarding, for example, semi--empirical methods, as those depend on empirical derived data.
 But also in chemistry the interest in new tools like machine learning have risen.
 Furthermore, due to the increase of information it is of interest, to emphasize the data--supported approach.
 Therefore, in this research an approach was chosen,
-to predict the Hessian matrix by ML models to make the high--level methods more affordable.
+to predict the Hessian matrix by ML models to accelerate its computation.
 It was chosen to use supervised ML.
 The features of the models are computed from atomic--based quantities.

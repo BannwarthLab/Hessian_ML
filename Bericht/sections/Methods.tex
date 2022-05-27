@@ -23,10 +23,10 @@
 	Where $\textbf{r}^\mathsf{s}_A$ is the coordinate vector of an atom $A$ in the mass centered CS, $\textbf{r}^\mathsf{init}_A$ the coordinate vector in the initial CS and $\textbf{s}^\mathsf{init}_A$ is the center of mass in the initial CS, and is defined in Eq.~\eqref{eq:CenterOfMass}.
 	
 	\begin{align}
-		\textbf{s}^\mathsf{init} = \dfrac{1}{M} \sum_{A}^{N} m_A \cdot \textbf{r}^\mathsf{init}_A
+		\textbf{s}^\mathsf{init} = \dfrac{1}{m_\mathrm{tot}} \sum_{A}^{M} m_A \cdot \textbf{r}^\mathsf{init}_A
 		\label{eq:CenterOfMass}
 	\end{align}
-	Here $m_A$ is the mass of atom $A$, $M$ is the mass of the molecule and $N$ the number of atoms in the molecule.
+	Here $m_A$ is the mass of atom $A$, $m_\mathrm{tot}$ is the mass of the molecule and $M$ the number of atoms in the molecule.
 	Once the origin of the new CS is determined,
 	the orientation of its axes is arranged to the moment of inertia as computed by Eq.~\eqref{eq:MomentOfInertia}.
 	
@@ -37,8 +37,8 @@
 						I_{zx} & I_{zy} & I_{zz} \\ 
 				   	\end{matrix} \right) 
 			 ; I_{ab} = \begin{cases}
-				\sum_{A}^{N} m_A ( b_A^2 + c_A^2 ) ~~\mathsf{if}~ a = b\\
-			   	 - \sum_{A}^{N} m_A \cdot a_A \cdot b_A  ~\mathsf{if}~ a \neq b \\
+				\sum_{A}^{M} m_A ( b_A^2 + c_A^2 ) ~~\mathsf{if}~ a = b\\
+			   	 - \sum_{A}^{M} m_A \cdot a_A \cdot b_A  ~\mathsf{if}~ a \neq b \\
 			   	\end{cases} a,b \in x,y,z
 		\label{eq:MomentOfInertia}
 	\end{align}
@@ -53,7 +53,7 @@
 	The eigenvalues are then used to get the eigenvectors.
 	To assure, that the matrix $\textbf{R}_\mathsf{mi}^\mathsf{init}$ is a right--handed matrix the determinant is calculated.
 	If the determinant is negative, the sign of the third eigenvector is changed. Furthermore, it needs to be assured,
-	that the eigenvector is consistently rotated in the same direction, independent of the outgoing position.
+	that the eigenvector matrix is consistently rotated in the same direction, independent of the outgoing position.
 	The chosen constraint is, that the highest value of the eigenvectors are positive,
 	if this is not the case the sign of the eigenvector and the next eigenvector in $\textbf{R}_\mathsf{mi}^\mathsf{init}$ is changed.\\
 	The rotation of the coordinates is done by Eq.~\eqref{eq:rotCoord}.
@@ -67,7 +67,7 @@
 	on the CS and therefore needs to be rotated, too.
 	A translation is not needed. Eq.~\eqref{eq:rotHessian} describes
 	the rotation of the Hessian matrix in the initial CS to the main inertia system.
-	For this a $3N \times 3N$ rotation matrix $\textbf{P}_\mathsf{mi}^\mathsf{init}$ needs to be constructed,
+	For this a $3M \times 3M$ rotation matrix $\textbf{P}_\mathsf{mi}^\mathsf{init}$ needs to be constructed,
 	where the diagonal 3 x 3 blocks are $\textbf{R}_\mathsf{mi}^\mathsf{init}$.
 	This matrix is shown in Eq.~\eqref{eq:rotMatrixHessian}.
 	\begin{align}
@@ -159,7 +159,7 @@ If the x--values of the rotated dipole moment $\bm{\upmu}$ are negative,
 the matrix is rotated by 180$\degree$ around the z--axis. This is depicted in Eq.~\eqref{eq:rot180}.
 \begin{align}
 	\label{eq:rot180}
-	\textbf{R}_\mathsf{mi}^\mathsf{APF} = \begin{cases}
+	\textbf{R}_\mathsf{mi}^\mathsf{apf} = \begin{cases}
 		\textbf{R}^0 ~~~~~~~~~~~~~\mathsf{if}~ \bm{\upmu}^x > 0  \\
 		 \textbf{R}^0 \times \textbf{R}_z(\pi) ~\mathsf{if}~ \bm{\upmu}^x < 0  \\
 	\end{cases}
@@ -167,9 +167,9 @@ the matrix is rotated by 180$\degree$ around the z--axis. This is depicted in Eq
 Lastly, the rotation of the translated coordinate system is done via Eq.~\eqref{eq:rotCS}.
 \begin{align}
 	\label{eq:rotCS}
-	\textbf{r}^\mathsf{APF}_A = \textbf{R}_\mathsf{mi}^\mathsf{APF} \times \textbf{r}^\mathsf{mi,c}_A
+	\textbf{r}^\mathsf{apf}_A = \textbf{R}_\mathsf{mi}^\mathsf{apf} \times \textbf{r}^\mathsf{mi,c}_A
 \end{align} 
-The coordinates $\textbf{r}^\mathsf{APF}_A$ are the final coordinates in the APF CS for the case of a heteronuclear atom pair.\\ 
+The coordinates $\textbf{r}^\mathsf{apf}_A$ are the final coordinates in the APF CS for the case of a heteronuclear atom pair.\\ 
 For the case of a homonuclear atom pair,
 the procedure is the same up to the translation of the coordinates into the centered inertial main CS.
 The z--axes of APF CS and centered inertial main CS are aligned.
@@ -204,18 +204,18 @@ The further procedure of the transformation is done in the same way as for the h
 The rotation matrix is computed via Eq.~\eqref{eq:RotMatFull}.
 This followed by an adjustment of the rotation matrix,
 shown in Eq.~\eqref{eq:rot180}.
-The final rotation matrix $\textbf{R}_\mathsf{mi}^\mathsf{APF}$ is then
+The final rotation matrix $\textbf{R}_\mathsf{mi}^\mathsf{apf}$ is then
 used on the coordinates $ \textbf{r}^\mathsf{mi,c}_A$ via Eq.~\eqref{eq:rotCS}.\\
 In the APF CS the computation of the Hessian was done. For each APF CS one $3\times 3$ Hessian matrix block is of interest.
-To rebuild the Hessian matrix in the mi system, each Hessian matrix block needs to undergo a rotation back to the mi system.
-For this the all rotation matrices $\textbf{R}_\mathsf{mi}^\mathsf{APF}$ need to be stored.
-The rotation back into the mi system is done by Eq.~\eqref{eq:rotHessBlock}.
+To rebuild the Hessian matrix in the MI CS, each Hessian matrix block needs to undergo a rotation back to the MI CS.
+For this the all rotation matrices $\textbf{R}_\mathsf{mi}^\mathsf{apf}$ need to be stored.
+The rotation back into the MI CS is done by Eq.~\eqref{eq:rotHessBlock}.
 \begin{align}
 	\label{eq:rotHessBlock}
-	\textbf{H}^\mathsf{mi}_\mathsf{AB} = {\left(\textbf{R}_\mathsf{mi}^\mathsf{APF}\right)}^\intercal
-	 \times \textbf{H}^\mathsf{APF}_\mathsf{AB} \times  \textbf{R}_\mathsf{mi}^\mathsf{APF}
+	\textbf{H}^\mathsf{mi}_\mathsf{AB} = {\left(\textbf{R}_\mathsf{mi}^\mathsf{apf}\right)}^\intercal
+	 \times \textbf{H}^\mathsf{apf}_\mathsf{AB} \times  \textbf{R}_\mathsf{mi}^\mathsf{apf}
 \end{align}
-In the mi system, the Hessian matrix $\textbf{H}^\mathsf{mi}$ is filled with the blocks $\textbf{H}^\mathsf{mi}_\mathsf{AB}$.
+In the MI CS, the Hessian matrix $\textbf{H}^\mathsf{mi}$ is filled with the blocks $\textbf{H}^\mathsf{mi}_\mathsf{AB}$.
 Before some quantities for measuring can be computed, the $\textbf{H}^\mathsf{mi}$ is projected and mass--weighted.
 Thus, the $\textbf{H}^\mathsf{proj,w|mi}$ is build. 
 The procedure of the projection and mass--weighting is described in the chapter Theory.
@@ -223,13 +223,13 @@ The procedure of the projection and mass--weighting is described in the chapter 
 %  
 %$
 % The rotation of the Hessian from the main inertial CS to the APF CS is done via Eq.~\eqref{eq:rotHessian}.
-% The rotation matrix $\textbf{P}_\mathsf{mi}^\mathsf{APF}$
+% The rotation matrix $\textbf{P}_\mathsf{mi}^\mathsf{apf}$
 % is constructed the same as the rotation matrix $\textbf{P}_\mathsf{init}^\mathsf{mi}$.
 \newpage
 \section{ML Model Construction}
 The supervised ML models have to be trained with a set of features and targets.
 The features are in general derived from atom based quantities based on geometry, density and energy.
-The features originate mainly from Steinbach's work.\supercite{PitMA} Some adaptations are done.
+This feature selection criteria is based on Steinbach's work.\supercite{PitMA} Some adaptations are done.
 Here, the cartesian dipole moment and quadrupole moment elements are used as features instead of its norm.
 This applies also for the extended versions.
 The Hessian matrix is the target.
@@ -240,7 +240,7 @@ Two approaches are used for the differentiation.
 These are the \textbf{indexed} and \textbf{permuted} approach.
 \begin{table}[H]
 	\centering
-	\caption{List of quantities used for the ML models as features.
+	\caption[List of Quantities used for the ML model features.]{List of quantities used for the ML models as features.
 			The quantities are divided into geometry,
 			density and energy based quantities.}
 		\begin{tabular}{l l l}
@@ -248,7 +248,7 @@ These are the \textbf{indexed} and \textbf{permuted} approach.
 			Feature &  Description& Extension\\
 			\hline
 			\textbf{Geometry} & & \\
-			$R_{AB}$ &  &  \\
+			$R_{AB}$ & Distance between two Atoms &  \\
 
 			$CN_A$ & Coordination Number & \checkmark \\
 			\hline
@@ -288,10 +288,10 @@ As these depend only on the atoms $A$ and $B$,
 the atom based quantities of $A$ and $B$ are used for the computation of the features.
 Two different models are used for the case of $A = B$ and $A \neq B$, due to two reasons.
 At first the chosen orientation in the CS between those cases differ.
-Secondly the length of the feature vectors are differently.
+Secondly the feature vectors have a different size.
 For the case $A \neq B$, the features are computed from the GFN2--xTB quantities with Eq.~\eqref{eq:FeatureProcess}.
-Where $x$ is a placeholder for any of the quantities shown in Tab.~\ref{tab:Feature}.
-This case is called heteronuclear, as the Hessian and features depend on two atoms.
+Where $x$ is a placeholder for any of the quantities shown in Tab.~\ref{tab:Feature}, but $R_{AB}$.
+This case is called \textbf{heteronuclear}, as the Hessian and features depend on two atoms.
 \begin{subequations}
 	\label{eq:FeatureProcess}
 	\begin{align}
@@ -300,58 +300,58 @@ This case is called heteronuclear, as the Hessian and features depend on two ato
 		x_\mathsf{AbsDiff}&= | x_A - x_B | 
 	\end{align}
 \end{subequations}
-There is used one further feature, which is the distance between the atoms $R_{AB}$.
-In the case of $A = B$ the quantities are used directly, and it is called homonuclear.
-Here, the Hessian and features only depend on one atom.\\
-Connecting the Hessian elements to the features at this point leads to following problem.
+In the case of $A = B$ the quantities are used directly, and it is called \textbf{homonuclear}.
+Here, the Hessian and features only depend on one atom and $R_{AB}$ is not used.\\
+Connecting the Hessian elements to the features at this point leads to the following problem.
 The features for all elements in a Hessian matrix block $\textbf{H}_{AB}$ are the same.
 Therefore, the ML model would predict the same value for every element.
 Hence, a differentiation is needed for the elements.\\
-The first approach (\textbf{indexed}) is to use three further features $x_i, y_i, z_i$.
+The first approach (\textbf{indexed}) is the use of three further features $x_i, y_i, z_i$.
 These are indices, which differentiate between each element.
-In the Appendix in Tab.~\ref{tab:Indices} are all indices shown in dependence on the element.\\
+In the Appendix in Tab.~\ref{tab:Indices} are all indices are shown with respect to their dependency on the element.\\
 The second approach (\textbf{permuted}) is the permutation of the coordinate system 
 and with it the vector/matrix quantities from GFN2--xTB,
 in dependence of the Hessian elements that shall be learned.
 The coordinate system is always adjusted,
-so that the to be learned Hessian element is on the spot of the element  $\frac{\partial^2 E }{\partial y_A \partial x_A}$
+so that the to be learned Hessian element is on the spot of the element  $\frac{\partial^2 E }{\partial y_A \partial x_A}$.
 For example, if the element $\frac{\partial^2 E }{\partial x_A \partial z_A}$ is to be learned.
 The new coordinate system is permuted from $\{x,y,z\}$ to $\{z,x,-y\}$.
 The permutation is done in a manner, that the new coordinate system is right--handed.
-All permutations are described in the Appendix in Tab.~\ref{tab:Permutation}.
+All permutations are described in the Appendix in Tab.~\ref{tab:Permutation}.\\
 For the homonuclear this concludes in 37 or 35 features for each Hessian element for the indexed or permuted case, respectively.
 And for the heteronuclear model there are 106 or 104 features for each Hessian element for the indexed or permuted case, respectively.
+
 \section{Quantities for Measuring}
 For first insights on the dependence of the target on the features, the Pearson Correlation Coefficient $R^2$ (s.~Eq.~\eqref{eq:PCC}) can be computed.
-It describes the linear correlation of the target and the feature.
-Here, the $x$ is a feature, $y$ the target and $\sigma_i$ the standard deviation and $\bar{i}$ the mean of the feature or target.
-The values for $R^2$ ar in the range of $0 \leq R^2 \leq 1$.
+It describes the linear correlation between the target and the feature.
+Here, $x$ is a feature, $y$ the target and $\sigma_i$ the standard deviation and $\bar{i}$ the mean of the feature or target.
+The values for $R^2$ are in the range of $0 \leq R^2 \leq 1$.
 \begin{align}
 	\label{eq:PCC}
 	R^2 = \left(  \dfrac{\sum_i( x_i - \bar{x}) \cdot \sum_i (y_i - \bar{y})}{\sigma_x \cdot \sigma_y} \right)^2
 \end{align}
 \\
-The mean squared error~MSE (s. Eq.~\eqref{eq:MSE}) was chosen for the quantification of the learning process of the ML models.
+For the quantification of the learning process of the ML models the mean squared error~MSE (s. Eq.~\eqref{eq:MSE}) was chosen.
 The ML models are trained with \mbox{GFN2--xTB} based information. Therefore, the reference is also \mbox{\mbox{GFN2--xTB}}.
-Here, the target $y$ corresponds to the Hessian elements, calculated with \mbox{GFN2--xTB} and predicted with the ML model.
+In this report, the target $y$ corresponds to the Hessian elements, calculated with \mbox{GFN2--xTB} and predicted with the ML model.
 The number of data points is $n$.
 \begin{align}
 	\label{eq:MSE}
 	\mathsf{MSE} =  \dfrac{1}{n} \sum_{i=1}^n \left( y_{i\mathsf{,ML}} - y_{i\mathsf{,xTB}} \right)^2
 \end{align}
-For the comparison of the different models (e.g. \mbox{ETR--Case--Perm}, \mbox{RFR--Gen--Idx}, etc.) normal distribution is used. 
-For this the difference between the \mbox{GFN2--xTB} computation and ML model prediction is calculated.
-Furthermore, the standard deviation and mean is computed.
+For the comparison of the different models (e.g. \mbox{ETR--Case--Perm}, \mbox{RFR--Gen--Idx}, etc.) the normal distribution is used. 
+For this the difference of a quantity $q$ between the \mbox{GFN2--xTB} computation and ML model prediction is calculated.
+Furthermore, the standard deviation $\sigma$ and mean $\overline{\Delta q}$ from the difference $\Delta q$ is computed.
 After that a normal distribution is assumed and computed with Eq.~\eqref{eq:NormalDistribution}. 
 \begin{align}
 	\label{eq:NormalDistribution}
-	f(x)  = \dfrac{1}{\sigma \sqrt{2\pi}} \exp\left({-\dfrac{1}{2} \left(\dfrac{q-\bar{q}}{\sigma}\right)^2}\right)
+	f(x)  = \dfrac{1}{\sigma \sqrt{2\pi}} \exp\left({-\dfrac{1}{2} \left(\dfrac{q-\overline{\Delta q}}{\sigma}\right)^2}\right)
 \end{align}
-Here, $q$ is an investigated physical quantity. In this report, the Hessian elements and the wave number $\tilde{\nu}$ were investigated.
+The investigated quantities $q$ are the Hessian elements and the wave number $\tilde{\nu}$.\\
 In addition to the Hessian elements and the $\tilde{\nu}$ (s. Eq.~\eqref{eq:WN})  the force constant $k$ (Eq.~\eqref{eq:FC}) was examined.
 Here, $\lambda$ are the eigenvalues of the mass weighted projected Hessian matrix $\textbf{H}^\mathsf{proj,w|mi}$ and $m_i$ the mass of each atom.
-For the transformation into SI--units, the hartree Energy $E_\mathsf{h}$,
-planck constant $h$, reduced planck constant $\hbar$, speed of light $c$ and the atomic mass unit $u$ are required.
+For the transformation into SI--units, the Hartree Energy $E_\mathsf{h}$,
+Planck constant $h$, reduced Planck constant $\hbar$, speed of light $c$ and the atomic mass unit $u$ are required.
 
 \begin{subequations}
 \begin{align}
@@ -376,7 +376,7 @@ For the depiction the package \texttt{matplotlib} was used.
 The versions of the used packages are shown in Tab.~\ref{tab:Packages}.
 \begin{table}[H]
     \centering
-	\caption{Python modules used for the computation, data storing, constructing the ML model and plotting graphs.}
+	\caption[List of Python models used.]{Python modules used for the computation, data storing, constructing the ML model and plotting graphs.}
         \begin{tabular}{c c }
 			\hline
 			Package & Version \\

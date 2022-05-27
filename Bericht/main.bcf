@@ -2189,16 +2189,44 @@
   </bcf:bibdata>
   <bcf:section number="0">
     <bcf:citekey order="1">SpicherSHP2021</bcf:citekey>
-    <bcf:citekey order="2">Sanders2015</bcf:citekey>
-    <bcf:citekey order="3">Jensen2013</bcf:citekey>
-    <bcf:citekey order="4">Hastie2009</bcf:citekey>
-    <bcf:citekey order="5">PitMA</bcf:citekey>
+    <bcf:citekey order="2">SpicherSHP2021</bcf:citekey>
+    <bcf:citekey order="3">Sanders2015</bcf:citekey>
+    <bcf:citekey order="4">Stone2016</bcf:citekey>
+    <bcf:citekey order="5">Jensen2013</bcf:citekey>
     <bcf:citekey order="6">Bannwarth2019_GFN2xTB</bcf:citekey>
+<<<<<<< HEAD
     <bcf:citekey order="7">Bannwarth2021_xTB</bcf:citekey>
     <bcf:citekey order="8">scikit-learn</bcf:citekey>
     <bcf:citekey order="9">numpy</bcf:citekey>
     <bcf:citekey order="10">pandas.Paper</bcf:citekey>
     <bcf:citekey order="10">pandas.software</bcf:citekey>
+=======
+    <bcf:citekey order="7">Jensen2013</bcf:citekey>
+    <bcf:citekey order="8">Hastie2009</bcf:citekey>
+    <bcf:citekey order="9">Geurts2006</bcf:citekey>
+    <bcf:citekey order="10">Hastie2009</bcf:citekey>
+    <bcf:citekey order="11">scikit-learn</bcf:citekey>
+    <bcf:citekey order="12">PitMA</bcf:citekey>
+    <bcf:citekey order="13">Bannwarth2019_GFN2xTB</bcf:citekey>
+    <bcf:citekey order="14">Bannwarth2021_xTB</bcf:citekey>
+    <bcf:citekey order="15">scikit-learn</bcf:citekey>
+    <bcf:citekey order="16">numpy</bcf:citekey>
+    <bcf:citekey order="17">pandas.Paper</bcf:citekey>
+    <bcf:citekey order="17">pandas.software</bcf:citekey>
+    <bcf:citekey order="18">SpicherSHP2021</bcf:citekey>
+    <bcf:citekey order="19">Sanders2015</bcf:citekey>
+    <bcf:citekey order="20">Stone2016</bcf:citekey>
+    <bcf:citekey order="21">Jensen2013</bcf:citekey>
+    <bcf:citekey order="22">Bannwarth2019_GFN2xTB</bcf:citekey>
+    <bcf:citekey order="23">Hastie2009</bcf:citekey>
+    <bcf:citekey order="24">Geurts2006</bcf:citekey>
+    <bcf:citekey order="25">scikit-learn</bcf:citekey>
+    <bcf:citekey order="26">PitMA</bcf:citekey>
+    <bcf:citekey order="27">Bannwarth2021_xTB</bcf:citekey>
+    <bcf:citekey order="28">numpy</bcf:citekey>
+    <bcf:citekey order="29">pandas.Paper</bcf:citekey>
+    <bcf:citekey order="30">pandas.software</bcf:citekey>
+>>>>>>> 7adba9a80f5813d24f5daf7d2d3ac66159bc9c7b
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

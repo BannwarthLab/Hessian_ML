@@ -360,7 +360,23 @@ INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/jknappen/ec/ecsx2074.tfm
 OUTPUT main.toc
 OUTPUT main.lof
+<<<<<<< HEAD
 OUTPUT main.lot
+=======
+INPUT ./main.lot
+INPUT main.lot
+INPUT main.lot
+OUTPUT main.lot
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/vf/public/sansmathfonts/cmsmf10.vf
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/cm/cmss10.tfm
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmfIPiXi10.tfm
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/vf/public/sansmathfonts/cmsmf8.vf
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/cm/cmss8.tfm
+INPUT /home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmfIPiXi8.tfm
+INPUT ./sections/Motivation.tex
+INPUT ./sections/Motivation.tex
+INPUT ./sections/Motivation.tex
+>>>>>>> 7adba9a80f5813d24f5daf7d2d3ac66159bc9c7b
 OUTPUT sections/Motivation.aux
 INPUT sections/Motivation.tex
 INPUT sections/Motivation.tex
