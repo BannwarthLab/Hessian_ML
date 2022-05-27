@@ -1,5 +1,3 @@
-from xml.sax.handler import feature_string_interning
-from numpy import var
 from constants import *
 from ml_func import *
 from functions import *
@@ -9,24 +7,15 @@ from class_sys_info import *
 
 #Current working directory
 cwd = os.getcwd()
+cwd = 'tests/main_test_copy/'
+print(f'Start Importing Files from {cwd}')
 
 #Gathering all directories of all molecular systems 
 mol_sys_dirs = sorted(os.listdir(cwd))
 
 #For every molecular system
-X_heteronuclear = []
-y_heteronuclear = []
-
-X_homonuclear  = []
-y_homonuclear = []
-
 Systems = []
-mol_idx_heteronuclear = []
-mol_idx_homonuclear = []
-
-Target_length_heteronuclear = []
-Traget_lentth_homonuclear = []
-
+mol_sys_idx = []
 for mol in range(len(mol_sys_dirs)):
     #Gathering for each molecular systems all directories of diffrent structures
     mol_dir = f'{cwd}/{mol_sys_dirs[mol]}/'
@@ -40,81 +29,80 @@ for mol in range(len(mol_sys_dirs)):
 
         system.rot_init_inert()
 
-        #Matrix filled with 3x3 rotation matrices for MI to APF
-        R_MI_APF_mat = np.zeros([3*len(system.xyz['atoms']),3*len(system.xyz['atoms'])])
-
-        #Matrix filled with hessian for each APF
-        H_APF_mat = np.zeros([3*len(system.xyz['atoms']),3*len(system.xyz['atoms'])])
-
         system.rot_inert_apf()
 
         system.gen_Hessian_vector()
 
-        Feature_heteronuclear, Target_heteronuclear, Feature_homonuclear, Target_homonuclear = system.connect_Feature_Target(folder=f'{struc_sys_dirs[sys]}')
-
-        mol_idx_heteronuclear.append(len(y_heteronuclear))
-        mol_idx_homonuclear.append(len(y_homonuclear))
-
-        Target_length_heteronuclear.append(len(Target_heteronuclear))
-        Traget_lentth_homonuclear.append(len(Target_homonuclear))
-
-        X_heteronuclear.extend(Feature_heteronuclear)
-        y_heteronuclear.extend(Target_heteronuclear)
-
-        X_homonuclear.extend(Feature_homonuclear)
-        y_homonuclear.extend(Target_homonuclear)
+        mol_sys_idx.append([mol,sys])
 
         Systems.append(system)
 
-X_heteronuclear = np.array(X_heteronuclear)
-y_heteronuclear = np.array(y_heteronuclear)
+print('Fitting the Model.')
+rnd_state = None
 
-X_homonuclear = np.array(X_homonuclear)
-y_homonuclear = np.array(y_homonuclear)
+for rnd_state in [0,42,56,29,100]:
+    
+    test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
+    train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.75,random_state=rnd_state)
 
+    
+    X_homo = []
+    y_homo = []
 
-def gen_grp(list):
-    full_list = []
-    for i in range(len(list)):
-        for _ in range(list[i]):
-            full_list.append(i)
-    return full_list
+    X_hetero = []
+    y_hetero = []
 
+    for i in train_idx:
+        X_homo_temp,X_hetero_temp = Systems[i].gen_Feature(label = 'indexed')
 
-grp_heteronuclear = gen_grp(Target_length_heteronuclear)
-grp_homonuclear = gen_grp(Traget_lentth_homonuclear)
+        X_homo.extend(X_homo_temp)
+        y_homo.extend(Systems[i].H_AA_vec)
 
-rnd_state = 42
+        X_hetero.extend(X_hetero_temp)
+        y_hetero.extend(Systems[i].H_AB_vec)
 
-gss = GroupShuffleSplit(n_splits=1,train_size=0.75,random_state = rnd_state)
+    regr_homonuclear=  ExtraTreesRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=False) 
+    regr_heteronuclear = ExtraTreesRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False)
 
-idx_homonuclear = list(gss.split(X_homonuclear, y_homonuclear, grp_homonuclear))
-idx_heteronuclear= list(gss.split(X_heteronuclear,y_heteronuclear,grp_heteronuclear))
+    regr_homonuclear.fit(X_homo,y_homo)
+    regr_heteronuclear.fit(X_hetero,y_hetero)
 
-X_homonuclear_train= X_homonuclear[idx_homonuclear[0][0]]
-y_homonuclear_train= y_homonuclear[idx_homonuclear[0][0]]
- 
-X_homonuclear_test = X_homonuclear[idx_homonuclear[0][1]]
-y_homonuclear_test = y_homonuclear[idx_homonuclear[0][1]]
+    full_y_pred_homo = []
+    full_y_pred_hetero = []
 
-X_heteronuclear_train = X_heteronuclear[idx_heteronuclear[0][0]]
-y_heteronuclear_train = y_heteronuclear[idx_heteronuclear[0][0]]
+    full_X_homo_test = []
+    full_X_hetero_test = []
 
-X_heteronuclear_test = X_heteronuclear[idx_heteronuclear[0][1]]
-y_heteronuclear_test = y_heteronuclear[idx_heteronuclear[0][1]]
+    full_y_test_homo = []
+    full_y_test_hetero = []
 
+    print('Testing the Model.')
+    
+    for i in test_idx:
+        X_homo_temp,X_hetero_temp = Systems[i].gen_Feature(label = 'indexed')
+        # if i == test_idx[0]:
+        #     print(X_homo_temp[0])
+        full_X_homo_test.extend(X_homo_temp)
+        full_X_hetero_test.extend(X_hetero_temp)
 
-regr_homonuclear=  ExtraTreesRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=False) 
-regr_heteronuclear = ExtraTreesRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False)
+        full_y_test_homo.extend(Systems[i].H_AA_vec)
+        full_y_test_hetero.extend(Systems[i].H_AB_vec)
 
-regr_homonuclear.fit(X_homonuclear_train,y_homonuclear_train)
-regr_heteronuclear.fit(X_heteronuclear_train,y_heteronuclear_train)
+        y_homo_pred = regr_homonuclear.predict(X_homo_temp)
+        y_hetero_pred = regr_heteronuclear.predict(X_hetero_temp)
 
+        Systems[i].get_pred_hessian(hessian_homo=y_homo_pred,hessian_hetero=y_hetero_pred)
 
-y_homonuclear_pred = regr_homonuclear.predict(X_homonuclear_test)
+        full_y_pred_homo.extend(y_homo_pred)
+        full_y_pred_hetero.extend(y_hetero_pred)
 
-y_heteronuclear_pred = regr_heteronuclear.predict(X_heteronuclear_test)
+    r_score_homo = regr_homonuclear.score(full_X_homo_test,full_y_test_homo)
+    r_score_hetero = regr_heteronuclear.score(full_X_hetero_test,full_y_test_hetero)
 
-MSE_heteronuclear  = mean_squared_error(y_homonuclear_test,y_homonuclear_pred)
+    MSE_homonuclear  = mean_squared_error(full_y_test_homo,full_y_pred_homo)
+    MSE_heteronuclear  = mean_squared_error(full_y_test_hetero,full_y_pred_hetero)
 
-print(MSE_heteronuclear)
+    print(f'R2(homo)   :{round(r_score_homo,3)}')
+    print(f'R2(hetero) :{round(r_score_hetero,3)}')
+    print(f'MSE(homo)  :{round(MSE_homonuclear,3)}')
+    print(f'MSE(hetero):{round(MSE_heteronuclear,3)}')
