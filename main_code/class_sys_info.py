@@ -15,13 +15,13 @@ class sys_info:
         self.coord_state = ['init','inert']
         self.molecule = molecule
         self.variation = variation
-        self.pred_hess = None
         self.R_MI_APF_mat = np.zeros([3*self.N_atoms,3*self.N_atoms])
         self.H_APF_mat = np.zeros([3*self.N_atoms,3*self.N_atoms])
 
         self.H_AA_vec = []
         self.H_AB_vec = []
 
+        self.H_pred = np.zeros([3*self.N_atoms,3*self.N_atoms])
 
     def rot_init_inert(self):
         self.coord_state[0], self.coord_state[1] = self.coord_state[1],self.coord_state[0]
@@ -72,17 +72,24 @@ class sys_info:
         return
 
 
-    def connect_Feature_Target(self,folder=None):
+    def gen_Feature(self,label=None):
         #self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms)
 
-        self.features.get_Feature_heteronuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,xyz = self.xyz,init_R_MI=self.init_R_MI,folder=folder)
+        self.features.get_Feature_heteronuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,xyz = self.xyz,init_R_MI=self.init_R_MI)
         self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,init_R_MI=self.init_R_MI)
 
-        return self.features.Feature_AB, self.H_AB_vec, self.features.Feature_AA, self.H_AA_vec
+        return self.features.Feature_AA, self.features.Feature_AB
 
-    def get_pred_hessian(self,hessian_list):
+    def get_pred_hessian(self,hessian_homo=None,hessian_hetero=None):
 
-        self.pred_hess = []
+        for atom_A in range(self.N_atoms):
+
+            fill_matrix_block(hessian_homo,self.H_pred,A=atom_A)
+
+            for atom_B in range(atom_A+1,self.N_atoms):
+
+                fill_matrix_block(hessian_hetero,self.H_pred,A=atom_A,B=atom_B)
+
         return
 
     def get_coord_state(self):
@@ -106,79 +113,82 @@ class Feature:
         self.Feature_AB = []
         self.Feature_AA = []
 
-    def get_Feature_heteronuclear(self, label=None, R_MI_APF_mat=None, N_atoms = None,xyz = None,init_R_MI=None,folder=None):
+    def get_Feature_heteronuclear(self, label=None, R_MI_APF_mat=None, N_atoms = None,xyz = None,init_R_MI=None):
+        if self.Feature_AB == []:
+            index = [[2,0,0],
+                    [1,-1,0],
+                    [1,0,-1],
+                    [-1,1,0],
+                    [0,2,0],
+                    [0,1,-1],
+                    [-1,0,1],
+                    [0,-1,1],
+                    [0,0,2]]
 
-        index = [[2,0,0],
-                [1,-1,0],
-                [1,0,-1],
-                [-1,1,0],
-                [0,2,0],
-                [0,1,-1],
-                [-1,0,1],
-                [0,-1,1],
-                [0,0,2]]
+            for atom_A in range(N_atoms):
+                for atom_B in range(atom_A+1,N_atoms):
 
-        for atom_A in range(N_atoms):
-            for atom_B in range(atom_A+1,N_atoms):
+                    i0 = 3*atom_A
+                    i3 = 3*atom_A + 3
+                    j0 = 3*atom_B 
+                    j3 = 3*atom_B + 3
 
-                i0 = 3*atom_A
-                i3 = 3*atom_A + 3
-                j0 = 3*atom_B 
-                j3 = 3*atom_B + 3
+                    R_MI_APF = R_MI_APF_mat[i0:i3,j0:j3]
 
-                R_MI_APF = R_MI_APF_mat[i0:i3,j0:j3]
+                    R_AB = linalg.norm(xyz.iloc[atom_A,1:] -xyz.iloc[atom_B,1:])
 
-                R_AB = linalg.norm(xyz.iloc[atom_A,1:] -xyz.iloc[atom_B,1:])
+                    Quantity_AB = [[],[]]
 
-                Quantity_AB = [[],[]]
+                    vector_of_ones = np.array([1,1,1])
 
-                vector_of_ones = np.array([1,1,1])
+                    j = 0
 
-                j = 0
+                    for i in [atom_A,atom_B]:
 
-                for i in [atom_A,atom_B]:
+                        dipm_atom = matmul(init_R_MI,self.dipm_atom[i])
+                        dipm_delta = matmul(init_R_MI,self.dipm_delta[i])
+                        dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[i])
+                            
+                        qm_atom = matmul(matmul(init_R_MI,self.qm_atom[i]),np.transpose(init_R_MI))
+                        qm_delta = matmul(matmul(init_R_MI,self.qm_delta[i]),np.transpose(init_R_MI))
 
-                    dipm_atom = matmul(init_R_MI,self.dipm_atom[i])
-                    dipm_delta = matmul(init_R_MI,self.dipm_delta[i])
-                    dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[i])
+                        dipm_atom = matmul(R_MI_APF,dipm_atom)
+                        dipm_delta = matmul(R_MI_APF,dipm_delta)
+                        dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
+
+                        qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
+                        qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
+
+                        qm_atom = matmul(qm_atom,vector_of_ones)
+                        qm_delta = matmul(qm_delta,vector_of_ones)
+
+                        Quantity_AB[j].extend(self.CN[i])
+                        Quantity_AB[j].extend(dipm_atom)
+                        Quantity_AB[j].extend(dipm_delta)
+                        Quantity_AB[j].extend(dipm_only_mull)
+                        Quantity_AB[j].extend(qm_atom)
+                        Quantity_AB[j].extend(qm_delta)
+                        Quantity_AB[j].extend(self.energy_based[i])
+
+                        j+=1
+
+                    Quantity_AB_arr = np.array(Quantity_AB)
+
+                    Feature_Arith = np.abs(Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
+                    Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
+                    Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
+
+                    for i in range(9):
+                        Features = []
+                        Features.extend(Quantity_AB[0])
+                        Features.extend(Quantity_AB[1])
                         
-                    qm_atom = matmul(matmul(init_R_MI,self.qm_atom[i]),np.transpose(init_R_MI))
-                    qm_delta = matmul(matmul(init_R_MI,self.qm_delta[i]),np.transpose(init_R_MI))
-
-                    dipm_atom = matmul(R_MI_APF,dipm_atom)
-                    dipm_delta = matmul(R_MI_APF,dipm_delta)
-                    dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
-
-                    qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
-                    qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
-
-                    qm_atom = matmul(qm_atom,vector_of_ones)
-                    qm_delta = matmul(qm_delta,vector_of_ones)
-
-                    Quantity_AB[j].extend(dipm_atom)
-                    Quantity_AB[j].extend(dipm_delta)
-                    Quantity_AB[j].extend(dipm_only_mull)
-
-                    Quantity_AB[j].extend(qm_atom)
-                    Quantity_AB[j].extend(qm_delta)
-                    Quantity_AB[j].extend(self.energy_based[i])
-
-                    j+=1
-
-                Quantity_AB_arr = np.array(Quantity_AB)
-
-                Feature_Arith = (Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
-                Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
-                Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
-
-                for i in range(9):
-                    Features = []
-                    Features.extend(Feature_Arith)
-                    Features.extend(Feature_Prod)
-                    Features.extend(Feature_AbsDiff)
-                    Features.extend([R_AB])
-                    Features.extend(index[i])
-                    self.Feature_AB.append(Features)
+                        Features.extend(Feature_Arith)
+                        Features.extend(Feature_Prod)
+                        Features.extend(Feature_AbsDiff)
+                        Features.extend([R_AB])
+                        Features.extend(index[i])
+                        self.Feature_AB.append(Features)
         return
 
 
@@ -186,56 +196,56 @@ class Feature:
 
 
     def get_Feature_homonuclear(self, R_MI_APF_mat=None, N_atoms = None,init_R_MI = None):
-
-        index = [[2,0,0],
-                [1,-1,0],
-                [1,0,-1],
-                [-1,1,0],
-                [0,2,0],
-                [0,1,-1],
-                [-1,0,1],
-                [0,-1,1],
-                [0,0,2]]
-
-
-        for atom_A in range(N_atoms):
-
-            i0 = 3*atom_A
-            i3 = 3*atom_A + 3
-
-            R_MI_APF = R_MI_APF_mat[i0:i3,i0:i3]
-
-            Quantity_A = []
-
-            vector_of_ones = np.array([1,1,1])
-            dipm_atom = matmul(init_R_MI,self.dipm_atom[atom_A])
-            dipm_delta = matmul(init_R_MI,self.dipm_delta[atom_A])
-            dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[atom_A])
-
-            dipm_atom = matmul(R_MI_APF,self.dipm_atom[atom_A])
-            dipm_delta = matmul(R_MI_APF,self.dipm_delta[atom_A])
-            dipm_only_mull = matmul(R_MI_APF,self.dipm_only_mull[atom_A])
-
-            qm_atom = matmul(matmul(R_MI_APF,self.qm_atom[atom_A]),np.transpose(R_MI_APF))
-            qm_delta = matmul(matmul(R_MI_APF,self.qm_delta[atom_A]),np.transpose(R_MI_APF))
-
-            qm_atom = matmul(qm_atom,vector_of_ones)
-            qm_delta = matmul(qm_delta,vector_of_ones)
+        if self.Feature_AA == []:
+            index = [[2,0,0],
+                    [1,-1,0],
+                    [1,0,-1],
+                    [-1,1,0],
+                    [0,2,0],
+                    [0,1,-1],
+                    [-1,0,1],
+                    [0,-1,1],
+                    [0,0,2]]
 
 
-            Quantity_A.extend(dipm_atom)
-            Quantity_A.extend(dipm_delta)
-            Quantity_A.extend(dipm_only_mull)
-            Quantity_A.extend(qm_atom)
-            Quantity_A.extend(qm_delta)
-            Quantity_A.extend(self.energy_based[atom_A])
+            for atom_A in range(N_atoms):
 
-            for i in range(9):
-                Features = []
-                Features.extend(Quantity_A)
-                Features.extend(index[i])
+                i0 = 3*atom_A
+                i3 = 3*atom_A + 3
 
-                self.Feature_AA.append(Features)
+                R_MI_APF = R_MI_APF_mat[i0:i3,i0:i3]
+
+                Quantity_A = []
+
+                vector_of_ones = np.array([1,1,1])
+                dipm_atom = matmul(init_R_MI,self.dipm_atom[atom_A])
+                dipm_delta = matmul(init_R_MI,self.dipm_delta[atom_A])
+                dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[atom_A])
+
+                dipm_atom = matmul(R_MI_APF,self.dipm_atom[atom_A])
+                dipm_delta = matmul(R_MI_APF,self.dipm_delta[atom_A])
+                dipm_only_mull = matmul(R_MI_APF,self.dipm_only_mull[atom_A])
+
+                qm_atom = matmul(matmul(R_MI_APF,self.qm_atom[atom_A]),np.transpose(R_MI_APF))
+                qm_delta = matmul(matmul(R_MI_APF,self.qm_delta[atom_A]),np.transpose(R_MI_APF))
+
+                qm_atom = matmul(qm_atom,vector_of_ones)
+                qm_delta = matmul(qm_delta,vector_of_ones)
+
+                Quantity_A.extend(self.CN[atom_A])
+                Quantity_A.extend(dipm_atom)
+                Quantity_A.extend(dipm_delta)
+                Quantity_A.extend(dipm_only_mull)
+                Quantity_A.extend(qm_atom)
+                Quantity_A.extend(qm_delta)
+                Quantity_A.extend(self.energy_based[atom_A])
+
+                for i in range(9):
+                    Features = []
+                    Features.extend(Quantity_A)
+                    Features.extend(index[i])
+
+                    self.Feature_AA.append(Features)
         return
 
 
@@ -257,3 +267,22 @@ def qm_matrix(qm_atom):
         qm_matrix_list.append(qm_matrix)
 
     return qm_matrix_list
+
+
+def fill_matrix_block(vector,matrix,A=None,B=None):
+    if B == None:
+        B = A
+    k = 0
+    for i in range(3):
+        for j in range(3):
+            matrix[3*A+i,3*B+j] = vector[k]
+
+            if A != B:
+                matrix[3*B+j,3*A+i] = vector[k]
+        k+=1
+    return matrix
+
+
+
+
+

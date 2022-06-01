@@ -427,7 +427,7 @@ def qm_matrix(qm_atom,name):
      xx = qm_atom.loc[f'{name}xx']
      xy = qm_atom.loc[f'{name}xy']
      yy = qm_atom.loc[f'{name}yy']
-     xz = qm_atom.loc[f'{name}xz']
+     xz = qm_atom.loc[f'{name}zx']
      zz = qm_atom.loc[f'{name}zz']
      yz = qm_atom.loc[f'{name}yz']
 

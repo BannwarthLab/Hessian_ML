@@ -41,7 +41,6 @@ def gen_X_y_DF(molecules):
     for mol in range(len(molecules)):
 
         print(f'Importing Molecule No. {mol}')
-
         feature_file_path = glob.glob(f'tests/{molecules[0]}/{molecules[0]}_*/')
         feature_path = os.path.join(feature_file_path[0],'init_coord/ml_feature.csv')
         feature_df = pd.read_csv(feature_path)
@@ -73,7 +72,7 @@ def gen_X_y_DF(molecules):
 
 
         #temp_all = list(np.array(temp_all).T)
-
+        print(temp_all)
         X_df = pd.DataFrame(temp_all,columns=feature_name_full)
 
     return X_df,feature_name_full,Nat
@@ -92,20 +91,20 @@ def extract_feature(ml_feature,y_idx,A,B):
 
     #qm_delta_only_mull = qm_delta_only_mull.rename(index= {' delta qm only mull yy' : 'delta qm only mull yy',' delta qm only mull zz' : 'delta qm only mull zz' })
 
-    qm_atom = ml_feature.loc[['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']]
-    qm_delta = ml_feature.loc[['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']]
+    qm_atom = ml_feature.loc[['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_zx','qm_atom_yz']]
+    qm_delta = ml_feature.loc[['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_zx','qm_delta_yz']]
 
     energy_based = ml_feature.loc[['response (a.u.)','gap (eV)','chem.pot (eV)','HOAO (eV)','LUAO (eV)',
                                     'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']]  # 
                                     
-    if y_idx in ['yx','zx','zy'] and A != B:
-        dipm_atom['dipm_atom_x','dipm_atom_y','dipm_atom_z'] = np.array([-dipm_atom['dipm_atom_x'],dipm_atom['dipm_atom_y'],-dipm_atom['dipm_atom_z']])
-        dipm_delta['dipm_delta_x','dipm_delta_y','dipm_delta_z'] = np.array([-dipm_delta['dipm_delta_x'],dipm_delta['dipm_delta_y'],-dipm_delta['dipm_delta_z']])
-        dipm_only_mull['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z'] = np.array([-dipm_only_mull['delta dipm only mull x'],dipm_only_mull['delta dipm only mull y'],-dipm_only_mull['delta dipm only mull z']])
-        qm_atom['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz'] = np.array([qm_atom['qm_atom_xx'],qm_atom['qm_atom_yy'],qm_atom['qm_atom_zz'],-qm_atom['qm_atom_xy'],qm_atom['qm_atom_xz'],-qm_atom['qm_atom_yz']])
-        qm_delta['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz'] = np.array([qm_delta['qm_delta_xx'],qm_delta['qm_delta_yy'],qm_delta[ 'qm_delta_zz'],-qm_delta['qm_delta_xy'],qm_delta['qm_delta_xz'],-qm_delta['qm_delta_yz']])
-    ##############################
+    # if y_idx in ['yx','zx','zy'] and A != B:
+    #     dipm_atom['dipm_atom_x','dipm_atom_y','dipm_atom_z'] = np.array([-dipm_atom['dipm_atom_x'],dipm_atom['dipm_atom_y'],-dipm_atom['dipm_atom_z']])
+    #     dipm_delta['dipm_delta_x','dipm_delta_y','dipm_delta_z'] = np.array([-dipm_delta['dipm_delta_x'],dipm_delta['dipm_delta_y'],-dipm_delta['dipm_delta_z']])
+    #     dipm_only_mull['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z'] = np.array([-dipm_only_mull['delta dipm only mull x'],dipm_only_mull['delta dipm only mull y'],-dipm_only_mull['delta dipm only mull z']])
+    #     qm_atom['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz'] = np.array([qm_atom['qm_atom_xx'],qm_atom['qm_atom_yy'],qm_atom['qm_atom_zz'],-qm_atom['qm_atom_xy'],qm_atom['qm_atom_zx'],-qm_atom['qm_atom_yz']])
+    #     qm_delta['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz'] = np.array([qm_delta['qm_delta_xx'],qm_delta['qm_delta_yy'],qm_delta[ 'qm_delta_zz'],-qm_delta['qm_delta_xy'],qm_delta['qm_delta_zx'],-qm_delta['qm_delta_yz']])
+    # ##############################
     #Extract features which need to be transformed
 
     #Transform to vector by QM x I
