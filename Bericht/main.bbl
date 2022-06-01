@@ -53,6 +53,56 @@
       \verb 10.1021/acs.jctc.0c01306
       \endverb
     \endentry
+    \entry{Sanders2015}{article}{}
+      \name{author}{3}{}{%
+        {{hash=5a97c009d31321e9fd42c895e7037d37}{%
+           family={Sanders},
+           familyi={S\bibinitperiod},
+           given={Jacob\bibnamedelima N.},
+           giveni={J\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=8713a2444d9681579a659091c5d6b17f}{%
+           family={Andrade},
+           familyi={A\bibinitperiod},
+           given={Xavier},
+           giveni={X\bibinitperiod}}}%
+        {{hash=083dcdd0db2687433b22fabfb2e55c17}{%
+           family={Aspuru-Guzik},
+           familyi={A\bibinithyphendelim G\bibinitperiod},
+           given={Alán},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Chemical Society ({ACS})}%
+      }
+      \strng{namehash}{f0c3fdf9ab1da500040e051da9f51092}
+      \strng{fullhash}{848dbc293e727aa4d239b5048c9247d5}
+      \strng{bibnamehash}{848dbc293e727aa4d239b5048c9247d5}
+      \strng{authorbibnamehash}{848dbc293e727aa4d239b5048c9247d5}
+      \strng{authornamehash}{f0c3fdf9ab1da500040e051da9f51092}
+      \strng{authorfullhash}{848dbc293e727aa4d239b5048c9247d5}
+      \field{extraname}{1}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{ACS} Central Science}
+      \field{month}{3}
+      \field{number}{1}
+      \field{title}{Compressed Sensing for the Fast Computation of Matrices: Application to Molecular Vibrations}
+      \field{volume}{1}
+      \field{year}{2015}
+      \field{pages}{24\bibrangedash 32}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1021/oc5000404
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1021/oc5000404
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1021/oc5000404
+      \endverb
+    \endentry
     \entry{Stone2016}{book}{}
       \name{author}{1}{}{%
         {{hash=9d3ed678c42e26517986be136397bd3a}{%
@@ -454,6 +504,7 @@
       \strng{authorbibnamehash}{848dbc293e727aa4d239b5048c9247d5}
       \strng{authornamehash}{f0c3fdf9ab1da500040e051da9f51092}
       \strng{authorfullhash}{848dbc293e727aa4d239b5048c9247d5}
+      \field{extraname}{2}
       \field{sortinit}{1}
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
@@ -671,7 +722,6 @@
       \endverb
     \endentry
   \enddatalist
-  \missing{Sanders2015}
 \endrefsection
 \endinput
 
