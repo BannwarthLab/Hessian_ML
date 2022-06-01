@@ -7,7 +7,7 @@ from class_sys_info import *
 
 #Current working directory
 cwd = os.getcwd()
-cwd = 'tests/main_test_copy/'
+cwd = 'tests/main_test/'
 print(f'Start Importing Files from {cwd}')
 
 #Gathering all directories of all molecular systems 
@@ -23,7 +23,7 @@ for mol in range(len(mol_sys_dirs)):
     print(f'Molecule No. {mol}')
     #For every structure of every molecular system
     for sys in range(len(struc_sys_dirs)):
-        #print(f'System No. {sys}')
+        print(f'System {struc_sys_dirs[sys]}')
 
         system = sys_info(folder=f'{mol_dir}{struc_sys_dirs[sys]}/init_coord/',molecule=mol,variation=sys)
 
@@ -40,7 +40,9 @@ for mol in range(len(mol_sys_dirs)):
 print('Fitting the Model.')
 rnd_state = None
 
-for rnd_state in [0,42,56,29,100]:
+
+
+for rnd_state in [0]:#,42,56,29,100]:
     
     test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
     train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.75,random_state=rnd_state)
