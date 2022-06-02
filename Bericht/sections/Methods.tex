@@ -2,17 +2,17 @@
 
 	%CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 	\section{Transformation of Coordinates}
-	The Hessian matrix and some features depend on the orientation of the coordinate~system~(CS).
+	The Hessian matrix and the features that originate from vector or matrix quantities depend on the orientation of the coordinate~system~(CS).
 	For the ML model a consistent orientation for every atom pair is necessary.
 	Furthermore, the Hessian elements shall be learned atom pair wise.
 	Thus, the orientation of the molecule is brought into atom pair focused CS,
 	where the origin of the CS is in the center of the considered atom pair,
-	while both atoms are on the z--Axis.
+	while both atoms are on the z--axis.
 	In this section,
 	the transformation of the initial coordinate system into the atom pair focused CS will be discussed.\\
 	The CS of the molecule is deliberate,
-	therefore a transformation to a welldefined reference coordinate system is necessary.
-	As a reference coordinate system is main inertia coordinate system (MI CS) is chosen.
+	therefore a transformation to a well--defined reference coordinate system is necessary.
+	As a reference coordinate system the main inertia coordinate system (MI CS) is chosen.
 	In a second step the transformation to the atom pair focused coordinate system (APF CS) is performed.\\
 	At first a translation of the origin of the initial CS to the center of mass is done by Eq.~\eqref{eq:TransIinitCenterMass}.
 	
@@ -227,15 +227,17 @@ The procedure of the projection and mass--weighting is described in the chapter 
 % is constructed the same as the rotation matrix $\textbf{P}_\mathsf{init}^\mathsf{mi}$.
 \newpage
 \section{ML Model Construction}
-The supervised ML models have to be trained with a set of features and targets.
-The features are in general derived from atom based quantities based on geometry, density and energy.
+Supervised ML models have to be trained with a set of features and targets.
+In this work, the features are mostly derived from atomic quantities based on geometry, density and energy.
 This feature selection criteria is based on Steinbach's work.\supercite{PitMA} Some adaptations are done.
 Here, the cartesian dipole moment and quadrupole moment elements are used as features instead of its norm.
+This is one reason for the transformation of the CS.
 This applies also for the extended versions.
-The Hessian matrix is the target.
-The atom based quantities and Hessian matrix are generated with the GFN2--xTB method.
-Furthermore, they are all computed for each Hessian matrix block $\textbf{H}_{AB}$ in its own APF CS.
-Beside atom based quantities, features are implemented for the differentiation between the elements of a block $\textbf{H}_{AB}$.
+The Hessian matrix elements are the targets.
+The atomic quantities and Hessian matrix are generated with the GFN2--xTB method.
+The quantities computed with GFN2--xTB are listed in Tab.~\ref{tab:Feature} with a short description.
+Either the atomic quantities are used directly as the atomic features, or are further processed.
+Beside atomic quantities, further features are implemented for the differentiation between the elements of a block $\textbf{H}_{AB}$.
 Two approaches are used for the differentiation.
 These are the \textbf{indexed} and \textbf{permuted} approach.
 \begin{table}[H]
@@ -280,16 +282,15 @@ These are the \textbf{indexed} and \textbf{permuted} approach.
 		\end{tabular}
 	\label{tab:Feature}
 \end{table}
-The quantities computed with GFN2--xTB are listed in Tab.~\ref{tab:Feature} with a short description.
 There is an extended version for some quantities. If this is the case, the column Extension is ticked.
 The mathematical descriptions of all quantities from GFN2--xTB are shown in the Appendix in Eq.~\eqref{eq:Feature}\\
-The features are computed for every Hessian matrix block $\textbf{H}_{AB}$.
+The features are computed for every Hessian matrix block $\textbf{H}_{AB}$ in its specific CS.
 As these depend only on the atoms $A$ and $B$,
 the atom based quantities of $A$ and $B$ are used for the computation of the features.
-Two different models are used for the case of $A = B$ and $A \neq B$, due to two reasons.
+Two different models are used for $A = B$ and $A \neq B$, due to two reasons.
 At first the chosen orientation in the CS between those cases differ.
 Secondly the feature vectors have a different size.
-For the case $A \neq B$, the features are computed from the GFN2--xTB quantities with Eq.~\eqref{eq:FeatureProcess}.
+For the case $A \neq B$, the features are computed from the GFN2--xTB quantities using Eq.~\eqref{eq:FeatureProcess}.
 Where $x$ is a placeholder for any of the quantities shown in Tab.~\ref{tab:Feature}, but $R_{AB}$.
 This case is called \textbf{heteronuclear}, as the Hessian and features depend on two atoms.
 \begin{subequations}
@@ -302,14 +303,14 @@ This case is called \textbf{heteronuclear}, as the Hessian and features depend o
 \end{subequations}
 In the case of $A = B$ the quantities are used directly, and it is called \textbf{homonuclear}.
 Here, the Hessian and features only depend on one atom and $R_{AB}$ is not used.\\
-Connecting the Hessian elements to the features at this point leads to the following problem.
+Connecting the Hessian elements to the features leads to the following problem.
 The features for all elements in a Hessian matrix block $\textbf{H}_{AB}$ are the same.
-Therefore, the ML model would predict the same value for every element.
+Therefore, the ML model would predict the same value for every matrix element.
 Hence, a differentiation is needed for the elements.\\
-The first approach (\textbf{indexed}) is the use of three further features $x_i, y_i, z_i$.
-These are indices, which differentiate between each element.
-In the Appendix in Tab.~\ref{tab:Indices} are all indices are shown with respect to their dependency on the element.\\
-The second approach (\textbf{permuted}) is the permutation of the coordinate system 
+One approach (\textbf{indexed}) is the use of three further features $x_i, y_i, z_i$.
+These are indices, which differentiate between each matrix element.
+In Tab.~\ref{tab:Indices} in the Appendix the values for those indices as a function of the matrix elements is shown.\\
+Another approach (\textbf{permuted}) is the permutation of the coordinate system 
 and with it the vector/matrix quantities from GFN2--xTB,
 in dependence of the Hessian elements that shall be learned.
 The coordinate system is always adjusted,
@@ -321,10 +322,11 @@ All permutations are described in the Appendix in Tab.~\ref{tab:Permutation}.\\
 For the homonuclear this concludes in 37 or 35 features for each Hessian element for the indexed or permuted case, respectively.
 And for the heteronuclear model there are 106 or 104 features for each Hessian element for the indexed or permuted case, respectively.
 
-\section{Quantities for Measuring}
-For first insights on the dependence of the target on the features, the Pearson Correlation Coefficient $R^2$ (s.~Eq.~\eqref{eq:PCC}) can be computed.
+\section{Measures for Quantifying the Performance}
+For first insights on the correlation of the target on the features, the Pearson Correlation Coefficient $R^2$ (s.~Eq.~\eqref{eq:PCC}) can be computed.
 It describes the linear correlation between the target and the feature.
 Here, $x$ is a feature, $y$ the target and $\sigma_i$ the standard deviation and $\bar{i}$ the mean of the feature or target.
+The target $y$ corresponds to the Hessian elements.
 The values for $R^2$ are in the range of $0 \leq R^2 \leq 1$.
 \begin{align}
 	\label{eq:PCC}
@@ -332,23 +334,22 @@ The values for $R^2$ are in the range of $0 \leq R^2 \leq 1$.
 \end{align}
 \\
 For the quantification of the learning process of the ML models the mean squared error~MSE (s. Eq.~\eqref{eq:MSE}) was chosen.
-The ML models are trained with \mbox{GFN2--xTB} based information. Therefore, the reference is also \mbox{\mbox{GFN2--xTB}}.
-In this report, the target $y$ corresponds to the Hessian elements, calculated with \mbox{GFN2--xTB} and predicted with the ML model.
+The ML models are trained with \mbox{GFN2--xTB} based target and features. Therefore, the reference is also the \mbox{\mbox{GFN2--xTB}} computed Hessian.
 The number of data points is $n$.
 \begin{align}
 	\label{eq:MSE}
 	\mathsf{MSE} =  \dfrac{1}{n} \sum_{i=1}^n \left( y_{i\mathsf{,ML}} - y_{i\mathsf{,xTB}} \right)^2
 \end{align}
-For the comparison of the different models (e.g. \mbox{ETR--Case--Perm}, \mbox{RFR--Gen--Idx}, etc.) the normal distribution is used. 
+For the comparison of the different models (e.g. \mbox{ETR} and \mbox{RFR}) normal distribution is assumed (s.~Eq.~\eqref{eq:NormalDistribution}). 
 For this the difference of a quantity $q$ between the \mbox{GFN2--xTB} computation and ML model prediction is calculated.
 Furthermore, the standard deviation $\sigma$ and mean $\overline{\Delta q}$ from the difference $\Delta q$ is computed.
-After that a normal distribution is assumed and computed with Eq.~\eqref{eq:NormalDistribution}. 
+
 \begin{align}
 	\label{eq:NormalDistribution}
 	f(x)  = \dfrac{1}{\sigma \sqrt{2\pi}} \exp\left({-\dfrac{1}{2} \left(\dfrac{q-\overline{\Delta q}}{\sigma}\right)^2}\right)
 \end{align}
 The investigated quantities $q$ are the Hessian elements and the wave number $\tilde{\nu}$.\\
-In addition to the Hessian elements and the $\tilde{\nu}$ (s. Eq.~\eqref{eq:WN})  the force constant $k$ (Eq.~\eqref{eq:FC}) was examined.
+In addition to the Hessian elements and $\tilde{\nu}$ (s. Eq.~\eqref{eq:WN})  the force constant $k$ (Eq.~\eqref{eq:FC}) was examined.
 Here, $\lambda$ are the eigenvalues of the mass weighted projected Hessian matrix $\textbf{H}^\mathsf{proj,w|mi}$ and $m_i$ the mass of each atom.
 For the transformation into SI--units, the Hartree Energy $E_\mathsf{h}$,
 Planck constant $h$, reduced Planck constant $\hbar$, speed of light $c$ and the atomic mass unit $u$ are required.
@@ -372,7 +373,7 @@ The key words ''gfn2'', ''hess'' and ''ml\_feature'' were passed for the computa
 The computations were done for every structure in the APF CS. 
 For transformation of the coordinates and the ML models python was used.
 Especially, the packages \texttt{sklearn}\supercite{scikit-learn}, \texttt{numpy}\supercite{numpy} and \texttt{pandas}\supercite{pandas.Paper,pandas.software} were used for this project.
-For the depiction the package \texttt{matplotlib} was used.
+For the depiction of every graph the package \texttt{matplotlib} was used.
 The versions of the used packages are shown in Tab.~\ref{tab:Packages}.
 \begin{table}[H]
     \centering
@@ -390,10 +391,10 @@ The versions of the used packages are shown in Tab.~\ref{tab:Packages}.
     \label{tab:Packages}
 \end{table}
 
-For the machine learning,
+For machine learning models,
 the algorithms \texttt{RandomForestRegressor} and \texttt{ExtraTreeRegressor},
 which origin from \texttt{sklearn}, were used. 
 The default parameters were used, except the number of estimators was set $\texttt{n\_estimators}=300$ for the homonuclear model,
 and $\texttt{n\_estimators}=100$ for the heteronuclear model. No bootstrapping is used in this work.
-To achieve the split of the target structure wise \texttt{GroupShuffleSplit} from \texttt{sklearn} was used.
-For the algorithms and split ten random numbers $\texttt{random\_state} \in \{0,22,42,100,63,54,96,35,408,74\}$ were used.
+To achieve the split of the target and features in dependence each structure, \texttt{GroupShuffleSplit} from \texttt{sklearn} was used.
+For the algorithms and split ten random seeds $\texttt{random\_state} \in \{0,22,42,100,63,54,96,35,408,74\}$ were used.

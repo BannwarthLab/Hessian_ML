@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 % $ biblatex auxiliary file $
 % $ biblatex bbl format version 3.2 $
 % Do not modify the above lines!
@@ -21,6 +19,505 @@
 
 \refsection{0}
   \datalist[entry]{none/global//global/global}
+    \entry{Gesmundo2018Robotics}{article}{}
+      \name{author}{7}{}{%
+        {{hash=b3932421d1c803a51efc9f183951c1a8}{%
+           family={Gesmundo},
+           familyi={G\bibinitperiod},
+           given={Nathan\bibnamedelima J.},
+           giveni={N\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=574fab0b8d652ce4530b516cdba85370}{%
+           family={Sauvagnat},
+           familyi={S\bibinitperiod},
+           given={Bérengère},
+           giveni={B\bibinitperiod}}}%
+        {{hash=fd47a49d7d6ea0302183a00c41201dff}{%
+           family={Curran},
+           familyi={C\bibinitperiod},
+           given={Patrick\bibnamedelima J.},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=7c23ac80197890bda4bad9787c90fdb9}{%
+           family={Richards},
+           familyi={R\bibinitperiod},
+           given={Matthew\bibnamedelima P.},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=e1ba1c618c6d1e9a918bfc112b03326a}{%
+           family={Andrews},
+           familyi={A\bibinitperiod},
+           given={Christine\bibnamedelima L.},
+           giveni={C\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=2b45a67df701b42f8e21b953444c9b9b}{%
+           family={Dandliker},
+           familyi={D\bibinitperiod},
+           given={Peter\bibnamedelima J.},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=8681d7f19cf352057447c44c89da98c5}{%
+           family={Cernak},
+           familyi={C\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Springer Science}%
+        {Business Media {LLC}}%
+      }
+      \strng{namehash}{3615f7598d987e44daa396ae2aca47c9}
+      \strng{fullhash}{8051fc8cf61e01b023291d699a688093}
+      \strng{bibnamehash}{3615f7598d987e44daa396ae2aca47c9}
+      \strng{authorbibnamehash}{3615f7598d987e44daa396ae2aca47c9}
+      \strng{authornamehash}{3615f7598d987e44daa396ae2aca47c9}
+      \strng{authorfullhash}{8051fc8cf61e01b023291d699a688093}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature}
+      \field{month}{4}
+      \field{number}{7704}
+      \field{title}{Nanoscale synthesis and affinity ranking}
+      \field{volume}{557}
+      \field{year}{2018}
+      \field{pages}{228\bibrangedash 232}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1038/s41586-018-0056-8
+      \endverb
+    \endentry
+    \entry{Li2018Robotics}{article}{}
+      \name{author}{10}{}{%
+        {{hash=676f88e9dd7f477538746de43517569f}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Jiagen},
+           giveni={J\bibinitperiod}}}%
+        {{hash=c397018c2e24158d37a1222842576d02}{%
+           family={Lu},
+           familyi={L\bibinitperiod},
+           given={Yihua},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=b3307a6ff643b323bfc59b20a3b88308}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Yanheng},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=ea2b1d55c161e9d062a485d4c7f6d75c}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Chongfeng},
+           giveni={C\bibinitperiod}}}%
+        {{hash=dc93719a98a2de3d2d7262e720ce2168}{%
+           family={Tu},
+           familyi={T\bibinitperiod},
+           given={Yuxiao},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=6a78786670e22624dcbad75585fa7e9c}{%
+           family={Ye},
+           familyi={Y\bibinitperiod},
+           given={Shuqian},
+           giveni={S\bibinitperiod}}}%
+        {{hash=33e2ef7b3c7168b3bb4c04ead213c28c}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Haochen},
+           giveni={H\bibinitperiod}}}%
+        {{hash=5a01b5b77051338e958b5cdcf59345b3}{%
+           family={Xie},
+           familyi={X\bibinitperiod},
+           given={Yi},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=48173c63faf20b8689892a9ea0b0afb5}{%
+           family={Qian},
+           familyi={Q\bibinitperiod},
+           given={Huihuan},
+           giveni={H\bibinitperiod}}}%
+        {{hash=1a4f13ca8dbf5fca92d061b6174ae1bc}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Xi},
+           giveni={X\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Chemical Society ({ACS})}%
+      }
+      \strng{namehash}{928593a63b11d742f14da488e1f82247}
+      \strng{fullhash}{5626398f2ee566683785e1c1426791a7}
+      \strng{bibnamehash}{928593a63b11d742f14da488e1f82247}
+      \strng{authorbibnamehash}{928593a63b11d742f14da488e1f82247}
+      \strng{authornamehash}{928593a63b11d742f14da488e1f82247}
+      \strng{authorfullhash}{5626398f2ee566683785e1c1426791a7}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Physical Chemistry A}
+      \field{month}{11}
+      \field{number}{46}
+      \field{title}{{AIR}-Chem: Authentic Intelligent Robotics for Chemistry}
+      \field{volume}{122}
+      \field{year}{2018}
+      \field{pages}{9142\bibrangedash 9148}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1021/acs.jpca.8b10680
+      \endverb
+    \endentry
+    \entry{Schmitz2021}{article}{}
+      \name{author}{5}{}{%
+        {{hash=3288048269428ba0eab21ba4c4816b7f}{%
+           family={Schmitz},
+           familyi={S\bibinitperiod},
+           given={Gunnar},
+           giveni={G\bibinitperiod}}}%
+        {{hash=9127a9f539c4584f391b412a9dcd0ca5}{%
+           family={Yönder},
+           familyi={Y\bibinitperiod},
+           given={Özlem},
+           giveni={Ö\bibinitperiod}}}%
+        {{hash=eb4f388e91325738f5db181aab7f7f10}{%
+           family={Schnieder},
+           familyi={S\bibinitperiod},
+           given={Bastian},
+           giveni={B\bibinitperiod}}}%
+        {{hash=e8c0ab21da6199c19991c34f38f7199b}{%
+           family={Schmid},
+           familyi={S\bibinitperiod},
+           given={Rochus},
+           giveni={R\bibinitperiod}}}%
+        {{hash=56d4a7c5b5a149a25dd272c3f3b45d72}{%
+           family={Hättig},
+           familyi={H\bibinitperiod},
+           given={Christof},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{34bea385b5348d5b098fa67e329ce537}
+      \strng{fullhash}{0adde71e313d96d9e37b7cfea1f856d1}
+      \strng{bibnamehash}{0adde71e313d96d9e37b7cfea1f856d1}
+      \strng{authorbibnamehash}{0adde71e313d96d9e37b7cfea1f856d1}
+      \strng{authornamehash}{34bea385b5348d5b098fa67e329ce537}
+      \strng{authorfullhash}{0adde71e313d96d9e37b7cfea1f856d1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Computational Chemistry}
+      \field{month}{10}
+      \field{number}{32}
+      \field{title}{An automatized workflow from molecular dynamic simulation to quantum chemical methods to identify elementary reactions and compute reaction constants}
+      \field{volume}{42}
+      \field{year}{2021}
+      \field{pages}{2264\bibrangedash 2282}
+      \range{pages}{19}
+      \verb{doi}
+      \verb 10.1002/jcc.26757
+      \endverb
+    \endentry
+    \entry{Goerigk2017}{article}{}
+      \name{author}{6}{}{%
+        {{hash=7cb60366f9b8a050856b7dcdde43b066}{%
+           family={Goerigk},
+           familyi={G\bibinitperiod},
+           given={Lars},
+           giveni={L\bibinitperiod}}}%
+        {{hash=0012541dc48332d491b75eddc2de50ec}{%
+           family={Hansen},
+           familyi={H\bibinitperiod},
+           given={Andreas},
+           giveni={A\bibinitperiod}}}%
+        {{hash=484f7bc3859c866db9f72b25edfd017e}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Christoph},
+           giveni={C\bibinitperiod}}}%
+        {{hash=c1a85a74b8b1d9992721d20377d7f50f}{%
+           family={Ehrlich},
+           familyi={E\bibinitperiod},
+           given={Stephan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=db78ca154d3765178fea0efae30277dc}{%
+           family={Najibi},
+           familyi={N\bibinitperiod},
+           given={Asim},
+           giveni={A\bibinitperiod}}}%
+        {{hash=3a2585af369dbd4150db746c63177b0c}{%
+           family={Grimme},
+           familyi={G\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Royal Society of Chemistry ({RSC})}%
+      }
+      \strng{namehash}{10d7730ba76f135a19ac89a8db5b7fb2}
+      \strng{fullhash}{9c7946eb617888bbdb5d6fbc3d3689f5}
+      \strng{bibnamehash}{9c7946eb617888bbdb5d6fbc3d3689f5}
+      \strng{authorbibnamehash}{9c7946eb617888bbdb5d6fbc3d3689f5}
+      \strng{authornamehash}{10d7730ba76f135a19ac89a8db5b7fb2}
+      \strng{authorfullhash}{9c7946eb617888bbdb5d6fbc3d3689f5}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physical Chemistry Chemical Physics}
+      \field{number}{48}
+      \field{title}{A look at the density functional theory zoo with the advanced {GMTKN}55 database for general main group thermochemistry, kinetics and noncovalent interactions}
+      \field{volume}{19}
+      \field{year}{2017}
+      \field{pages}{32184\bibrangedash 32215}
+      \range{pages}{32}
+      \verb{doi}
+      \verb 10.1039/c7cp04913g
+      \endverb
+    \endentry
+    \entry{CCCBDB}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=1dfd2b4e6f8812319523154da9f4c71f}{%
+           family={Johnson},
+           familyi={J\bibinitperiod},
+           given={Russell},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {CCCBDBDComputational Chemistry Comparison}%
+        {Benchmark Database}%
+      }
+      \strng{namehash}{1dfd2b4e6f8812319523154da9f4c71f}
+      \strng{fullhash}{1dfd2b4e6f8812319523154da9f4c71f}
+      \strng{bibnamehash}{1dfd2b4e6f8812319523154da9f4c71f}
+      \strng{authorbibnamehash}{1dfd2b4e6f8812319523154da9f4c71f}
+      \strng{authornamehash}{1dfd2b4e6f8812319523154da9f4c71f}
+      \strng{authorfullhash}{1dfd2b4e6f8812319523154da9f4c71f}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{NIST 101. Computational Chemistry Comparison and Benchmark Database}
+      \field{year}{1999}
+      \verb{urlraw}
+      \verb http://cccbdb.nist.gov
+      \endverb
+      \verb{url}
+      \verb http://cccbdb.nist.gov
+      \endverb
+    \endentry
+    \entry{Katari2017}{article}{}
+      \name{author}{6}{}{%
+        {{hash=d7694e9cc37372106f3298635583463b}{%
+           family={Katari},
+           familyi={K\bibinitperiod},
+           given={Madanakrishna},
+           giveni={M\bibinitperiod}}}%
+        {{hash=c77c929d172d4d0578c0768622a105f8}{%
+           family={Nicol},
+           familyi={N\bibinitperiod},
+           given={Edith},
+           giveni={E\bibinitperiod}}}%
+        {{hash=54b4676c1c06d3d26cdd32e6b7097d55}{%
+           family={Steinmetz},
+           familyi={S\bibinitperiod},
+           given={Vincent},
+           giveni={V\bibinitperiod}}}%
+        {{hash=8f3ae174439dcce5701d28e69aa4c812}{%
+           family={van{\hspace{0.25em}}der{\hspace{0.25em}}Rest},
+           familyi={v\bibinitperiod},
+           given={Guillaume},
+           giveni={G\bibinitperiod}}}%
+        {{hash=3e7e90073a5617b0652fbb89dae9886f}{%
+           family={Carmichael},
+           familyi={C\bibinitperiod},
+           given={Duncan},
+           giveni={D\bibinitperiod}}}%
+        {{hash=dc9711e51df777e5f472cb4169515d8f}{%
+           family={Frison},
+           familyi={F\bibinitperiod},
+           given={Gilles},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{211a3e132e41f9394be92b65485e8ffd}
+      \strng{fullhash}{f4b0e85c879a27da8125b8706c3b727f}
+      \strng{bibnamehash}{f4b0e85c879a27da8125b8706c3b727f}
+      \strng{authorbibnamehash}{f4b0e85c879a27da8125b8706c3b727f}
+      \strng{authornamehash}{211a3e132e41f9394be92b65485e8ffd}
+      \strng{authorfullhash}{f4b0e85c879a27da8125b8706c3b727f}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Chemistry - A European Journal}
+      \field{month}{4}
+      \field{number}{35}
+      \field{title}{Improved Infrared Spectra Prediction by {DFT} from a New Experimental Database}
+      \field{volume}{23}
+      \field{year}{2017}
+      \field{pages}{8414\bibrangedash 8423}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1002/chem.201700340
+      \endverb
+    \endentry
+    \entry{Michalska2005}{article}{}
+      \name{author}{2}{}{%
+        {{hash=311bb942cf780cd20e118caea7e1ba72}{%
+           family={Michalska},
+           familyi={M\bibinitperiod},
+           given={Danuta},
+           giveni={D\bibinitperiod}}}%
+        {{hash=0b843c80ebbd39fe2d746cc8b792b241}{%
+           family={Wysokiński},
+           familyi={W\bibinitperiod},
+           given={Rafa{ł}},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier {BV}}%
+      }
+      \strng{namehash}{76112e6e8da5aceffe8a554a702bff84}
+      \strng{fullhash}{76112e6e8da5aceffe8a554a702bff84}
+      \strng{bibnamehash}{76112e6e8da5aceffe8a554a702bff84}
+      \strng{authorbibnamehash}{76112e6e8da5aceffe8a554a702bff84}
+      \strng{authornamehash}{76112e6e8da5aceffe8a554a702bff84}
+      \strng{authorfullhash}{76112e6e8da5aceffe8a554a702bff84}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Chemical Physics Letters}
+      \field{month}{2}
+      \field{number}{1-3}
+      \field{title}{The prediction of Raman spectra of platinum({II}) anticancer drugs by density functional theory}
+      \field{volume}{403}
+      \field{year}{2005}
+      \field{pages}{211\bibrangedash 217}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1016/j.cplett.2004.12.096
+      \endverb
+    \endentry
+    \entry{Neto2017}{article}{}
+      \name{author}{5}{}{%
+        {{hash=173816f12641cc1ce0c5b82e3a14efe5}{%
+           family={Neto},
+           familyi={N\bibinitperiod},
+           given={Abel\bibnamedelimb F.\bibnamedelimi G.},
+           giveni={A\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=9456358fb853fbbfa352a6f3c73e7f20}{%
+           family={Huda},
+           familyi={H\bibinitperiod},
+           given={Muhammad\bibnamedelima N.},
+           giveni={M\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=c63cc7a9373ca85db61de65ce7d5c9bc}{%
+           family={Marques},
+           familyi={M\bibinitperiod},
+           given={Francisco\bibnamedelima C.},
+           giveni={F\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=957f4c19960b67b4445d56215a6ad3a2}{%
+           family={Borges},
+           familyi={B\bibinitperiod},
+           given={Rosivaldo\bibnamedelima S.},
+           giveni={R\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=b38b25e946c8f69db02d39279701909c}{%
+           family={Neto},
+           familyi={N\bibinitperiod},
+           given={Antonio\bibnamedelimb M.\bibnamedelimi J.\bibnamedelimi C.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Springer Science}%
+        {Business Media {LLC}}%
+      }
+      \strng{namehash}{ae9e9b4587ead6db296dddc3981d7f21}
+      \strng{fullhash}{5c3fdbf083ec87629997a4a3a1d3d42b}
+      \strng{bibnamehash}{5c3fdbf083ec87629997a4a3a1d3d42b}
+      \strng{authorbibnamehash}{5c3fdbf083ec87629997a4a3a1d3d42b}
+      \strng{authornamehash}{ae9e9b4587ead6db296dddc3981d7f21}
+      \strng{authorfullhash}{5c3fdbf083ec87629997a4a3a1d3d42b}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Molecular Modeling}
+      \field{month}{7}
+      \field{number}{8}
+      \field{title}{Thermodynamic {DFT} analysis of natural gas}
+      \field{volume}{23}
+      \field{year}{2017}
+      \verb{doi}
+      \verb 10.1007/s00894-017-3401-1
+      \endverb
+    \endentry
+    \entry{delCampo2008}{article}{}
+      \name{author}{2}{}{%
+        {{hash=b0baa081a753b09417eccddbf9be2540}{%
+           family={Campo},
+           familyi={C\bibinitperiod},
+           given={Jorge\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+           prefix={del},
+           prefixi={d\bibinitperiod}}}%
+        {{hash=707cb6c8d03294d1f70a4483ecaad9de}{%
+           family={Köster},
+           familyi={K\bibinitperiod},
+           given={Andreas\bibnamedelima M.},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {{AIP} Publishing}%
+      }
+      \strng{namehash}{029af6e8df60da43f852449398553b5e}
+      \strng{fullhash}{029af6e8df60da43f852449398553b5e}
+      \strng{bibnamehash}{029af6e8df60da43f852449398553b5e}
+      \strng{authorbibnamehash}{029af6e8df60da43f852449398553b5e}
+      \strng{authornamehash}{029af6e8df60da43f852449398553b5e}
+      \strng{authorfullhash}{029af6e8df60da43f852449398553b5e}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Chemical Physics}
+      \field{month}{7}
+      \field{number}{2}
+      \field{title}{A hierarchical transition state search algorithm}
+      \field{volume}{129}
+      \field{year}{2008}
+      \field{pages}{024107}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1063/1.2950083
+      \endverb
+    \endentry
+    \entry{Jensen2013}{book}{}
+      \name{author}{1}{}{%
+        {{hash=07272f7b37bc95d4f9e9ac01efc83dcf}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York}%
+      }
+      \list{publisher}{1}{%
+        {John Wiley \& Sons}%
+      }
+      \strng{namehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{fullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{bibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authorbibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authornamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \strng{authorfullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-1-118-68162-6}
+      \field{title}{Introduction to Computational Chemistry}
+      \field{year}{2013}
+    \endentry
     \entry{SpicherSHP2021}{article}{}
       \name{author}{2}{}{%
         {{hash=d0ba004fb45e3b7bcf7245f586572418}{%
@@ -55,6 +552,54 @@
       \verb 10.1021/acs.jctc.0c01306
       \endverb
     \endentry
+    \entry{Lindh1995}{article}{}
+      \name{author}{4}{}{%
+        {{hash=5c108ab1a0843637b047fce28ac482fa}{%
+           family={Lindh},
+           familyi={L\bibinitperiod},
+           given={Roland},
+           giveni={R\bibinitperiod}}}%
+        {{hash=7f5bfecfe78a2eff734d395a20d54e8e}{%
+           family={Bernhardsson},
+           familyi={B\bibinitperiod},
+           given={Anders},
+           giveni={A\bibinitperiod}}}%
+        {{hash=16fd2b8b55f669ad2021a423b59a313f}{%
+           family={Karlström},
+           familyi={K\bibinitperiod},
+           given={Gunnar},
+           giveni={G\bibinitperiod}}}%
+        {{hash=6c93e5ee9b051c1ff4348b3035106428}{%
+           family={Malmqvist},
+           familyi={M\bibinitperiod},
+           given={Per-{Å}ke},
+           giveni={P\bibinithyphendelim Å\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier {BV}}%
+      }
+      \strng{namehash}{e66b3e67a87ffc4bf71decda85819309}
+      \strng{fullhash}{9ebff177d160c13a53cc9a5e541f11fc}
+      \strng{bibnamehash}{9ebff177d160c13a53cc9a5e541f11fc}
+      \strng{authorbibnamehash}{9ebff177d160c13a53cc9a5e541f11fc}
+      \strng{authornamehash}{e66b3e67a87ffc4bf71decda85819309}
+      \strng{authorfullhash}{9ebff177d160c13a53cc9a5e541f11fc}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Chemical Physics Letters}
+      \field{month}{7}
+      \field{number}{4}
+      \field{title}{On the use of a Hessian model function in molecular geometry optimizations}
+      \field{volume}{241}
+      \field{year}{1995}
+      \field{pages}{423\bibrangedash 428}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1016/0009-2614(95)00646-l
+      \endverb
+    \endentry
     \entry{Sanders2015}{article}{}
       \name{author}{3}{}{%
         {{hash=5a97c009d31321e9fd42c895e7037d37}{%
@@ -83,8 +628,8 @@
       \strng{authornamehash}{f0c3fdf9ab1da500040e051da9f51092}
       \strng{authorfullhash}{848dbc293e727aa4d239b5048c9247d5}
       \field{extraname}{1}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{{ACS} Central Science}
@@ -97,12 +642,6 @@
       \range{pages}{9}
       \verb{doi}
       \verb 10.1021/oc5000404
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1021/oc5000404
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1021/oc5000404
       \endverb
     \endentry
     \entry{Stone2016}{book}{}
@@ -125,41 +664,13 @@
       \strng{authorbibnamehash}{9d3ed678c42e26517986be136397bd3a}
       \strng{authornamehash}{9d3ed678c42e26517986be136397bd3a}
       \strng{authorfullhash}{9d3ed678c42e26517986be136397bd3a}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{978-0-198-78915-4}
       \field{title}{The Theory of Intermolecular Forces}
       \field{year}{2016}
-    \endentry
-    \entry{Jensen2013}{book}{}
-      \name{author}{1}{}{%
-        {{hash=07272f7b37bc95d4f9e9ac01efc83dcf}{%
-           family={Jensen},
-           familyi={J\bibinitperiod},
-           given={Frank},
-           giveni={F\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {New York}%
-      }
-      \list{publisher}{1}{%
-        {John Wiley \& Sons}%
-      }
-      \strng{namehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
-      \strng{fullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
-      \strng{bibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
-      \strng{authorbibnamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
-      \strng{authornamehash}{07272f7b37bc95d4f9e9ac01efc83dcf}
-      \strng{authorfullhash}{07272f7b37bc95d4f9e9ac01efc83dcf}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-1-118-68162-6}
-      \field{title}{Introduction to Computational Chemistry}
-      \field{year}{2013}
     \endentry
     \entry{Bannwarth2019_GFN2xTB}{article}{}
       \name{author}{3}{}{%
@@ -189,8 +700,8 @@
       \strng{authornamehash}{cd4754e13476c7b6d3d23ff40703b8e0}
       \strng{authorfullhash}{65e37102f2f154edf6257ba13974a36e}
       \field{extraname}{1}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Chemical Theory and Computation}
@@ -235,8 +746,8 @@
       \strng{authorbibnamehash}{7ca1bfe876d5e037b6aed69704221267}
       \strng{authornamehash}{45eb7d473651da447f1d77717e7f8650}
       \strng{authorfullhash}{7ca1bfe876d5e037b6aed69704221267}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{978-0-387-84858-7}
@@ -271,8 +782,8 @@
       \strng{authorbibnamehash}{d0f7a6e18b557632261c444879fced3d}
       \strng{authornamehash}{d85a8f7a352f561c06a1121c06d31694}
       \strng{authorfullhash}{d0f7a6e18b557632261c444879fced3d}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Machine Learning}
@@ -376,8 +887,8 @@
       \strng{authorbibnamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authornamehash}{3a097aa3ebf2b8c2acf988341dde9710}
       \strng{authorfullhash}{7a67607c66e4af944b5f16461d6d0a87}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Machine Learning Research}
@@ -404,8 +915,8 @@
       \strng{authorbibnamehash}{70c181d8e4c016b3bd17df1b9caf3101}
       \strng{authornamehash}{70c181d8e4c016b3bd17df1b9caf3101}
       \strng{authorfullhash}{70c181d8e4c016b3bd17df1b9caf3101}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{A $\Delta$-Machine Learning Quantum Chemical Approach Based on Semiempirical Electronic Structure Theory}
@@ -462,8 +973,8 @@
       \strng{authornamehash}{cd4754e13476c7b6d3d23ff40703b8e0}
       \strng{authorfullhash}{5555f82330d353f6d9ec3adcdbf1c074}
       \field{extraname}{2}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Abstract This review covers a family of atomistic, mostly quantum chemistry (QC) based semiempirical methods for the fast and reasonably accurate description of large molecules in gas and condensed phase. The theory is derived from a density functional (DFT) perturbation expansion of the electron density in fluctuation terms to various orders similar to the original density functional tight binding model. The term “eXtended” in their name (xTB) emphasizes the parameter availability for almost the entire periodic table of elements (Z ≤ 86) and improvements of the underlying theory regarding, for example, the atomic orbital basis set, the level of multipole approximation and the treatment of the important electrostatic and dispersion interactions. A common feature of most members is their consistent parameterization on accurate gas phase theoretical reference data for geometries, vibrational frequencies and noncovalent interactions, which are the primary properties of interest in typical applications to systems composed of up to a few thousand atoms. Further specialized versions were developed for the description of electronic spectra and corresponding response properties. Besides a provided common theoretical background with some important implementation details in the efficient and free xtb program, various benchmarks for structural and thermochemical properties including (transition-)metal systems are discussed. The review is completed by recent extensions of the model to the force-field (FF) level as well as its application to solids under periodic boundary conditions. The general applicability together with the excellent cost-accuracy ratio and the high robustness make the xTB family of methods very attractive for various fields of computer-aided chemical research. This article is categorized under: Electronic Structure Theory > Ab Initio Electronic Structure Methods Electronic Structure Theory > Semiempirical Electronic Structure Methods Software > Quantum Chemistry}
@@ -475,7 +986,7 @@
       \field{pages}{e1493}
       \range{pages}{-1}
       \verb{doi}
-      \verb https://doi.org/10.1002/wcms.1493
+      \verb 10.1002/wcms.1493
       \endverb
       \keyw{density functional tight-binding theory,multilevel quantum chemistry,semiempirical molecular orbital theory}
     \endentry
@@ -507,8 +1018,8 @@
       \strng{authornamehash}{f0c3fdf9ab1da500040e051da9f51092}
       \strng{authorfullhash}{848dbc293e727aa4d239b5048c9247d5}
       \field{extraname}{2}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{{ACS} Central Science}
@@ -550,8 +1061,8 @@
       \strng{editorbibnamehash}{07817129a96c7184fd96e5b40e4ff059}
       \strng{editornamehash}{07817129a96c7184fd96e5b40e4ff059}
       \strng{editorfullhash}{07817129a96c7184fd96e5b40e4ff059}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{{P}roceedings of the 9th {P}ython in {S}cience {C}onference}
@@ -713,8 +1224,8 @@
       \strng{authorbibnamehash}{65bc8de17d9fc3f38d448b6bcb2d28a2}
       \strng{authornamehash}{65bc8de17d9fc3f38d448b6bcb2d28a2}
       \strng{authorfullhash}{fabcab2a3724f4a7c9078cb1c04d722c}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{pandas-dev/pandas: Pandas 1.4.2}
@@ -727,4 +1238,3 @@
 \endrefsection
 \endinput
 
->>>>>>> 7adba9a80f5813d24f5daf7d2d3ac66159bc9c7b
