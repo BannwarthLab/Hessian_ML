@@ -242,7 +242,7 @@ Two approaches are used for the differentiation.
 These are the \textbf{indexed} and \textbf{permuted} approach.
 \begin{table}[H]
 	\centering
-	\caption[List of Quantities used for the ML model features.]{List of quantities used for the ML models as features.
+	\caption[List of Quantities used as features for the ML model.]{List of quantities used as features for the ML models.
 			The quantities are divided into geometry,
 			density and energy based quantities.}
 		\begin{tabular}{l l l}
@@ -340,7 +340,7 @@ The number of data points is $n$.
 	\label{eq:MSE}
 	\mathsf{MSE} =  \dfrac{1}{n} \sum_{i=1}^n \left( y_{i\mathsf{,ML}} - y_{i\mathsf{,xTB}} \right)^2
 \end{align}
-For the comparison of the different models (e.g. \mbox{ETR} and \mbox{RFR}) normal distribution is assumed (s.~Eq.~\eqref{eq:NormalDistribution}). 
+For the comparison of the different models (e.g. \mbox{ETR} and \mbox{RFR}) a normal distribution is assumed (s.~Eq.~\eqref{eq:NormalDistribution}). 
 For this the difference of a quantity $q$ between the \mbox{GFN2--xTB} computation and ML model prediction is calculated.
 Furthermore, the standard deviation $\sigma$ and mean $\overline{\Delta q}$ from the difference $\Delta q$ is computed.
 
@@ -348,8 +348,8 @@ Furthermore, the standard deviation $\sigma$ and mean $\overline{\Delta q}$ from
 	\label{eq:NormalDistribution}
 	f(x)  = \dfrac{1}{\sigma \sqrt{2\pi}} \exp\left({-\dfrac{1}{2} \left(\dfrac{q-\overline{\Delta q}}{\sigma}\right)^2}\right)
 \end{align}
-The investigated quantities $q$ are the Hessian elements and the wave number $\tilde{\nu}$.\\
-In addition to the Hessian elements and $\tilde{\nu}$ (s. Eq.~\eqref{eq:WN})  the force constant $k$ (Eq.~\eqref{eq:FC}) was examined.
+The investigated quantities $q$ are the Hessian elements and the wave number $\tilde{\nu}$ (s. Eq.~\eqref{eq:WN}).\\
+In addition to the Hessian elements and $\tilde{\nu}$, the force constant $k$ (Eq.~\eqref{eq:FC}) was examined. Though, $k$ was used directly for comparisons.
 Here, $\lambda$ are the eigenvalues of the mass weighted projected Hessian matrix $\textbf{H}^\mathsf{proj,w|mi}$ and $m_i$ the mass of each atom.
 For the transformation into SI--units, the Hartree Energy $E_\mathsf{h}$,
 Planck constant $h$, reduced Planck constant $\hbar$, speed of light $c$ and the atomic mass unit $u$ are required.

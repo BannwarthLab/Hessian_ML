@@ -1,11 +1,11 @@
 \chapter{Theory}
 \label{chap:Theory}
 Four topics will be discussed in the theory as this research relies on those.
-Supervised ML models rely on features and the target.
+Supervised ML models are based on features and the target.
 Features are information given to the model, which then predicts the target value.
 To train the model features and targets are computed via GFN2--xTB method.
 To achieve a deliberate system a transformation of coordinates is necessary,
-for which the Euler angles are used.
+for which Euler angles are used.
 As already introduced the Hessian matrix elements are the target. 
 In the last part of this chapter,
 the two ML algorithms used in this research will be discussed.
@@ -62,12 +62,9 @@ The full rotation of the coordinate system in dependency of the Euler angles is 
 \end{align}
 
 \section{Electronic Structure Theory}
-In this report, properties derived from electronic structure theory are used for the training of the ML models.
-As \mbox{GFN2--xTB} is used for this purpose, a short introduction to the Hartree--Fock model and Density Functional Theory is given.
-The introduction starts from the non--relativistic, stationary electronic Schrödinger--equation.
-From this the Hartree--Fock model will be derived.
-This is followed by Density Functional Theory, as this builds the theoretical basis of \mbox{GFN2--xTB}.
-After that the tight--binding method will be introduced from which the semiempirical method \mbox{GFN2--xTB} is derived.
+In this work, the features and target for the ML model are derived by the use of the \mbox{GFN2--xTB} method.
+Therefore, a short introduction to the semiempirical method GFN2--xTB is given. Before that, the mean--field theories Hartee--Fock and Density Functional Theory (DFT) are discussed.
+DFT builds the theoretical basis for density functional tight--binding methods (DFTB), like \mbox{GFN2--xTB}.
 Atomic units are used for all equations in this section. This introduction of Hartree Fock and Density Functional Theory is based on reference \cite{Jensen2013}.
 
 \subsection{Hartree--Fock Model}
@@ -85,6 +82,7 @@ This condition is fulfilled by Slater determinants.
 The Slater determinant consists of $k$~spin--orbital wave functions~$\phi_i$,
 and every wave function is permuted with the coordinates~$\textbf{r}_i$ of the $N$ electrons.
 Furthermore, the wave function is normalized by the factor~$(N!)^{-\frac{1}{2}}$.
+In the Hartee--Fock model only a single Slater determinant is used for the description of the wave function.
 \begin{align}
 	\label{eq:SlaterD}
 	\Psi_\mathrm{e} = \dfrac{1}{\sqrt{N!}} \begin{vmatrix}
@@ -457,8 +455,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		The recursively binary grown split is shown on the left. On the right, the resulting Decision Tree is depicted.}
 		\label{fig:ML_Split}
 	\end{figure}
-	In each partition $Y$ is modeled with a function or constant $R_i$.
-	This can also be depicted in a more familiar approach, which is the decision tree.
+	In each partition, $Y$ is modeled with a function or constant $R_i$.
+	This can also be depicted in a more familiar approach, the decision tree.
 	This is shown in Fig.~\ref*{fig:ML_Split}. Both depictions lead to the same result.\\
 	The splitting points $t_1$ to $t_4$ are chosen differently for the RFR and ETR.
 	In RFR, the splitting point is determined by choosing the best feature and of this feature the best split value.
