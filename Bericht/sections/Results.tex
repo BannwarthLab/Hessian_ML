@@ -2,7 +2,7 @@
 \section{The ML Models and Data Set}
 For every prediction of the Hessian matrix,
 it is necessary to combine the homonuclear and heteronuclear model.
-Three aspects of those models were further investigated,
+Three aspects of those models are further investigated,
 namely the algorithms, the labeling and a generalization.\\
 At first, as described in \autoref{chap:Theory},
 the RFR and ETR are used as the different algorithms for fitting the ML model.
@@ -13,14 +13,14 @@ For the case specific models, only one molecular system with different structure
 While in the general model all molecular systems are used to train one single model. 
 For the further discussion, abbreviations are used for the description of the different variations of the model.
 As an example, the abbreviation for the model with the ETR as the algorithm, the indexed labeling and general case is \mbox{ETR--Gen--Idx}.\\
-A data set for benchmarking the ML model was constructed. The set consists of eight different molecules:
+A data set for benchmarking the ML model is constructed. The set consists of eight different molecules:
 $\mathrm{H}_2$, $\mathrm{N}_2$, $\mathrm{O}_2$, $\mathrm{F}_2$, $\mathrm{HF}$, $\mathrm{CO}$,
 $\mathrm{H}_2\mathrm{O}$, and $\mathrm{NH}_3$.
 For each molecule, structures with different bond lengths are generated.
 Only the distance of one bond is changed for each molecule.
 This leads to 103 different structures. These structures are split into a training set of 75\% and a test set of 25\%.
 The split is done structure wise to achieve the possibility to compare other quantities than the Hessian elements.
-For each structure, the Hessian and feature were calculated with the \mbox{GFN2--xTB} method.\\
+For each structure, the Hessian and feature are calculated with the \mbox{GFN2--xTB} method.\\
 Moreover, the performance of the model to a complete unknown system is of interest.
 Therefore, a H$_3$--system is used.
 The full data set introduced above is used as a training set for the model,
@@ -97,8 +97,8 @@ The computations are also done for the model Gen--Perm and shown in Fig~\ref{fig
 \newpage
 \section{The H$_\mathrm{\textbf{2}}$ system}
 As a first approach,
-the \mbox{ETR--Case--Perm} model was used for the subset of the hydrogen molecule.
-Here, the wave numbers $\tilde{\nu}_\mathrm{ML}$ were predicted and plotted against the via \mbox{GFN2--xTB} calculated wave numbers $\tilde{\nu}_\mathrm{xTB}$.
+the \mbox{ETR--Case--Perm} model is used for the subset of the hydrogen molecule.
+Here, the wave numbers $\tilde{\nu}_\mathrm{ML}$ are predicted and plotted against the via \mbox{GFN2--xTB} calculated wave numbers $\tilde{\nu}_\mathrm{xTB}$.
 This is done for 5 random states and is shown in Fig.~\ref{fig:WN_H2}.
 The black line is the diagonal, on which the data points would appear for a perfect prediction.
 Furthermore, the wave number increases with the decrease of the bond length.
@@ -107,11 +107,11 @@ there are small deviations from the diagonal and therefore, in respect to the sm
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.9\textwidth]{H2_single/WN_xTB_vs_ML.eps}
-    \caption[Comparison of wave numbers from GFN2--xTB and the ML model.]{ The wavenumber, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
+    \caption[Comparison of wave numbers from GFN2--xTB and the ML model.]{ The wave number, predicted via the ML model $\tilde{\nu}_\mathrm{ML}$
     is plotted against the wave number calculated via \mbox{GFN2--xTB} $\tilde{\nu}_\mathrm{xTB}$.
     The model uses the Extra Tree Regression.
     The sample set is $\mathrm{H}_2$ and the training set is 75~\% of the whole set.
-    The prediction were done for 5 random states.}
+    The prediction are done for 5 random states.}
     \label{fig:WN_H2}
 \end{figure}
 The deviations are stronger in the cases of $1800~\mathrm{cm^{-1}} > \tilde{\nu}_\mathrm{xTB}$. For $\tilde{\nu}_\mathrm{xTB} > 7500~\mathrm{cm^{-1}}$ there is an outlier.
@@ -125,14 +125,14 @@ This concludes in the sufficient description of the wave numbers for interpolati
 It could also be shown, that the prediction fails for extrapolation.
 
 \section{Comparison of RFR and ETR}
-For the comparison of the algorithms, the \mbox{RFR--Gen-Perm} and \mbox{ETR--Gen--Perm} models were used.
+For the comparison of the algorithms, the \mbox{RFR--Gen-Perm} and \mbox{ETR--Gen--Perm} models are used.
 These models are compared to each other by testing their dependency on the amount of training set used.
 As the quantity for testing the performance the MSE 
 between the predicted Hessian and the Hessian computed via \mbox{GFN2--xTB} is used.
-The MSE was calculated for ten different random states and the mean and standard deviation of these MSE was calculated.\\
+The MSE is calculated for ten different random states and the mean and standard deviation of these MSE is calculated.\\
 It is expected, that the performance of the ML model should increase, the more data it is trained with.
 This can be interpreted as a statistical learning behavior. 
-To verify this behavior, the training set was increased successively.
+To verify this behavior, the training set is increased successively.
 The full training set is 75~\% of the full data set. Thus, the test set is 25~\% of the data set.
 The \textit{Amount of Training set used}~$=1$ corresponds to 75~\%.  
 While keeping the test set constant, the amount of training set is changed successively between 0.1 of the data set to 1.0.
@@ -149,7 +149,7 @@ and the RFR (on the right). The error bars indicate the standard deviation.
     On the left is the learning plot of the Extra Tree Regression and on the right the plot of the Random Forest Regression shown.
     The full training set is 75~\% of the sample set.
     The full sample set, excluding the $\mathrm{H}_3$~system, is used.
-    The mean of ten random states were used for the MSE.
+    The mean of ten random states are used for the MSE.
     The plots are done for the homonuclear model (blue) and heteronuclear model (red).}
     \label{fig:Comparison_RFR_ETR}
 \end{figure}
@@ -168,7 +168,7 @@ For this, the features are scattered with a random factor.
 The intensity of the scattering is amplified by the factor $\sigma$.
 It is expected, that a model that learns from the features performs worse,
 if the scattering of the data points increases.
-The performance of the model \mbox{ETR--Multi--Perm} was tested for this and is shown in Fig~\ref{fig:MSE_sigma}.
+The performance of the model \mbox{ETR--Multi--Perm} is tested for this and is shown in Fig~\ref{fig:MSE_sigma}.
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.75\textwidth]{MSE/MSE_vs_sigma.eps}
@@ -176,16 +176,16 @@ The performance of the model \mbox{ETR--Multi--Perm} was tested for this and is 
     Learning plots for predicting Hessian elements~$\frac{\partial^2E}{\partial a \partial b}$
     for a variation of the factor~$\sigma$.
     The full sample set, excluding the $\mathrm{H}_3$~system, is used for the Ml models.
-    The mean of ten random states were used for the MSE.
+    The mean of ten random states are used for the MSE.
     The plots are done for the homonuclear model (blue) and heteronuclear model (red).}
     \label{fig:MSE_sigma}
 \end{figure}
  
-The prediction was done for ten different random states.
-The MSE between the predicted Hessian elements and the via \mbox{GFN2--xTB} calculated ones was investigated.
+The prediction is done for ten different random states.
+The MSE between the predicted Hessian elements and the via \mbox{GFN2--xTB} calculated ones is investigated.
 For the investigated range of $0 \leq \sigma \leq 2.5$ the MSE increases monotonically.
 Hence, this shows, that the model learns from the features and is not purely random.\\
-In this section a comparison of the RFR and ETR was done.
+In this section a comparison of the RFR and ETR is done.
 The ETR shows overall a better performance than the RFR.
 Furthermore, it could be verified,
 that the ML model learns statistically from the features used for the prediction of the Hessian matrices.
@@ -193,20 +193,20 @@ that the ML model learns statistically from the features used for the prediction
 \newpage
 \section{Comparison of Permutation Model and Indexed Model}
 Beside the different algorithms for the construction of the trees,
-the models with the variations of Gen/Case and Idx/Perm were compared.
+the models with the variations of Gen/Case and Idx/Perm are compared.
 Here, the models \mbox{ETR--Gen--Perm}, \mbox{ETR--Gen--Idx}, \mbox{ETR--Case--Perm} and \mbox{ETR--Case--Idx} are investigated.
 The quantities for measuring are the Hessian elements and the wave numbers of the harmonic vibration.
-The difference between the predicted and via \mbox{GFN2--xTB} computed quantities were computed.
-From these differences the standard deviation as also the mean were calculated,
-and a Gaussian distribution was assumed.
-At first the direct prediction of the Hessian elements were investigated,
+The difference between the predicted and via \mbox{GFN2--xTB} computed quantities are computed.
+From these differences the standard deviation as also the mean are calculated,
+and a Gaussian distribution is assumed.
+At first the direct prediction of the Hessian elements are investigated,
 and its distribution is shown in Fig~\ref{fig:ErrorDistHess}.
 \begin{figure}[H]
     \centering
     \includegraphics[width =0.75\textwidth]{ErrorDistGraphs/error_distribution_ml_hess.eps}
     \caption[Gaussian type Distribution for the prediction of Hessian elements.]
     { Distribution of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ for different models.
-    In every model, the Extra Tree Regression was used.
+    In every model, the Extra Tree Regression is used.
     The distribution is assumed to be Gaussian type.
     For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ are computed. }
     \label{fig:ErrorDistHess}
@@ -235,7 +235,7 @@ This might be the reason for the deviation.\\
     \subfloat{\includegraphics[width = 0.5\textwidth]{ErrorDistGraphs/WN_xTB_vs_ML.eps}}
     \caption[Error Distribution for the prediction of wave numbers.]{
     On the left is the distribution of $\Delta \tilde{\nu}$ for different models.
-    In every model, the Extra Tree Regression was used.
+    In every model, the Extra Tree Regression is used.
     The distribution is assumed to be Gaussian type.
     For this the median and standard deviation of $\Delta \tilde{\nu}$ are computed.
     On the right is the $\tilde{\nu}_\mathrm{ML}$ plotted against $\tilde{\nu}_\mathrm{xTB}$.
@@ -243,9 +243,9 @@ This might be the reason for the deviation.\\
     \label{fig:ErrorDistWN}
 \end{figure}
 
-The wave numbers $\tilde{\nu}$ of the harmonic frequencies of the molecules were calculated.
-The difference between the difference between the ML predicted $\tilde{\nu}_\mathrm{ML}$ and the via \mbox{GFN2--xTB} computed $\tilde{\nu}_\mathrm{xTB}$ was calculated.
-A Gaussian distribution was assumed.
+The wave numbers $\tilde{\nu}$ of the harmonic frequencies of the molecules are calculated.
+The difference between the difference between the ML predicted $\tilde{\nu}_\mathrm{ML}$ and the via \mbox{GFN2--xTB} computed $\tilde{\nu}_\mathrm{xTB}$ is calculated.
+A Gaussian distribution is assumed.
 This is plotted in Fig.~\ref{fig:ErrorDistWN} for the four different varieties of the model.
 Furthermore, the plot of the $\tilde{\nu}_\mathrm{ML}$ vs. $\tilde{\nu}_\mathrm{xTB}$ is shown.
 The relative distributions of the four variations of the models are similar to the ones of the Hessian elements.
@@ -264,13 +264,13 @@ Therefore, they narrow the standard deviation, and shift the mean to zero. Furth
 to see whether the extrapolation or the wave numbers, corresponding to rotation and translation, have a higher impact onto the mean and standard deviation.\\
 \section{Benchmarking with the H$_\mathrm{\textbf{3}}$~system}
 Especially, the prediction of Hessian matrices of fully unknown systems is of interest.
-Hence, the ETR-Gen-Perm and ETR-Gen-Idx models were tested on the performance on a new, for the model unknown, system.
-For the $\mathrm{H}_3$ system the outer hydrogen atoms were fixed,
-while the inner hydrogen atom was shift from one hydrogen to another.
+Hence, the ETR-Gen-Perm and ETR--Gen--Idx models are tested on the performance on a new, for the model unknown, system.
+For the $\mathrm{H}_3$ system the outer hydrogen atoms are fixed,
+while the inner hydrogen atom is shifted from one hydrogen to another.
 H1 is fixed at $x(\mathrm{H1})= 0.0~\si{\angstrom}$ and H3 at $x(\mathrm{H1})= 4.0~\si{\angstrom} $
 For each position of the hydrogen atom,
-the force constants of the systems were predict via the ML model.
-The force constants were also calculated via \mbox{GFN2--xTB}.\\
+the force constants of the systems are predicted via the ML model.
+The force constants are also calculated via \mbox{GFN2--xTB}.\\
 Fig.~\ref{fig:FC_idx} shows the force constants calculated by \mbox{GFN2--xTB} and predicted via the \mbox{ETR--Gen--Idx} model.
 Interesting to point out is the symmetric behavior of the system.
 The ML model should, in principle, mimic this behavior.
@@ -283,17 +283,17 @@ The ML model should, in principle, mimic this behavior.
     H1 is located at $x(\mathrm{H1})= 0.0~\si{\angstrom} $ and H3 at $x(\mathrm{H1})= 4.0~\si{\angstrom} $.
     The force constants are shown for the \mbox{GFN2--xTB} calculation (red),
     as also the via the ML model predicted values (blue).
-    The full sample set, excluding the $\mathrm{H}_3$~system, was used for the ML model.
-    The ML model \mbox{ETR--Gen--Idx} was used for the prediction.
+    The full sample set, excluding the $\mathrm{H}_3$~system, is used for the ML model.
+    The ML model \mbox{ETR--Gen--Idx} is used for the prediction.
     }
     \label{fig:FC_idx}
 \end{figure}
 \newpage
 While this is overall the case, there are deviations from this behavior.
 For the example, the symmetry is not given in the case of $x(\mathrm{H2}) = 1.84~\si{\angstrom} $ and $x(\mathrm{H2}) = 2.15~\si{\angstrom}$.\\
-Fig.~\ref{fig:FC_perm} shows the prediction of the focre constants via the \mbox{ETR--Gen--Perm} model.
+Fig.~\ref{fig:FC_perm} shows the prediction of the force constants via the \mbox{ETR--Gen--Perm} model.
 Similar to the \mbox{ETR--Gen--Idx} model, the symmetry is in general achieved.
-Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\angstrom}$ and $x(\mathrm{H2}) = 3.08 ~\si{\angstrom}$ show deviations from oneanother.
+Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\angstrom}$ and $x(\mathrm{H2}) = 3.08 ~\si{\angstrom}$ show deviations from one another.
 
 \begin{figure}[H]
     \centering
@@ -302,11 +302,11 @@ Nevertheless, for example the force constants at $x(\mathrm{H2}) = 0.91~\si{\ang
     H1 is located at $x(\mathrm{H1})= 0.0~\si{\angstrom} $ and H3 at $x(\mathrm{H1})= 4.0~\si{\angstrom}$
     The force constants are shown for the \mbox{GFN2--xTB} calculation (red),
     as also the via the ML model predicted values (blue).
-    The full sample set, excluding the $\mathrm{H}_3$~system, was used for the ML model.
-    The ML model \mbox{ETR--Gen--Perm} was used for the prediction.}
+    The full sample set, excluding the $\mathrm{H}_3$~system, is used for the ML model.
+    The ML model \mbox{ETR--Gen--Perm} is used for the prediction.}
     \label{fig:FC_perm}
 \end{figure}
-An overall sufficient prediction of the force constants was achieved,
+An overall sufficient prediction of the force constants is achieved,
 though there are still errors in the symmetry.
 Further investigations on the models are necessary,
 to locate the reason for the break of symmetry.
@@ -315,19 +315,19 @@ The rotation process can be neglected, as rotation is also done for the \mbox{GF
 A decoupled investigation of the homonuclear and heteronuclear model is therefore necessary. \\
 \newpage
 \chapter{Conclusion \& Outlook}
-The goal of the research was the prediction of Hessian matrices by a machine learning model.
-The machine learning model was based on atomic features and the prediction of the elements of the Hessian matrices was done atom pair wise.
-The model was benchmarked by a small data set of 8 molecules with 103 different structures.
-The computations of the Hessian matrices and features for these systems was done with the \mbox{GFN2--xTB} method.\\
-In the first place, the general learning of the model was investigated.
+The goal of the research is the prediction of Hessian matrices by a machine learning model.
+The machine learning model is based on atomic features and the prediction of the elements of the Hessian matrices is done atom pair wise.
+The model is benchmarked by a small data set of 8 molecules with 103 different structures.
+The computations of the Hessian matrices and features for these systems is done with the \mbox{GFN2--xTB} method.\\
+In the first place, the general learning of the model is investigated.
 A statistical learning behavior of the ML models \mbox{RFR--Gen--Perm} and \mbox{ETR--Gen--Perm} could be observed.
 Compared to another, the \mbox{ETR--Gen--Perm} model showed a better performance.
 Furthermore, a physical correlation could be presented for the \mbox{ETR--Gen--Perm} model.\\
-Moreover, four variations of the model were investigated and compared to another, which are the models \mbox{ETR--Gen/Case--Perm/Idx}.
-Here, a similar behavior for different labeling approaches (Indexed and Permuted) was shown.
+Moreover, four variations of the model are investigated and compared to another, which are the models \mbox{ETR--Gen/Case--Perm/Idx}.
+Here, a similar behavior for different labeling approaches (Indexed and Permuted) is shown.
 The general models show a better prediction than the case--specific models.
-For this, the Hessian elements, zero point vibrational energy and wave numbers were predicted.\\
-In addition, the set was used for the prediction of a system, that is unknown to the ML model.\\
+For this, the Hessian elements, zero point vibrational energy and wave numbers are predicted.\\
+In addition, the set is used for the prediction of a system, that is unknown to the ML model.\\
 The data set of the new $\mathrm{H}_3$ system shows an almost symmetric behavior for the force constants,
 which could, with some minor errors, be depicted by the ML models.\\
 

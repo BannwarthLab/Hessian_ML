@@ -229,7 +229,7 @@ The procedure of the projection and mass--weighting is described in the chapter 
 \section{ML Model Construction}
 Supervised ML models have to be trained with a set of features and targets.
 In this work, the features are mostly derived from atomic quantities based on geometry, density and energy.
-This feature selection criteria is based on Steinbach's work.\supercite{PitMA} Some adaptations are done.
+This feature selection criteria are based on Steinbach's work.\supercite{PitMA} Some adaptations are done.
 Here, the cartesian dipole moment and quadrupole moment elements are used as features instead of its norm.
 This is one reason for the transformation of the CS.
 This applies also for the extended versions.
@@ -369,7 +369,7 @@ Planck constant $h$, reduced Planck constant $\hbar$, speed of light $c$ and the
 \section{Computational Methods}
 
 All electronic structure computations were performed with \mbox{GFN2--xTB}\supercite{Bannwarth2019_GFN2xTB}, for this \texttt{xtb}\supercite{Bannwarth2021_xTB} was used.
-The key words ''gfn2'', ''hess'' and ''ml\_feature'' were passed for the computation of the features and target.
+The keywords ''gfn2'', ''hess'' and ''ml\_feature'' were passed for the computation of the features and target.
 The computations were done for every structure in the APF CS. 
 For transformation of the coordinates and the ML models python was used.
 Especially, the packages \texttt{sklearn}\supercite{scikit-learn}, \texttt{numpy}\supercite{numpy} and \texttt{pandas}\supercite{pandas.Paper,pandas.software} were used for this project.
