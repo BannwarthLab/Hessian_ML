@@ -9,7 +9,7 @@
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features.}}{24}{figure.caption.10}%
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{24}{subfigure.1.1}%
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{24}{subfigure.1.2}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Best Pearson Correlation Coefficient computed element wise.}}{25}{figure.caption.11}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Best Pearson Correlation Coefficient computed element--wise.}}{25}{figure.caption.11}%
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{25}{subfigure.2.1}%
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{25}{subfigure.2.2}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Comparison of wave numbers from GFN2--xTB and the ML model.}}{27}{figure.caption.12}%

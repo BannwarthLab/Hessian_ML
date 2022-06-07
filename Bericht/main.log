@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  7 JUN 2022 14:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.5.5)  7 JUN 2022 16:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1745,13 +1745,13 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 Here is how much of TeX's memory you used:
  32124 strings out of 480554
  642097 string characters out of 2894676
- 1467756 words of memory out of 3000000
+ 1466757 words of memory out of 3000000
  49274 multiletter control sequences out of 15000+600000
  525722 words of font info for 134 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
  108i,19n,106p,10678b,2056s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc} </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0900.pk>{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc} </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss2488.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1200.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx0800.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2074.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1095.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1440.pk> </home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx2488.pk></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsmfIPiXi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssex10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmssmi8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy6.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy8.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1095.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1200.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/euler/eurb10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmib10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmtt10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsam10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/ssmsbm10.pfb>
-Output written on main.pdf (50 pages, 1412475 bytes).
+Output written on main.pdf (50 pages, 1412438 bytes).
 PDF statistics:
  2185 PDF objects out of 2487 (max. 8388607)
  225 named destinations out of 1000 (max. 500000)

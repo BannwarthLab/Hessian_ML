@@ -67,7 +67,6 @@ for rnd_state in [42]:#,0,56,29,100]:
         Systems[i].gen_Hessian_vector(train_rot=True)
         X_homo_temp,X_hetero_temp = Systems[i].gen_Feature(label = 'indexed',train_rot=True)
 
-
         X_homo.extend(X_homo_temp)
         y_homo.extend(Systems[i].H_AA_vec)
 
@@ -95,6 +94,14 @@ for rnd_state in [42]:#,0,56,29,100]:
     for i in test_idx:
         Systems[i].gen_Hessian_vector()
         X_homo_temp,X_hetero_temp = Systems[i].gen_Feature(label = 'indexed')
+
+        if i in [test_idx[1],test_idx[8]]:
+            print(f'{i}')
+            print(len(Systems[i].features.Feature_AA))
+            print(Systems[i].features.Feature_AA[0][0:9])
+            print(Systems[i].features.Feature_AA[9][0:9])
+            print(Systems[i].features.Feature_AA[18][0:9])
+            #print(Systems[i].features.Feature_AB[0][0:9])
 
         # if i == test_idx[0]:
         #     print(X_homo_temp[0])
@@ -130,9 +137,9 @@ for rnd_state in [42]:#,0,56,29,100]:
 
 
 
-    print(Systems[test_idx[2]].features.qm_atom[:])
-    print(Systems[test_idx[7]].features.qm_atom[:])
-    print(Systems[test_idx[2]].R_MI_APF_mat-Systems[test_idx[7]].R_MI_APF_mat)
+    #print(Systems[test_idx[1]].features.qm_atom[:])
+    #print(Systems[test_idx[8]].features.qm_atom[:])
+    #print(Systems[test_idx[2]].R_MI_APF_mat-Systems[test_idx[7]].R_MI_APF_mat)
 
     r_score_homo = regr_homonuclear.score(full_X_homo_test,full_y_test_homo)
     r_score_hetero = regr_heteronuclear.score(full_X_hetero_test,full_y_test_hetero)

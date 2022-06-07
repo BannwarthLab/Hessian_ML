@@ -6,4 +6,11 @@ arr = np.array([[1,2,3,],
 
 print(arr[0,2])
 
-print(np.linspace(0.0,90.0,2))
+#print(np.linspace(0.0,90.0,2))
+
+liste = []
+
+for i in range(3):
+    liste.extend(arr[i,:])
+
+print(liste)

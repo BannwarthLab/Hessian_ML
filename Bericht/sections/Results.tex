@@ -62,7 +62,7 @@ One possible reason is, that the Hessian matrix is sparse, therefore many matrix
 and do not correlate with the given features. This can reduce $R^2$ significantly.
 Furthermore, the correlation is computed for all Hessian elements.
 If the feature correlations of the elements differ from another, the overall correlation is also decreased.\\
-To investigate the last aspect, the target vector is split Hessian element wise. 
+To investigate the last aspect, the target vector is split Hessian element--wise. 
 For each Hessian element $\frac{\partial^2 E}{\partial a_A \partial b_B}$ the $R^2$ of the features is computed.
 For obvious reasons, the indices $x_i$, $y_i$ and $z_i$ are not included for this correlation.
 \begin{figure}[H]
@@ -71,7 +71,7 @@ For obvious reasons, the indices $x_i$, $y_i$ and $z_i$ are not included for thi
     {\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_diag.eps}}
     \hspace*{0.25cm}
     \subfloat[heteronuclear model]{\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag.eps}}
-    \caption[Best Pearson Correlation Coefficient computed element wise.]{
+    \caption[Best Pearson Correlation Coefficient computed element--wise.]{
         Highest Pearson Correlation Coefficient specifically computed for each Hessian element for the homo-- and heteronuclear model.
         The abbreviation ab corresponds to the elements $\frac{\partial^2 E}{\partial a_A \partial b_B}$. 
                 }
@@ -83,27 +83,27 @@ The elements are abbreviated with the coordinates of the derivative.
 Comparing the highest $R^2$ in Fig~\ref{fig:PCC} with $R^2$ in Fig~\ref{fig:PCC_elementwise},
 there is a significant increase of $R^2$ for the homonuclear and heteronuclear model.
 For the heteronuclear model, there are two exceptions, namely for yx and xz.
-Though the element wise $R^2$ is larger than for the general correlation,
+Though the element--wise $R^2$ is larger than for the general correlation,
 the $R^2$ for yx and xz are still in the magnitude of the general correlation. 
-Interesting to point out, is that most of the features which show element wise the highest correlation
+Interesting to point out, is that most of the features which show element--wise the highest correlation
 are also presented in the ten highest $R^2$ for the general correlation. Exceptions are for the homonuclear model $\epsilon_\mathrm{HAOA}$,
 and for the heteronuclear model ${\mu_A^\mathrm{x,ext}}_\mathrm{Arith}$, ${\mu_{A,p}^\mathrm{x,ext}}_\mathrm{Prod}$, ${E_\mathrm{rep}}_\mathrm{Abs.Diff}$.
-Regarding only the element wise $R^2$ for the homonuclear model, the element pairs (xy,yx), (zx,xz) and (zy,yz) have the same correlation.
+Regarding only the element--wise $R^2$ for the homonuclear model, the element pairs (xy,yx), (zx,xz) and (zy,yz) have the same correlation.
 This is due to the fact, that the Hessian matrix block $\textbf{H}_{AA}$ is symmetric. 
 Moreover, the highest correlations do differ from another for each element, except for the symmetric element pairs.
-This is especially important for the machine learning, as this suggest, that the elements can be differentiated with the used features.
-The computations are also done for the model Gen--Perm and shown in Fig~\ref{fig:PCC_perm} and Fig~\ref{fig:PCC_elementwise_Perm}.
+This is especially important for the machine learning, as this suggests, that the elements can be differentiated with the used features.
+This analysis is also done for the model Gen--Perm and shown in Fig~\ref{fig:PCC_perm} and Fig~\ref{fig:PCC_elementwise_Perm}.
 
 \newpage
 \section{The H$_\mathrm{\textbf{2}}$ system}
-As a first approach,
+As a first model case,
 the \mbox{ETR--Case--Perm} model is used for the subset of the hydrogen molecule.
-Here, the wave numbers $\tilde{\nu}_\mathrm{ML}$ are predicted and plotted against the via \mbox{GFN2--xTB} calculated wave numbers $\tilde{\nu}_\mathrm{xTB}$.
+Here, the predicted wave numbers $\tilde{\nu}_\mathrm{ML}$ are plotted against \mbox{GFN2--xTB} calculated wave numbers $\tilde{\nu}_\mathrm{xTB}$.
 This is done for 5 random states and is shown in Fig.~\ref{fig:WN_H2}.
 The black line is the diagonal, on which the data points would appear for a perfect prediction.
 Furthermore, the wave number increases with the decrease of the bond length.
-For the approximated range of $1800~\mathrm{cm^{-1}}~<~\tilde{\nu}_\mathrm{xTB}~<~7500~\mathrm{cm^{-1}}$
-there are small deviations from the diagonal and therefore, in respect to the small data set of eleven structures, a sufficient prediction.
+In the range of $1800~\mathrm{cm^{-1}}~<~\tilde{\nu}_\mathrm{xTB}~<~7500~\mathrm{cm^{-1}}$
+there are small deviations from the diagonal. Therefore, with respect to the small data set of eleven structures, the model is capable to predict without significant errors.
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.9\textwidth]{H2_single/WN_xTB_vs_ML.eps}
@@ -114,29 +114,29 @@ there are small deviations from the diagonal and therefore, in respect to the sm
     The prediction are done for 5 random states.}
     \label{fig:WN_H2}
 \end{figure}
-The deviations are stronger in the cases of $1800~\mathrm{cm^{-1}} > \tilde{\nu}_\mathrm{xTB}$. For $\tilde{\nu}_\mathrm{xTB} > 7500~\mathrm{cm^{-1}}$ there is an outlier.
+The deviations are more significant for $\tilde{\nu}_\mathrm{xTB} < 1800~\mathrm{cm^{-1}} $. For $\tilde{\nu}_\mathrm{xTB} > 7500~\mathrm{cm^{-1}}$, there is an outlier.
 These predictions are done for cases, where the training set does not include molecules, which have a lower or higher distance, respectively.
 Hence, it can be assumed, that the error is due to extrapolation of the ML model.
 This assumption is underlined by the fact, that the predicted values correspond to the next higher or lower value.
 For example, the next lowest value in the case of the prediction at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$ is $\tilde{\nu}_\mathrm{xTB} \approx 7\cdot 10^4 \mathrm{cm^{-1}}$.
-This in the same order as the predicted value $\tilde{\nu}_\mathrm{ML}\approx 6.4\cdot 10^4 \mathrm{cm^{-1}}$ at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$.
+This in the same order of magnitude as the predicted value $\tilde{\nu}_\mathrm{ML}\approx 6.4\cdot 10^4 \mathrm{cm^{-1}}$ at $\tilde{\nu}_\mathrm{xTB} \approx 1\cdot 10^5 \mathrm{cm^{-1}}$.
 This matches to the expected behavior for a decision tree based algorithms (cf. Fig.~\ref{fig:ML_Split}).\\
 This concludes in the sufficient description of the wave numbers for interpolation.
 It could also be shown, that the prediction fails for extrapolation.
 
 \section{Comparison of RFR and ETR}
-For the comparison of the algorithms, the \mbox{RFR--Gen-Perm} and \mbox{ETR--Gen--Perm} models are used.
-These models are compared to each other by testing their dependency on the amount of training set used.
-As the quantity for testing the performance the MSE 
-between the predicted Hessian and the Hessian computed via \mbox{GFN2--xTB} is used.
+For the comparison of the ML algorithms, the \mbox{RFR--Gen-Perm} and \mbox{ETR--Gen--Perm} models are used.
+These models are compared by testing their dependency on the amount of training set used.
+The performance is qunatified by the MSE 
+between the predicted Hessian and the Hessian computed via \mbox{GFN2--xTB}.
 The MSE is calculated for ten different random states and the mean and standard deviation of these MSE is calculated.\\
-It is expected, that the performance of the ML model should increase, the more data it is trained with.
+It is expected, that the performance of the ML model should increase with the training set size.
 This can be interpreted as a statistical learning behavior. 
 To verify this behavior, the training set is increased successively.
-The full training set is 75~\% of the full data set. Thus, the test set is 25~\% of the data set.
-The \textit{Amount of Training set used}~$=1$ corresponds to 75~\%.  
+The full training set is 75~\% of the full data set. Thus, the test set is 25~\% of the data set
+(the \textit{Amount of Training set used}~$=1$ corresponds to 75~\% of the complete data set).  
 While keeping the test set constant, the amount of training set is changed successively between 0.1 of the data set to 1.0.
-Fig~\ref{fig:Comparison_RFR_ETR} shows the MSE in the dependency of the amount of training set used for the ETR (on the left)
+Fig~\ref{fig:Comparison_RFR_ETR} shows the dependency of the MSE on the amount of training set used for the ETR (on the left)
 and the RFR (on the right). The error bars indicate the standard deviation.
 \begin{figure}[H]
     \centering
@@ -182,12 +182,12 @@ The performance of the model \mbox{ETR--Multi--Perm} is tested for this and is s
 \end{figure}
  
 The prediction is done for ten different random states.
-The MSE between the predicted Hessian elements and the via \mbox{GFN2--xTB} calculated ones is investigated.
+The MSE between the predicted Hessian elements and those calculated using \mbox{GFN2--xTB} is investigated.
 For the investigated range of $0 \leq \sigma \leq 2.5$ the MSE increases monotonically.
 Hence, this shows, that the model learns from the features and is not purely random.\\
 In this section a comparison of the RFR and ETR is done.
 The ETR shows overall a better performance than the RFR.
-Furthermore, it could be verified,
+Furthermore, it could be demonstrated,
 that the ML model learns statistically from the features used for the prediction of the Hessian matrices.
 
 \newpage
@@ -195,19 +195,19 @@ that the ML model learns statistically from the features used for the prediction
 Beside the different algorithms for the construction of the trees,
 the models with the variations of Gen/Case and Idx/Perm are compared.
 Here, the models \mbox{ETR--Gen--Perm}, \mbox{ETR--Gen--Idx}, \mbox{ETR--Case--Perm} and \mbox{ETR--Case--Idx} are investigated.
-The quantities for measuring are the Hessian elements and the wave numbers of the harmonic vibration.
-The difference between the predicted and via \mbox{GFN2--xTB} computed quantities are computed.
-From these differences the standard deviation as also the mean are calculated,
+The quantities for quantifying their performance are the Hessian elements and the wave numbers of the harmonic vibration.
+The difference between the predicted and computed quantities are calculated.
+From these differences the standard deviation and the mean are calculated,
 and a Gaussian distribution is assumed.
-At first the direct prediction of the Hessian elements are investigated,
-and its distribution is shown in Fig~\ref{fig:ErrorDistHess}.
+At first the direct prediction of the Hessian elements is investigated,
+and deviation distribution is shown in Fig~\ref{fig:ErrorDistHess}.
 \begin{figure}[H]
     \centering
     \includegraphics[width =0.75\textwidth]{ErrorDistGraphs/error_distribution_ml_hess.eps}
     \caption[Gaussian type Distribution for the prediction of Hessian elements.]
     { Distribution of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ for different models.
-    In every model, the Extra Tree Regression is used.
-    The distribution is assumed to be Gaussian type.
+    In every model, the ETR is used.
+    The distribution is assumed to be Gaussian.
     For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E}{\partial a \partial b}\right)$ are computed. }
     \label{fig:ErrorDistHess}
 \end{figure}
@@ -235,7 +235,7 @@ This might be the reason for the deviation.\\
     \subfloat{\includegraphics[width = 0.5\textwidth]{ErrorDistGraphs/WN_xTB_vs_ML.eps}}
     \caption[Error Distribution for the prediction of wave numbers.]{
     On the left is the distribution of $\Delta \tilde{\nu}$ for different models.
-    In every model, the Extra Tree Regression is used.
+    In every model, the ETR is used.
     The distribution is assumed to be Gaussian type.
     For this the median and standard deviation of $\Delta \tilde{\nu}$ are computed.
     On the right is the $\tilde{\nu}_\mathrm{ML}$ plotted against $\tilde{\nu}_\mathrm{xTB}$.

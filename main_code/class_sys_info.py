@@ -9,7 +9,7 @@ class sys_info:
         self.dipm = import_dipm(f'{folder}/xyz_dipm.csv').iloc[:,:-3]
         self.N_atoms = len(self.xyz['atoms'])
 
-        self.angle_list  = np.linspace(0.0,360.0,4)
+        self.angle_list  = [0.0]#np.linspace(0.0,360.0,4)
 
         self.features = Feature(f'{folder}/ml_feature.csv',self.angle_list)
 
@@ -252,15 +252,23 @@ class Feature:
                             qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
                             qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
 
-                            qm_atom = matmul(qm_atom,vector_of_ones)
-                            qm_delta = matmul(qm_delta,vector_of_ones)
+                            #qm_atom = matmul(qm_atom,vector_of_ones)
+                            #qm_delta = matmul(qm_delta,vector_of_ones)
+
+                            for k in range(3):
+                                Quantity_AB[j].extend([np.sum(qm_atom[k,:])])
+
+                            for k in range(3):
+                                Quantity_AB[j].extend([np.sum(qm_delta[k,:])])
 
                             Quantity_AB[j].extend(self.CN[i])
                             Quantity_AB[j].extend(dipm_atom)
                             Quantity_AB[j].extend(dipm_delta)
                             Quantity_AB[j].extend(dipm_only_mull)
-                            Quantity_AB[j].extend(qm_atom)
-                            Quantity_AB[j].extend(qm_delta)
+
+
+                            #Quantity_AB[j].extend(qm_atom)
+                            #Quantity_AB[j].extend(qm_delta)
                             Quantity_AB[j].extend(self.energy_based[i])
 
                             j+=1
@@ -276,12 +284,14 @@ class Feature:
                             Features = []
                             #Features.extend(Quantity_AB[0])
                             #Features.extend(Quantity_AB[1])
-                            Features.extend(index[i])
-                            Features.extend([R_AB])
+
 
                             Features.extend(Feature_Arith)
                             Features.extend(Feature_Prod)
                             Features.extend(Feature_AbsDiff)
+
+                            Features.extend(index[i])
+                            Features.extend([R_AB])
 
                             self.Feature_AB.append(Features)
         return
@@ -332,15 +342,22 @@ class Feature:
                     qm_atom = matmul(matmul(R_MI_APF,self.qm_atom[atom_A]),np.transpose(R_MI_APF))
                     qm_delta = matmul(matmul(R_MI_APF,self.qm_delta[atom_A]),np.transpose(R_MI_APF))
 
-                    qm_atom = matmul(qm_atom,vector_of_ones)
-                    qm_delta = matmul(qm_delta,vector_of_ones)
+                    for i in range(3):
+                        Quantity_A.extend([np.sum(qm_atom[i,:])])
+                    #qm_atom = matmul(qm_atom,vector_of_ones)
+                    #qm_delta = matmul(qm_delta,vector_of_ones)
+
+                    for i in range(3):
+                        Quantity_A.extend([np.sum(qm_delta[i,:])])
 
                     Quantity_A.extend(self.CN[atom_A])
                     Quantity_A.extend(dipm_atom)
                     Quantity_A.extend(dipm_delta)
                     Quantity_A.extend(dipm_only_mull)
-                    Quantity_A.extend(qm_atom)
-                    Quantity_A.extend(qm_delta)
+
+
+                    #Quantity_A.extend(qm_atom)
+                    #Quantity_A.extend(qm_delta)
                     Quantity_A.extend(self.energy_based[atom_A])
 
                     for i in range(9):
