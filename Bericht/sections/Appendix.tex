@@ -1,64 +1,4 @@
 \chapter{Appendix}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_w.eps}
-    \caption[Gaussian type distribution for the prediction of weighted projected Hessian elements.]{
-    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ are computed. }    \label{fig:ErrorDistHessW}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_p.eps}
-    \caption[Gaussian type distribution for the prediction of projected Hessian elements.]{
-    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ are computed. }
-    \label{fig:ErrorDistHessP}
-\end{figure}
-    
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_ZPE.eps}
-    \caption[Gaussian type distribution for the prediction of zero point energy.]
-    {Distribution of $\Delta \mathrm{ZPE}$ for different models.
-    In every model, the Extra Tree Regression was used.
-    The distribution is assumed to be Gaussian type.
-    For this the median and standard deviation of $\Delta \mathrm{ZPE}$ are computed.}
-    \label{fig:ErrorDistZPE}
-\end{figure}
-
-
-\begin{figure}[H]
-    \hspace*{-0.25cm}
-    \subfloat[homonuclear model]
-    {\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_diag_perm.eps}}
-    \hspace*{0.25cm}
-    \subfloat[heteronuclear model]{\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_ndiag_perm.eps}}
-    \caption[Pearson Correlation Coefficient for the ten most important features (Gen--Perm model).]{
-                Pearson Correlation Coefficient for the features used for the homonuclear and heteronuclear model.
-                The ten features with the highest coefficients are shown for each model.
-                The features are constructed with the Gen--Perm model.
-                }
-    \label{fig:PCC_perm}
-\end{figure}
-
-\begin{figure}[H]
-    \hspace*{-0.25cm}
-    \subfloat[homonuclear model]
-    {\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm.eps}}
-    \hspace*{0.25cm}
-    \subfloat[heteronuclear model]{\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm.eps}}
-    \caption[Best Pearson Correlation Coefficient computed element wise (Gen--Perm model).]{
-        Highest Pearson Correlation Coefficient specifically computed for each Hessian element for the homo-- and heteronuclear model.
-        The abbreviation ab corresponds to the elements $\frac{\partial^2 E}{\partial a_A \partial b_B}$.
-        The features are constructed with the Gen--Perm model.
-                }
-    \label{fig:PCC_elementwise_Perm}
-\end{figure}
 
 \begin{subequations}
     \label{eq:Feature}
@@ -172,3 +112,64 @@
         \end{tabular}
     \label{tab:Permutation}
 \end{table}
+
+
+\begin{figure}[H]
+    \hspace*{-0.25cm}
+    \subfloat[homonuclear model]
+    {\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_diag_perm.eps}}
+    \hspace*{0.25cm}
+    \subfloat[heteronuclear model]{\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_ndiag_perm.eps}}
+    \caption[Pearson Correlation Coefficient for the ten most important features (Gen--Perm model).]{
+                Pearson Correlation Coefficient for the features used for the homonuclear and heteronuclear model.
+                The ten features with the highest coefficients are shown for each model.
+                The features are constructed with the Gen--Perm model.
+                }
+    \label{fig:PCC_perm}
+\end{figure}
+
+\begin{figure}[H]
+    \hspace*{-0.25cm}
+    \subfloat[homonuclear model]
+    {\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_diag_perm.eps}}
+    \hspace*{0.25cm}
+    \subfloat[heteronuclear model]{\includegraphics[width = 0.48\textwidth]{PearsonCorrelationCoeffiecient/PCC_element_specific_nondiag_perm.eps}}
+    \caption[Best Pearson Correlation Coefficient computed element wise (Gen--Perm model).]{
+        Highest Pearson Correlation Coefficient specifically computed for each Hessian element for the homo-- and heteronuclear model.
+        The abbreviation ab corresponds to the elements $\frac{\partial^2 E}{\partial a_A \partial b_B}$.
+        The features are constructed with the Gen--Perm model.
+                }
+    \label{fig:PCC_elementwise_Perm}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_w.eps}
+    \caption[Gaussian type distribution for the prediction of weighted projected Hessian elements.]{
+    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ for different models.
+    In every model, the ETR was used.
+    A Gaussian distribution is assumed.
+    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj,w}}{\partial a \partial b}\right)$ are computed. }    \label{fig:ErrorDistHessW}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_hess_p.eps}
+    \caption[Gaussian type distribution for the prediction of projected Hessian elements.]{
+    Distribution of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ for different models.
+    In every model, the ETR was used.
+    A Gaussian distribution is assumed.
+    For this the median and standard deviation of $\Delta \left(\frac{\partial^2 E^\mathrm{proj}}{\partial a \partial b}\right)$ are computed. }
+    \label{fig:ErrorDistHessP}
+\end{figure}
+    
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{ErrorDistGraphs/error_distribution_ml_ZPE.eps}
+    \caption[Gaussian type distribution for the prediction of zero point energy.]
+    {Distribution of $\Delta \mathrm{ZPE}$ for different models.
+    In every model, the ETR was used.
+    A Gaussian distribution is assumed.
+    For this the median and standard deviation of $\Delta \mathrm{ZPE}$ are computed.}
+    \label{fig:ErrorDistZPE}
+\end{figure}

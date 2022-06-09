@@ -7,23 +7,23 @@
 \contentsline {section}{\numberline {2.1}Euler Angles}{3}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Electronic Structure Theory}{5}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Hartree--Fock Model}{5}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Kohn--Sham Density Functional Theory}{7}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}\mbox {GFN2--xTB} Electronic Structure Method}{8}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}Hessian Matrices}{10}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Machine Learning}{12}{section.2.4}%
-\contentsline {chapter}{\numberline {3}Methods}{14}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Transformation of Coordinates}{14}{section.3.1}%
-\contentsline {section}{\numberline {3.2}ML Model Construction}{19}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Measures for Quantifying the Performance}{20}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Computational Methods}{21}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Results and Discussion}{23}{chapter.4}%
-\contentsline {section}{\numberline {4.1}The ML Models and Data Set}{23}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Feature--Target Correlation}{24}{section.4.2}%
-\contentsline {section}{\numberline {4.3}The H$_\mathrm {\textbf {2}}$ system}{27}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Comparison of RFR and ETR}{28}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Comparison of Permutation Model and Indexed Model}{30}{section.4.5}%
-\contentsline {section}{\numberline {4.6}Benchmarking with the H$_\mathrm {\textbf {3}}$~system}{32}{section.4.6}%
-\contentsline {chapter}{\numberline {5}Conclusion \& Outlook}{34}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Bibliography}{35}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Appendix}{37}{chapter.7}%
+\contentsline {subsection}{\numberline {2.2.2}Kohn--Sham Density Functional Theory}{8}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}\mbox {GFN2--xTB} Electronic Structure Method}{9}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Hessian Matrices}{11}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Machine Learning}{13}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Methods}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Transformation of Coordinates}{15}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Machine Learning Model Construction}{21}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Measures for Quantifying the Performance}{22}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Computational Methods}{23}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Results and Discussion}{25}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Machine Learning Models and Data Set}{25}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Feature--Target Correlation}{25}{section.4.2}%
+\contentsline {section}{\numberline {4.3}The H$_\mathrm {\textbf {2}}$ System}{28}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Comparison of RFR and ETR}{29}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Comparison of Permutation Model and Indexed Model}{31}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Benchmarking with the H$_\mathrm {\textbf {3}}$~System}{34}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Conclusion \& Outlook}{37}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Bibliography}{38}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Appendix}{40}{chapter.7}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

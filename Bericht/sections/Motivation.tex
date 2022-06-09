@@ -1,10 +1,10 @@
 \chapter{Motivation}
 The interest of automatization in chemistry has risen in the last decade. There are approaches for the use of robotics to automate experiments.\supercite{Gesmundo2018Robotics,Li2018Robotics}
-Also in theoretical chemistry, approaches are developed to automatize workflows of computations.\supercite{Schmitz2021}
+And also in theoretical chemistry, approaches are developed to automatize workflows of computations.\supercite{Schmitz2021}
 These processes lead to an increase of useable data.
 Furthermore, databases are published like the benchmark set GMTKN55 (\textbf{G}eneral \textbf{M}aingroup \textbf{T}hermochemistry \textbf{K}inetic \& \textbf{N}oncovalent interactions)\supercite{Goerigk2017}
 or the CCCBDB (\textbf{C}omputation \textbf{C}hemistry \textbf{C}omparison and \textbf{B}enchmark \textbf{D}ata\textbf{b}ase)\supercite{CCCBDB}. 
-This increase of available data and of automatization are both of interest for machine learning (ML) approaches, as those are based on such data sets.\\
+This increase of available data and of automatization are both of interest for machine learning (ML) approaches, as those are based on such data.\\
 ML models always consist of features and a target.
 In the subclass of supervised ML the model is trained with the features and target,
 and afterwards the trained model is used to predict the target only by the information of the features.
@@ -29,13 +29,14 @@ This Hessian is depicted in Eq.~\eqref{eq:HessianExample}.
 \end{align}
 The computation of the Hessian is costly.\supercite{SpicherSHP2021}
 Thus, the acceleration of the computation is of great interest.\\
+\newpage
 There are already approaches for the accelerate computation of the Hessian in literature.\supercite{Lindh1995,Sanders2015,SpicherSHP2021}
 Two of these will be discussed in the following subsection.\\
-Spicher and Grimme developed an approach to bring the geometries of low--level methods into the geometries of higher--level methods.
+Spicher and Grimme developed an approach to compute with a low--level methods the Hessian at a higher level geometry.
 A bias depending on the root--mean--squared--distance (RMSD) is added to the potential energy surface (PES) of the low--level method,
 thus the energy is minimized at the geometry of the high--level method.
-On this new PES the Hessian matrix is computed, as the harmonic oscillation--approximation is applicable and the geometry is optimized.
-The contributions of the bias energy is then detached from the eigenvalues.\supercite{SpicherSHP2021}\\
+On this new PES the Hessian matrix can be computed, as the harmonic oscillation--approximation is applicable at the higher--level geometry.\supercite{SpicherSHP2021}
+The contributions of the bias energy is then detached from the eigenvalues.\\
 Sanders et al. proposed another approach, which is based on the assumption, that the Hessian matrix is a sparse matrix.
 They use a matrix, that describes the sparse matrix in an incoherent basis.
 The sparse matrix is approximated by using the matrix in the incoherent basis partially.
@@ -44,6 +45,6 @@ This can be either used to accelerate the computation or to increase the precisi
 %An parametrized force--field approach for the computation is proposed by Lindh et al.
 %Advantageous to other methods is, that the force constants of large distances is zero and therefore the computational cost increases more slowly. \supercite{Lindh1995}\\
 In this research a new approach shall be investigated.
-As noted above, due to different aspects the use of a ML model might be an efficient method to predict the costly Hessians.
-Hence, a supervised ML approach was chosen, where the target to predicted are the Hessian matrix elements.
+As noted above, due to automatization and large available data sets the use of a ML model might be an efficient method to predict the costly Hessians.
+Here, a supervised ML approach was chosen, where the target to predicted are the Hessian matrix elements.
 While the features for the ML model are based on computational efficient atom--based quantities.

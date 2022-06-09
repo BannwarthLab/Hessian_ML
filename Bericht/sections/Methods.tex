@@ -5,15 +5,15 @@
 	The Hessian matrix and the features that originate from vector or matrix quantities depend on the orientation of the coordinate~system~(CS).
 	For the ML model a consistent orientation for every atom pair is necessary.
 	Furthermore, the Hessian elements shall be learned atom pair wise.
-	Thus, the orientation of the molecule is brought into atom pair focused CS,
+	Thus, the orientation of the molecule is brought into atom pair focused CS (APF CS),
 	where the origin of the CS is in the center of the considered atom pair,
-	while both atoms are on the z--axis.
+	while both atoms are aligned on the z--axis.
 	In this section,
-	the transformation of the initial coordinate system into the atom pair focused CS will be discussed.\\
+	the transformation of the initial coordinate system to the APF CS will be discussed.\\
 	The CS of the molecule is deliberate,
 	therefore a transformation to a well--defined reference coordinate system is necessary.
 	As a reference coordinate system the main inertia coordinate system (MI CS) is chosen.
-	In a second step the transformation to the atom pair focused coordinate system (APF CS) is performed.\\
+	In a second step the transformation to the APF CS is performed.\\
 	At first a translation of the origin of the initial CS to the center of mass is done by Eq.~\eqref{eq:TransIinitCenterMass}.
 	
 	\begin{align}
@@ -27,8 +27,9 @@
 		\label{eq:CenterOfMass}
 	\end{align}
 	Here $m_A$ is the mass of atom $A$, $m_\mathrm{tot}$ is the mass of the molecule and $M$ the number of atoms in the molecule.
+	\newpage
 	Once the origin of the new CS is determined,
-	the orientation of its axes is arranged to the moment of inertia as computed by Eq.~\eqref{eq:MomentOfInertia}.
+	the moment of inertia is computed by Eq.~\eqref{eq:MomentOfInertia}.
 	
 	\begin{align}
 		\textbf{I}^\mathsf{s} = \left(\begin{matrix}
@@ -45,8 +46,9 @@
 	
 	For the computation of the elements $I_{ab}$ of the inertia tensor $\textbf{I}^\mathsf{s}$ the diagonal
 	elements and non--diagonal elements are divided in two cases.
-	Here, $a$ and $b$ are variables for the spatial directions of the coordinates~$x,y$ and $z$.
-	For the rotation of the mass centered origin CS into the main inertia system,
+	Here, $a$ and $b$ are variables for the spatial directions of the coordinates~$x,y$ and $z$.\\
+
+	For the rotation of the mass centered origin CS into the MI CS,
 	the matrix $\textbf{R}_\mathsf{mi}^\mathsf{init}$ of eigenvectors of the inertia tensor $\textbf{I}^\mathsf{s}$ is needed.
 	For that, the eigenvectors $\textbf{R}_\mathsf{mi}^\mathsf{init}$ are computed
 	by solving the eigenvalue equation.
@@ -61,12 +63,13 @@
 		\textbf{r}_A^\mathsf{mi} = \textbf{R}_\mathsf{mi}^\mathsf{init} \textbf{r}_A^\mathsf{s}
 		\label{eq:rotCoord}
 	\end{align}
-	Here, $\textbf{r}_A^\mathsf{mi}$ is the coordinate of an atom $A$ in the main inertia CS.
+	Here, $\textbf{r}_A^\mathsf{mi}$ is the vector of the coordinates of an atom $A$ in the MI CS.
 	The rotation is done for every atom in the molecule. After that operation,
-	the molecule is in the main inertia CS.\\ The Hessian matrix also depends
-	on the CS and therefore needs to be rotated, too.
+	the molecule is in the MI CS.\\ 
+	\newpage
+	The Hessian matrix also depends on the CS and therefore needs to be rotated, too.
 	A translation is not needed. Eq.~\eqref{eq:rotHessian} describes
-	the rotation of the Hessian matrix in the initial CS to the main inertia system.
+	the rotation of the Hessian matrix in the initial CS to the MI CS.
 	For this a $3M \times 3M$ rotation matrix $\textbf{P}_\mathsf{mi}^\mathsf{init}$ needs to be constructed,
 	where the diagonal 3 x 3 blocks are $\textbf{R}_\mathsf{mi}^\mathsf{init}$.
 	This matrix is shown in Eq.~\eqref{eq:rotMatrixHessian}.
@@ -85,16 +88,19 @@
 		\textbf{H}^\mathsf{mi} =\textbf{P}_\mathsf{mi}^\mathsf{init} \times \textbf{H}^\mathsf{init} \times {\left(\textbf{P}_\mathsf{mi}^\mathsf{init}\right)}^\intercal
 		\label{eq:rotHessian}
 	\end{align}
-	The Hessian matrix in the initial system is $\textbf{H}^\mathsf{init}$,
-	while the Hessian matrix in the main inertia system is $\textbf{H}^\mathsf{mi}$.\\
-	In the following, the transformation of the main inertia CS to the atom pair focused CS will be discussed.
-	The transformation starts with the translation of the origin to the center of an atom pair.
+	The Hessian matrix in the initial CS is $\textbf{H}^\mathsf{init}$,
+	while the Hessian matrix in the MI CS is $\textbf{H}^\mathsf{mi}$.\\
+	There are vector and matrix quantities that are used as features for the ML models.
+	These features and the Hessian matrix depend on their orientation in the CS. 
+	Moreover, the Hessian matrix elements are predicted element--wise. 
+	Hence, it is necessary to use a consistent atom pair specific CS.
+	For that the MI CS is transformed into the APF CS.
+	The transformation starts with the translation of the origin of the new CS to the center of an atom pair.
 	The translation is described with Eq.~\eqref{eq:TranslationInertiaAPF}.\\
 	\begin{align}
 		\textbf{r}^\mathsf{mi,c}_C = \textbf{r}^\mathsf{mi}_C -
 		 \left(\dfrac{1}{2} \textbf{r}^\mathsf{mi}_A + 
 		 \dfrac{1}{2}\textbf{r}^\mathsf{mi}_B \right) 
-		 \mathsf{for}~C \in A, B, ..., N
 		\label{eq:TranslationInertiaAPF}
 	\end{align}
 	After this operation, the origin of the CS is in the center of the atom pair.
@@ -103,20 +109,21 @@
 	The rotation of the CS depends on the considered atom pair.
 	It is divided into whether $A = B$ or $A \neq B$.
 	At first the construction of the rotation matrix for the case $A \neq B$ will be discussed.\\
-	The z--axis of the atom pair focused CS is aligned to $\textbf{r}^\mathsf{mi,c}_A$.
-	The x--axis is defined in Eq.~\eqref{eq:x_axis}, where $\textbf{z}$ is a unit vector in z--direction of the atom pair focused CS,
+	The z--axis of the APF CS is aligned to $\textbf{r}^\mathsf{mi,c}_A$.
+	The x--axis is defined in Eq.~\eqref{eq:x_axis}, where $\textbf{z}$ is a unit vector in z--direction of the APF CS,
 	and $\bm{\upmu}_A$ is the dipole moment of the atom $A$.
 	\begin{align}
 		\textbf{x} = \textbf{z} \times ( \mathsf{\bm{\upmu}_{A}} + \mathsf{\bm{\upmu}_{B}})
 		\label{eq:x_axis}
 	\end{align}
-	The intersection  $\textbf{L}$ of the xy--plane of the atom pair focused CS and xy--plane of the centered main inertia CS
+	\newpage
+	The intersection  $\textbf{L}$ of the xy--plane of the APF CS and xy--plane of the centered MI CS
 	is described with Eq.~\eqref{eq:EulerLL}.
 	\begin{align}
 		\label{eq:EulerLL}
 		\mathbf{L} = \mathbf{x} \times \mathbf{z}^\mathsf{mi,c}
 	\end{align}
-	The intersection $\textbf{L}$, the axes $\textbf{x},\textbf{z},\textbf{x}^\mathsf{mi,c}$ and $ \textbf{z}^\mathsf{mi,c}$ are then used for the computation of the Euler angles  $\alpha, \beta$ and $\gamma$ via Eq.~\eqref{eq:EulerAnglesDiscrete}.
+	The intersection $\textbf{L}$, the axes $\textbf{x},\textbf{z},\textbf{x}^\mathsf{mi,c}$ and $ \textbf{z}^\mathsf{mi,c}$ are then used for the computation of the Euler angles  $\alpha^0, \beta$ and $\gamma^0$ via Eq.~\eqref{eq:EulerAnglesDiscrete}.
 	\begin{subequations}
 	\label{eq:EulerAnglesDiscrete}
 	\begin{align}
@@ -148,6 +155,7 @@
 \end{align}
 Via these constraints, the Euler angles $\alpha$ and $\gamma$ are chosen.
 The Euler angles are then used to build up the rotation matrices via Eq.~\eqref{eq:rotMatZ} and  \eqref{eq:rotMatX}.\\
+\newpage
 The complete rotation matrix is then constructed by the cross product of the single rotation matrices
 and is shown in Eq.~\eqref{eq:RotMatFull}.
 \begin{align}
@@ -171,15 +179,15 @@ Lastly, the rotation of the translated coordinate system is done via Eq.~\eqref{
 \end{align} 
 The coordinates $\textbf{r}^\mathsf{apf}_A$ are the final coordinates in the APF CS for the case of a heteronuclear atom pair.\\ 
 For the case of a homonuclear atom pair,
-the procedure is the same up to the translation of the coordinates into the centered inertial main CS.
-The z--axes of APF CS and centered inertial main CS are aligned.
+the procedure is the same up to the translation of the coordinates into the centered MI CS.
+The z--axes of APF CS and centered MI CS are aligned.
 Therefore, the Euler angle $\beta$ is zero. Furthermore, the xy--planes are the same,
 and there is no intersection of the xy--planes.
 Thus, only one angle $\alpha$ or $\gamma$ is necessary for the rotation.
-Therefore, $\gamma$ is the angle between the x--axis of the centered main inertial CS
+Therefore, $\gamma$ is the angle between the x--axis of the centered MI CS
 and the APF CS. To provide consistency in the rotation of the coordinates,
 the x--axis is chosen in dependency of the dipole moment $\bm{\upmu}$ of the considered atom.
-Eq.~\eqref{eq:xHomonuclear} is show how the x--axis is computed.
+In Eq.~\eqref{eq:xHomonuclear} is shown how the x--axis is computed.
 \begin{align}
 	\label{eq:xHomonuclear}
 	\textbf{x} = \textbf{z} \times \bm{\upmu}_A
@@ -192,7 +200,7 @@ This results in the computation of the angle $\gamma^0$ by Eq.~\eqref{eq:GammaHo
 \end{align}
 Between two vectors are two angles, which sum up to $2\pi$.
 The rotation of the CS depends on the arrangement to another.
-The angle is chosen by the following condition, show in Eq. \eqref{eq:GammaHomonuclearAdj}.
+The angle is chosen by the condition shown in Eq. \eqref{eq:GammaHomonuclearAdj}.
 \begin{align}
 	\label{eq:GammaHomonuclearAdj}
 	\gamma = \begin{cases}
@@ -202,7 +210,7 @@ The angle is chosen by the following condition, show in Eq. \eqref{eq:GammaHomon
 \end{align}
 The further procedure of the transformation is done in the same way as for the heteronuclear atomic pair.
 The rotation matrix is computed via Eq.~\eqref{eq:RotMatFull}.
-This followed by an adjustment of the rotation matrix,
+This is followed by an adjustment of the rotation matrix,
 shown in Eq.~\eqref{eq:rot180}.
 The final rotation matrix $\textbf{R}_\mathsf{mi}^\mathsf{apf}$ is then
 used on the coordinates $ \textbf{r}^\mathsf{mi,c}_A$ via Eq.~\eqref{eq:rotCS}.\\
@@ -222,14 +230,14 @@ The procedure of the projection and mass--weighting is described in the chapter 
 
 %  
 %$
-% The rotation of the Hessian from the main inertial CS to the APF CS is done via Eq.~\eqref{eq:rotHessian}.
+% The rotation of the Hessian from the MI CS to the APF CS is done via Eq.~\eqref{eq:rotHessian}.
 % The rotation matrix $\textbf{P}_\mathsf{mi}^\mathsf{apf}$
 % is constructed the same as the rotation matrix $\textbf{P}_\mathsf{init}^\mathsf{mi}$.
 \newpage
-\section{ML Model Construction}
+\section{Machine Learning Model Construction}
 Supervised ML models have to be trained with a set of features and targets.
-In this work, the features are mostly derived from atomic quantities based on geometry, density and energy.
-This feature selection criteria are based on Steinbach's work.\supercite{PitMA} Some adaptations are done.
+In this work, the features are mostly derived from atomic quantities based on geometry, electron density and energy.
+These feature selection criteria are based on Steinbach's work.\supercite{PitMA} Some adaptations are done.
 Here, the cartesian dipole moment and quadrupole moment elements are used as features instead of its norm.
 This is one reason for the transformation of the CS.
 This applies also for the extended versions.
@@ -242,7 +250,7 @@ Two approaches are used for the differentiation.
 These are the \textbf{indexed} and \textbf{permuted} approach.
 \begin{table}[H]
 	\centering
-	\caption[List of Quantities used as features for the ML model.]{List of quantities used as features for the ML models.
+	\caption[List of quantities used as features for the ML model.]{List of quantities used as features for the ML models.
 			The quantities are divided into geometry,
 			density and energy based quantities.}
 		\begin{tabular}{l l l}
@@ -377,7 +385,7 @@ For the depiction of every graph the package \texttt{matplotlib} was used.
 The versions of the used packages are shown in Tab.~\ref{tab:Packages}.
 \begin{table}[H]
     \centering
-	\caption[List of Python models used.]{Python modules used for the computation, data storing, constructing the ML model and plotting graphs.}
+	\caption[List of python models used.]{Python modules used for the computation, data storing, constructing the ML model and plotting graphs.}
         \begin{tabular}{c c }
 			\hline
 			Package & Version \\
@@ -391,7 +399,7 @@ The versions of the used packages are shown in Tab.~\ref{tab:Packages}.
     \label{tab:Packages}
 \end{table}
 
-For machine learning models,
+For ML models,
 the algorithms \texttt{RandomForestRegressor} and \texttt{ExtraTreeRegressor},
 which origin from \texttt{sklearn}, were used. 
 The default parameters were used, except the number of estimators was set $\texttt{n\_estimators}=300$ for the homonuclear model,
