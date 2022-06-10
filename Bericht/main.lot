@@ -1,13 +1,14 @@
-\babel@toc {english}{}\relax 
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\select@language {english}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces List of quantities used as features for the ML model.}}{21}{table.caption.8}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces List of python models used.}}{24}{table.caption.9}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces List of quantities used as features for the ML model.}}{21}{table.caption.8}
+\contentsline {table}{\numberline {3.2}{\ignorespaces List of python models used.}}{24}{table.caption.9}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {7.1}{\ignorespaces List of indices used for the differentiation of Hessian elements.}}{43}{table.caption.19}%
-\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
+\contentsline {table}{\numberline {7.1}{\ignorespaces List of indices used for the differentiation of Hessian elements.}}{42}{table.caption.19}

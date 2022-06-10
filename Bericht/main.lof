@@ -1,38 +1,39 @@
-\babel@toc {english}{}\relax 
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\select@language {english}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Depiction of two coordinate systems for the description of Euler Angles.}}{4}{figure.caption.6}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{13}{figure.caption.7}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Depiction of two coordinate systems for the description of Euler Angles.}}{4}{figure.caption.6}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Structure of a CART split and its resulting Decision Tree}}{13}{figure.caption.7}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features.(Gen--Idx model)}}{26}{figure.caption.10}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{26}{subfigure.1.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{26}{subfigure.1.2}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Best Pearson Correlation Coefficient computed element--wise.(Gen--Idx model)}}{27}{figure.caption.11}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{27}{subfigure.2.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{27}{subfigure.2.2}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Comparison of wave numbers from GFN2--xTB and the ML model.}}{28}{figure.caption.12}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Learning curves of the ETR and RFR for an increasing size of the training set}}{30}{figure.caption.13}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Extra Tree Regression}}}{30}{subfigure.4.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Random Forest Regression}}}{30}{subfigure.4.2}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Robustness test for Hessian matrix elements with an increase of randomness on $\textbf {x}$}}{31}{figure.caption.14}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Gaussian type distribution for the prediction of Hessian matrix elements.}}{32}{figure.caption.15}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces error distribution and deviations of wave numbers.}}{33}{figure.caption.16}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Gaussian error distribution}}}{33}{subfigure.7.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Plot of $\tilde {\nu }_\mathrm {ML}$ vs. $\tilde {\nu }_\mathrm {xTB}$}}}{33}{subfigure.7.2}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Force constants from the Gen--Idx and \mbox {GFN2--xTB} for the $\mathrm {H}_3$~system}}{35}{figure.caption.17}%
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Force constants from the Gen--Perm and \mbox {GFN2--xTB} for the $\mathrm {H}_3$~system}}{36}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features.(Gen--Idx model)}}{26}{figure.caption.10}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{26}{subfigure.1.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{26}{subfigure.1.2}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Best Pearson Correlation Coefficient computed element--wise.(Gen--Idx model)}}{27}{figure.caption.11}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{27}{subfigure.2.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{27}{subfigure.2.2}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Comparison of wave numbers from GFN2--xTB and the ML model.}}{29}{figure.caption.12}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Learning curves of the ETR and RFR for an increasing size of the training set}}{30}{figure.caption.13}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Extra Tree Regression}}}{30}{subfigure.4.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Random Forest Regression}}}{30}{subfigure.4.2}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Robustness test for Hessian matrix elements with an increase of randomness on $\textbf {x}$}}{31}{figure.caption.14}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Gaussian type distribution for the prediction of Hessian matrix elements.}}{32}{figure.caption.15}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces error distribution and deviations of wave numbers.}}{33}{figure.caption.16}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Gaussian error distribution}}}{33}{subfigure.7.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Plot of $\mathaccentV {tilde}07E{\nu }_\mathrm {ML}$ vs. $\mathaccentV {tilde}07E{\nu }_\mathrm {xTB}$}}}{33}{subfigure.7.2}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Force constants from the Gen--Idx and \unhbox \voidb@x \hbox {GFN2--xTB} for the $\mathrm {H}_3$~system}}{35}{figure.caption.17}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Force constants from the Gen--Perm and \unhbox \voidb@x \hbox {GFN2--xTB} for the $\mathrm {H}_3$~system}}{36}{figure.caption.18}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features (Gen--Perm model).}}{44}{figure.caption.21}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{44}{subfigure.1.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{44}{subfigure.1.2}%
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Best Pearson Correlation Coefficient computed element wise (Gen--Perm model).}}{45}{figure.caption.22}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{45}{subfigure.2.1}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{45}{subfigure.2.2}%
-\contentsline {figure}{\numberline {7.3}{\ignorespaces Gaussian type distribution for the prediction of weighted projected Hessian elements.}}{46}{figure.caption.23}%
-\contentsline {figure}{\numberline {7.4}{\ignorespaces Gaussian type distribution for the prediction of projected Hessian elements.}}{47}{figure.caption.24}%
-\contentsline {figure}{\numberline {7.5}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{48}{figure.caption.25}%
-\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Pearson Correlation Coefficient for the ten most important features (Gen--Perm model).}}{43}{figure.caption.21}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{43}{subfigure.1.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{43}{subfigure.1.2}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Best Pearson Correlation Coefficient computed element wise (Gen--Perm model).}}{44}{figure.caption.22}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {homonuclear model}}}{44}{subfigure.2.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {heteronuclear model}}}{44}{subfigure.2.2}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Gaussian type distribution for the prediction of weighted projected Hessian elements.}}{45}{figure.caption.23}
+\contentsline {figure}{\numberline {7.4}{\ignorespaces Gaussian type distribution for the prediction of projected Hessian elements.}}{46}{figure.caption.24}
+\contentsline {figure}{\numberline {7.5}{\ignorespaces Gaussian type distribution for the prediction of zero point energy.}}{47}{figure.caption.25}
