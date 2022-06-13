@@ -8,12 +8,12 @@ At first, as described in \autoref{chap:Theory},
 the RFR and ETR are used as the different algorithms for fitting the ML model.
 Secondly, there are two possibilities for the labeling.
 Either the indexed (Idx) case is used or the permuted (Perm) case.
-The third adjustment is the distinction between a case specific (Case) and a general (Gen) model.
+The third adjustment is the differentiation of data sets with a case specific (Case) and a general (Gen) model.
 For the case specific models, only one molecular system with different structures is used for the training of a model.
 While in the general model all molecular systems are used to train one single model.\\
 For the further discussion, abbreviations are used for the description of the different variations of the model.
 As an example, the abbreviation for the model with the ETR as the algorithm, the indexed labeling and general case is \mbox{ETR--Gen--Idx}.\\
-A data set for benchmarking the ML model is constructed. The set consists of eight different molecules:
+The data set for benchmarking the ML model consists of eight different molecules:
 $\mathrm{H}_2$, $\mathrm{N}_2$, $\mathrm{O}_2$, $\mathrm{F}_2$, $\mathrm{HF}$, $\mathrm{CO}$,
 $\mathrm{H}_2\mathrm{O}$, and $\mathrm{NH}_3$.
 For each molecule, structures with different bond lengths are generated.
@@ -25,7 +25,7 @@ Moreover, the performance of the model to a complete unknown system is of intere
 Therefore, a H$_3$--system is used.
 The full data set introduced above is used as a training set for the model,
 while the H$_3$--system is used as the test set.
-
+\newpage
 \section{Feature--Target Correlation}
 To start of, first investigations are done on the linear correlation between the features and target.
 Thus, the Pearson Correlation Coefficient $R^2$ is computed for each feature.
@@ -52,11 +52,12 @@ Another high correlation feature is the chemical potential $\mu_\mathrm{chem}$.
 While, the potential itself has the second--highest correlation,
 its extension has the third highest for the homonuclear model.
 Furthermore, the three variations of $\mu_\mathrm{chem}$ appear also in the heteronuclear model (5., 6., 8.).
+\newpage
 At last, variations of $E_\mathrm{gap}$ and $\epsilon_\mathrm{LUAO}$ are represented among the highest correlations for both models.\\
 For both models one index ($y_i$ or $z_i$) is also among the ten highest correlations.
 While only the homonuclear model shows a high correlation with the coordination number $CN_A$ and the atomic dipole moments $\mu$,
 the heteronuclear shows a correlation with the atomic isotropic exchange and correlation energy $E_\mathsf{IES+IXC}$.
-However, the correlations are in general rather low.
+However, the correlations are in general rather small.
 One possible reason is, that the Hessian matrix is sparse, therefore many matrix elements are $\frac{\partial^2 E}{\partial a_A \partial b_B} \approx 0$
 and do not correlate with the given features. This can reduce $R^2$ significantly.
 Furthermore, the correlation is computed for all Hessian elements.
@@ -64,6 +65,9 @@ If the feature correlations of the elements differ from another, the overall cor
 To investigate the last aspect, the target vector is split Hessian element--wise. 
 For each Hessian element $\frac{\partial^2 E}{\partial a_A \partial b_B}$ the $R^2$ of the features is computed.
 For obvious reasons, the indices $x_i$, $y_i$ and $z_i$ are not included for this correlation.
+Fig~\ref{fig:PCC_elementwise} shows the highest $R^2$ for each Hessian element for the homo-- and heteronuclear model.
+The elements are abbreviated with the coordinates of the derivative.
+
 \begin{figure}[H]
     \hspace*{-0.25cm}
     \subfloat[homonuclear model]
@@ -76,8 +80,7 @@ For obvious reasons, the indices $x_i$, $y_i$ and $z_i$ are not included for thi
                 }
     \label{fig:PCC_elementwise}
 \end{figure}
-Fig~\ref{fig:PCC_elementwise} shows the highest $R^2$ for each Hessian element for the homo-- and heteronuclear model.
-The elements are abbreviated with the coordinates of the derivative.
+\newpage
 Comparing the highest $R^2$ in Fig~\ref{fig:PCC} with $R^2$ in Fig~\ref{fig:PCC_elementwise},
 there is a significant increase of $R^2$ for the homonuclear and heteronuclear model.
 For the heteronuclear model, there are two exceptions, namely for yx and xz.
@@ -92,7 +95,7 @@ This is due to the fact, that the Hessian matrix block $\textbf{H}_{AA}$ is symm
 Moreover, the highest correlating features do differ from another for each element, except for the symmetric element pairs.
 This is especially important for the ML, as this suggests, that the elements can be differentiated with the used features.
 This analysis is also done for the model Gen--Perm and shown in Fig~\ref{fig:PCC_perm} and Fig~\ref{fig:PCC_elementwise_Perm}.
-
+\newpage
 \section{The H$_\mathrm{\textbf{2}}$ System}
 The ETR--Case--Perm model is used as a first case for investigations with the subset of the hydrogen molecule.
 The wave numbers $\tilde{\nu}_\mathrm{ML}$ are computed from the predicted Hessian matrix elements.
@@ -183,7 +186,8 @@ The plot is shown for the homonuclear model (blue) and the heteronuclear model (
     The plots are done for the homonuclear model (blue) and heteronuclear model (red).}
     \label{fig:MSE_sigma}
 \end{figure}
- 
+\newpage
+
 The prediction is done for ten different random states.
 The MSE between the predicted Hessian elements and those calculated using \mbox{GFN2--xTB} is investigated.
 For the investigated range of $0~\leq~\sigma~\leq~2.5$ the MSE increases monotonically.
@@ -220,7 +224,7 @@ Comparing the \mbox{ETR--Case--Perm} and \mbox{ETR--Case--Idx},
 and also \mbox{ETR--Gen--Perm} and \mbox{ETR--Gen--Idx} shows,
 that both approaches for the labeling of the features do not differ significantly.
 This shows, on the one hand,
-the strength of the decision tree algorithms.\newpage
+the strength of the decision tree algorithms.
 They cannot overfit and seem to be capable of describing this complex system with a simple differentiation by indexes.
 The permuted model shows, on the other hand, a similar performance like the indexed model,
 but may be more useful for other ML alogrithms.\\
@@ -253,6 +257,7 @@ The relative distributions of the four variations of the models are similar to t
 The \mbox{ETR--Gen--Perm} and \mbox{ETR--Gen--Idx} show a better performance than the \mbox{ETR--Case--Perm} and the \mbox{ETR--Case--Idx}.
 The mean is shifted to negative $\Delta \tilde{\nu}$ values.
 In contrast to the deviations of the Hessian matrix elements, the Idx models show a marginally better performance than the Perm model.\\
+\newpage
 The deviations of several $\mathrm{kcal \cdot mol^{-1}}$ are rather strong.
 These strong deviations might be due to high extrapolation errors, which lead to high standard distribution.
 For example at $\tilde{\nu}_\mathrm{xTB} \approx 65 \mathrm{kcal \cdot mol^{-1}}$, the deviation might be due to models extrapolating values.
@@ -262,6 +267,7 @@ A contrary effect to the extrapolation errors are the wave numbers, which corres
 These wave numbers are approximately zero due to the projection and have large contribution to amount of wave numbers computed.
 Therefore, they narrow the standard deviation, and shift the mean to zero. Further investigations are necessary,
 to see whether the extrapolation or the wave numbers, corresponding to rotation and translation, have a higher impact on the mean and standard deviation.\\
+\newpage
 \section{Benchmarking with the H$_\mathrm{\textbf{3}}$~System}
 Especially, the prediction of Hessian matrices as a transfer application is of interest.
 Hence, the ETR-Gen-Perm and ETR--Gen--Idx models are tested on the performance on a new, for the model unknown, system.

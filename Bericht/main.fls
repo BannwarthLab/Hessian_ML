@@ -742,13 +742,13 @@ INPUT ./main.out
 INPUT ./main.out
 INPUT main.run.xml
 OUTPUT main.run.xml
+INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk
+INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk
+INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk
+INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk
+INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0900.pk
+INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0900.pk
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc
-INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk
-INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk
-INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk
-INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecsx1000.pk
-INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0900.pk
-INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/ecss0900.pk
 INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1095.pk
 INPUT C:/Users/Nutzer/AppData/Local/MiKTeX/2.9/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1095.pk
 INPUT C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc

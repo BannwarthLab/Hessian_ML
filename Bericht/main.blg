@@ -1,8 +1,8 @@
 [0] Config.pm:354> INFO - This is Biber 2.7
-[0] Config.pm:357> INFO - Logfile is 'main.blg'
-[43] biber-MSWIN64:303> INFO - === 
-[76] Biber.pm:359> INFO - Reading 'main.bcf'
-[219] Utils.pm:180> ERROR - Error: Found biblatex control file version 3.7, expected version 3.3.
+[1] Config.pm:357> INFO - Logfile is 'main.blg'
+[87] biber-MSWIN64:303> INFO - === 
+[149] Biber.pm:359> INFO - Reading 'main.bcf'
+[511] Utils.pm:180> ERROR - Error: Found biblatex control file version 3.7, expected version 3.3.
 This means that your biber (2.7) and biblatex (3.14) versions are incompatible.
 See compat matrix in biblatex or biber PDF documentation.
-[220] Biber.pm:113> INFO - ERRORS: 1
+[512] Biber.pm:113> INFO - ERRORS: 1

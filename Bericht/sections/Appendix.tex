@@ -97,17 +97,17 @@
             $\dfrac{\partial^2 E}{\partial z_A \partial z_A}$ \\[+0.7em]
             \hline
             Vector\\
-            x &  x  &  y    & z  & x   &y   & z     &x     & y  & z\\ 
-            y &  y  &  x    & x  & y   & z  & y     & z    & z  & x \\
-            z &  z  & $-$z  & y  & z   &x   &$-$x   & $-$y & x  & y\\
+            $q_x$ &  $q_x$  &  $q_y$    & $q_z$  & $q_x$   &$q_y$   & $q_z$     &$q_x$     & $q_y$  & $q_z$\\ 
+        $q_y$ & $q_y$  &  $q_x$   & $q_x$  & $q_y$   & $q_z$  & $q_y$     & $q_z$    & $q_z$  & $q_x$ \\
+            $q_z$ &  $q_z$  & $-q_z$  & $q_y$  & $q_z$   &$q_x$   &$-q_x$   & $-q_y$ & $q_x$  & $q_y$\\
             \hline 
             Matrix\\
-            xx & xx & yy    & zz & xx  & yy & zz    & xx   & yy & zz \\
-            yy & xy & xx    & xx & yy  & zz & yy    & zz   & zz & xx \\
-            zz & xz & zz    & yy & zz  & xx & xx    & yy   & xx & yy \\
-            xy & xy & xy    & xz & xy  & yz & yz    & xz   & yz & xz \\
-            xz & xz & $-$yz & yz & xz  & xy & $-$xz & $-$xy& xy & yz \\
-            yz & yz & $-$xz & xy & yz  & xz & $-$xy & $-$yz& xz & xy \\
+            $Q_{xx}$ & $Q_{xx}$ & $Q_{yy}$    & $Q_{zz}$ & $Q_{xx}$  & $Q_{yy}$ & $Q_{zz}$    & $Q_{xx}$   & $Q_{yy}$ & $Q_{zz}$ \\
+            $Q_{yy}$ & $Q_{xy}$ & $Q_{xx}$    & $Q_{xx}$ & $Q_{yy}$  & $Q_{zz}$ & $Q_{yy}$    & $Q_{zz}$   & $Q_{zz}$ & $Q_{xx}$ \\
+            $Q_{zz}$ & $Q_{xz}$ & $Q_{zz}$    & $Q_{yy}$ & $Q_{zz}$  & $Q_{xx}$ & $Q_{xx}$    & $Q_{yy}$   & $Q_{xx}$ & $Q_{yy}$ \\
+            $Q_{xy}$ & $Q_{xy}$ & $Q_{xy}$    & $Q_{xz}$ & $Q_{xy}$  & $Q_{yz}$ & $Q_{yz}$    & $Q_{xz}$   & $Q_{yz}$ & $Q_{xz}$ \\
+            $Q_{xz}$ & $Q_{xz}$ & $-Q_{yz}$ & $Q_{yz}$ & $Q_{xz}$  & $Q_{xy}$ & $-Q_{xz}$ & $-Q_{xy}$& $Q_{xy}$ & $Q_{yz}$ \\
+            $Q_{yz}$ & $Q_{yz}$ & $-Q_{xz}$ & $Q_{xy}$ & $Q_{yz}$  & $Q_{xz}$ & $-Q_{xy}$ & $-Q_{yz}$& $Q_{xz}$ & $Q_{xy}$ \\
             \hline 
         \end{tabular}
     \label{tab:Permutation}

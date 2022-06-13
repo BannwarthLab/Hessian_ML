@@ -2219,6 +2219,7 @@
     <bcf:citekey order="26">numpy</bcf:citekey>
     <bcf:citekey order="27">pandas.Paper</bcf:citekey>
     <bcf:citekey order="27">pandas.software</bcf:citekey>
+    <bcf:citekey order="28">Hunter2007</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
