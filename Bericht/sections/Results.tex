@@ -130,7 +130,7 @@ This system can be seen as a proof of concept for the model and demonstrates tha
 \section{Comparison of RFR and ETR}
 For the comparison of the ML algorithms, the \mbox{RFR--Gen-Perm} and \mbox{ETR--Gen--Perm} models are used.
 These models are compared with learning curves.
-This means the models dependency on the increase of training set used.
+Learning curves show the dependency of a model on the increase of training set used.
 The performance is quantified by the MSE between the predicted Hessian and the Hessian computed via \mbox{GFN2--xTB}.
 The MSE is calculated for ten different random states and the mean and standard deviation of these MSE is calculated.\\
 It is expected, that the performance of the ML model should increase with the training set size.
@@ -228,8 +228,7 @@ the strength of the decision tree algorithms.
 They cannot overfit and seem to be capable of describing this complex system with a simple differentiation by indexes.
 The permuted model shows, on the other hand, a similar performance like the indexed model,
 but may be more useful for other ML alogrithms.\\
-The comparison of the \mbox{ETR--Case--Perm} and \mbox{ETR--Gen--Perm}
-shows, that the \mbox{ETR--Case--Perm} model deviates more significantly.
+The \mbox{ETR--Case--Perm} shows larger deviations in comparison to the \mbox{ETR--Gen--Perm} model.
 This is in agreement with the comparison of the \mbox{ETR--Case--Idx} and \mbox{ETR--Gen--Idx} models.
 Though the deviation is more significant, the means of the models do not differ significantly. 
 The data set for the case--specific models is smaller than for the general models, this might contribute to larger deviation.

@@ -355,7 +355,6 @@ class Feature:
                     Quantity_A.extend(dipm_delta)
                     Quantity_A.extend(dipm_only_mull)
 
-
                     #Quantity_A.extend(qm_atom)
                     #Quantity_A.extend(qm_delta)
                     Quantity_A.extend(self.energy_based[atom_A])

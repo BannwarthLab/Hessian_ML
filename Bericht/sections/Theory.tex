@@ -59,9 +59,11 @@ The full rotation of the coordinate system in dependency of the Euler angles is 
 
 \section{Electronic Structure Theory}
 In this work, the features and target for the ML model are derived by the use of the \mbox{GFN2--xTB} method.
-Therefore, a short introduction to the semiempirical method GFN2--xTB is given. Before that, the mean--field theories Hartee--Fock and Density Functional Theory (DFT) are discussed.
+Therefore, a short introduction to the semiempirical method GFN2--xTB is given.
+Before that, the mean--field theories Hartee--Fock and Density Functional Theory (DFT) are discussed.
 DFT builds the theoretical basis for density functional tight--binding methods (DFTB), like \mbox{GFN2--xTB}.
-Atomic units are used for all equations in this section. This introduction of Hartree Fock and Density Functional Theory is based on reference \cite{Jensen2013}.
+Atomic units are used for all equations in this section.
+This introduction of Hartree Fock and Density Functional Theory is based on reference \cite{Jensen2013}.
 
 \subsection{Hartree--Fock Model}
 Molecular systems in quantum mechanics can be described by a many--body wave function eigenvalue problem.
@@ -338,7 +340,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
     \section{Hessian Matrices}
 	Hessian matrices are the target for the ML model.
 	A brief introduction to the Hessian matrix, its projection and weighting is given,
-	because it is necessary for the computation of the HVF.\\
+	because it is necessary for the computation of the HVF.
+	The HVF is used to compute quantities to measure the performance of the ML model.\\
 	The Hessian matrix is a $3M \times 3M$ matrix ($M$ is the number of atoms) of second derivatives
 	of the energy with respect to every atom coordinate pair in the system.\supercite{Jensen2013}
 	\begin{align}

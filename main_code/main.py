@@ -50,7 +50,7 @@ for i in range(len(mol_sys_idx)):
     else:
         train_idx.append(i)
 
-for rnd_state in [42]:#,0,56,29,100]:
+for rnd_state in [36]:#42,0,56,29,100]:
     
     test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
     #train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.75,random_state=rnd_state)
@@ -73,8 +73,8 @@ for rnd_state in [42]:#,0,56,29,100]:
         X_hetero.extend(X_hetero_temp)
         y_hetero.extend(Systems[i].H_AB_vec)
 
-    regr_homonuclear=  ExtraTreesRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=False) 
-    regr_heteronuclear = ExtraTreesRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=False)
+    regr_homonuclear=  ExtraTreesRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=True) 
+    regr_heteronuclear = ExtraTreesRegressor(n_estimators = 300,random_state=rnd_state,bootstrap=True)
 
     regr_homonuclear.fit(X_homo,y_homo)
     regr_heteronuclear.fit(X_hetero,y_hetero)

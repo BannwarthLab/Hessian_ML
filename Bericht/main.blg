@@ -1,8 +1,22 @@
-[0] Config.pm:354> INFO - This is Biber 2.7
-[1] Config.pm:357> INFO - Logfile is 'main.blg'
-[87] biber-MSWIN64:303> INFO - === 
-[149] Biber.pm:359> INFO - Reading 'main.bcf'
-[511] Utils.pm:180> ERROR - Error: Found biblatex control file version 3.7, expected version 3.3.
-This means that your biber (2.7) and biblatex (3.14) versions are incompatible.
-See compat matrix in biblatex or biber PDF documentation.
-[512] Biber.pm:113> INFO - ERRORS: 1
+[0] Config.pm:307> INFO - This is Biber 2.17
+[0] Config.pm:310> INFO - Logfile is 'main.blg'
+[41] biber:340> INFO - === Mo Jun 13, 2022, 09:02:19
+[49] Biber.pm:418> INFO - Reading 'main.bcf'
+[88] Biber.pm:972> INFO - Found 24 citekeys in bib section 0
+[95] Biber.pm:4383> INFO - Processing section 0
+[101] Biber.pm:4574> INFO - Looking for bibtex file 'sections/literature.bib' for section 0
+[102] bibtex.pm:1713> INFO - LaTeX decoding ...
+[124] bibtex.pm:1518> INFO - Found BibTeX data source 'sections/literature.bib'
+[275] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[276] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[276] Biber.pm:4203> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[276] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[286] bbl.pm:654> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[300] bbl.pm:757> INFO - Output to main.bbl
+[300] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_cPUI/a42497fa0f805ce74b9af7d16715cbd8_5499.utf8, line 16, warning: 47 characters of junk seen at toplevel
+[300] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_cPUI/a42497fa0f805ce74b9af7d16715cbd8_5499.utf8, line 43, warning: 143 characters of junk seen at toplevel
+[300] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_cPUI/a42497fa0f805ce74b9af7d16715cbd8_5499.utf8, line 75, warning: 86 characters of junk seen at toplevel
+[300] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_cPUI/a42497fa0f805ce74b9af7d16715cbd8_5499.utf8, line 183, warning: 51 characters of junk seen at toplevel
+[300] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_cPUI/a42497fa0f805ce74b9af7d16715cbd8_5499.utf8, line 234, warning: 1 characters of junk seen at toplevel
+[300] Biber.pm:130> WARN - BibTeX subsystem: /tmp/biber_tmp_cPUI/a42497fa0f805ce74b9af7d16715cbd8_5499.utf8, line 294, warning: 96 characters of junk seen at toplevel
+[300] Biber.pm:132> INFO - WARNINGS: 6
