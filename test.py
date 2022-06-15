@@ -1,16 +1,23 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
-arr = np.array([[1,2,3,],
-                [4,5,6],
-                [203,20,23]])
+MAE = np.genfromtxt('MSE_list.txt')
+MAE_L = []
 
-print(arr[0,2])
+for i in range(8):
+    MS = 0
+    for j in range(i,i+80,8):
+        MS += MAE[j]*1/10
+    MAE_L.append(MS)
 
-#print(np.linspace(0.0,90.0,2))
+print(MAE_L)
 
-liste = []
+plt.plot(np.linspace(0.2,0.99,8),MAE_L,'x')
+plt.xlabel('Training Set Fraction')
+plt.ylabel(r'MAE of $k$ between mirrored Systems')
 
-for i in range(3):
-    liste.extend(arr[i,:])
+plt.savefig('MAE_Symmetry.png')
+plt.savefig('MAE_Symmetry.svg')
+plt.savefig('MAE_Symmetry.eps')
 
-print(liste)
+plt.show()

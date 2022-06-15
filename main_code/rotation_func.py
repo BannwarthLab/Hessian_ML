@@ -250,6 +250,12 @@ def rotM_hess(R,coord_var):
           P[3*i:3*(i+1),3*i:3*(i+1)] = R
      return P
 
+def rotM_hess2(R,n):
+     P = np.zeros([3*n,3*n])
+     for i in range(n):
+          P[3*i:3*(i+1),3*i:3*(i+1)] = R
+     return P
+
 def vec_trans(coord_var,trans):
     coord_var_new = coord_var.copy()
     for i in range(len(coord_var.iloc[:,1])): 
@@ -270,20 +276,19 @@ def calc_R(coord):
      s = center_mass(coord) 
 
      # Translation of coordinate system int center of mass
-     coord_new = vec_trans(coord,s)
+     coord = vec_trans(coord,s)
      #vec_trans(dipm,s)
      # Calculating moment of inertia
-     I = inert_tensor(coord_new)
+     I = inert_tensor(coord)
 
      # Calculating eigenvalues and eigenvectors 
      eig_val,eig_vec = linalg.eigh(I)
 
      # Check if the coordinate system is right-handed --> important for chirality
-
      eig_vec = check_eig_vec(eig_vec)
 
      # Rotating eigenvectors, so that highest values are positive
 
      eig_vec = eig_vec_rot(eig_vec)
 
-     return eig_vec
+     return eig_vec,coord
