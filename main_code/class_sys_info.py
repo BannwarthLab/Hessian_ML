@@ -38,6 +38,10 @@ class sys_info:
         self.init_P_MI = np.transpose(self.init_P_MI)
 
         self.xyz = coord_rot(self.xyz,self.init_R_MI)
+
+
+        self.xyz.sort_values(['x','y','z'],key=abs)
+
         self.dipm = coord_rot(self.dipm,self.init_R_MI)
 
         self.hessian = matmul(matmul(self.init_P_MI,self.hessian),np.transpose(self.init_P_MI))

@@ -191,8 +191,7 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         print(c2)
         print(c7)
 
-        '''
-        mat2 = np.array(Systems[test_idx[7]].H_APF_mat)
+        #mat2 = np.array(Systems[test_idx[7]].H_APF_mat)
      
         Systems[test_idx[2]].perm_Hess(0,2)
         Systems[test_idx[7]].perm_Hess(0,2)
@@ -202,19 +201,18 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         mat22 = np.zeros([9,9])
         mat44 = np.zeros([9,9])
 
-        """
         for i in range(0,7,3):
             for j in range(0,7,3):          
                 R = rot_Z(0)
                 mat44[(6-i):(6-i)+3,(6-j):(6-j)+3] = matmul(matmul((R),mat4[i:i+3,j:j+3]),np.transpose(R))
                 mat22[(6-i):(6-i)+3,(6-j):(6-j)+3] = matmul(matmul((R),mat2[i:i+3,j:j+3]),np.transpose(R))
-        """
+        
         fig,axs = plt.subplots(2,2)
         vminmax = 1e-6
 
-        axs[0,0].imshow(mat1, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)
+        axs[0,0].imshow(mat2, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)
         axs[0,0].set_title('H123 GFN2 calc.')
-        axs[0,1].imshow(mat2, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)
+        axs[0,1].imshow(mat7, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)
         axs[0,1].set_title('adj. H321 GFN2 calc.')
         axs[1,0].imshow(mat3, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)
         axs[1,0].set_title('H123 ML pred.')
@@ -252,7 +250,6 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         #plt.savefig(f'plots/lambda_symmetry_check{time_atm}.svg')
 
         plt.show()
-        '''
 
 
 np.savetxt('MSE_list.txt',MSE_list)

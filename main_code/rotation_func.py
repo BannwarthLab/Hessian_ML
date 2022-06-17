@@ -189,6 +189,13 @@ def import_hessian(file,coord_var):
 
 def inert_tensor(coord_var):
      inert_t = np.zeros([3,3])
+     rot_state = None
+
+     if sum(coord_var['x']) < 1e-9 or sum(coord_var['y']) < 1e-9 or sum(coord_var['z']) < 1e-9:
+          rot_state = True
+          rotM = matmul(rot_X(np.pi*random.random()),rot_Z(np.pi*random.random()))
+          coord_var = coord_rot(coord_var,rotM)
+
      m = 0
      for i in range(len(coord_var.iloc[:,1])):
           mi = elements_dict[coord_var.iloc[i,0]]
@@ -209,7 +216,7 @@ def inert_tensor(coord_var):
                                [ txy ,tyy , tyz ],
                                [ txz, tyz, tzz ]])
 
-     return inert_t/m/bohr2angs**2
+     return inert_t/m/bohr2angs**2,coord_var
 
 #Das kann evtl. noch verschnellert werden, indem man direkt bspw. H_AB mit den Massen multipliziert.
 def mass_weighted_hessian(hessian, atoms):
@@ -278,9 +285,9 @@ def calc_R(coord):
      # Translation of coordinate system int center of mass
      coord = vec_trans(coord,s)
      #vec_trans(dipm,s)
-     # Calculating moment of inertia
-     I = inert_tensor(coord)
 
+     # Calculating moment of inertia
+     I,coord = inert_tensor(coord)
      # Calculating eigenvalues and eigenvectors 
      eig_val,eig_vec = linalg.eigh(I)
 
