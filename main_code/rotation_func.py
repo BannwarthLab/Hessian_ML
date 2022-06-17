@@ -190,11 +190,13 @@ def import_hessian(file,coord_var):
 def inert_tensor(coord_var):
      inert_t = np.zeros([3,3])
      rot_state = None
-
+     
+     '''
      if sum(coord_var['x']) < 1e-9 or sum(coord_var['y']) < 1e-9 or sum(coord_var['z']) < 1e-9:
           rot_state = True
           rotM = matmul(rot_X(np.pi*random.random()),rot_Z(np.pi*random.random()))
           coord_var = coord_rot(coord_var,rotM)
+     '''
 
      m = 0
      for i in range(len(coord_var.iloc[:,1])):

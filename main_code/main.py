@@ -8,7 +8,6 @@ from class_sys_info import *
 
 #Current working directory
 cwd = os.getcwd()
-cwd = 'tests/main_test/'
 print(f'Start Importing Files from {cwd}')
 
 train_rot = False

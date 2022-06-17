@@ -40,7 +40,7 @@ class sys_info:
         self.xyz = coord_rot(self.xyz,self.init_R_MI)
 
 
-        self.xyz.sort_values(['x','y','z'],key=abs)
+        #self.xyz.sort_values(['x','y','z'],key=abs)
 
         self.dipm = coord_rot(self.dipm,self.init_R_MI)
 
@@ -55,6 +55,7 @@ class sys_info:
         elif self.coord_state[0] == 'inert': 
             for atom_A in range(self.N_atoms):
                 for atom_B in range(atom_A,self.N_atoms):
+                    print(atom_A,atom_B)
                     R_MI_APF = get_R_euler(self.xyz,self.dipm,atom_A,atom_B)
                     H_APF = np.zeros([3,3])
                     #Generate the final hessian
@@ -64,7 +65,7 @@ class sys_info:
                     j0 = 3*atom_B 
                     j3 = 3*atom_B + 3
 
-                    H_APF = matmul(matmul(R_MI_APF,self.hessian[i0:i3,j0:j3].copy()),(np.transpose(R_MI_APF)))
+                    H_APF = matmul(matmul(R_MI_APF,self.hessian[i0:i3,j0:j3].copy()),np.transpose(R_MI_APF))
                     self.R_MI_APF_mat[i0:i3,j0:j3] = R_MI_APF   
                     self.H_APF_mat[i0:i3,j0:j3] = H_APF
         return
