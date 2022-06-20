@@ -335,7 +335,7 @@ class Feature:
 
                         Quantity_AB_arr =(np.array(Quantity_AB))
 
-                        Feature_Arith = np.abs(Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
+                        Feature_Arith = (Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
                         Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
                         Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
 
