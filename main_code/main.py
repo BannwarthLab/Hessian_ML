@@ -21,7 +21,7 @@ MSE_list = []
 mol_sys_dirs = sorted(os.listdir(cwd))
 train_set_fraction = [None]# np.linspace(0.2,0.99,8)
 #For every molecular system
-for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
+for rnd_state in [65]:#,42,0,56,29,100,208,46,30,39]:
     for train in train_set_fraction:
         Systems = []
         mol_sys_idx = []
@@ -132,11 +132,11 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
             test_symmetry_homo.append(np.array(sorted(y_homo_pred)))
             test_symmetry_hetero.append(np.array(sorted(y_hetero_pred)))
 
-            #Systems[i].project_hessian(label='xTB')
-            #Systems[i].project_hessian(label='pred')
+            Systems[i].project_hessian(label='xTB')
+            Systems[i].project_hessian(label='pred')
 
-            #Systems[i].weight_hessian(label='xTB')
-            #Systems[i].weight_hessian(label='pred')
+            Systems[i].weight_hessian(label='xTB')
+            Systems[i].weight_hessian(label='pred')
 
             Systems[i].gen_eigenvalues()
             lambd[0].append(sorted(Systems[i].hessian_lambd))
@@ -181,7 +181,8 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
 
         #print(regr_homonuclear.predict(Systems[test_idx[3]].features.Feature_AA[0:1]))  
         #print(regr_homonuclear.predict(Systems[test_idx[6]].features.Feature_AA[18:19]))
-        mat2 = np.array(Systems[test_idx[2]].H_APF_mat)[3:6,6:9]
+
+        '''mat2 = np.array(Systems[test_idx[2]].H_APF_mat)[3:6,6:9]
         R2 = np.array(Systems[test_idx[2]].R_MI_APF_mat)[3:6,6:9]
 
         mat7 = np.array(Systems[test_idx[7]].H_APF_mat)[0:3,3:6]
@@ -219,7 +220,7 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         axs[1,0].imshow(mat3, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)
         axs[1,0].set_title('H123 ML pred.')
         axs[1,1].imshow(mat4, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)
-        axs[1,1].set_title('adj. H321 ML pred.')
+        axs[1,1].set_title('adj. H321 ML pred.')'''
         #axs[0,2].imshow(mat1-mat22, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)
         #axs[0,2].set_title('Difference GFN2')
         #axs[1,2].imshow(mat3-mat44, cmap='hot', interpolation='nearest', vmin=-vminmax, vmax=vminmax)

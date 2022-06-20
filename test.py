@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-MAE = np.genfromtxt('MSE_list.txt')
+'''MAE = np.genfromtxt('MSE_list.txt')
 MAE_L = []
 
 for i in range(8):
@@ -20,4 +20,20 @@ plt.savefig('MAE_Symmetry.png')
 plt.savefig('MAE_Symmetry.svg')
 plt.savefig('MAE_Symmetry.eps')
 
-plt.show()
+plt.show()'''
+
+for atom_A in range(3):
+    for atom_B in range(atom_A+1,3):
+        A = atom_A
+        B = atom_B
+
+
+        A,B = B,A 
+
+        print(A,B)
+
+
+for a in range(3):
+    b = 0
+    a ,b = b,a
+    print(a)

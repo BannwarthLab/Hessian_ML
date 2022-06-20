@@ -80,7 +80,7 @@ class sys_info:
         for angle in angle_list[0]:
             rot_Mat = rot_X(angle/360*2*np.pi)
             for atom_A in range(self.N_atoms):
-                H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3].copy()
+                H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3]
                 H_APF = matmul(matmul((rot_Mat),H_APF),np.transpose(rot_Mat))
                 for i in range(3):
                     for j in range(3):
@@ -94,7 +94,8 @@ class sys_info:
                     H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_B:3*atom_B+3].copy()
 
                     if [atom_A,atom_B] in self.features.transpose_list:
-                        H_APF = np.transpose(H_APF)
+                        #
+                        H_APF = matmul(matmul(rot_X(np.pi),np.transpose(H_APF)),np.transpose(rot_X(np.pi)))
 
                     H_APF = matmul(matmul((rot_Mat),H_APF),np.transpose(rot_Mat))
                     for i in range(3):
@@ -126,6 +127,7 @@ class sys_info:
             for atom_A in range(self.N_atoms):
                 self.H_pred = fill_matrix_block(hessian_homo,self.H_pred,R_mat=self.R_MI_APF_mat,A=atom_A,ite=ite_homo)
                 ite_homo += 1
+
                 transpose = None
                 for atom_B in range(atom_A+1,self.N_atoms):
                     if [atom_A,atom_B] in self.features.transpose_list:
@@ -224,6 +226,8 @@ class Feature:
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']].values.tolist())
         self.names = GFN2_quantities.columns.tolist()
         self.transpose_list = []
+        self.check_list = []
+
         self.Feature_AB = []
         self.Feature_AA = []
         self.angle_list  = angle_list
@@ -249,6 +253,7 @@ class Feature:
                         [-1,0,1],
                         [0,-1,1],
                         [0,0,2]]
+
             if train_rot==True:
                 angle_list = self.angle_list
 
@@ -259,19 +264,32 @@ class Feature:
                 rot_Mat = rot_X(angle/360*2*np.pi)
 
                 self.transpose_list = []
+                self.check_list = []
 
                 for atom_A in range(N_atoms):
                     for atom_B in range(atom_A+1,N_atoms):
-                        i0 = 3*atom_A
-                        i3 = 3*atom_A + 3
-                        j0 = 3*atom_B 
-                        j3 = 3*atom_B + 3
+
+                        A = atom_A
+                        B = atom_B
+
+                        i0 = 3*A
+                        i3 = 3*A + 3
+                        j0 = 3*B 
+                        j3 = 3*B + 3
+
+                        self.check_list.append([A,B])
+
+                        if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
+                            B,A = A,B
+                            self.transpose_list.append([B,A])
+                            rot_Mat = rot_X(np.pi)#matmul(rot_X(np.pi),rot_Mat)
+                        
 
                         R_MI_APF = R_MI_APF_mat[i0:i3,j0:j3]
 
                         R_MI_APF = matmul(rot_Mat,R_MI_APF)
 
-                        R_AB = linalg.norm(xyz.iloc[atom_A,1:] - xyz.iloc[atom_B,1:])
+                        R_AB = linalg.norm(xyz.iloc[A,1:] - xyz.iloc[B,1:])
 
                         Quantity_AB = [[],[]]
 
@@ -279,17 +297,7 @@ class Feature:
 
                         j = 0
 
-                        if linalg.norm(self.dipm_atom[atom_A]) < linalg.norm(self.dipm_atom[atom_B]):
-                            atom_B,atom_A = atom_A,atom_B
-
-                            if [atom_B,atom_A] in self.transpose_list:
-                                print(atom_B,atom_A)
-
-                            self.transpose_list.append([atom_B,atom_A])
-                        
-
-
-                        for atom in [atom_A,atom_B]:
+                        for atom in [A,B]:
 
                             dipm_atom = matmul(init_R_MI,self.dipm_atom[atom])
                             dipm_delta = matmul(init_R_MI,self.dipm_delta[atom])
@@ -327,7 +335,7 @@ class Feature:
 
                         Quantity_AB_arr =(np.array(Quantity_AB))
 
-                        Feature_Arith = (Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
+                        Feature_Arith = np.abs(Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
                         Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
                         Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
 
@@ -336,11 +344,11 @@ class Feature:
                             Features = []
 
                             if idx in [3,6,7]:
-                                Features.extend(np.abs(Quantity_AB[1]))
-                                Features.extend(np.abs(Quantity_AB[0]))
+                                Features.extend((Quantity_AB[1]))
+                                Features.extend((Quantity_AB[0]))
                             else:
-                                Features.extend(np.abs(Quantity_AB[0]))
-                                Features.extend(np.abs(Quantity_AB[1]))
+                                Features.extend((Quantity_AB[0]))
+                                Features.extend((Quantity_AB[1]))
                         
                             Features.extend(Feature_Arith)
                             Features.extend(Feature_Prod)
@@ -355,7 +363,7 @@ class Feature:
                             Quantity_AB = [[],[]]
                             j = 0
 
-                            for i in [atom_B,atom_A]:
+                            for i in [B,A]:
 
                                 dipm_atom = matmul(init_R_MI,self.dipm_atom[i])
                                 dipm_delta = matmul(init_R_MI,self.dipm_delta[i])
@@ -391,11 +399,11 @@ class Feature:
 
                                 j+=1
 
-                            Quantity_AB_arr = np.array(Quantity_AB)
+                            Quantity_AB_arr = np.abs(np.array(Quantity_AB))
 
-                            Feature_Arith = (Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
+                            Feature_Arith = np.abs(Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
                             Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
-                            Feature_AbsDiff = (Quantity_AB_arr[0] - Quantity_AB_arr[1])
+                            Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
 
 
                             for i in range(9):
@@ -427,6 +435,7 @@ class Feature:
                     [1,0,1],
                     [0,1,1],
                     [0,0,2]]
+
             if train_rot==True:
                 angle_list = self.angle_list
 
@@ -436,10 +445,10 @@ class Feature:
             for angle in angle_list[0]:
                 rot_Mat = rot_X(angle/360*2*np.pi)
 
-                for atom_A in range(N_atoms):
+                for A in range(N_atoms):
 
-                    i0 = 3*atom_A
-                    i3 = 3*atom_A + 3
+                    i0 = 3*A
+                    i3 = 3*A + 3
 
                     R_MI_APF = R_MI_APF_mat[i0:i3,i0:i3]
                     R_MI_APF = matmul(rot_Mat,R_MI_APF)
@@ -447,16 +456,16 @@ class Feature:
                     Quantity_A = []
 
                     vector_of_ones = np.array([1,1,1])
-                    dipm_atom = matmul(init_R_MI,self.dipm_atom[atom_A])
-                    dipm_delta = matmul(init_R_MI,self.dipm_delta[atom_A])
-                    dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[atom_A])
+                    dipm_atom = matmul(init_R_MI,self.dipm_atom[A])
+                    dipm_delta = matmul(init_R_MI,self.dipm_delta[A])
+                    dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[A])
 
-                    dipm_atom = matmul(R_MI_APF,self.dipm_atom[atom_A])
-                    dipm_delta = matmul(R_MI_APF,self.dipm_delta[atom_A])
-                    dipm_only_mull = matmul(R_MI_APF,self.dipm_only_mull[atom_A])
+                    dipm_atom = matmul(R_MI_APF,self.dipm_atom[A])
+                    dipm_delta = matmul(R_MI_APF,self.dipm_delta[A])
+                    dipm_only_mull = matmul(R_MI_APF,self.dipm_only_mull[A])
 
-                    qm_atom = matmul(matmul(R_MI_APF,self.qm_atom[atom_A]),np.transpose(R_MI_APF))
-                    qm_delta = matmul(matmul(R_MI_APF,self.qm_delta[atom_A]),np.transpose(R_MI_APF))
+                    qm_atom = matmul(matmul(R_MI_APF,self.qm_atom[A]),np.transpose(R_MI_APF))
+                    qm_delta = matmul(matmul(R_MI_APF,self.qm_delta[A]),np.transpose(R_MI_APF))
 
                     #for i in range(3):
                     #   Quantity_A.extend([np.sum(qm_atom[i,:])])
@@ -466,18 +475,20 @@ class Feature:
                     #for i in range(3):
                     #    Quantity_A.extend([np.sum(qm_delta[i,:])])
 
-                    Quantity_A.extend(self.CN[atom_A])
+                    Quantity_A.extend(self.CN[A])
+
                     Quantity_A.extend(dipm_atom)
                     Quantity_A.extend(dipm_delta)
                     Quantity_A.extend(dipm_only_mull)
 
                     Quantity_A.extend(qm_atom)
                     Quantity_A.extend(qm_delta)
-                    Quantity_A.extend(self.energy_based[atom_A])
+
+                    Quantity_A.extend(self.energy_based[A])
 
                     for i in range(9):
                         Features = []
-                        Features.extend(Quantity_A)
+                        Features.extend(np.abs(np.array(Quantity_A)))
                         Features.extend(index[i])
 
                         self.Feature_AA.append(Features)
@@ -516,10 +527,10 @@ def fill_matrix_block(vector,matrix,R_mat=None,A=None,B=None,ite=None,transpose=
             #print(f'{k}:{vector[k]}')
             k+=1
 
-    matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul((R_mat[3*A:3*A+3,3*B:3*B+3]),matrix[3*A:3*A+3,3*B:3*B+3]),np.transpose(R_mat[3*A:3*A+3,3*B:3*B+3]))
+    matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(R_mat[3*A:3*A+3,3*B:3*B+3]),matrix[3*A:3*A+3,3*B:3*B+3]),(R_mat[3*A:3*A+3,3*B:3*B+3]))
     
     if transpose == True:
-        matrix[3*A:3*A+3,3*B:3*B+3] = np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])
+        matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot_X(np.pi)),np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])),(rot_X(np.pi)))
 
     if A != B:
         matrix[3*B:3*B+3,3*A:3*A+3] = np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])
