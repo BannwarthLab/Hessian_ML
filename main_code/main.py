@@ -8,10 +8,13 @@ from class_sys_info import *
 
 #Current working directory
 cwd = os.getcwd()
+cwd = 'tests/main_test/'
+#cwd[:-9]+'tests/main_test/'
+
 print(f'Start Importing Files from {cwd}')
 
 train_rot = False
-train_set = True
+train_set = False
 
 MSE_list = []
 #Gathering all directories of all molecular systems 
@@ -192,8 +195,8 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
 
         #mat2 = np.array(Systems[test_idx[7]].H_APF_mat)
      
-        Systems[test_idx[2]].perm_Hess(0,2)
-        Systems[test_idx[7]].perm_Hess(0,2)
+        #Systems[test_idx[2]].perm_Hess(0,2)
+        #Systems[test_idx[7]].perm_Hess(0,2)
 
         mat3 = np.array(Systems[test_idx[2]].H_APF_mat)
         mat4 = np.array(Systems[test_idx[7]].H_APF_mat)

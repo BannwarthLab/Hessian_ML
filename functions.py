@@ -383,6 +383,21 @@ def import_hess(file,coord_var):
                i+=1
      return hess
 
+def import_hessian(file,coord_var):
+     LineList = []
+     with open (file,'r') as fd:
+          Lines = [line.rstrip('\n') for line in fd]
+          for line in Lines[1:]:
+               LineList += line.split()
+
+     hess = np.zeros([len(coord_var['atoms'])*3,len(coord_var['atoms'])*3])
+     i = 0
+     for k in range(len(hess[0,:])):
+          for l in range(len(hess[:,0])):
+               hess[k,l] = float(LineList[i])
+               i+=1
+     return hess
+
 def inert_tensor(coord_var):
      inert_t = np.zeros([3,3])
      m = 0
