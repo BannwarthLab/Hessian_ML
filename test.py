@@ -22,18 +22,23 @@ plt.savefig('MAE_Symmetry.eps')
 
 plt.show()'''
 
-for atom_A in range(3):
-    for atom_B in range(atom_A+1,3):
-        A = atom_A
-        B = atom_B
+MSE_het_0 = np.genfromtxt('MSE_list_het_0.txt')
+MSE_het = np.genfromtxt('MSE_list_het.txt')
+MSE_hom_0 = np.genfromtxt('MSE_list_hom_0.txt')
+MSE_hom = np.genfromtxt('MSE_list_hom.txt')
 
+MSE = [[MSE_het,MSE_hom],[MSE_het_0,MSE_hom_0]]
 
-        A,B = B,A 
+for i in range(2):
+    if i == 0:
+        plt.bar([i+1],[np.mean(MSE[i][0])],label='Heteronuclear')
+        plt.bar([i+1],[np.mean(MSE[i][1])],label='Homonuclear')
+    else:
+        plt.bar(i+1,np.mean(MSE[i][0]))
+        plt.bar(i+1,np.mean(MSE[i][1]))
 
-        print(A,B)
+plt.xticks([1,2],['1','2'])
+plt.ylabel(r'$\bar{\mathrm{MSE}}$ [-]')
+plt.legend()
 
-
-for a in range(3):
-    b = 0
-    a ,b = b,a
-    print(a)
+plt.show()

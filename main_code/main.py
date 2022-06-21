@@ -13,15 +13,15 @@ cwd = 'tests/main_test/'
 
 print(f'Start Importing Files from {cwd}')
 
-train_rot = True
+train_rot = False
 train_set = False
 
-MSE_list = []
+MSE_list = [[],[]]
 #Gathering all directories of all molecular systems 
 mol_sys_dirs = sorted(os.listdir(cwd))
 train_set_fraction = [None]# np.linspace(0.2,0.99,8)
 #For every molecular system
-for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
+for rnd_state in [42,0,56,29,100,208,46,30,39,51]:
     for train in train_set_fraction:
         Systems = []
         mol_sys_idx = []
@@ -63,7 +63,7 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         #train_idx, temp = train_test_split(train_idx,test_size=test_size,train_size=train_size,random_state=rnd_state)
             
         test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
-        #train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.75,random_state=rnd_state)
+        train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.75,random_state=rnd_state)
 
         
         X_homo = []
@@ -142,19 +142,19 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
             lambd[0].append(sorted(Systems[i].hessian_lambd))
             lambd[1].append(sorted(Systems[i].H_pred_lambd))
 
-        length = np.linspace(0.6,4,10)
-        for i in range(len(length)):
-            for j in range(4):
-                plt.plot(length[i],lambd[1][i][j],'bx')
-                plt.plot(length[i],lambd[0][i][j],'rx')
+        #length = np.linspace(0.6,4,10)
+        #for i in range(len(length)):
+        #    for j in range(4):
+        #       plt.plot(length[i],lambd[1][i][j],'bx')
+        #        plt.plot(length[i],lambd[0][i][j],'rx')
         
-        MSE = 0 
-        for i in range(5):
-            for j in range(4):
-                MSE += 1/(5*4) * np.abs(lambd[1][i][j] - lambd[1][-(1+i)][j])
+        #MSE = 0 
+        #for i in range(5):
+        #    for j in range(4):
+        #        MSE += 1/(5*4) * np.abs(lambd[1][i][j] - lambd[1][-(1+i)][j])
 
-        print(MSE)
-        MSE_list.append(MSE)
+        #print(MSE)
+        #MSE_list.append(MSE)
         #eigh_H_pred3 = Systems[test_idx[3]].H_pred_lambd
         #eigh_H_pred6 = Systems[test_idx[6]].H_pred_lambd
 
@@ -237,6 +237,9 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         MSE_homonuclear  = mean_squared_error(full_y_test_homo,full_y_pred_homo)
         MSE_heteronuclear  = mean_squared_error(full_y_test_hetero,full_y_pred_hetero)
 
+        MSE_list[0].append(MSE_homonuclear)
+        MSE_list[1].append(MSE_heteronuclear)
+
         print(f'R2(homo)   :{round(r_score_homo,3)}')
         print(f'R2(hetero)   :{round(r_score_hetero,3)}')
 
@@ -249,8 +252,8 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         plt.savefig(f'plots/lambda_symmetry_check.png')
         plt.savefig(f'plots/lambda_symmetry_check.svg')
 
-        plt.show()
+        #plt.show()
 
 
-np.savetxt('MSE_list.txt',MSE_list)
-
+np.savetxt('MSE_list_hom_0.txt',MSE_list[0])
+np.savetxt('MSE_list_het_0.txt',MSE_list[1])
