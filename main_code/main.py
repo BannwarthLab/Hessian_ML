@@ -13,7 +13,7 @@ cwd = 'tests/main_test/'
 
 print(f'Start Importing Files from {cwd}')
 
-train_rot = False
+train_rot = True
 train_set = False
 
 MSE_list = []
@@ -21,7 +21,7 @@ MSE_list = []
 mol_sys_dirs = sorted(os.listdir(cwd))
 train_set_fraction = [None]# np.linspace(0.2,0.99,8)
 #For every molecular system
-for rnd_state in [65]:#,42,0,56,29,100,208,46,30,39]:
+for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
     for train in train_set_fraction:
         Systems = []
         mol_sys_idx = []
@@ -155,7 +155,6 @@ for rnd_state in [65]:#,42,0,56,29,100,208,46,30,39]:
 
         print(MSE)
         MSE_list.append(MSE)
-        plt.show()
         #eigh_H_pred3 = Systems[test_idx[3]].H_pred_lambd
         #eigh_H_pred6 = Systems[test_idx[6]].H_pred_lambd
 
@@ -243,14 +242,12 @@ for rnd_state in [65]:#,42,0,56,29,100,208,46,30,39]:
 
         print(f'MSE(homo)  :{round(MSE_homonuclear,3)}')
         print(f'MSE(hetero):{round(MSE_heteronuclear,3)}')
-        '''
 
-        #plt.xlabel(r'$x$(H2) [$\mathrm{\AA}$]',fontsize=24)
-        #plt.ylabel(r'$k~[\mathrm{N~\mathrm{m}^{-1}}]$',fontsize=24)  
-        '''
+        plt.xlabel(r'$x$(H2) [$\mathrm{\AA}$]',fontsize=24)
+        plt.ylabel(r'$k~[\mathrm{N~\mathrm{m}^{-1}}]$',fontsize=24)  
 
-        #plt.savefig(f'plots/lambda_symmetry_check{time_atm}.png')
-        #plt.savefig(f'plots/lambda_symmetry_check{time_atm}.svg')
+        plt.savefig(f'plots/lambda_symmetry_check.png')
+        plt.savefig(f'plots/lambda_symmetry_check.svg')
 
         plt.show()
 
