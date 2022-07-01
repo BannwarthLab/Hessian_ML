@@ -187,6 +187,13 @@ def import_hessian(file,coord_var):
                i+=1
      return hess
 
+def import_gradient(file,coord_var):
+
+     gradient = np.genfromtxt(file,skip_header=2+len(coord_var['atoms']),skip_footer=1)
+     gradient = gradient.flatten()
+
+     return gradient
+
 def inert_tensor(coord_var):
      inert_t = np.zeros([3,3])
      rot_state = None

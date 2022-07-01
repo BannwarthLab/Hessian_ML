@@ -1,4 +1,3 @@
-from numpy import reshape
 from constants import *
 from ml_func import *
 from functions import *
@@ -16,12 +15,12 @@ print(f'Start Importing Files from {cwd}')
 train_rot = True
 train_set = False
 
-MSE_list = []
+MSE_list = [[],[]]
 #Gathering all directories of all molecular systems 
 mol_sys_dirs = sorted(os.listdir(cwd))
 train_set_fraction = [None]# np.linspace(0.2,0.99,8)
 #For every molecular system
-for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
+for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
     for train in train_set_fraction:
         Systems = []
         mol_sys_idx = []
@@ -47,7 +46,6 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
                 Systems.append(system)
 
         print('Fitting the Model.')
-        rnd_state = None
 
         test_idx = []
         train_idx = []
@@ -63,7 +61,7 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         #train_idx, temp = train_test_split(train_idx,test_size=test_size,train_size=train_size,random_state=rnd_state)
             
         test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
-        #train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.75,random_state=rnd_state)
+        train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.75,random_state=rnd_state)
 
         
         X_homo = []
@@ -106,6 +104,8 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
 
         print('Testing the Model.')
         lambd = [[],[]]
+        ZPVE = [[],[]]
+
         test_sys = None
 
         for i in test_idx:
@@ -117,8 +117,8 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
             full_X_homo_test.extend(X_homo_temp)
             full_X_hetero_test.extend(X_hetero_temp)
 
-            full_y_test_homo.extend(Systems[i].H_AA_vec)
-            full_y_test_hetero.extend(Systems[i].H_AB_vec)
+            full_y_test_homo.extend((Systems[i].hessian).flatten())
+            #full_y_test_hetero.extend(Systems[i].hessian)
 
             y_homo_pred = regr_homonuclear.predict(X_homo_temp)
             y_hetero_pred = regr_heteronuclear.predict(X_hetero_temp)
@@ -126,8 +126,8 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
 
             Systems[i].get_pred_hessian(hessian_homo=y_homo_pred,hessian_hetero=y_hetero_pred)
 
-            full_y_pred_homo.extend(y_homo_pred)
-            full_y_pred_hetero.extend(y_hetero_pred)
+            full_y_pred_homo.extend((Systems[i].H_pred).flatten())
+            #full_y_pred_hetero.extend(y_hetero_pred)
 
             test_symmetry_homo.append(np.array(sorted(y_homo_pred)))
             test_symmetry_hetero.append(np.array(sorted(y_hetero_pred)))
@@ -140,21 +140,26 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
 
             Systems[i].gen_eigenvalues()
             lambd[0].append(sorted(Systems[i].hessian_lambd))
-            lambd[1].append(sorted(Systems[i].H_pred_lambd))
+            ZPVE[0].append(sum(sorted(Systems[i].hessian_lambd)))
 
+            lambd[1].append(sorted(Systems[i].H_pred_lambd))
+            ZPVE[1].append(sum(sorted(Systems[i].H_pred_lambd)))
+
+        '''
         length = np.linspace(0.6,4,10)
         for i in range(len(length)):
             for j in range(4):
                 plt.plot(length[i],lambd[1][i][j],'bx')
                 plt.plot(length[i],lambd[0][i][j],'rx')
-        
-        MSE = 0 
-        for i in range(5):
-            for j in range(4):
-                MSE += 1/(5*4) * np.abs(lambd[1][i][j] - lambd[1][-(1+i)][j])
+        '''
+        #plt.show()
+        #MSE = 0 
+        #for i in range(5):
+        #    for j in range(4):
+        #        MSE += 1/(5*4) * np.abs(lambd[1][i][j] - lambd[1][-(1+i)][j])
 
-        print(MSE)
-        MSE_list.append(MSE)
+        #print(MSE)
+        #MSE_list.append(MSE)
         #eigh_H_pred3 = Systems[test_idx[3]].H_pred_lambd
         #eigh_H_pred6 = Systems[test_idx[6]].H_pred_lambd
 
@@ -226,31 +231,35 @@ for rnd_state in [46]:#,42,0,56,29,100,208,46,30,39]:
         #axs[1,2].set_title('Difference ML pred.')
 
         #print(Systems[test_idx[1]].features.qm_atom[:])
-        #print(Systems[test_idx[8]].features.qm_atom[:])
+        #print(Systems[test_idx[8]].features.qm_atom[:])H3
         #print(Systems[test_idx[2]].R_MI_APF_mat-Systems[test_idx[7]].R_MI_APF_mat)
 
+        print(full_y_test_homo[:10])
+        print(full_y_pred_homo[:10])
 
-
-        r_score_homo = regr_homonuclear.score(full_X_homo_test,full_y_test_homo)
-        r_score_hetero = regr_heteronuclear.score(full_X_hetero_test,full_y_test_hetero)
-
+        #r_score_homo = regr_homonuclear.score(full_y_test_homo,full_y_pred_homo)
+        #r_score_hetero = regr_heteronuclear.score(full_X_hetero_test,full_y_test_hetero)
         MSE_homonuclear  = mean_squared_error(full_y_test_homo,full_y_pred_homo)
-        MSE_heteronuclear  = mean_squared_error(full_y_test_hetero,full_y_pred_hetero)
+        #MSE_heteronuclear  = mean_squared_error(full_y_test_hetero,full_y_pred_hetero)
 
-        print(f'R2(homo)   :{round(r_score_homo,3)}')
-        print(f'R2(hetero)   :{round(r_score_hetero,3)}')
+        MSE_list[0].append(MSE_homonuclear)
+        #MSE_list[1].append(MSE_heteronuclear)
 
-        print(f'MSE(homo)  :{round(MSE_homonuclear,3)}')
-        print(f'MSE(hetero):{round(MSE_heteronuclear,3)}')
+        #print(f'R2(homo)   :{round(r_score_homo,3)}')
+        #print(f'R2(hetero)   :{round(r_score_hetero,3)}')
 
+        print(f'MSE(homo)  :{round(MSE_homonuclear,5)}')
+        #print(f'MSE(hetero):{round(MSE_heteronuclear,3)}')
+        '''
         plt.xlabel(r'$x$(H2) [$\mathrm{\AA}$]',fontsize=24)
         plt.ylabel(r'$k~[\mathrm{N~\mathrm{m}^{-1}}]$',fontsize=24)  
 
         plt.savefig(f'plots/lambda_symmetry_check.png')
         plt.savefig(f'plots/lambda_symmetry_check.svg')
-
-        plt.show()
-
-
-np.savetxt('MSE_list.txt',MSE_list)
-
+        '''
+        #plt.show()
+    plt.loglog( [0,max([max(ZPVE[0]),max(ZPVE[1])])*1.1],[0,max([max(ZPVE[0]),max(ZPVE[1])])*1.1],'k-')
+    plt.loglog(np.array(ZPVE[0]) ,np.array(ZPVE[1]),'x')
+    #plt.show()
+np.savetxt('MSE_list_delta_gradFeature.txt',MSE_list[0])
+#np.savetxt('MSE_list_het_0.txt',MSE_list[1])
