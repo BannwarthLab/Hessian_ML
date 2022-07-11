@@ -20,7 +20,9 @@ MSE_list = [[],[]]
 mol_sys_dirs = sorted(os.listdir(cwd))
 train_set_fraction = [None]# np.linspace(0.2,0.99,8)
 #For every molecular system
-for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
+lambd = [[],[]]
+ZPVE = [[],[]]
+for rnd_state in [42,0,56,29,100,208,46,30,39,51]:
     for train in train_set_fraction:
         Systems = []
         mol_sys_idx = []
@@ -103,8 +105,7 @@ for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
         test_symmetry_hetero = []
 
         print('Testing the Model.')
-        lambd = [[],[]]
-        ZPVE = [[],[]]
+
 
         test_sys = None
 
@@ -139,11 +140,18 @@ for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
             Systems[i].weight_hessian(label='pred')
 
             Systems[i].gen_eigenvalues()
-            lambd[0].append(sorted(Systems[i].hessian_lambd))
-            ZPVE[0].append(sum(sorted(Systems[i].hessian_lambd)))
+            lambd[0].extend(sorted(Systems[i].hessian_lambd))
+            freq = frequency(Systems[i].hessian_lambd)
+            ZPVE[0].append(np.sum(freq)/2)
+            print(Systems[i].molecule)
+            print(Systems[i].variation)
 
-            lambd[1].append(sorted(Systems[i].H_pred_lambd))
-            ZPVE[1].append(sum(sorted(Systems[i].H_pred_lambd)))
+            print(freq*219474.63068)
+
+            lambd[1].extend(sorted(Systems[i].H_pred_lambd))
+            freq = frequency(Systems[i].H_pred_lambd)
+            
+            ZPVE[1].append(np.sum(freq)/2)
 
         '''
         length = np.linspace(0.6,4,10)
@@ -258,8 +266,14 @@ for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
         plt.savefig(f'plots/lambda_symmetry_check.svg')
         '''
         #plt.show()
+
+
     plt.loglog( [0,max([max(ZPVE[0]),max(ZPVE[1])])*1.1],[0,max([max(ZPVE[0]),max(ZPVE[1])])*1.1],'k-')
     plt.loglog(np.array(ZPVE[0]) ,np.array(ZPVE[1]),'x')
     #plt.show()
-np.savetxt('MSE_list_delta_gradFeature.txt',MSE_list[0])
-#np.savetxt('MSE_list_het_0.txt',MSE_list[1])
+
+np.savetxt('lambda_ML_Delta.txt',lambd[1])
+np.savetxt('lambda_xTB_Delta.txt',lambd[0])
+
+np.savetxt('ZPVE_ML_Delta.txt',ZPVE[1])
+np.savetxt('ZPVE_xTB_Delta.txt',ZPVE[0])

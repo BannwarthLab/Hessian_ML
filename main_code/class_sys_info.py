@@ -343,7 +343,7 @@ class Feature:
                             Quantity_AB[j].extend(qm_delta)
                             Quantity_AB[j].extend(self.energy_based[atom])
 
-                            Quantity_AB[j].extend(gradient)
+                            #Quantity_AB[j].extend(gradient)
 
 
                             j+=1
@@ -501,7 +501,7 @@ class Feature:
                     Quantity_A.extend(qm_delta)
 
                     Quantity_A.extend(self.energy_based[A])
-                    Quantity_A.extend(gradient)
+                    #Quantity_A.extend(gradient)
 
                     for i in range(9):
                         Features = []

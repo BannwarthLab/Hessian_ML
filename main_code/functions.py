@@ -67,9 +67,17 @@ def wavenumber(lamb):
     freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi*speed_of_light))
     return freq_val
 
+
 def frequency(lamb):
-    freq_val = (np.sqrt(abs(lamb))/(atomic_time_unit*2*np.pi))
-    return freq_val
+     freq_val = np.zeros(len(lamb))
+     for i in range(len(lamb)):
+          
+          if lamb[i] >= 0:
+               freq_val[i] = np.sqrt(lamb[i])
+          else:
+               freq_val[i] = 0
+
+     return freq_val
 
 def force_constant(lamb,atoms):
     m_sum = 0
