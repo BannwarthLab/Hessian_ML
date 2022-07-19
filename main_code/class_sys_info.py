@@ -5,7 +5,8 @@ from rotation_func import *
 class sys_info:
     def __init__(self,folder,molecule,variation):
         self.xyz, self.header = import_coord(f'{folder}coord.xyz')
-        self.hessian = import_hessian(f'{folder}/hessian',self.xyz)
+        self.hessian_import = import_hessian(f'{folder}/hessian',self.xyz)
+        self.hessian = self.hessian_import.copy()
         self.dipm = import_dipm(f'{folder}/xyz_dipm.csv').iloc[:,:-3]
         self.grad = import_gradient(f'{folder}/gradient',self.xyz)
 
@@ -118,11 +119,12 @@ class sys_info:
         return
 
 
-    def gen_Feature(self,label=None,train_rot=None,train_set=None):
+    def gen_Feature(self,label=None,train_rot=None,train_set=None,data_analysis=None):
         #self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms)
-
-        self.features.get_Feature_heteronuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,xyz = self.xyz,init_R_MI=self.init_R_MI,train_rot=train_rot,train_set=train_set)
-        self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,init_R_MI=self.init_R_MI,train_rot=train_rot)
+        self.features.Feature_AA = []
+        self.features.Feature_AB = []
+        self.features.get_Feature_heteronuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,xyz = self.xyz,init_R_MI=self.init_R_MI,train_rot=train_rot,train_set=train_set,data_analysis=data_analysis)
+        self.features.get_Feature_homonuclear(R_MI_APF_mat=self.R_MI_APF_mat,N_atoms=self.N_atoms,init_R_MI=self.init_R_MI,train_rot=train_rot,data_analysis=data_analysis)
 
         return self.features.Feature_AA, self.features.Feature_AB
 
@@ -219,6 +221,29 @@ class sys_info:
         self.hessian_lambd =sorted(lambd_temp,key=abs)[self.lambd_len:]
         return
 
+    def clear(self):
+        self.H_AA_vec = []
+        self.H_AB_vec = []
+
+        self.lambd_len = None
+        self.H_pred = np.zeros([3*self.N_atoms,3*self.N_atoms])
+
+        self.H_pred_lambd = None
+        self.hessian_lambd = None
+        
+        self.hessian = self.hessian_import.copy()
+        self.H_approx = H_Approx(self.grad)
+        self.H_delta = H_Delta(self.H_approx,self.hessian)
+
+        self.features.Feature_AB = []
+        self.features.Feature_AA = []
+
+        self.features.transpose_list = []
+        self.features.check_list = []
+
+
+        return
+
 
 class Feature:
     def __init__(self,folder,angle_list,grad):
@@ -242,7 +267,8 @@ class Feature:
         self.Feature_AA = []
         self.angle_list  = angle_list
 
-    def  get_Feature_heteronuclear(self, label=None, R_MI_APF_mat=None, N_atoms = None,xyz = None,init_R_MI=None,train_rot=None,train_set=None):
+    def  get_Feature_heteronuclear(self, label=None, R_MI_APF_mat=None, N_atoms = None,xyz = None,init_R_MI=None,train_rot=None,train_set=None,data_analysis=None):
+
         if self.Feature_AB == []:
             index = [[2,0,0],
                     [1,1,0],
@@ -354,8 +380,11 @@ class Feature:
                         Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
                         Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
 
+                        idx_len = 9
+                        if data_analysis == True:
+                            idx_len = 1
 
-                        for idx in range(9):
+                        for idx in range(idx_len):
                             Features = []
 
                             if idx in [3,6,7]:
@@ -373,73 +402,13 @@ class Feature:
                             Features.extend([R_AB])
 
                             self.Feature_AB.append(Features)
-
-                        if train_set == True:
-                            Quantity_AB = [[],[]]
-                            j = 0
-
-                            for i in [B,A]:
-
-                                dipm_atom = matmul(init_R_MI,self.dipm_atom[i])
-                                dipm_delta = matmul(init_R_MI,self.dipm_delta[i])
-                                dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[i])
-                                    
-                                qm_atom = matmul(matmul(init_R_MI,self.qm_atom[i]),np.transpose(init_R_MI))
-                                qm_delta = matmul(matmul(init_R_MI,self.qm_delta[i]),np.transpose(init_R_MI))
-
-                                dipm_atom = matmul(R_MI_APF,dipm_atom)
-                                dipm_delta = matmul(R_MI_APF,dipm_delta)
-                                dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
-
-                                qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
-                                qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
-
-                                qm_atom = matmul(qm_atom,vector_of_ones)
-                                qm_delta = matmul(qm_delta,vector_of_ones)
-
-                                #for k in range(3):
-                                #    Quantity_AB[j].extend([np.sum(qm_atom[k,:])])
-
-                                #for k in range(3):
-                                #    Quantity_AB[j].extend([np.sum(qm_delta[k,:])])
-
-                                Quantity_AB[j].extend(self.CN[i])
-                                Quantity_AB[j].extend(dipm_atom)
-                                Quantity_AB[j].extend(dipm_delta)
-                                Quantity_AB[j].extend(dipm_only_mull)
-
-                                Quantity_AB[j].extend(qm_atom)
-                                Quantity_AB[j].extend(qm_delta)
-                                Quantity_AB[j].extend(self.energy_based[i])
-
-                                j+=1
-
-                            Quantity_AB_arr = np.abs(np.array(Quantity_AB))
-
-                            Feature_Arith = np.abs(Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
-                            Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
-                            Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
-
-
-                            for i in range(9):
-                                Features = []
-                                Features.extend(Quantity_AB[0])
-                                Features.extend(Quantity_AB[1])
-                                Features.extend(Feature_Arith)
-                                Features.extend(Feature_Prod)
-                                Features.extend(Feature_AbsDiff)
-
-                                Features.extend(index[i])
-                                Features.extend([R_AB])
-
-                                self.Feature_AB.append(Features)
         return
 
 
 
 
 
-    def get_Feature_homonuclear(self, R_MI_APF_mat=None, N_atoms = None,init_R_MI = None,train_rot=None):
+    def get_Feature_homonuclear(self, R_MI_APF_mat=None, N_atoms = None,init_R_MI = None,train_rot=None,data_analysis=None):
         if self.Feature_AA == []:
             index = [[2,0,0],
                     [1,1,0],
@@ -502,8 +471,10 @@ class Feature:
 
                     Quantity_A.extend(self.energy_based[A])
                     #Quantity_A.extend(gradient)
-
-                    for i in range(9):
+                    idx_len = 9
+                    if data_analysis == True:
+                        idx_len = 1
+                    for i in range(idx_len):
                         Features = []
                         Features.extend(np.abs(np.array(Quantity_A)))
                         Features.extend(index[i])
