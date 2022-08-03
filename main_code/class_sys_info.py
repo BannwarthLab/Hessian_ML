@@ -4,11 +4,11 @@ from rotation_func import *
 
 class sys_info:
     def __init__(self,folder,molecule,variation):
-        self.xyz, self.header = import_coord(f'{folder}coord.xyz')
+        self.xyz, self.header = import_coord(f'{folder}xtbopt.xyz')
         self.hessian_import = import_hessian(f'{folder}/hessian',self.xyz)
         self.hessian = self.hessian_import.copy()
         self.dipm = import_dipm(f'{folder}/xyz_dipm.csv').iloc[:,:-3]
-        self.grad = import_gradient(f'{folder}/gradient',self.xyz)
+        self.grad = None#import_gradient(f'{folder}/gradient',self.xyz)
 
         self.N_atoms = len(self.xyz['atoms'])
 
@@ -18,8 +18,8 @@ class sys_info:
 
         self.init_R_MI,self.xyz = (calc_R(self.xyz))
 
-        self.H_approx = H_Approx(self.grad)
-        self.H_delta = H_Delta(self.H_approx,self.hessian)
+        #self.H_approx = H_Approx(self.grad)
+        #self.H_delta = H_Delta(self.H_approx,self.hessian)
 
         self.init_P_MI = (rotM_hess(self.init_R_MI,self.xyz))
 
@@ -51,9 +51,9 @@ class sys_info:
 
         self.dipm = coord_rot(self.dipm,self.init_R_MI)
 
-        self.H_delta = matmul(matmul(self.init_P_MI,self.H_delta),np.transpose(self.init_P_MI)) ##Change Hessian 2 times
+        self.hessian = matmul(matmul(self.init_P_MI,self.hessian),np.transpose(self.init_P_MI)) ##Change Hessian 2 times
 
-        self.H_approx = matmul(matmul(self.init_P_MI,self.H_approx),np.transpose(self.init_P_MI))
+        #self.H_approx = matmul(matmul(self.init_P_MI,self.H_approx),np.transpose(self.init_P_MI))
         return
 
     def rot_inert_apf(self):
@@ -72,7 +72,7 @@ class sys_info:
                     j0 = 3*atom_B 
                     j3 = 3*atom_B + 3
 
-                    H_APF = matmul(matmul(R_MI_APF,self.H_delta[i0:i3,j0:j3].copy()),np.transpose(R_MI_APF)) ##Change Hessian
+                    H_APF = matmul(matmul(R_MI_APF,self.hessian[i0:i3,j0:j3].copy()),np.transpose(R_MI_APF)) ##Change Hessian
 
                     self.R_MI_APF_mat[i0:i3,j0:j3] = R_MI_APF 
                     self.H_APF_mat[i0:i3,j0:j3] = H_APF
@@ -144,7 +144,7 @@ class sys_info:
                         transpose = True
                     self.H_pred = fill_matrix_block(hessian_hetero,self.H_pred,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
                     ite_hetero +=1
-            self.H_pred += self.H_approx ## Change Hessian
+            self.H_pred += self.hessian ## Change Hessian
         return
 
     def perm_Hess(self,A,B):
@@ -232,8 +232,8 @@ class sys_info:
         self.hessian_lambd = None
         
         self.hessian = self.hessian_import.copy()
-        self.H_approx = H_Approx(self.grad)
-        self.H_delta = H_Delta(self.H_approx,self.hessian)
+        #self.H_approx = H_Approx(self.grad)
+        #self.H_delta = H_Delta(self.H_approx,self.hessian)
 
         self.features.Feature_AB = []
         self.features.Feature_AA = []
@@ -258,7 +258,7 @@ class Feature:
         self.energy_based = np.array(GFN2_quantities.loc[:,['gap (eV)','chem.pot (eV)','HOAO (eV)','LUAO (eV)',
                                     'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']].values.tolist())
-        self.grad = grad
+        #self.grad = grad
 
         self.names = GFN2_quantities.columns.tolist()
         self.transpose_list = []
@@ -352,7 +352,7 @@ class Feature:
                             qm_atom = matmul(qm_atom,vector_of_ones)
                             qm_delta = matmul(qm_delta,vector_of_ones)
 
-                            gradient = matmul(R_MI_APF,self.grad[3*atom:3*atom+3])
+                            #gradient = matmul(R_MI_APF,self.grad[3*atom:3*atom+3])
 
                             #for k in range(3):
                             #    Quantity_AB[j].extend([np.sum(qm_atom[k,:])])
@@ -450,7 +450,7 @@ class Feature:
 
                     qm_atom = matmul(matmul(R_MI_APF,self.qm_atom[A]),np.transpose(R_MI_APF))
                     qm_delta = matmul(matmul(R_MI_APF,self.qm_delta[A]),np.transpose(R_MI_APF))
-                    gradient = matmul(R_MI_APF,self.grad[3*A:3*A+3])
+                    #gradient = matmul(R_MI_APF,self.grad[3*A:3*A+3])
 
                     #for i in range(3):
                     #   Quantity_A.extend([np.sum(qm_atom[i,:])])

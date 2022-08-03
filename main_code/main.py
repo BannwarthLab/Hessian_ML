@@ -11,14 +11,15 @@ from sklearn.svm import OneClassSVM
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.ensemble import IsolationForest
 from sklearn.linear_model import SGDOneClassSVM
+
 #Current working directory
 cwd = os.getcwd()
-cwd = 'tests/main_test/'
+#cwd = 'tests/main_test/'
 #cwd[:-9]+'tests/main_test/'
-
+wall_time_0 = time.time()
 print(f'Start Importing Files from {cwd}')
 
-train_rot = True
+train_rot = False
 train_set = False
 
 MSE_list = [[],[]]
@@ -47,10 +48,11 @@ for mol in range(len(mol_sys_dirs)):
     #if mol_sys_dirs[mol] == 'H3':
      #   test_mol = mol
     #For every structure of every molecular system
-    for sys in range(len(struc_sys_dirs)):
+    count = 0
+    for sys in range(6000,6100):#len(struc_sys_dirs)):
         #print(f'System {struc_sys_dirs[sys]}')
 
-        system = sys_info(folder=f'{mol_dir}{struc_sys_dirs[sys]}/init_coord/',molecule=mol,variation=sys)
+        system = sys_info(folder=f'{mol_dir}{struc_sys_dirs[sys]}/',molecule=mol,variation=sys)
 
         system.rot_init_inert()
 
@@ -59,6 +61,11 @@ for mol in range(len(mol_sys_dirs)):
         mol_sys_idx.append([mol,sys])
 
         Systems.append(system)
+
+        count +=1 
+
+        if count%50 == 0:
+            print(f'{count} Structures are imported. \n Wall time: {round(time.time() - wall_time_0)} s')
 
 '''
 for i in range(len(mol_sys_idx)):
@@ -72,7 +79,13 @@ for i in range(len(mol_sys_idx)):
         #print(f'Train size:{train_size}')
         #train_idx, temp = train_test_split(train_idx,test_size=test_size,train_size=train_size,random_state=rnd_state)
 
-for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
+wall_time_1 = time.time()
+print(f'All structures are imported. \nWall time: {round(wall_time_1 - wall_time_0)} s')
+
+for rnd_state in [46]:#,0,56,29,100,208,42,30,39,51]:
+    print(f'Generating the Feature vectors.')
+    wall_time_2 = time.time()
+
     test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
     train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.75,random_state=rnd_state)
     
@@ -81,7 +94,6 @@ for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
 
     X_hetero = []
     y_hetero = []
-    print('Fitting the Model.')
 
     for i in train_idx:
 
@@ -94,8 +106,12 @@ for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
         X_hetero.extend(X_hetero_temp)
         y_hetero.extend(Systems[i].H_AB_vec)
 
-    regr_homonuclear=  ExtraTreesRegressor(n_estimators = 500,random_state=rnd_state,bootstrap=False) 
-    regr_heteronuclear = ExtraTreesRegressor(n_estimators = 500,random_state=rnd_state,bootstrap=False)
+    wall_time_3 =  time.time()
+    print(f'Generated the Feature vectors. \nWall time: {round(wall_time_3 -wall_time_2)} s')
+
+    print(f'Fitting the Model.')
+    regr_homonuclear=  ExtraTreesRegressor(n_estimators = 500,random_state=rnd_state,bootstrap=True)
+    regr_heteronuclear = ExtraTreesRegressor(n_estimators = 500,random_state=rnd_state,bootstrap=True)
 
     #regr_homonuclear = KNeighborsRegressor(n_neighbors=10, weights='distance' )
     #regr_heteronuclear = KNeighborsRegressor(n_neighbors=10, weights='distance' )
@@ -109,13 +125,13 @@ for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
     X_hetero_normalized = normalizer_hetero.fit_transform(X_hetero)#[:len(X_hetero)//4])
     X_homo_normalized = normalizer_homo.fit_transform(X_homo)#[:len(X_homo)//4])
 
-    lof_hetero = LocalOutlierFactor(n_neighbors=75,novelty=True)
+    lof_hetero = LocalOutlierFactor(n_neighbors=10,novelty=True)
     lof_hetero =  OneClassSVM(gamma='auto')
 
     lof_hetero = SGDOneClassSVM(random_state=rnd_state,nu=0.3)
     lof_hetero.fit(X_hetero_normalized)
 
-    lof_homo = LocalOutlierFactor(n_neighbors=75,novelty=True)
+    lof_homo = LocalOutlierFactor(n_neighbors=10,novelty=True)
     lof_homo =  OneClassSVM(gamma='auto')
 
     lof_homo = SGDOneClassSVM(random_state=rnd_state,nu=0.3)
@@ -133,6 +149,9 @@ for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
     test_symmetry_homo = []
     test_symmetry_hetero = []
 
+    wall_time_4 = time.time()
+
+    print(f'Fitting is done. \n Wall time: {round(wall_time_4 - wall_time_3)}')
     print('Testing the Model.')
 
     test_sys = None
@@ -205,6 +224,10 @@ for rnd_state in [46,0,56,29,100,208,42,30,39,51]:
             y_pred_list_homo_freq.append(y_pred_list_homo[-1])
 
         freq_list[1].extend(sorted(freq.copy()))
+
+    wall_time_5 = time.time()
+    print(f'Testing is done.\n Wall time: {round(wall_time_5 - wall_time_4)} s')
+
     '''
     length = np.linspace(0.6,4,10)
     for i in range(len(length)):

@@ -25,3 +25,6 @@ from sklearn.metrics import mean_squared_error
 
 #Plot
 import matplotlib.pyplot as plt
+
+#Wall time
+import time as time
