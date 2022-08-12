@@ -138,6 +138,9 @@ def get_R_euler(coord_end,dipm,i,j):
 
      return R_euler
 
+
+     
+
 def rot_Z(alpha):
      R = np.array([[np.cos(alpha), -np.sin(alpha), 0],
                    [np.sin(alpha),  np.cos(alpha), 0],

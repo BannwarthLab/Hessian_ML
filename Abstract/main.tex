@@ -1,0 +1,154 @@
+\documentclass[listof= totoc]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath,hyperref}
+\usepackage{amssymb}
+\numberwithin{equation}{section}
+\usepackage{braket}
+
+\usepackage{siunitx} %Das ist für die Einheiten
+\sisetup{
+	locale = DE
+}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{subfig}
+\usepackage{tabulary}
+\usepackage{float}
+\usepackage{hpstatement}
+\usepackage{multirow}
+\usepackage{bm}
+\usepackage{upgreek}
+\usepackage{sansmathfonts}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\author{Gereon Feldmann}
+\usepackage{setspace}
+\usepackage{caption}
+\makeatletter
+\newcommand{\MSonehalfspacing}{%
+	\setstretch{1.44}%  default
+	\ifcase \@ptsize \relax % 10pt
+	\setstretch {1.448}%
+	\or % 11pt
+	\setstretch {1.399}%
+	\or % 12pt
+	\setstretch {1.433}%
+	\fi
+}
+
+\newcommand{\MSdoublespacing}{%
+	\setstretch {1.92}%  default
+	\ifcase \@ptsize \relax % 10pt
+	\setstretch {1.936}%
+	\or % 11pt
+	\setstretch {1.866}%
+	\or % 12pt
+	\setstretch {1.902}%
+	\fi
+}
+
+\usepackage{etoolbox}
+\patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+\MSonehalfspacing
+
+
+\usepackage{listings}
+\usepackage{csquotes}
+\usepackage{pdfpages}
+\usepackage{gensymb} %für \degree
+\usepackage[autocite = superscript,
+backend=biber,
+style=ieee,
+citestyle=numeric-comp]{biblatex} 
+
+\DeclareCiteCommand{\supercite}[\mkbibsuperscript]
+{\bibopenbracket
+	\usebibmacro{cite:init}%
+	\let\multicitedelim=\supercitedelim
+	\iffieldundef{prenote}
+	{}
+	{\BibliographyWarning{Ignoring prenote argument}}%
+	\iffieldundef{postnote}
+	{}
+	{\BibliographyWarning{Ignoring postnote argument}}}
+{\usebibmacro{citeindex}%
+	\usebibmacro{cite:comp}}
+{}
+{\usebibmacro{cite:dump}%
+	\bibclosebracket}
+
+
+\DeclareSourcemap{
+	\maps[datatype=bibtex]{
+		\map{
+			\step[fieldset=issn, null]
+		}
+	}
+}
+
+\addbibresource{literature.bib}
+
+\setlength\parindent{0pt}
+\lstdefinestyle{customc}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	xleftmargin=\parindent,
+	language=C,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+}
+
+\lstset{style=customc,
+	breaklines = True,
+	xleftmargin= .75in,
+	xrightmargin=.25in
+}
+
+%\includeonly{sections/Theory}
+%\includeonly{sections/Methods}
+%\includeonly{sections/Results}
+
+\begin{document}
+\begin{center}
+	\vspace*{4pt}
+	\textbf{\Huge{A Machine Learning Model for the Prediction of Hessian Matrices with atomistic based quantities}}
+\end{center}
+
+	Machine Leraning models have become an important tool in quantum chemistry,
+	due to the potential of accelerating computations and workflows.
+	For example, Behler developed a high dimensional neural network for the prediction of potential energy surfaces based on geometrical quantities.\cite{doi:10.1021/acs.chemrev.0c00868}
+	Also Bartók et al. introduced a machine learning model to predict potential energy surfaces, though a gaussian process regression approach was used.\cite{PhysRevB.87.184115}
+	In our work, we want to explore the applicability of machine learning in other fields of quantum chemistry.
+	One promising target is here the Hessian matrix due to its high computational cost, and thus the potential of acceleration of the computation.
+	In addition, the Hessian matrix is necessary for the computation of harmonic vibrational frequencies, which are quantities with versatile applications.
+	\newline
+
+	New developed atomistic based features were used for the machine learning model with Hessian matrix elements as a target.
+	These features are generated from atomistic based quantities based computed via \mbox{GFN2--xTB}.\cite{Bannwarth2019_GFN2xTB}
+	The Hessian matrix and partially the features are dependent on the orientation of the coordinate system.
+	To achieve a unique mapping of the features onto the target,
+	we present a method to generate features in an invariant coordinate system independent of the intial coordinate system.
+	For a general model it is mandatory to use features which are independent on the system size.
+	Therefore, the Hessian matrix is deconstructed into $3 \times 3$ blocks,
+	where the feature vector is similar for each element in these blocks.
+	Due to the nature of the Hessian matrix,
+	the blocks are either represented by a monoatomic feature vector or a biatomic feature vector,
+	depending on wheter the block is a diagonal or off--diagonal block, respectivley.
+
+	\begingroup
+	\renewcommand{\chapter}[2]{}
+	
+	\printbibliography
+	\endgroup
+\end{document}

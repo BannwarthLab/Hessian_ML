@@ -6,15 +6,15 @@ Furthermore, databases are published like the benchmark set GMTKN55 (\textbf{G}e
 or the CCCBDB (\textbf{C}omputation \textbf{C}hemistry \textbf{C}omparison and \textbf{B}enchmark \textbf{D}ata\textbf{b}ase)\supercite{CCCBDB}. 
 This increase of available data and of automatization are both of interest for machine learning (ML) approaches, as those are based on such data.\\
 ML models always consist of features and a target.
-In the subclass of supervised ML the model is trained with features and target,
-and afterwards the trained model is used to predict the target only by the information of the features.
+In the subclass of supervised ML the model is trained with features and target. 
+Afterwards the trained model is used to predict the target only by the information of the features.
 To build an efficient model, the features should be easily accessible, while the target should be computationally costly.
 Thus, the ML model has the advantage to accelerate the process of determining the target.\\
-The harmonic vibrational frequencies (HVF) are valuable quantities due to their important fields of application.
-They are used for the computation of infrared\supercite{Katari2017} and Raman spectra\supercite{Michalska2005}, and also for the prediction of thermodynamic quantities\supercite{Neto2017}.
-Furthermore, they are necessary for the transition state search, as the force constants computed from the HVF indicate transition states.\supercite{delCampo2008}
+The harmonic vibrational frequencies (HVF) are valuable quantities in quantum chemistry.
+They are used for the computation of infrared\supercite{Katari2017} and Raman spectra\supercite{Michalska2005}, and also for the calculation of thermodynamic quantities via a quantum mechanical description of the nuclear degree of freedom\supercite{Neto2017}.
+Furthermore, they are necessary for the transition state search, as the imaginary HVF indicate transition states.\supercite{delCampo2008}
 The HVF are computed from the eigenvalues of the Hessian matrix. 
-In chemistry, a Hessian is a matrix of second derivatives of the energy $E$ in respect to the $3M$ coordinates $q_i$ of the $M$ atoms in a molecular system.\supercite{Jensen2013}
+In chemistry, a Hessian is a matrix of second derivatives of the energy $E$ with respect to the $3M$ coordinates $q_i$ of the $M$ atoms in a molecular system.\supercite{Jensen2013}
 This Hessian is depicted in Eq.~\eqref{eq:HessianExample}.
 \begin{align}
     \label{eq:HessianExample}
@@ -30,13 +30,13 @@ This Hessian is depicted in Eq.~\eqref{eq:HessianExample}.
 The computation of the Hessian is costly.\supercite{SpicherSHP2021}
 Thus, the acceleration of the computation is of great interest as a target for ML.\\
 \newpage
-There are already approaches for the accelerate computation of the Hessian in literature.\supercite{Lindh1995,Sanders2015,SpicherSHP2021}
-Two of these will be discussed in the following subsection.\\
-Spicher and Grimme developed an approach to compute with a low--level methods the Hessian at a higher level geometry.
+There are already approaches for accelerating the computation of the Hessian in literature.\supercite{Lindh1995,Sanders2015,SpicherSHP2021}
+Two of these will be breifly discussed in the following.\\
+Spicher and Grimme developed an approach to compute the Hessian with a low--level methods at a higher level geometry.
 A bias depending on the root--mean--squared--distance (RMSD) is added to the potential energy surface (PES) of the low--level method,
-thus the energy is minimized at the geometry of the high--level method.
-On this new PES the Hessian matrix can be computed, as the harmonic oscillation--approximation is applicable at the higher--level geometry.\supercite{SpicherSHP2021}
-The contributions of the bias energy is then detached from the eigenvalues.\\
+aiming to minimize the energy at the geometry of the high--level method.
+On this new PES the Hessian matrix can be computed, as the harmonic oscillator--approximation is applicable at the higher--level geometry.\supercite{SpicherSHP2021}
+The contributions of the bias potential energy is Afterwards detached from the eigenvalues.\\
 Sanders et al. proposed another approach, which is based on the assumption, that the Hessian matrix is a sparse matrix.
 They use a matrix, that describes the sparse matrix in an incoherent basis.
 The sparse matrix is approximated by using the matrix in the incoherent basis partially.
@@ -47,4 +47,4 @@ This can be either used to accelerate the computation or to increase the precisi
 In this research a new approach shall be investigated.
 As noted above, due to automatization and large available data sets the use of a ML model might be an efficient method to predict the costly Hessians.
 Here, a supervised ML approach was chosen, where the target to predicted are the Hessian matrix elements.
-While the features for the ML model are based on computational efficient atom--based quantities.
+The features for the ML model are based on computational efficient atomistic--based quantities, obtained from a single--point electronic structure calculation at a semiempirical tight--binding level.dd

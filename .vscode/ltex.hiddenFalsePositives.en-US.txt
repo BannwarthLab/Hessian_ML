@@ -18,3 +18,4 @@
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QList of quantities used as features for the ML models.\\E$"}
 {"rule":"NO_SPACE_CLOSING_QUOTE","sentence":"^\\QThe keywords ”gfn2”, ”hess” and ”mlfeature” were passed for the computation of the features and target.\\E$"}
 {"rule":"SENTENCE_WHITESPACE","sentence":"^\\QPython modules used for the computation, data storing, constructing the ML model and plotting graphs.\\E$"}
+{"rule":"SENT_START_CONJUNCTIVE_LINKING_ADVERB_COMMA","sentence":"^\\QIn addition the Hessian matrix\\E$"}

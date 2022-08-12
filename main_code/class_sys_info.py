@@ -38,6 +38,45 @@ class sys_info:
         self.H_pred_lambd = None
         self.hessian_lambd = None
 
+    def clear_feature_vec(self):
+        self.H_AA_vec = []
+        self.H_AB_vec = []
+        return
+
+    def clear_all(self):
+        self.xyz = None
+        self.header = None
+        self.hessian_import = None
+        self.hessian = None
+        self.dipm = None
+        self.grad = None#import_gradient(f'{folder}/gradient',self.xyz)
+
+        self.N_atoms =None
+        self.angle_list  = None
+        
+        self.features = None
+
+        self.init_R_MI =None
+        #self.H_approx = H_Approx(self.grad)
+        #self.H_delta = H_Delta(self.H_approx,self.hessian)
+
+        self.init_P_MI = None
+
+        self.coord_state = None
+        self.molecule = None
+        self.variation = None
+
+        self.R_MI_APF_mat = None
+        self.H_APF_mat = None
+        self.H_AA_vec = None
+        self.H_AB_vec = None
+
+        self.lambd_len = None
+        self.H_pred = None
+        self.H_pred_lambd = None
+        self.hessian_lambd = None
+        return 
+
     def rot_init_inert(self):
         self.coord_state[0], self.coord_state[1] = self.coord_state[1],self.coord_state[0]
 
@@ -55,6 +94,7 @@ class sys_info:
 
         #self.H_approx = matmul(matmul(self.init_P_MI,self.H_approx),np.transpose(self.init_P_MI))
         return
+
 
     def rot_inert_apf(self):
         if self.coord_state[0] == 'init':
@@ -240,7 +280,6 @@ class sys_info:
 
         self.features.transpose_list = []
         self.features.check_list = []
-
 
         return
 
@@ -463,11 +502,11 @@ class Feature:
                     Quantity_A.extend(self.CN[A])
 
                     Quantity_A.extend(dipm_atom)
-                    Quantity_A.extend(dipm_delta)
-                    Quantity_A.extend(dipm_only_mull)
+                    #Quantity_A.extend(dipm_delta)
+                    #Quantity_A.extend(dipm_only_mull)
 
                     Quantity_A.extend(qm_atom)
-                    Quantity_A.extend(qm_delta)
+                    #Quantity_A.extend(qm_delta)
 
                     Quantity_A.extend(self.energy_based[A])
                     #Quantity_A.extend(gradient)
