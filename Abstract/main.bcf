@@ -2353,12 +2353,12 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">literature.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">doi:10.1021/acs.chemrev.0c00868</bcf:citekey>
+    <bcf:citekey order="1">StriethKalthoff2020</bcf:citekey>
+    <bcf:citekey order="2">doi:10.1021/acs.chemrev.0c00868</bcf:citekey>
     <bcf:citekey order="2">PhysRevB.87.184115</bcf:citekey>
-    <bcf:citekey order="3">Bannwarth2019_GFN2xTB</bcf:citekey>
+    <bcf:citekey order="3">StriethKalthoff2020</bcf:citekey>
     <bcf:citekey order="4">doi:10.1021/acs.chemrev.0c00868</bcf:citekey>
     <bcf:citekey order="5">PhysRevB.87.184115</bcf:citekey>
-    <bcf:citekey order="6">Bannwarth2019_GFN2xTB</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

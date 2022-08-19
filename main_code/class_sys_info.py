@@ -133,7 +133,7 @@ class sys_info:
                 H_APF = matmul(matmul((rot_Mat),H_APF),np.transpose(rot_Mat))
                 for i in range(3):
                     for j in range(3):
-                        self.H_AA_vec.extend([H_APF[i,j]])
+                        self.H_AA_vec.extend([H_APF[i,j]]) #hier flatten
 
         for angle in angle_list[1]:
             for atom_A in range(self.N_atoms):
@@ -184,7 +184,7 @@ class sys_info:
                         transpose = True
                     self.H_pred = fill_matrix_block(hessian_hetero,self.H_pred,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
                     ite_hetero +=1
-            self.H_pred += self.hessian ## Change Hessian
+            #self.H_pred += self.H_approx ## Change Hessian
         return
 
     def perm_Hess(self,A,B):

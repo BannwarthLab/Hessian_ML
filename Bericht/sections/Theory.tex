@@ -200,14 +200,14 @@ Where, $n_\mathrm{occ}$ is the occupation number of the spin--orbital.
 	\label{eq:Density}
 	\rho(\textbf{r}) =  \sum_{i=1}^{n_{\mathrm{occ},i}} n_{\mathrm{occ},i} |\phi_i(\textbf{r})|^2
 \end{align}
-The general approach is to describe the energy in dependence of the electron density $E[\rho]$.
-There are different approaches for this connection. 
-The most common approach, Kohn--Sham Density Functional Theory (KS--DFT) reintroduces orbitals to compute the kinetic energy.
-The kinetic energy is inexact, due to the assumption of non--interacting electrons.
-The energy (s.~Eq.\eqref{eq:EnergyDFT}) in KS--DFT consists of the inexact kinetic energy, coulomb integral,
+The electronic energy can, in principle, be described exactly by a functional of the electron density $E[\rho]$. 
+Nevertheless, the exact functional is unknown. The are different approaches for the description of the energy functional.
+The most common approach, Kohn--Sham density functional theory (KS--DFT) reintroduces orbitals to compute the kinetic energy.
+The kinetic energy of electrons is inexact, due to the assumption of non--interacting electrons.
+The energy (s.~Eq.\eqref{eq:EnergyDFT}) in KS--DFT consists of the independent particle kinetic energy, coulomb integral,
 the exchange correlation energy and the potential field.
 The energy $E_\mathrm{XC}$ consists mainly of the correlation energy and the exchange energy.
-In theory, the energy $E_\mathrm{XC}$ should also include the \mbox{self--interaction} energy and a correction to the kinetic energy.
+In theory, the energy $E_\mathrm{XC}$ should also include the \mbox{self--interaction} correction and a correction to the kinetic energy.
 \begin{align}
 	\label{eq:EnergyDFT}
 	E[\{\phi_i\}] = T[\{\phi_i\}] + J[\rho] + E_\mathrm{XC}[\rho] + \int v(\textbf{r}) \rho(\textbf{r}) \mathrm{d}\textbf{r}
@@ -218,9 +218,9 @@ This leads to the Kohn--Sham operator and a new eigenequation, which is shown in
 	\hat{f}^\mathrm{KS}(\textbf{r}_i) \phi_k(\textbf{r}_i) &= \epsilon(\textbf{r}_i) \phi_k(\textbf{r}_i)\label{eq:KSEigeneq}\\
 	\hat{f}^\mathrm{KS}(\textbf{r}_i) &= \hat{h}_i + 2 \sum^n_{j=1} \hat{J}_j + \hat{v}_\mathrm{xc} 
 \end{align}
-In comparison to the Fock operator, $\hat{f}^\mathrm{KS}(\textbf{r}_i)$ includes an exchange--correlation term, instead of the exchange operator.
-With a basis set approach analogue to the HF model,
-an eigenvalue equation similar to the Roothaan--Hall equation is derived (s. Eq.~\eqref{eq:RoothaanHallDFT}).
+In comparison to the Fock operator, $\hat{f}^\mathrm{KS}(\textbf{r}_i)$ includes an exchange--correlation potential, instead of the sum over the exchange operators.
+Within a basis expansion approach analogous to the HF model,
+an eigenvalue equation similar to the Roothaan--Hall equation is obtained (c.f. Eq.~\eqref{eq:RoothaanHallDFT}).
 % The spin--orbital wave functions are described via a basis set approximation.
 % This LCAO--approach is shown in Eq.~\eqref{eq:BasisSet},
 % where the spin--orbital wave--functions are the sum of $K$ basis functions with an associated constant.
@@ -251,7 +251,7 @@ an eigenvalue equation similar to the Roothaan--Hall equation is derived (s. Eq.
 	\subsection{\mbox{GFN2--xTB} Electronic Structure Method}
 	A short introduction to GFN2--xTB electronic structure method is given in this part.
 	The derivation is based on reference \cite{Bannwarth2019_GFN2xTB}.
-	\mbox{GFN2--xTB} is a Density Functional Tight Binding (DFTB) method,
+	\mbox{GFN2--xTB} is a density functional tight binding (DFTB) method,
 	that is optimized for \textbf{G}eomteries,
 	\textbf{F}requencies and \textbf{N}oncovalent interaction energies.
 	In DFTB methods, the electron density $\rho_0$ is a linear combination of atomic electron densities $\rho_{0,A}$.

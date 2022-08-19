@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber main"] 1660133598 "main.bcf" "main.bbl" "main" 1660151413
-  "literature.bib" 1660133477 1281 ede5f48d9c2d27596a53505f78a5eb94 ""
-  "main.bcf" 1660151413 106880 96b6ff3ed23753d95f1adf1a74e5c58c "pdflatex"
+["biber main"] 1660803442 "main.bcf" "main.bbl" "main" 1660803448
+  "literature.bib" 1660803442 1715 0c459d60749c9962f020837ee88a4ce9 ""
+  "main.bcf" 1660803447 106876 c6d009efa11d9624ce050f87c9d7fd10 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1660151412 "/home/gfeldmann/Documents/GitLab/hessian_ml/Abstract/main.tex" "main.pdf" "main" 1660151413
+["pdflatex"] 1660803447 "/home/gfeldmann/Documents/GitLab/hessian_ml/Abstract/main.tex" "main.pdf" "main" 1660803448
   "/home/gfeldmann/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1652708852 87778 3ee41e5868e0903772117a2b73933ffd ""
   "/home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecsi1095.pk" 1652708853 26868 b5ab1923cbc7ad1262bc020ecbfc298f ""
   "/home/gfeldmann/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/ecss1095.pk" 1652708856 21816 5fda5aa26167decb8f474fe21b52930d ""
@@ -19,7 +19,6 @@
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/amsfonts/euler/eurm10.tfm" 1651736643 1228 9be37fdf0dc0e1f4df4af3594876d628 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/amsfonts/euler/eurm7.tfm" 1651736643 1228 22a83614922c993c1b2e124955a38ca1 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/cm/cmr10.tfm" 1651736617 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
-  "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/cm/cmss10.tfm" 1651736617 1316 b636689f1933f24d1294acdf6041daaa ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/lm/ec-lmss10.tfm" 1651736640 11176 53ebf7a171df1f9447b387b178768bb5 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/lm/ec-lmtt10.tfm" 1651736640 1372 2ef2c2b492b3c4cd7879fe083abbb061 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/lm/lmbsy10.tfm" 1651736640 1300 2df9da0fc09d4a8c772b3dd386a47c6a ""
@@ -31,7 +30,6 @@
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/lm/rm-lmbx8.tfm" 1651736640 11868 731e03b24d399279cf9609d002110394 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmf10.tfm" 1652708851 1316 c108ae81b38ea578c22c9fb490ade08d ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmf8.tfm" 1652708851 1300 55626bff03cae690ced3478ddb6ddb52 ""
-  "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmsmfIPiXi10.tfm" 1652708851 380 68c08d1efc5b2967b8409f6efbdca7f4 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmssex10.tfm" 1652708851 928 d7a6b79a24381bf1accd06c660c34787 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmssex7.tfm" 1652708851 928 6df3cb33315123ddfef3af60dc083098 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/cmssex8.tfm" 1652708851 924 520564c90dfb7fe52a950610ec4445c1 ""
@@ -46,11 +44,8 @@
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/ssmsam7.tfm" 1652708851 856 1f70aa7d4066a497f405ef3a24100217 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/ssmsbm10.tfm" 1652708851 844 0ba89082a6411e0f71b648cc13fadec1 ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/tfm/public/sansmathfonts/ssmsbm7.tfm" 1652708851 876 67d4ca7a7636afc5bd0a62f9df7cf93f ""
-  "/home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss10.pfb" 1651736643 24457 5cbb7bdf209d5d1ce9892a9b80a307cc ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmtt10.pfb" 1651736641 113227 1010e11451afc2822c95dae77c390042 ""
-  "/home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/cmsssy10.pfb" 1652708851 42737 ab10008c168c4d516a8b3b871847e19a ""
   "/home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/sansmathfonts/eczz1095.pfb" 1652708851 43458 cbe77639a71ac2b3f68b883e1e60d3cf ""
-  "/home/gfeldmann/.miktex/texmfs/install/fonts/vf/public/sansmathfonts/cmsmf10.vf" 1652708851 836 9084b0cf760a8de48745947ae9205757 ""
   "/home/gfeldmann/.miktex/texmfs/install/tex/context/base/mkii/supp-pdf.mkii" 1651736675 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/home/gfeldmann/.miktex/texmfs/install/tex/generic/atbegshi/atbegshi.sty" 1651736629 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "/home/gfeldmann/.miktex/texmfs/install/tex/generic/babel/babel.sty" 1651736630 148589 68a2b0e12d8cc4c9505ce35bed63d840 ""
@@ -189,12 +184,12 @@
   "/home/gfeldmann/.miktex/texmfs/install/tex/latex/was/gensymb.sty" 1081504700 4755 4a45a1ba5fd7b0c48ab0c1f124453b38 ""
   "/home/gfeldmann/.miktex/texmfs/install/tex/latex/was/upgreek.sty" 1081504700 5928 7c54fc432def4e3bd7b53291b9488375 ""
   "/home/gfeldmann/.miktex/texmfs/install/tex/latex/xcolor/xcolor.sty" 1651736671 56029 3f7889dab51d620aa43177c391b7b190 ""
-  "/home/gfeldmann/Documents/GitLab/hessian_ml/Abstract/main.tex" 1660151411 4754 dbdd2ee494809a392a21e3e99f072b2b ""
-  "main.aux" 1660151413 1456 e4640b5ae22fed398b6ff70a798f8799 "pdflatex"
-  "main.bbl" 1660133599 5136 bbd5c0367becb26b01f389b49bc15e7d "biber main"
+  "/home/gfeldmann/Documents/GitLab/hessian_ml/Abstract/main.tex" 1660803444 4392 0e7678f92236df7d4fe07f86f15716fa ""
+  "main.aux" 1660803447 1450 7ed41e209ba6dfea2b590eb22d6fdf71 "pdflatex"
+  "main.bbl" 1660803445 5295 3e50e0e23ba880f9ea02c3b8d1c195f9 "biber main"
   "main.out" 0 -1 0 "pdflatex"
-  "main.run.xml" 1660151413 2374 63fe215031b3ebeaab35e7d764973474 "pdflatex"
-  "main.tex" 1660151411 4754 dbdd2ee494809a392a21e3e99f072b2b ""
+  "main.run.xml" 1660803447 2374 63fe215031b3ebeaab35e7d764973474 "pdflatex"
+  "main.tex" 1660803444 4392 0e7678f92236df7d4fe07f86f15716fa ""
   (generated)
   "main.aux"
   "main.bcf"

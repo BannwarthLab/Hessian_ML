@@ -57,21 +57,17 @@ def get_R_euler(coord_end,dipm,i,j):
      vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]
      #Rotation for i < j 
      if i < j:
-
           #Atom pair focussed coordinate system
-          
-          vec_z  = (coord_end.iloc[i,1:]).astype('float64')
+          vec_z  = coord_end.iloc[i,1:].astype('float64')
           vec_x = np.cross(vec_z,vec_dipm)
-          #vec_y = np.cross(vec_z,vec_x)
 
-          #Euler angles
           LL = np.cross(vec_z,axis[2])
 
           if  np.sum(np.abs(np.array(coord_end.iloc[[i,j],1:3]))) < 1e-9:
                beta = angle_two_vec(vec_z,axis[2])
                alpha = 2*np.pi - angle_two_vec(vec_x,axis[0])
                gamma = 0
-               
+
                if linalg.det(np.array([axis[0],axis[2],vec_x])) > 0.:
                     alpha = 2*np.pi - alpha
 

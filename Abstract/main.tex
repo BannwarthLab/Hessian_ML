@@ -122,30 +122,24 @@ citestyle=numeric-comp]{biblatex}
 \begin{document}
 \begin{center}
 	\vspace*{4pt}
-	\textbf{\Huge{A Machine Learning Model for the Prediction of Hessian Matrices with atomistic based quantities}}
+	\textbf{\Huge{A Machine Learning Model for the Prediction of Hessian Matrices based on Semiempirical Electronic Structure Theory}}
 \end{center}
 
-	Machine Leraning models have become an important tool in quantum chemistry,
-	due to the potential of accelerating computations and workflows.
-	For example, Behler developed a high dimensional neural network for the prediction of potential energy surfaces based on geometrical quantities.\cite{doi:10.1021/acs.chemrev.0c00868}
-	Also Bartók et al. introduced a machine learning model to predict potential energy surfaces, though a gaussian process regression approach was used.\cite{PhysRevB.87.184115}
-	In our work, we want to explore the applicability of machine learning in other fields of quantum chemistry.
-	One promising target is here the Hessian matrix due to its high computational cost, and thus the potential of acceleration of the computation.
-	In addition, the Hessian matrix is necessary for the computation of harmonic vibrational frequencies, which are quantities with versatile applications.
+	Machine leraning (ML) models have become important tools in quantum chemistry.\cite{StriethKalthoff2020}
+	For example, high dimensional neural networks and Gaussian process regression models were quite successful for the prediction of potential energy surfaces (PES) based on geometrical quantities.\cite{doi:10.1021/acs.chemrev.0c00868,PhysRevB.87.184115}\\ 
+	In this work, we want to explore the applicability of ML for the prediction of the nuclear Hessian matrix.
+	The Hessian matrix is used for the computation of harmonic nuclear vibrational frequencies,
+	 which are required, e.g., for the simulation of infrared spectra and the zero point vibrational energy.
 	\newline
-
-	New developed atomistic based features were used for the machine learning model with Hessian matrix elements as a target.
-	These features are generated from atomistic based quantities based computed via \mbox{GFN2--xTB}.\cite{Bannwarth2019_GFN2xTB}
-	The Hessian matrix and partially the features are dependent on the orientation of the coordinate system.
-	To achieve a unique mapping of the features onto the target,
-	we present a method to generate features in an invariant coordinate system independent of the intial coordinate system.
-	For a general model it is mandatory to use features which are independent on the system size.
-	Therefore, the Hessian matrix is deconstructed into $3 \times 3$ blocks,
-	where the feature vector is similar for each element in these blocks.
-	Due to the nature of the Hessian matrix,
-	the blocks are either represented by a monoatomic feature vector or a biatomic feature vector,
-	depending on wheter the block is a diagonal or off--diagonal block, respectivley.
-
+	The target of the presented ML model are Hessian matrix elements.
+	%These features were used to build a ML model, which is capable to predict Hessian matrix elements as a target.
+	The Hessian matrix elements in the cartesian coordinate system are dependent on the orientation of the coordinate system.
+	To achieve a unique mapping,
+	we present a method to generate atomistic features in an invariant coordinate system, thus providing translational and rotational invariance.
+	%For a general model it is mandatory to use features which are independent on the system size.
+	The model is free from element--specific parameters.\\
+	Here, we show the performance of the model in the prediction of vibrational frequencies for small molecules and benchmark it for the computation of zero point vibrational energies for large subsets from the GDB7 molecule data set.
+	
 	\begingroup
 	\renewcommand{\chapter}[2]{}
 	

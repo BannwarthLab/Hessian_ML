@@ -1,0 +1,137 @@
+%!TEX root = maindocument.tex
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman,danish,english]{babel} 
+\usepackage[
+	backend=bibtex,
+	style=phys,
+	articletitle=false,
+	biblabel=brackets,
+	chaptertitle=false,
+	pageranges=false,
+	doi=false
+	]{biblatex}
+\addbibresource{Literature/Poster.bib}
+
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb,nicefrac,braket}
+\usepackage{marvosym}
+\usepackage{booktabs}
+\usepackage{mathtools}
+\usepackage{chemmacros}
+\usepackage{calc}
+\usepackage{scalerel}
+\usepackage{lipsum}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\usepackage{subcaption}
+% fix error in subcaption leading to spurious whitespaces
+\makeatletter
+\renewcommand*\subcaption@label{%
+	\caption@withoptargs\subcaption@@label}
+\makeatother
+
+\usepackage{xifthen}\usepackage{adjustbox}
+
+
+
+\DeclareSIUnit[number-unit-product = {\,}]\Eh{E_\text{h}}
+
+\usetikzlibrary{shapes,arrows,positioning,backgrounds}
+\AtBeginEnvironment{tikzfigure}{\captionsetup{type=figure,font=footnotesize}}
+\pgfdeclarelayer{background,backgroundlayer}
+\pgfsetlayers{background,backgroundlayer,main} 
+
+\input{RWTHfarben.tex}
+\definecolorstyle{myColorStyle}{
+}{
+	% Background Colors 
+	\colorlet{backgroundcolor}{RWTHschwarz010}%{\white}
+	\colorlet{framecolor}{RWTHblau100}
+	% Title Colors 
+	\colorlet{titlefgcolor}{RWTHschwarz100} 
+	\colorlet{titlebgcolor}{white}
+	% Block Colors 
+	\colorlet{blocktitlebgcolor}{RWTHblau100} 
+	\colorlet{blocktitlefgcolor}{white} 
+	\colorlet{blockbodybgcolor}{white} 
+	\colorlet{blockbodyfgcolor}{RWTHschwarz100}
+	% Innerblock Colors 
+	\colorlet{innerblocktitlebgcolor}{white} 
+	\colorlet{innerblocktitlefgcolor}{RWTHschwarz100} 
+	\colorlet{innerblockbodybgcolor}{white} 
+	\colorlet{innerblockbodyfgcolor}{RWTHschwarz100}
+	% Note colors 
+	\colorlet{notefgcolor}{RWTHschwarz100} 
+	\colorlet{notebgcolor}{RWTHgelb050} 
+	\colorlet{notefrcolor}{RWTHschwarz100}
+	%Frame color
+	\colorlet{framecolor}{RWTHblau100} 
+}
+
+\usecolorstyle{myColorStyle} 
+
+
+\settitle{\vspace*{1em} \centering %\vbox{
+		%\@titlegraphic \\[\TP@titlegraphictotitledistance] \centering
+		\color{titlefgcolor} {
+			\Huge \sffamily  \bfseries{\@title} \par}
+			%\Huge \sffamily \@title \par}
+		\vspace*{0.5em}
+		{\huge \@author \par} \vspace*{1em} {\LARGE \@institute}
+}
+%}
+
+\definetitlestyle{titleRWTH}{
+	width=1.0\paperwidth, roundedcorners=0, linewidth=0pt, innersep=1cm,
+	titletotopverticalspace=0mm, titletoblockverticalspace=20mm,
+	titlegraphictotitledistance=10pt
+}{
+	\draw[
+	draw=none,
+	line width=0pt,
+	%draw, color=RWTHschwarz100, 
+	fill=titlebgcolor]%
+	(\titleposleft,\titleposbottom) rectangle (\titleposright,\titlepostop); %
+}
+
+\usetitlestyle{titleRWTH}
+
+
+\defineblockstyle{blockRWTH}{
+titlewidthscale=1, bodywidthscale=1, titleleft,% titlecenter,
+titleoffsetx=0pt, titleoffsety=0pt, bodyoffsetx=0pt, bodyoffsety=2mm,
+bodyverticalshift=5mm, roundedcorners=5, linewidth=5pt,
+titleinnersep=4mm, bodyinnersep=4mm
+}{
+\draw[rounded corners=\blockroundedcorners, inner sep=\blockbodyinnersep, line width=\blocklinewidth, color=framecolor, fill=blockbodybgcolor]
+(blockbody.south west) rectangle (blockbody.north east); %
+\ifBlockHasTitle%
+\draw[rounded corners=\blockroundedcorners, inner sep=\blocktitleinnersep, line width=\blocklinewidth, color=framecolor, fill=blocktitlebgcolor]
+(blocktitle.south west) rectangle (blocktitle.north east); %
+\fi%
+}
+\useblockstyle{blockRWTH}
+
+\defineinnerblockstyle{innerblockRWTH}{
+titlewidthscale=1, bodywidthscale=1, titleleft,% titlecenter,
+%titleoffsetx=0pt, titleoffsety=8pt, bodyoffsetx=0pt, bodyoffsety=16pt,
+bodyverticalshift=0pt, roundedcorners=0, linewidth=4pt,
+titleinnersep=12pt, bodyinnersep=6pt
+}{
+\begin{scope}[line width=\innerblocklinewidth, rounded
+	corners=\innerblockroundedcorners, solid]
+	\ifInnerblockHasTitle %
+	\draw[color=innerblocktitlebgcolor, fill=innerblocktitlebgcolor]
+	(innerblockbody.south west) rectangle (innerblocktitle.north east);
+	\draw[color=innerblocktitlebgcolor, fill=innerblockbodybgcolor]
+	(innerblockbody.south west) rectangle (innerblockbody.north east);
+	\else
+	\draw[color=innerblocktitlebgcolor, fill=innerblockbodybgcolor]
+	(innerblockbody.south west) rectangle (innerblockbody.north east);
+	\fi
+\end{scope}
+}
+\useinnerblockstyle{innerblockRWTH}
