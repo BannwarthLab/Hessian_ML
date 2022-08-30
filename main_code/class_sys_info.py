@@ -4,7 +4,7 @@ from rotation_func import *
 
 class sys_info:
     def __init__(self,folder,molecule,variation):
-        self.xyz, self.header = import_coord(f'{folder}xtbopt.xyz')
+        self.xyz, self.header = import_coord(f'{folder}/xtbopt.xyz')
         self.hessian_import = import_hessian(f'{folder}/hessian',self.xyz)
         self.hessian = self.hessian_import.copy()
         self.dipm = import_dipm(f'{folder}/xyz_dipm.csv').iloc[:,:-3]
@@ -21,7 +21,7 @@ class sys_info:
         #self.H_approx = H_Approx(self.grad)
         #self.H_delta = H_Delta(self.H_approx,self.hessian)
 
-        self.init_P_MI = (rotM_hess(self.init_R_MI,self.xyz))
+        self.init_P_MI = rotM_hess(self.init_R_MI,self.xyz)
 
         self.coord_state = ['init','inert']
         self.molecule = molecule
@@ -143,7 +143,6 @@ class sys_info:
                     H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_B:3*atom_B+3].copy()
 
                     if [atom_A,atom_B] in self.features.transpose_list:
-                        #
                         H_APF = matmul(matmul(rot_X(np.pi),np.transpose(H_APF)),np.transpose(rot_X(np.pi)))
 
                     H_APF = matmul(matmul((rot_Mat),H_APF),np.transpose(rot_Mat))
@@ -286,7 +285,7 @@ class sys_info:
 
 class Feature:
     def __init__(self,folder,angle_list,grad):
-        self.folder =folder 
+        self.folder =folder
         GFN2_quantities = pd.read_csv(f'{folder}')
         self.CN = np.array(GFN2_quantities.loc[:,['coordination number','delta coordination number']].values.tolist())
         self.dipm_atom = np.array(GFN2_quantities.loc[:,['dipm_atom_x','dipm_atom_y','dipm_atom_z']].values.tolist())

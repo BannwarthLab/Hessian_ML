@@ -5,5 +5,8 @@
     "files.associations": {
         "\"python.pythonPath\"": "C:\\Users\\Nutzer\\Anaconda3\\envs\\hessian_ml\\Scripts"
     },
-    "jupyter.jupyterServerType": "local"
+    "jupyter.jupyterServerType": "local",
+    "latex-workshop.latex.texDirs": [
+        "/opt/homebrew/"
+    ]
 }
