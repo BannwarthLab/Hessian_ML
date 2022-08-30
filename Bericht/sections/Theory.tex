@@ -1,5 +1,4 @@
-\chapter{Theory}
-\label{chap:Theory}
+\chapter{Theory}\label{chap:Theory}
 Four topics will be discussed in the theory as this research relies on those.
 At first, the Euler angles, as these are used for the transformation of the coordinate system to achieve a specific coordinate frame.
 Secondly, the GFN2--xTB method, as it is used to compute the features and target.
@@ -254,14 +253,14 @@ an eigenvalue equation similar to the Roothaan--Hall equation is obtained (c.f. 
 	\mbox{GFN2--xTB} is a density functional tight binding (DFTB) method,
 	that is optimized for \textbf{G}eomteries,
 	\textbf{F}requencies and \textbf{N}oncovalent interaction energies.
-	In DFTB methods, the electron density $\rho_0$ is a linear combination of atomic electron densities $\rho_{0,A}$.
+	In DFTB methods, the starting point is that the electron density $\rho_0$ is to a good agreement a superposition of atomic electron densities $\rho_{0,A}$.
 	\begin{align}
 		\label{eq:GFN2:Rho0}
 		\rho_0 = \sum_A \rho_{0,A}
 	\end{align}
-	The energy is expanded by a Taylor series around the electron density $\rho_0$.
-	The bonding is then described as a perturbation to this density.
-	In \mbox{GFN2--xTB} the expansion is done up to the third order.
+	The energy is expanded by a Taylor series around the premolecular electron density $\rho_0$.
+	The bonding between atoms is then described as a perturbation to this density and the accompanied energy changes.
+	In \mbox{GFN2--xTB} the expansion is done up to the third order. 
 	\begin{align}
 		\label{eq:GFN2:EnergyPerturbation}
 		E[\rho] = E^{(0)}[\rho_0] + E^{(1)}[\rho_0,(\delta \rho)]
@@ -273,6 +272,8 @@ an eigenvalue equation similar to the Roothaan--Hall equation is obtained (c.f. 
 	A local density approximation (LDA) is used for the description of the exchange--correlation energy $\epsilon^\mathrm{LDA}_\mathrm{XC}$.
 	As the LDA neglects the long range correlation effects,
 	these are described via a non--local correlation contribution $\Phi^\mathrm{NL}_\mathrm{C}\left(\textbf{r},\textbf{r}^\prime\right)$.
+	Hence, dispersion interactions are captured as well.
+	Moreover, the J--term and the nuclei--nuclei interaction are also introduced.
 	\begin{align}
 		\label{eq:GFN2:EnergyDFT}
 		\begin{split}
@@ -284,12 +285,12 @@ an eigenvalue equation similar to the Roothaan--Hall equation is obtained (c.f. 
 		 \rho\left(\textbf{r}^\prime\right)\mathrm{d}\textbf{r}^\prime \bigg] \mathrm{d}\textbf{r} + E_{nn}
 		\end{split}
 	\end{align}
-	The terms of Eq.~\eqref{eq:GFN2:EnergyPerturbation} can be divided into different energy contributions.
+	The terms of Eq.~\eqref{eq:GFN2:EnergyPerturbation} can be approximated as  intuitive energy contributions.
 	These contributions will be briefly discussed.
 	The zeroth order term shown in Eq.~\eqref{eq:GFN2:E_0} consists of the repulsion energy~$E_\mathrm{rep}^{(0)}$ and
-	dispersion energy~$E_\mathrm{disp}^{(0)}$. These are typically described by Buckingham or Lennard--Jones potentials.
+	dispersion energy~$E_\mathrm{disp}^{(0)}$. In classical forcefields, these are typically described by Buckingham or Lennard--Jones potentials.
 	In GFN2--xTB a classical parametrized repulsion energy is used, which depends on the distance between to atoms.
-	The dispersion term arises, due to the non--local correlation functional.
+	The dispersion term arises, due to the non--local correlation functional, used in the DFT energy equation.
     Furthermore, the zeroth order term energy of the valence electrons $E_\mathrm{A,valence}^{(0)}$
 	and core electron $E_\mathrm{A,core}^{(0)}$ is summed, though the energy of the core electrons is defined as zero.
 
@@ -301,33 +302,34 @@ an eigenvalue equation similar to the Roothaan--Hall equation is obtained (c.f. 
 	The first order perturbation energy $E^{(1)}[\rho_0,(\delta \rho)]$
 	is approximated by a first order dispersion energy $E_\mathrm{disp}^{(1)}$,
 	and first order valence electron energy $E_\mathrm{A,valence}^{(1)}$.
-	This perturbation allows the description of covalent bonding.
+	The latter is the change in the atomic energies due to bonding.
 	\begin{align}
         \label{eq:GFN2:E_1}
 		E^{(1)}[\rho_0,(\delta \rho)] \approx E_\mathrm{disp}^{(1)} + \sum_A E_\mathrm{A,valence}^{(1)}
     \end{align}
 
-The second order energy perturbation $E^{(2)}[\rho_0,(\delta \rho)^2]$ is described by the contribution of dispersion,
-electrostatics and exchange correlation energies.
+The second order energy perturbation $E^{(2)}[\rho_0,(\delta \rho)^2]$ contains the contributions from dispersion,
+interelectronic electrostatics and exchange correlation energies.
 The exchange and correlation energy~$E_\mathrm{XC}^{(2)}$
-and electrostatic energy~$E_\mathrm{ES}^{(2)}$ are described in \mbox{GFN2--xTB} with isotropic and anisotropic contributions.
-This is in contrast to other DFTB methods, where only a monopole approximation is used.
+and electrostatic energy~$E_\mathrm{ES}^{(2)}$ both describe changes in the interelectron interaction. They are described in \mbox{GFN2--xTB} with isotropic and anisotropic contributions.
+This is in contrast to other DFTB methods, where only anisotropic monopole approximation is used.
 	\begin{align}
         \label{eq:GFN2:E_2}
 		E^{(2)}[\rho_0,(\delta \rho)^2] \approx E_\mathrm{ES}^{(2)} + E_\mathrm{XC}^{(2)} + E_\mathrm{disp}^{(2)}
     \end{align}	
 	For the third order perturbation, 
-	only the electrostatic and exchange correlation energies are used and computed using the Mulliken approximation.
+	only the electrostatic and exchange correlation energies are considered and restrict to WORD terms.
+	They are computd with isotropic energy terms and added to the IES and ICS energy.
 	All other contributions to the third order perturbation are neglected.
 	\begin{align}
         \label{eq:GFN2:E_3}
 		E^{(3)}[\rho_0,(\delta \rho)^3] \approx  E_\mathrm{ES}^{(3)} + E_\mathrm{XC}^{(3)} 
     \end{align}	
-Merging all energy contributions shown in, Eq.~\eqref{eq:GFN2:E_0} to Eq.~\eqref{eq:GFN2:E_3}, into Eq.~\eqref{eq:GFN2:EnergyPerturbation} leads to Eq.~\eqref{eq:GFN2:E}.
-Though, some further adjustments are done. The isotropic contribution of the electrostatic and exchange correlation energies are described by a single term $E_\mathrm{IES+IEC}$.
-While the anisotropic electrostatic energy~$E_\mathrm{AES}$ and anisotropic exchange correlation energy~$E_\mathrm{AXC}$ are described separately.
-The valence electron energy contributions are described via the extended Hückel type energy~$E_\mathrm{EHT}$.
-Independent of the above discussed perturbation, an energy term~$G_\mathrm{Fermi}$ describing Fermi--smearing  is included,
+Merging all energy contributions shown in, Eq.~\eqref{eq:GFN2:E_0} through Eq.~\eqref{eq:GFN2:E_3}, into Eq.~\eqref{eq:GFN2:EnergyPerturbation} leads to Eq.~\eqref{eq:GFN2:E}.
+Though, some further adjustments are done. The isotropic contribution of the electrostatic and exchange correlation energies are for brevity merged into a single term $E_\mathrm{IES+IEC}$.
+The anisotropic electrostatic energy~$E_\mathrm{AES}$ and anisotropic exchange correlation energy~$E_\mathrm{AXC}$ are given separately.
+The first order contribution of the valence electron energy are described via the extended Hückel type energy~$E_\mathrm{EHT}$.
+Independent of the above discussed perturbation, a free energy term~$G_\mathrm{Fermi}$ due to Fermi--smearing  is included,
 which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\begin{align}
 		\label{eq:GFN2:E}
@@ -336,13 +338,13 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\end{align}
 	The wave function is approximated by a minimal valence basis set STO--$m$G.
 	The energy is computed similar to KS--DFT and Hartree Fock.
-	The Roothaan--Hall type Eq.~\eqref{eq:FCSCe} is solved in a selfconsistent manner.
+	A Roothaan--Hall type euqation equivalent to Eq.~\eqref{eq:FCSCe} is solved in a selfconsistent manner.
 
 \newpage
     \section{Hessian Matrices}
-	Hessian matrices are the target for the ML model.
-	A brief introduction to the Hessian matrix, its projection and weighting is given,
-	because it is necessary for the computation of the HVF.
+	Hessian matrices are the target for the ML model developed in this work.
+	A brief introduction to the Hessian matrix, its projection and weighting is given.
+	The latter two are necessary for the computation of the HVF.
 	The HVF is used to compute quantities to measure the performance of the ML model.\\
 	The Hessian matrix is a $3M \times 3M$ matrix ($M$ is the number of atoms) of second derivatives
 	of the energy with respect to every atom coordinate pair in the system.\supercite{Jensen2013}
@@ -358,8 +360,8 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\end{align}
 	The Hessian \textbf{H} can also be described by $M^2$ $3 \times 3$ block matrices,
 	where each $3 \times 3$~matrix depends on the coordinates of an atom pair.
-	Theses $3 \times 3$ block matrices are beneficial for the prediction, as they only depend on two atoms.
-	Hence, only information about the two atoms need to be given to the ML model to predict the block matrix.
+	Theses $3 \times 3$ block matrices are beneficial for the prediction, as they formally correspond to two atoms.
+	Due to this formal dependency, only the information of two atoms are give to the ML model to predict the block matrix.
 	\begin{align}
 		\textbf{H} =
 		\left(\begin{matrix}
