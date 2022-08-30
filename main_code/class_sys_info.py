@@ -170,23 +170,23 @@ class sys_info:
     def get_pred_hessian(self,hessian_homo=None,hessian_hetero=None,check=None):
         if check == True:
             self.H_pred = self.hessian
-        else:
-            ite_homo = 0
-            ite_hetero = 0
-            for atom_A in range(self.N_atoms):
-                self.H_pred = fill_matrix_block(hessian_homo,self.H_pred,R_mat=self.R_MI_APF_mat,A=atom_A,ite=ite_homo)
-                ite_homo += 1
 
-                transpose = None
-                for atom_B in range(atom_A+1,self.N_atoms):
-                    if [atom_A,atom_B] in self.features.transpose_list:
-                        transpose = True
-                    self.H_pred = fill_matrix_block(hessian_hetero,self.H_pred,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
-                    ite_hetero +=1
+        ite_homo = 0
+        ite_hetero = 0
+        for atom_A in range(self.N_atoms):
+            self.H_pred = fill_matrix_block(hessian_homo,self.H_pred,R_mat=self.R_MI_APF_mat,A=atom_A,ite=ite_homo)
+            ite_homo += 1
+
+            transpose = None
+            for atom_B in range(atom_A+1,self.N_atoms):
+                if [atom_A,atom_B] in self.features.transpose_list:
+                    transpose = True
+                self.H_pred = fill_matrix_block(hessian_hetero,self.H_pred,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
+                ite_hetero +=1
             #self.H_pred += self.H_approx ## Change Hessian
         return
 
-    def perm_Hess(self,A,B):
+    def perm_Hess(self,A,B): #Fehlerhaft!!!!
         P = np.identity(len(self.H_pred))
         i = 3*A
         j = 3*B
@@ -219,7 +219,7 @@ class sys_info:
 
             self.lambd_len = len(idx_list)
 
-            self.H_pred_lambd = lamb 
+            self.H_pred_lambd = lamb
 
             for i in idx_list:
                     i = int(i)

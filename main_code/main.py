@@ -79,8 +79,9 @@ for rnd_state in[46,0,56,29,100]:
                 print(f'{count} Structures are imported. \n Wall time: {round(time.time() - wall_time_0)} s')
 
     '''
-    with open('Systems.json','rb') as f:
-        Systems =pickle.load(f)
+
+    #with open('Systems.json','rb') as f:
+    #    Systems =pickle.load(f)
 
     '''with open('Systems','rb') as f:
         for _ in range(len(struc_sys_dirs[:])):
@@ -121,13 +122,14 @@ for rnd_state in[46,0,56,29,100]:
     '''with open('Systems.json','wb') as f:
         pickle.dump(Systems,f)'''
 
+    '''
     for file in ['Feature_Vector_Hetero','Feature_Vector_Homo','Target_Vector_Hetero','Target_Vector_Homo']:
         if os.path.exists(file):
 
             with open(file, 'r+') as f:
-                f.truncate(0)
+                f.truncate(0)'''
 
-    for i in train_idx:
+    for i in []:#train_idx:
 
         Systems[i].gen_Hessian_vector(train_rot=False,train_set =train_set)
         X_homo_temp,X_hetero_temp = Systems[i].gen_Feature(label = 'indexed',train_rot=train_rot,train_set =train_set)
@@ -191,9 +193,9 @@ for rnd_state in[46,0,56,29,100]:
     wall_time_3 =  time.time()
 
     print(f'Fitting the Model.')
-    regr_homonuclear=  RandomForestRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=True,max_depth=25)
+    regr_homonuclear=  RandomForestRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False,max_depth=25)
 
-    regr_heteronuclear = RandomForestRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=True,max_depth=25)
+    regr_heteronuclear = RandomForestRegressor(n_estimators = 100,random_state=rnd_state,bootstrap=False,max_depth=25)
 
     #regr_homonuclear = KNeighborsRegressor(n_neighbors=10, weights='distance' )
     #regr_heteronuclear = KNeighborsRegressor(n_neighbors=10, weights='distance' )
