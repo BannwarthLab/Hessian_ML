@@ -97,6 +97,7 @@ for rnd_state in [46,100,0,56,29]:#
         else:
             train_idx.append(i)
     '''
+    '''
     wall_time_1 = time.time()
 
     print(f'All structures are imported. \nWall time: {round(wall_time_1 - wall_time_0)} s')
@@ -199,7 +200,7 @@ for rnd_state in [46,100,0,56,29]:#
 
     dump(regr_heteronuclear,f'ETR_HETERO{rnd_state}.joblib')
     #####Test part
-
+    '''
     regr_heteronuclear = []
     regr_homonuclear = []
 
@@ -210,8 +211,7 @@ for rnd_state in [46,100,0,56,29]:#
     y_homo = []
 
     #Systems = []   
-    if True:
-        break
+
     #with open('Systems','rb') as f:
     #    for _ in range(7164):
     #        Systems.append(pickle.load(f))
