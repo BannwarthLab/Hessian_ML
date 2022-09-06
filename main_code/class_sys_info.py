@@ -11,8 +11,6 @@ class sys_info:
         self.grad = None#import_gradient(f'{folder}/gradient',self.xyz)
 
         self.N_atoms = len(self.xyz['atoms'])
-
-        self.angle_list  = [np.linspace(0.0,270.0,4),np.linspace(0.0,270.0,4)]
         
         self.features = Feature(f'{folder}/ml_feature.csv',self.angle_list,grad=self.grad)
 
@@ -120,41 +118,23 @@ class sys_info:
 
 
     def gen_Hessian_vector(self,train_rot=None,train_set=None):
+        self.H_AA_vec = []
+        self.H_AB_vec = []
+        for atom_A in range(self.N_atoms):
 
-        if train_rot == True:
-            angle_list = self.angle_list
-        else:
-            angle_list = [[0.0],[0.0]]
+            H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3]
+            self.H_AA_vec.extend(H_APF.flatten())
 
-        for angle in angle_list[0]:
-            rot_Mat = rot_X(angle/360*2*np.pi)
-            for atom_A in range(self.N_atoms):
-                H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3]
-                H_APF = matmul(matmul((rot_Mat),H_APF),np.transpose(rot_Mat))
-                for i in range(3):
-                    for j in range(3):
-                        self.H_AA_vec.extend([H_APF[i,j]]) #hier flatten
 
-        for angle in angle_list[1]:
-            for atom_A in range(self.N_atoms):
-                rot_Mat = rot_X(angle/360*2*np.pi)
+        for atom_A in range(self.N_atoms):
 
-                for atom_B in range(atom_A+1,self.N_atoms):
-                    H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_B:3*atom_B+3].copy()
+            for atom_B in range(atom_A+1,self.N_atoms):
+                H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_B:3*atom_B+3].copy()
 
-                    if [atom_A,atom_B] in self.features.transpose_list:
-                        H_APF = matmul(matmul(rot_X(np.pi),np.transpose(H_APF)),np.transpose(rot_X(np.pi)))
+                if [atom_A,atom_B] in self.features.transpose_list:
+                    H_APF = matmul(matmul(rot_X(np.pi),np.transpose(H_APF)),np.transpose(rot_X(np.pi)))
 
-                    H_APF = matmul(matmul((rot_Mat),H_APF),np.transpose(rot_Mat))
-                    for i in range(3):
-                        for j in range(3):
-                            self.H_AB_vec.extend([H_APF[i,j]])
-
-                    if train_set==True:
-                        H_APF_T = np.transpose(H_APF)
-                        for i in range(3):
-                            for j in range(3):
-                                self.H_AB_vec.extend([H_APF_T[i,j]])
+                self.H_AB_vec.extend(H_APF.flatten())
         return
 
 
@@ -179,27 +159,13 @@ class sys_info:
 
             transpose = None
             for atom_B in range(atom_A+1,self.N_atoms):
+
                 if [atom_A,atom_B] in self.features.transpose_list:
                     transpose = True
                 self.H_pred = fill_matrix_block(hessian_hetero,self.H_pred,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
                 ite_hetero +=1
             #self.H_pred += self.H_approx ## Change Hessian
         return
-
-    def perm_Hess(self,A,B): #Fehlerhaft!!!!
-        P = np.identity(len(self.H_pred))
-        i = 3*A
-        j = 3*B
-
-        #P[j:j+3,i:i+3],P[i:i+3,i:i+3]  = P[j:j+3,i:i+3],P[j:j+3,i:i+3]
-        P[j:j+3,i:i+3] = P[i:i+3,i:i+3]
-        P[i:i+3,i:i+3] = P[i:i+3,j:j+3]
-        P[i:i+3,j:j+3] = P[j:j+3,j:j+3]
-        P[j:j+3,j:j+3] = P[i:i+3,i:i+3]
-
-        #P[j:j+3,j:j+3],P[j:j+3,i:i+3]  = P[j:j+3,i:i+3],P[j:j+3,j:j+3]
-        self.H_pred = matmul(matmul(P,self.H_pred),P)
-        return 
 
     def get_coord_state(self):
         return self.coord_state[0]
@@ -308,17 +274,17 @@ class Feature:
     def  get_Feature_heteronuclear(self, label=None, R_MI_APF_mat=None, N_atoms = None,xyz = None,init_R_MI=None,train_rot=None,train_set=None,data_analysis=None):
 
         if self.Feature_AB == []:
-            index = [[2,0,0],
-                    [1,1,0],
-                    [1,0,1],
-                    [1,1,0],
-                    [0,2,0],
-                    [0,1,1],
-                    [1,0,1],
-                    [0,1,1],
-                    [0,0,2]]
-
             index_old = [[2,0,0],
+                        [1,1,0],
+                        [1,0,1],
+                        [1,1,0],
+                        [0,2,0],
+                        [0,1,1],
+                        [1,0,1],
+                        [0,1,1],
+                        [0,0,2]]
+
+            index =     [[2,0,0],
                         [1,-1,0],
                         [1,0,-1],
                         [-1,1,0],
@@ -328,118 +294,104 @@ class Feature:
                         [0,-1,1],
                         [0,0,2]]
 
-            if train_rot==True:
-                angle_list = self.angle_list
+            self.transpose_list = []
+            self.check_list = []
 
-            else:
-                angle_list = [[0.0],[0.0]]
+            for atom_A in range(N_atoms):
+                for atom_B in range(atom_A+1,N_atoms):
 
-            for angle in angle_list[1]:
-                rot_Mat = rot_X(angle/360*2*np.pi)
+                    A = atom_A
+                    B = atom_B
 
-                self.transpose_list = []
-                self.check_list = []
+                    i0 = 3*A
+                    i3 = 3*A + 3
+                    j0 = 3*B 
+                    j3 = 3*B + 3
+                    R_MI_APF = R_MI_APF_mat[i0:i3,j0:j3]
 
-                for atom_A in range(N_atoms):
-                    for atom_B in range(atom_A+1,N_atoms):
+                    self.check_list.append([A,B])
 
-                        A = atom_A
-                        B = atom_B
+                    if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
+                        B,A = A,B
+                        self.transpose_list.append([B,A])
 
-                        i0 = 3*A
-                        i3 = 3*A + 3
-                        j0 = 3*B 
-                        j3 = 3*B + 3
-
-                        self.check_list.append([A,B])
-
-                        if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
-                            B,A = A,B
-                            self.transpose_list.append([B,A])
-                            rot_Mat = rot_X(np.pi)#matmul(rot_X(np.pi),rot_Mat)
-                        
-
-                        R_MI_APF = R_MI_APF_mat[i0:i3,j0:j3]
-
+                        rot_Mat = rot_X(np.pi)
+        
                         R_MI_APF = matmul(rot_Mat,R_MI_APF)
 
-                        R_AB = linalg.norm(xyz.iloc[A,1:] - xyz.iloc[B,1:])
+                    R_AB = linalg.norm(xyz.iloc[A,1:] - xyz.iloc[B,1:])
 
-                        Quantity_AB = [[],[]]
+                    Quantity_AB = [[],[]]
 
-                        vector_of_ones = np.array([1,1,1])
+                    vector_of_ones = np.array([1,1,1])
 
-                        j = 0
+                    j = 0
 
-                        for atom in [A,B]:
-                            
-                            dipm_atom = matmul(init_R_MI,self.dipm_atom[atom])
-                            dipm_delta = matmul(init_R_MI,self.dipm_delta[atom])
-                            dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[atom])
-                                
-                            qm_atom = matmul(matmul(init_R_MI,self.qm_atom[atom]),np.transpose(init_R_MI))
-                            qm_delta = matmul(matmul(init_R_MI,self.qm_delta[atom]),np.transpose(init_R_MI))
-
-                            dipm_atom = matmul(R_MI_APF,dipm_atom)
-                            dipm_delta = matmul(R_MI_APF,dipm_delta)
-                            dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
-
-                            qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
-                            qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
-
-                            qm_atom = matmul(qm_atom,vector_of_ones)
-                            qm_delta = matmul(qm_delta,vector_of_ones)
-
-                            #gradient = matmul(R_MI_APF,self.grad[3*atom:3*atom+3])
-
-                            #for k in range(3):
-                            #    Quantity_AB[j].extend([np.sum(qm_atom[k,:])])
-
-                            #for k in range(3):
-                            #    Quantity_AB[j].extend([np.sum(qm_delta[k,:])])
-
-                            Quantity_AB[j].extend(self.CN[atom])
-                            Quantity_AB[j].extend(dipm_atom)
-                            Quantity_AB[j].extend(dipm_delta)
-                            Quantity_AB[j].extend(dipm_only_mull)
-
-                            Quantity_AB[j].extend(qm_atom)
-                            Quantity_AB[j].extend(qm_delta)
-                            Quantity_AB[j].extend(self.energy_based[atom])
-
-                            #Quantity_AB[j].extend(gradient)
-
-
-                            j+=1
-
-                        Quantity_AB_arr =(np.array(Quantity_AB))
-
-                        Feature_Arith = (Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
-                        Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
-                        Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
-
-                        idx_len = 9
-                        if data_analysis == True:
-                            idx_len = 1
-
-                        for idx in range(idx_len):
-                            Features = []
-
-                            if idx in [3,6,7]:
-                                Features.extend((Quantity_AB[1]))
-                                Features.extend((Quantity_AB[0]))
-                            else:
-                                Features.extend((Quantity_AB[0]))
-                                Features.extend((Quantity_AB[1]))
+                    for atom in [A,B]:
                         
-                            Features.extend(Feature_Arith)
-                            Features.extend(Feature_Prod)
-                            Features.extend(Feature_AbsDiff)
+                        dipm_atom = matmul(init_R_MI,self.dipm_atom[atom])
+                        dipm_delta = matmul(init_R_MI,self.dipm_delta[atom])
+                        dipm_only_mull = matmul(init_R_MI,self.dipm_only_mull[atom])
+                            
+                        qm_atom = matmul(matmul(init_R_MI,self.qm_atom[atom]),np.transpose(init_R_MI))
+                        qm_delta = matmul(matmul(init_R_MI,self.qm_delta[atom]),np.transpose(init_R_MI))
 
-                            Features.extend(index[idx])
-                            Features.extend([R_AB])
+                        dipm_atom = matmul(R_MI_APF,dipm_atom)
+                        dipm_delta = matmul(R_MI_APF,dipm_delta)
+                        dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
 
-                            self.Feature_AB.append(Features)
+                        qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
+                        qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
+
+                        qm_atom = matmul(qm_atom,vector_of_ones)
+                        qm_delta = matmul(qm_delta,vector_of_ones)
+
+                        #gradient = matmul(R_MI_APF,self.grad[3*atom:3*atom+3])
+
+                        #for k in range(3):
+                        #    Quantity_AB[j].extend([np.sum(qm_atom[k,:])])
+
+                        #for k in range(3):
+                        #    Quantity_AB[j].extend([np.sum(qm_delta[k,:])])
+
+                        Quantity_AB[j].extend(self.CN[atom])
+                        Quantity_AB[j].extend(dipm_atom)
+                        Quantity_AB[j].extend(dipm_delta)
+                        Quantity_AB[j].extend(dipm_only_mull)
+
+                        Quantity_AB[j].extend(qm_atom)
+                        Quantity_AB[j].extend(qm_delta)
+                        Quantity_AB[j].extend(self.energy_based[atom])
+
+                        #Quantity_AB[j].extend(gradient)
+
+
+                        j+=1
+
+                    Quantity_AB_arr =(np.array(Quantity_AB))
+
+                    Feature_Arith = (Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
+                    Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
+                    Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
+
+                    idx_len = 9
+                    if data_analysis == True:
+                        idx_len = 1
+
+                    for idx in range(idx_len):
+                        Features = []
+                        
+                        Features.extend((Quantity_AB[0]))
+                        Features.extend((Quantity_AB[1]))
+                    
+                        Features.extend(Feature_Arith)
+                        Features.extend(Feature_Prod)
+                        Features.extend(Feature_AbsDiff)
+
+                        Features.extend(index[idx])
+                        Features.extend([R_AB])
+
+                        self.Feature_AB.append(Features)
         return
 
 
@@ -553,10 +505,10 @@ def fill_matrix_block(vector,matrix,R_mat=None,A=None,B=None,ite=None,transpose=
             #print(f'{k}:{vector[k]}')
             k+=1
 
-    matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(R_mat[3*A:3*A+3,3*B:3*B+3]),matrix[3*A:3*A+3,3*B:3*B+3]),(R_mat[3*A:3*A+3,3*B:3*B+3]))
-    
     if transpose == True:
         matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(rot_X(np.pi)),np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])),(rot_X(np.pi)))
+
+    matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(R_mat[3*A:3*A+3,3*B:3*B+3]),matrix[3*A:3*A+3,3*B:3*B+3]),(R_mat[3*A:3*A+3,3*B:3*B+3]))
 
     if A != B:
         matrix[3*B:3*B+3,3*A:3*A+3] = np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])
@@ -613,12 +565,3 @@ def find_trans_rot(hess,coord):
 
     return idx_list,lamb,Q
 
-
-def H_Approx(grad):
-    return np.outer(grad,grad)
-
-def H_Delta(H_approx,H_exact):
-    return H_exact - H_approx 
-
-def H_Exact(H_approx,H_delta):
-    return H_approx + H_delta  
