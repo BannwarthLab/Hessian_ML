@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg4231"
+   inkscape:version="1.2.1 (9c6d41e, 2022-07-14)"
+   sodipodi:docname="roterBlock.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview4233"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.6937065"
+     inkscape:cx="464.89401"
+     inkscape:cy="428.85572"
+     inkscape:window-width="1512"
+     inkscape:window-height="837"
+     inkscape:window-x="33"
+     inkscape:window-y="38"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs4228">
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2580"
+       id="linearGradient2586"
+       x1="20"
+       y1="144.5"
+       x2="40"
+       y2="144.5"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.97546625,0,0,0.97549982,64.582413,-34.115056)" />
+    <linearGradient
+       id="linearGradient2580"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop2578" />
+    </linearGradient>
+  </defs>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#b50427;fill-opacity:1;stroke:url(#linearGradient2586);stroke-width:0.491;stroke-linecap:round;stroke-dasharray:none"
+       id="rect111-5"
+       width="19.509325"
+       height="19.509996"
+       x="84.091743"
+       y="97.089676"
+       inkscape:export-filename="rect111-5.pdf"
+       inkscape:export-xdpi="507.99182"
+       inkscape:export-ydpi="507.99182" />
+  </g>
+</svg>

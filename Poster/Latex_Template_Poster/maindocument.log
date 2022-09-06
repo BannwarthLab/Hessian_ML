@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2022.8.9)  26 AUG 2022 12:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2022.8.9)  6 SEP 2022 14:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1378,8 +1378,91 @@ LaTeX Font Warning: Font shape `TS1/aess/m/n' undefined
 (Font)              using `TS1/cmr/m/n' instead
 (Font)              for symbol `textbullet' on input line 11.
 
-) (./Features.tex) (./MappingTest.tex
-<Graphics/RotationPermutationInvariance.pdf, id=29, 1927.2pt x 1084.05pt>
+) (./Features.tex
+LaTeX Font Info:    Font shape `T1/aess/b/n' in size <35.83> not available
+(Font)              Font shape `T1/aess/bx/n' tried instead on input line 58.
+<Graphics/blauerBlock.pdf, id=29, 56.90642pt x 99.58751pt>
+File: Graphics/blauerBlock.pdf Graphic file (type pdf)
+<use Graphics/blauerBlock.pdf>
+Package pdftex.def Info: Graphics/blauerBlock.pdf  used on input line 58.
+(pdftex.def)             Requested size: 30.0pt x 52.5pt.
+<Graphics/roterBlock.pdf, id=30, 56.90642pt x 125.19545pt>
+File: Graphics/roterBlock.pdf Graphic file (type pdf)
+<use Graphics/roterBlock.pdf>
+Package pdftex.def Info: Graphics/roterBlock.pdf  used on input line 58.
+(pdftex.def)             Requested size: 30.0pt x 65.99986pt.
+Package epstopdf Info: Source file: <Graphics/MatrixHeatmap.eps>
+(epstopdf)                    date: 2022-09-06 11:18:36
+(epstopdf)                    size: 838361 bytes
+(epstopdf)             Output file: <Graphics/MatrixHeatmap-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-09-06 11:19:09
+(epstopdf)                    size: 10119 bytes
+(epstopdf)             Command: <repstopdf --outfile=Graphics/MatrixHeatmap-eps-converted-to.pdf Graphics/MatrixHeatmap.eps>
+(epstopdf)             \includegraphics on input line 58.
+Package epstopdf Info: Output file is already uptodate.
+<Graphics/MatrixHeatmap-eps-converted-to.pdf, id=31, 463.7325pt x 347.2975pt>
+File: Graphics/MatrixHeatmap-eps-converted-to.pdf Graphic file (type pdf)
+<use Graphics/MatrixHeatmap-eps-converted-to.pdf>
+Package pdftex.def Info: Graphics/MatrixHeatmap-eps-converted-to.pdf  used on input line 58.
+(pdftex.def)             Requested size: 501.89388pt x 375.8865pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--58
+[]$[]$$[]$
+ []
+
+File: Graphics/blauerBlock.pdf Graphic file (type pdf)
+<use Graphics/blauerBlock.pdf>
+Package pdftex.def Info: Graphics/blauerBlock.pdf  used on input line 58.
+(pdftex.def)             Requested size: 30.0pt x 52.5pt.
+Package epstopdf Info: Source file: <Graphics/ndNH3.eps>
+(epstopdf)                    date: 2022-09-01 15:15:55
+(epstopdf)                    size: 6546324 bytes
+(epstopdf)             Output file: <Graphics/ndNH3-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-09-01 15:15:56
+(epstopdf)                    size: 80896 bytes
+(epstopdf)             Command: <repstopdf --outfile=Graphics/ndNH3-eps-converted-to.pdf Graphics/ndNH3.eps>
+(epstopdf)             \includegraphics on input line 58.
+Package epstopdf Info: Output file is already uptodate.
+<Graphics/ndNH3-eps-converted-to.pdf, id=32, 487.8225pt x 794.97pt>
+File: Graphics/ndNH3-eps-converted-to.pdf Graphic file (type pdf)
+<use Graphics/ndNH3-eps-converted-to.pdf>
+Package pdftex.def Info: Graphics/ndNH3-eps-converted-to.pdf  used on input line 58.
+(pdftex.def)             Requested size: 487.8213pt x 794.96806pt.
+File: Graphics/roterBlock.pdf Graphic file (type pdf)
+<use Graphics/roterBlock.pdf>
+Package pdftex.def Info: Graphics/roterBlock.pdf  used on input line 58.
+(pdftex.def)             Requested size: 30.0pt x 65.99986pt.
+Package epstopdf Info: Source file: <Graphics/dNH3.eps>
+(epstopdf)                    date: 2022-09-01 15:14:09
+(epstopdf)                    size: 8139748 bytes
+(epstopdf)             Output file: <Graphics/dNH3-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-09-01 15:14:10
+(epstopdf)                    size: 92243 bytes
+(epstopdf)             Command: <repstopdf --outfile=Graphics/dNH3-eps-converted-to.pdf Graphics/dNH3.eps>
+(epstopdf)             \includegraphics on input line 58.
+Package epstopdf Info: Output file is already uptodate.
+<Graphics/dNH3-eps-converted-to.pdf, id=33, 495.8525pt x 794.97pt>
+File: Graphics/dNH3-eps-converted-to.pdf Graphic file (type pdf)
+<use Graphics/dNH3-eps-converted-to.pdf>
+Package pdftex.def Info: Graphics/dNH3-eps-converted-to.pdf  used on input line 58.
+(pdftex.def)             Requested size: 495.85129pt x 794.96806pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--58
+[]\T1/aess/m/n/35.83 Model [] : The ori-gin of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--58
+\T1/aess/m/n/35.83 the co-or-di-nate sys-tem is
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--58
+\T1/aess/m/n/35.83 shifted to the the atom.
+ []
+
+) (./MappingTest.tex
+<Graphics/RotationPermutationInvariance.pdf, id=34, 1927.2pt x 1084.05pt>
 File: Graphics/RotationPermutationInvariance.pdf Graphic file (type pdf)
 <use Graphics/RotationPermutationInvariance.pdf>
 Package pdftex.def Info: Graphics/RotationPermutationInvariance.pdf  used on input line 9.
@@ -1392,17 +1475,17 @@ Package epstopdf Info: Source file: <Graphics/ZPEvZPE_example.eps>
 (epstopdf)                    date: 2022-08-25 15:16:51
 (epstopdf)                    size: 473247 bytes
 (epstopdf)             Command: <repstopdf --outfile=Graphics/ZPEvZPE_example-eps-converted-to.pdf Graphics/ZPEvZPE_example.eps>
-(epstopdf)             \includegraphics on input line 8.
+(epstopdf)             \includegraphics on input line 13.
 Package epstopdf Info: Output file is already uptodate.
-<Graphics/ZPEvZPE_example-eps-converted-to.pdf, id=30, 640.3925pt x 444.66125pt>
+<Graphics/ZPEvZPE_example-eps-converted-to.pdf, id=35, 640.3925pt x 444.66125pt>
 File: Graphics/ZPEvZPE_example-eps-converted-to.pdf Graphic file (type pdf)
 <use Graphics/ZPEvZPE_example-eps-converted-to.pdf>
-Package pdftex.def Info: Graphics/ZPEvZPE_example-eps-converted-to.pdf  used on input line 8.
+Package pdftex.def Info: Graphics/ZPEvZPE_example-eps-converted-to.pdf  used on input line 13.
 (pdftex.def)             Requested size: 1115.3273pt x 774.45067pt.
 ) (./conclusion.tex) (./reference.tex)
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <29.86> not available
 (Font)              Font shape `T1/aess/m/sl' tried instead on input line 55.
-<Graphics/nrw.jpg, id=31, 1129.21875pt x 234.8775pt>
+<Graphics/nrw.jpg, id=36, 1129.21875pt x 234.8775pt>
 File: Graphics/nrw.jpg Graphic file (type jpg)
 <use Graphics/nrw.jpg>
 Package pdftex.def Info: Graphics/nrw.jpg  used on input line 55.
@@ -1415,7 +1498,7 @@ Overfull \hbox (6.2408pt too wide) in paragraph at lines 55--55
 (./Footer.tex
 LaTeX Font Info:    Trying to load font information for U+mvs on input line 20.
  (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/marvosym/umvs.fd)
-<Graphics/rwth_ipc_rgb-eps-converted-to.pdf, id=32, 384.43625pt x 91.34125pt>
+<Graphics/rwth_ipc_rgb-eps-converted-to.pdf, id=37, 384.43625pt x 91.34125pt>
 File: Graphics/rwth_ipc_rgb-eps-converted-to.pdf Graphic file (type pdf)
 <use Graphics/rwth_ipc_rgb-eps-converted-to.pdf>
 Package pdftex.def Info: Graphics/rwth_ipc_rgb-eps-converted-to.pdf  used on input line 41.
@@ -1429,7 +1512,10 @@ Overfull \hbox (225.4434pt too wide) in paragraph at lines 13--43
 Non-PDF special ignored!
 <special> header=psfrag.pro
 
-{/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/map/pdftex/updmap/pdftex.map} <./Graphics/RotationPermutationInvariance.pdf> <./Graphics/ZPEvZPE_example-eps-converted-to.pdf> <./Graphics/nrw.jpg> <./Graphics/rwth_ipc_rgb-eps-converted-to.pdf>] (./maindocument.aux)
+{/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/map/pdftex/updmap/pdftex.map} <./Graphics/blauerBlock.pdf> <./Graphics/roterBlock.pdf
+
+pdfTeX warning: pdflatex (file ./Graphics/roterBlock.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <./Graphics/MatrixHeatmap-eps-converted-to.pdf> <./Graphics/ndNH3-eps-converted-to.pdf> <./Graphics/dNH3-eps-converted-to.pdf> <./Graphics/RotationPermutationInvariance.pdf> <./Graphics/ZPEvZPE_example-eps-converted-to.pdf> <./Graphics/nrw.jpg> <./Graphics/rwth_ipc_rgb-eps-converted-to.pdf>] (./maindocument.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -1438,18 +1524,18 @@ Package logreq Info: Writing requests to 'maindocument.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 41046 strings out of 478268
- 947028 string characters out of 5835367
- 1731751 words of memory out of 5000000
- 58512 multiletter control sequences out of 15000+600000
- 526011 words of font info for 161 fonts, out of 8000000 for 9000
+ 41085 strings out of 478268
+ 948242 string characters out of 5835367
+ 1748751 words of memory out of 5000000
+ 58543 multiletter control sequences out of 15000+600000
+ 528363 words of font info for 165 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
- 115i,11n,134p,1965b,3544s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmb10.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/marvosym/marvosym.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm3583.pfb>
-Output written on maindocument.pdf (1 page, 949224 bytes).
+ 115i,12n,134p,1965b,3544s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmb10.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/marvosym/marvosym.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm2986.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm3583.pfb>
+Output written on maindocument.pdf (1 page, 1154757 bytes).
 PDF statistics:
- 98 PDF objects out of 1000 (max. 8388607)
- 51 compressed objects within 1 object stream
+ 138 PDF objects out of 1000 (max. 8388607)
+ 68 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 129 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 154 words of extra memory for PDF output out of 10000 (max. 10000000)
 
