@@ -220,23 +220,30 @@ def inert_tensor(coord_var):
           tyz = -mi*yi*zi
           tzz = mi*(yi**2 + xi**2)
 
-          inert_t += np.array([[ txx ,txy  , txz ],
+          inert_t += np.array([[ txx ,txy , txz ],
                                [ txy ,tyy , tyz ],
-                               [ txz, tyz, tzz ]])
+                               [ txz , tyz , tzz ]])
 
      return inert_t/m/bohr2angs**2,coord_var
 
-#Das kann evtl. noch verschnellert werden, indem man direkt bspw. H_AB mit den Massen multipliziert.
+def H_Approx(grad):
+    return np.outer(grad,grad)
+
+def H_Delta(H_approx,H_exact):
+    return H_exact - H_approx 
+
+def H_Exact(H_approx,H_delta):
+    return H_approx + H_delta  
+
+
 def mass_weighted_hessian(hessian, atoms):
-     for k in range(len(hessian[1,:])):
-        for l in range(len(hessian[:,1])):
-          n = k//3
-          m = l//3
+     for k in range(len(hessian[1,:])//3):
+        for l in range(len(hessian[:,1])//3):
 
-          mass_n = elements_dict[atoms[n]]
-          mass_m = elements_dict[atoms[m]]
+          mass_n = elements_dict[atoms[k]]
+          mass_m = elements_dict[atoms[l]]
 
-          hessian[k,l] =  1/np.sqrt(mass_n*mass_m*mass_unit_in_au**2)*hessian[k,l]
+          hessian[3*k:3*k+3,3*l:3*l+3] =  1/np.sqrt(mass_n*mass_m*mass_unit_in_au**2)*hessian[3*k:3*k+3,3*l:3*l+3]
 
      return hessian
 

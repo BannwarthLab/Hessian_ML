@@ -344,7 +344,7 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
     \section{Hessian Matrices}
 	Hessian matrices are the target for the ML model developed in this work.
 	A brief introduction to the Hessian matrix, its projection and weighting is given.
-	The latter two are necessary for the computation of the HVF.
+	The latter projection and weighting are necessary for the computation of the HVF.
 	The HVF is used to compute quantities to measure the performance of the ML model.\\
 	The Hessian matrix is a $3M \times 3M$ matrix ($M$ is the number of atoms) of second derivatives
 	of the energy with respect to every atom coordinate pair in the system.\supercite{Jensen2013}
@@ -388,13 +388,11 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 		\end{matrix}\right)
 	\end{align}
 	\newpage
-	The Hessian matrix needs to be projected for the computation harmonic frequencies.
+	The Hessian matrix needs to be projected for the computation harmonic vibrational frequencies.
 	In order to compute the projection of the Hessian matrix, the rotational and translational parts of it need to be detected.
-	A $6 \times 3M$ matrix is constructed, that describes the rotation and translation of each atom.
-	For an atom $A$, the overlap is depicted in Eq.~\eqref{eq:RotTransMat}.
-	The first three rows of the $\textbf{O}_A$ matrix represents the translation and the latter three rows describe the rotation.
-	For example, the rotation around the x--axis leads to the translation of the y--coordinate $\textbf{r}^y_A$ by $\textbf{r}^z_A$.
-	While the z--coordinate $\textbf{r}_A^z$ is moved by $-\textbf{r}_A^y$.
+	A $6 \times 3M$ matrix $\textbf{O}$ is constructed, that describes the rotation and translation of each atom.
+	For an atom $A$, the section of this matrix is given in Eq.~\eqref{eq:RotTransMat}.
+	The first three rows of the $\textbf{O}_A$ matrix represents the translation and the latter three rows describe the rotation around the origin.
 	\begin{align}
 		\label{eq:RotTransMat}
 		\textbf{O}_A = \left(\begin{matrix}
@@ -410,13 +408,12 @@ which leads to the complete energy equation shown in Eq.~\eqref{eq:GFN2:E}.
 	\begin{align}
 		\label{eq:RotTransMatFull}
 		\textbf{O} = \left(\begin{matrix}
-			\textbf{O}_A & \textbf{O}_B &\hdots& \textbf{O}_N 
+			\textbf{O}_A & \textbf{O}_B &\hdots& \textbf{O}_M 
 		\end{matrix}
 		\right)
 	\end{align}
-	After that, the rotation and translation matrix is normalized to $\textbf{O}_\mathrm{n}$ by the 1--norm.
-	For the detection of the translation and rotation contributions, the overlap matrix $\textbf{M}$ between the normalized rotation and translation matrix and the Hessian matrix is computed (s. Eq.~\eqref{eq:OverlapMatProj}).
-	The multiplication of the $6\times 3M$ and $3M \times 3M$ matrix leads to a $6 \times 3M$ matrix.
+	After that, a normalization of the rotation and translation matrix to $\textbf{O}_\mathrm{n}$ is done by the 1--norm.
+	For identifying the translation and rotation contributions, the projection of the Hessian onto the matrix $\textbf{O}_\mathrm{n}$ is computed (s. Eq.~\eqref{eq:OverlapMatProj}).
 	\begin{align}
 		\label{eq:OverlapMatProj}
 		\textbf{M} = \textbf{O}_\mathrm{n} \times \textbf{H}

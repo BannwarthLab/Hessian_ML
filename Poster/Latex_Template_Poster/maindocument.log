@@ -3,20 +3,20 @@ entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/gfeldmann/Documents/GitLab/hessian_ml/Poster/Latex_Template_Poster/maindocument.tex
-(/Users/gfeldmann/Documents/GitLab/hessian_ml/Poster/Latex_Template_Poster/maindocument.tex
+**/home/gfeldmann/Documents/GitLab/hessian_ml/Poster/Latex_Template_Poster/maindocument.tex
+(/home/gfeldmann/Documents/GitLab/hessian_ml/Poster/Latex_Template_Poster/maindocument.tex
 LaTeX2e <2021-11-15> patch level 1
-L3 programming layer <2022-02-24> (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposter.cls
+L3 programming layer <2022-04-29> (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposter.cls
 Document Class: tikzposter 2014/01/15 v2.0 LaTeX document class for Posters
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/xkeyval/xkeyval.sty
-Package: xkeyval 2020/11/20 v2.8 package option processing (HA)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/xkeyval/xkeyval.tex (/home/gfeldmann/.miktex/texmfs/install/tex/generic/xkeyval/xkvutils.tex
 \XKV@toks=\toks16
 \XKV@tempa@toks=\toks17
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/xkeyval/keyval.tex))
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/xkeyval/keyval.tex))
 \XKV@depth=\count185
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tools/calc.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
 \calc@Acount=\count186
 \calc@Bcount=\count187
@@ -28,51 +28,51 @@ LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Ccount=\count188
 \calc@Cskip=\skip49
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/base/ifthen.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/base/ifthen.sty
 Package: ifthen 2020/11/24 v1.1c Standard LaTeX ifthen package (DPC)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/ae/ae.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/ae/ae.sty
 Package: ae 2001/02/12 1.3 Almost European Computer Modern
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/base/fontenc.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/base/fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/xstring/xstring.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/xstring/xstring.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/xstring/xstring.sty (/home/gfeldmann/.miktex/texmfs/install/tex/generic/xstring/xstring.tex
 \integerpart=\count189
 \decimalpart=\count190
 )
 Package: xstring 2021/07/21 v1.84 String manipulations (CT)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count191
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/frontendlayer/tikz.sty (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/basiclayer/pgf.sty (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/utilities/pgfrcs.sty (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfutil-common.tex
 \pgfutil@everybye=\toks18
 \pgfutil@tempdima=\dimen140
 \pgfutil@tempdimb=\dimen141
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.tex)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfutil-common-lists.tex)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfutil-latex.def
 \pgfutil@abb=\box50
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfrcs.code.tex (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/pgf.revision.tex)
 Package: pgfrcs 2021/05/15 v3.1.9a (3.1.9a)
 ))
 Package: pgf 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/graphics/graphicx.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/basiclayer/pgfcore.sty (/home/gfeldmann/.miktex/texmfs/install/tex/latex/graphics/graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/graphics/graphics.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/graphics/graphics.sty
 Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/graphics/trig.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/graphics/trig.sty
 Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 107.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/graphics-def/pdftex.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen142
 \Gin@req@width=\dimen143
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/systemlayer/pgfsys.sty (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfkeys.code.tex
 \pgfkeys@pathtoks=\toks19
 \pgfkeys@temptoks=\toks20
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfkeysfiltered.code.tex
 \pgfkeys@tmptoks=\toks21
 ))
 \pgf@x=\dimen144
@@ -95,23 +95,23 @@ Package: pgfsys 2021/05/15 v3.1.9a (3.1.9a)
 \t@pgf@tokb=\toks23
 \t@pgf@tokc=\toks24
 \pgf@sys@id@count=\count196
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2021/05/15 v3.1.9a (3.1.9a)
 )
 Driver file for pgf: pgfsys-pdftex.def
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
 File: pgfsys-pdftex.def 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
 File: pgfsys-common-pdf.def 2021/05/15 v3.1.9a (3.1.9a)
-))) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+))) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfsyssoftpath@smallbuffer@items=\count197
 \pgfsyssoftpath@bigbuffer@items=\count198
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
 File: pgfsysprotocol.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2021/10/31 v2.13 LaTeX color extensions (UK)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/graphics-cfg/color.cfg
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: pdftex.def on input line 227.
@@ -124,18 +124,18 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1372.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1373.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcore.code.tex
 Package: pgfcore 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmath.code.tex (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathcalc.code.tex (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathutil.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen154
 \pgfmath@count=\count199
 \pgfmath@box=\box51
 \pgfmath@toks=\toks25
 \pgfmath@stack@operand=\toks26
 \pgfmath@stack@operation=\toks27
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex))) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.code.tex (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex))) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmathfloat.code.tex
 \c@pgfmathroundto@lastzeros=\count266
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfint.code.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfint.code.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
 File: pgfcorepoints.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@picminx=\dimen155
 \pgf@picmaxx=\dimen156
@@ -151,76 +151,76 @@ File: pgfcorepoints.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@yy=\dimen166
 \pgf@zx=\dimen167
 \pgf@zy=\dimen168
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
 File: pgfcorepathconstruct.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@path@lastx=\dimen169
 \pgf@path@lasty=\dimen170
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
 File: pgfcorepathusage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@shorten@end@additional=\dimen171
 \pgf@shorten@start@additional=\dimen172
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
 File: pgfcorescopes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfpic=\box52
 \pgf@hbox=\box53
 \pgf@layerbox@main=\box54
 \pgf@picture@serial@count=\count267
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgflinewidth=\dimen173
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
 File: pgfcoretransformations.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@pt@x=\dimen174
 \pgf@pt@y=\dimen175
 \pgf@pt@temp=\dimen176
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
 File: pgfcorequick.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
 File: pgfcoreobjects.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
 File: pgfcorepathprocessing.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
 File: pgfcorearrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfarrowsep=\dimen177
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@max=\dimen178
 \pgf@sys@shading@range@num=\count268
 \pgf@shadingcount=\count269
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
 File: pgfcoreexternal.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfexternal@startupbox=\box55
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
 File: pgfcorelayers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
 File: pgfcoretransparency.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
 File: pgfcorepatterns.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
 File: pgfcorerdf.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-))) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+))) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
 File: pgfmoduleshapes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfnodeparttextbox=\box56
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/modules/pgfmoduleplot.code.tex
 File: pgfmoduleplot.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
 Package: pgfcomp-version-0-65 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@nodesepstart=\dimen179
 \pgf@nodesepend=\dimen180
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
 Package: pgfcomp-version-1-18 2021/05/15 v3.1.9a (3.1.9a)
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/utilities/pgffor.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/pgf/math/pgfmath.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/utilities/pgffor.sty (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/utilities/pgfkeys.sty (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/utilities/pgfkeys.code.tex)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/pgf/math/pgfmath.sty (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmath.code.tex)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/utilities/pgffor.code.tex
 Package: pgffor 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/math/pgfmath.code.tex)
 \pgffor@iter=\dimen181
 \pgffor@skip=\dimen182
 \pgffor@stack=\toks28
 \pgffor@toks=\toks29
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
 File: pgflibraryplothandlers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@plot@mark@count=\count270
 \pgfplotmarksize=\dimen183
@@ -241,37 +241,36 @@ File: pgflibraryplothandlers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \tikznumberofchildren=\count272
 \tikznumberofcurrentchild=\count273
 \tikz@fig@count=\count274
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfmatrixcurrentrow=\count275
 \pgfmatrixcurrentcolumn=\count276
 \pgf@matrix@numberofcolumns=\count277
 )
 \tikz@expandcount=\count278
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-))) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.code.tex
+))) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.code.tex
 File: tikzlibraryshapes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.geometric.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.geometric.code.tex
 File: tikzlibraryshapes.geometric.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geometric.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geometric.code.tex
 File: pgflibraryshapes.geometric.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.misc.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.misc.code.tex
 File: tikzlibraryshapes.misc.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.code.tex
 File: pgflibraryshapes.misc.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.symbols.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.symbols.code.tex
 File: tikzlibraryshapes.symbols.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbols.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbols.code.tex
 File: pgflibraryshapes.symbols.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.arrows.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.arrows.code.tex
 File: tikzlibraryshapes.arrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows.code.tex
 File: pgflibraryshapes.arrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.callouts.code.tex
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callouts.code.tex)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.multipart.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.callouts.code.tex (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callouts.code.tex)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.multipart.code.tex
 File: tikzlibraryshapes.multipart.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multipart.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multipart.code.tex
 File: pgflibraryshapes.multipart.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfnodepartlowerbox=\box61
 \pgfnodeparttwobox=\box62
@@ -293,7 +292,7 @@ File: pgflibraryshapes.multipart.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfnodepartsevenbox=\box78
 \pgfnodepartsixbox=\box79
 \pgfnodepartfivebox=\box80
-))) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.code.tex (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.code.tex
+))) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.code.tex (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/modules/pgfmoduledecorations.code.tex
 \pgfdecoratedcompleteddistance=\dimen192
 \pgfdecoratedremainingdistance=\dimen193
 \pgfdecoratedinputsegmentcompleteddistance=\dimen194
@@ -304,21 +303,21 @@ File: pgflibraryshapes.multipart.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfdecorationsegmentlength=\dimen198
 )
 \tikz@lib@dec@box=\box81
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshadows.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshadows.code.tex
 File: tikzlibraryshadows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfadings.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfadings.code.tex
 File: tikzlibraryfadings.code.tex 2021/05/15 v3.1.9a (3.1.9a)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings.code.tex
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/pgflibraryfadings.code.tex
 File: pgflibraryfadings.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-))) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarybackgrounds.code.tex
+))) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarybackgrounds.code.tex
 File: tikzlibrarybackgrounds.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@layerbox@background=\box82
 \pgf@layerboxsaved@background=\box83
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarycalc.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarycalc.code.tex
 File: tikzlibrarycalc.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
 File: tikzlibraryfit.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathmorphing.code.tex (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathmorphing.code.tex)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathmorphing.code.tex (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathmorphing.code.tex)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
 File: pgflibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \arrowsize=\dimen199
 )
@@ -402,11 +401,11 @@ File: pgflibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \TP@noteheight=\dimen328
 \TP@notebox=\box89
 \notelinewidth=\dimen329
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/extsizes/extarticle.cls
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/extsizes/extarticle.cls
 Document Class: extarticle 1996/10/08 v1.0 Non Standard LaTeX document class
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/base/size10.clo
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/base/size10.clo
 File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/base/exscale.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/base/exscale.sty
 Package: exscale 2018/09/24 v2.1i Standard LaTeX package exscale
 LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 57.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
@@ -426,11 +425,11 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 \abovecaptionskip=\skip50
 \belowcaptionskip=\skip51
 \bibindent=\dimen331
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/geometry/geometry.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/iftex/ifvtex.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/iftex/iftex.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/iftex/iftex.sty
 Package: iftex 2022/02/03 v1.0f TeX engine tests
 ))
 \Gm@cnth=\count288
@@ -445,7 +444,7 @@ Package: iftex 2022/02/03 v1.0f TeX engine tests
 \Gm@layouthoffset=\dimen338
 \Gm@layoutvoffset=\dimen339
 \Gm@dimlist=\toks30
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/a0poster/a0size.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/geometry/geometry.cfg)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/a0poster/a0size.sty
 File: a0size.sty 2004/01/31 v1.22b a0poster class (GK, MW)
 LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 229.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
@@ -458,57 +457,73 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 \pgf@layerboxsaved@backgroundlayer=\box91
 \pgf@layerbox@notelayer=\box92
 \pgf@layerboxsaved@notelayer=\box93
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposterColorpalettes.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposterColorstyles.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposterBackgroundstyles.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposterTitlestyles.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposterBlockstyles.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposterInnerblockstyles.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposterNotestyles.tex) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tikzposter/tikzposterLayoutthemes.tex)
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposterColorpalettes.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposterColorstyles.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposterBackgroundstyles.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposterTitlestyles.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposterBlockstyles.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposterInnerblockstyles.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposterNotestyles.tex) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tikzposter/tikzposterLayoutthemes.tex)
 \c@figurecounter=\count291
-) (./initialization.tex (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/base/inputenc.sty
+) (initialization.tex (/home/gfeldmann/.miktex/texmfs/install/tex/latex/base/inputenc.sty
 Package: inputenc 2021/02/14 v1.3d Input encoding file
 \inpenc@prehook=\toks31
 \inpenc@posthook=\toks32
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2022/02/26 3.73 The Babel package
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/babel/babel.sty
+Package: babel 2022/04/30 3.74 The Babel package
 \babel@savecnt=\count292
 \U@D=\dimen341
-\l@unhyphenated=\language87
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/babel/txtbabel.def)
+\l@unhyphenated=\language1
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read3
 \bbl@dirlevel=\count293
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/babel-german/ngerman.ldf
+
+*************************************
+* Local config file bblopts.cfg used
+*
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/arabi/bblopts.cfg
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/babel-german/ngerman.ldf
 Language: ngerman 2021/02/27 v2.13 German support for babel (post-1996 orthography)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/babel-german/ngermanb.ldf
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/babel-german/ngermanb.ldf
 Language: ngermanb 2021/02/27 v2.13 German support for babel (post-1996 orthography)
+
+
+Package babel Warning: No hyphenation patterns were preloaded for
+(babel)                the language 'German (new orthography)' into the format.
+(babel)                Please, configure your TeX system to add them and
+(babel)                rebuild the format. Now I will use the patterns
+(babel)                preloaded for \language=0 instead on input line 48.
+
 Package babel Info: Making " an active character on input line 122.
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/babel-danish/danish.ldf
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/babel-danish/danish.ldf
 Language: danish 2021/02/06 v1.3s Danish support from the babel system
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/babel-english/english.ldf
+
+
+Package babel Warning: No hyphenation patterns were preloaded for
+(babel)                the language 'Danish' into the format.
+(babel)                Please, configure your TeX system to add them and
+(babel)                rebuild the format. Now I will use the patterns
+(babel)                preloaded for \language=0 instead on input line 49.
+
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
-Package babel Info: Hyphen rules for 'canadian' set to \l@english
-(babel)             (\language0). Reported on input line 102.
-Package babel Info: Hyphen rules for 'australian' set to \l@ukenglish
-(babel)             (\language21). Reported on input line 105.
-Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
-(babel)             (\language21). Reported on input line 108.
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/biblatex.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/biblatex.sty
 Package: biblatex 2022/02/02 v3.17 programmable bibliographies (PK/MW)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/infwarerr/infwarerr.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
 )
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/generic/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/logreq/logreq.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
 \lrq@indent=\count294
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/logreq/logreq.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/url/url.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/url/url.sty
 \Urlmuskip=\muskip16
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
@@ -564,18 +579,18 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 \bibhang=\skip59
 \blx@bcfin=\read4
 \blx@bcfout=\write4
-\blx@langwohyphens=\language88
+\blx@langwohyphens=\language2
 \c@mincomprange=\count337
 \c@maxcomprange=\count338
 \c@mincompwidth=\count339
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/blx-dm.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/blx-dm.def
 File: blx-dm.def 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
 Package biblatex Info: Trying to load biblatex style data model...
 Package biblatex Info: ... file 'phys.dbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex-phys/phys.dbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex-phys/phys.dbx
 File: phys.dbx 2019/12/03 v1.1b biblatex database model extension
 )
 Package biblatex Info: Trying to load biblatex custom data model...
@@ -664,12 +679,12 @@ Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \localshorteditorwidth=\skip73
 Package biblatex Info: Trying to load compatibility code...
 Package biblatex Info: ... file 'blx-compat.def' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/blx-compat.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/blx-compat.def
 File: blx-compat.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
 )
 Package biblatex Info: Trying to load BibTeX backend compatibility...
 Package biblatex Info: ... file 'blx-bibtex.def' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/blx-bibtex.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/blx-bibtex.def
 File: blx-bibtex.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
 
 
@@ -679,7 +694,7 @@ Package biblatex Warning: Using fall-back BibTeX(8) backend:
 )
 Package biblatex Info: Trying to load generic definitions...
 Package biblatex Info: ... file 'biblatex.def' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/biblatex.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/biblatex.def
 File: biblatex.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
 \c@textcitecount=\count408
 \c@textcitetotal=\count409
@@ -697,30 +712,30 @@ File: biblatex.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
 )
 Package biblatex Info: Trying to load bibliography style 'phys'...
 Package biblatex Info: ... file 'phys.bbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex-phys/phys.bbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex-phys/phys.bbx
 File: phys.bbx 2019/12/03 v1.1b biblatex bibliography style
 Package biblatex Info: Trying to load bibliography style 'numeric-comp'...
 Package biblatex Info: ... file 'numeric-comp.bbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/bbx/numeric-comp.bbx
 File: numeric-comp.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
 Package biblatex Info: Trying to load bibliography style 'numeric'...
 Package biblatex Info: ... file 'numeric.bbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/bbx/numeric.bbx
 File: numeric.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
 Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
 \c@bbx:relatedcount=\count417
 \c@bbx:relatedtotal=\count418
 ))))
 Package biblatex Info: Trying to load citation style 'phys'...
 Package biblatex Info: ... file 'phys.cbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex-phys/phys.cbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex-phys/phys.cbx
 File: phys.cbx 2019/12/03 v1.1b biblatex citation style
 Package biblatex Info: Trying to load citation style 'numeric-comp'...
 Package biblatex Info: ... file 'numeric-comp.cbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/cbx/numeric-comp.cbx
 File: numeric-comp.cbx 2022/02/02 v3.17 biblatex citation style (PK/MW)
 \c@cbx@tempcnta=\count419
 \c@cbx@tempcntb=\count420
@@ -740,27 +755,27 @@ Package biblatex Info: Redefining '\smartcites'.
 ))
 Package biblatex Info: Trying to load configuration file...
 Package biblatex Info: ... file 'biblatex.cfg' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/biblatex.cfg
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/biblatex.cfg
 File: biblatex.cfg 
 )
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Document encoding is UTF8 ....
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2022-02-24 L3 programming layer (loader) 
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/l3kernel/expl3.sty
+Package: expl3 2022-04-29 L3 programming layer (loader) 
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count423
 \l__pdf_internal_box=\box94
 ))
 Package biblatex Info: ... and expl3
-(biblatex)             2022-02-24 L3 programming layer (loader) 
+(biblatex)             2022-04-29 L3 programming layer (loader) 
 (biblatex)             is new enough (at least 2020/04/06),
 (biblatex)             setting 'casechanger=expl3'.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/blx-case-expl3.sty (/home/gfeldmann/.miktex/texmfs/install/tex/latex/l3packages/xparse/xparse.sty
 Package: xparse 2022-01-12 L3 Experimental document command parser
 )
 Package: blx-case-expl3 2022/02/02 v3.17 expl3 case changing code for biblatex
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/enumitem/enumitem.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/enumitem/enumitem.sty
 Package: enumitem 2019/06/20 v3.9 Customized lists
 \enitkv@toks@=\toks33
 \labelindent=\skip74
@@ -769,21 +784,21 @@ Package: enumitem 2019/06/20 v3.9 Customized lists
 \enit@inbox=\box95
 \enit@count@id=\count424
 \enitdp@description=\count425
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsmath/amsmath.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2021/10/15 v2.17l AMS math features
 \@mathmargin=\skip75
 
 For additional information on amsmath, use the `?' option.
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsmath/amstext.sty
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsmath/amstext.sty
 Package: amstext 2021/08/26 v2.01 AMS text
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsmath/amsgen.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks35
 \ex@=\dimen343
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsmath/amsbsy.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen344
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsmath/amsopn.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2021/08/26 v2.02 operator names
 )
 \inf@bad=\count426
@@ -823,23 +838,23 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
 \mathdisplay@stack=\toks39
 LaTeX Info: Redefining \[ on input line 2938.
 LaTeX Info: Redefining \] on input line 2939.
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsfonts/amssymb.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsfonts/amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/units/nicefrac.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/units/nicefrac.sty
 Package: nicefrac 1998/08/04 v0.9b Nice fractions
 \L@UnitsRaiseDisplaystyle=\skip78
 \L@UnitsRaiseTextstyle=\skip79
 \L@UnitsRaiseScriptstyle=\skip80
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/braket/braket.sty) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/marvosym/marvosym.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/braket/braket.sty) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/marvosym/marvosym.sty
 Package: marvosym 2011/07/20 v2.2 Martin Vogel's Symbols font definitions
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/booktabs/booktabs.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \heavyrulewidth=\dimen352
 \lightrulewidth=\dimen353
@@ -858,9 +873,9 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@thisruleclass=\count440
 \@lastruleclass=\count441
 \@thisrulewidth=\dimen364
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/mathtools/mathtools.sty
-Package: mathtools 2022/02/07 v1.28a mathematical typesetting tools
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/mathtools/mhsetup.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2022/06/29 v1.29 mathematical typesetting tools
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/mathtools/mhsetup.sty
 Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
 )
 \g_MT_multlinerow_int=\count442
@@ -874,7 +889,7 @@ Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
 \l_MT_below_shortintertext_sep=\dimen371
 \xmathstrut@box=\box98
 \xmathstrut@dim=\dimen372
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/chemmacros/chemmacros.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/chemmacros/chemmacros.sty (/home/gfeldmann/.miktex/texmfs/install/tex/latex/l3packages/l3keys2e/l3keys2e.sty
 Package: l3keys2e 2022-01-12 LaTeX2e option processing using LaTeX3 keys
 )
 Package: chemmacros 2022/03/11 v6.2a comprehensive support for typesetting chemistry documents (CN & SK)
@@ -890,7 +905,7 @@ Package: chemmacros 2022/03/11 v6.2a comprehensive support for typesetting chemi
 Loading the chemmacros module `base' ...
 
 Loading the chemmacros module `base' ...
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tools/bm.sty
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/tools/bm.sty
 Package: bm 2021/04/25 v1.2e Bold Symbol Support (DPC/FMi)
 \symboldoperators=\mathgroup6
 \symboldletters=\mathgroup7
@@ -905,13 +920,13 @@ Loading the chemmacros module `errorcheck' ...
 Loading the chemmacros module `errorcheck' ...
 Loading the chemmacros module `lang' ...
 Loading the chemmacros module `lang' ...
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/translations/translations.sty
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/translations/translations.sty
 Package: translations 2022/02/05 v1.12 internationalization of LaTeX2e packages (CN)
 )
 Loading the chemmacros module `greek' ...
 
 Loading the chemmacros module `greek' ...
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/chemgreek/chemgreek.sty
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/chemgreek/chemgreek.sty
 Package: chemgreek 2020/01/16 v1.1a interface for upright Greek letters for use in chemistry (CN)
 \l__chemgreek_tmpa_int=\count446
 \g__chemgreek_tmpa_int=\count447
@@ -943,7 +958,7 @@ Loading the chemmacros module `tikz' ...
 \l__chemmacros_el_length_dim=\dimen382
 Loading the chemmacros module `isotopes' ...
 Loading the chemmacros module `isotopes' ...
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/elements/elements.sty
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/elements/elements.sty
 Package: elements 2022/01/29 v0.4 properties of chemical elements
 \c@@elements@orbital@type=\count448
 \c@@elements@shell@number=\count449
@@ -964,7 +979,7 @@ Loading the chemmacros module `reactions' ...
 \c@reaction=\count450
 Loading the chemmacros module `redox' ...
 Loading the chemmacros module `redox' ...
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/relsize/relsize.sty
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/relsize/relsize.sty
 Package: relsize 2013/03/29 ver 4.1
 )
 \l__chemmacros_ox_number_int=\count451
@@ -974,9 +989,9 @@ Package: relsize 2013/03/29 ver 4.1
 Loading the chemmacros module `xfrac' ...
 
 Loading the chemmacros module `xfrac' ...
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/l3packages/xfrac/xfrac.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/base/textcomp.sty
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/l3packages/xfrac/xfrac.sty (/home/gfeldmann/.miktex/texmfs/install/tex/latex/base/textcomp.sty
 Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/l3packages/xtemplate/xtemplate.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/l3packages/xtemplate/xtemplate.sty
 Package: xtemplate 2022-01-12 L3 Experimental prototype document functions
 \l__xtemplate_tmp_dim=\dimen388
 \l__xtemplate_tmp_int=\count452
@@ -1001,9 +1016,9 @@ Package xtemplate Info: Declaring object type 'xfrac' taking 3 argument(s) on
 Loading the chemmacros module `scheme' ...
 
 Loading the chemmacros module `scheme' ...
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/chemnum/chemnum.sty
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/chemnum/chemnum.sty
 Package: chemnum 2021/01/21 v1.3a a comprehensive approach for the numbering of chemical compounds (CN)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/psfrag/psfrag.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/psfrag/psfrag.sty
 Package: psfrag 1998/04/11 v3.04 PSfrag (MCG)
 \pfg@pcount=\count453
 \pfg@scount=\count454
@@ -1019,8 +1034,8 @@ Package: psfrag 1998/04/11 v3.04 PSfrag (MCG)
 Loading the chemmacros module `spectroscopy' ...
 
 Loading the chemmacros module `spectroscopy' ...
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/siunitx/siunitx.sty
-Package: siunitx 2022-02-15 v3.0.49 A comprehensive (SI) units package
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/siunitx/siunitx.sty
+Package: siunitx 2022-05-03 v3.1.1 A comprehensive (SI) units package
 \l__siunitx_angle_tmp_dim=\dimen394
 \l__siunitx_angle_marker_box=\box104
 \l__siunitx_angle_unit_box=\box105
@@ -1029,7 +1044,9 @@ Package: siunitx 2022-02-15 v3.0.49 A comprehensive (SI) units package
 \l__siunitx_number_min_decimal_int=\count463
 \l__siunitx_number_min_integer_int=\count464
 \l__siunitx_number_round_precision_int=\count465
-\l__siunitx_number_group_minimum_int=\count466
+\l__siunitx_number_group_first_int=\count466
+\l__siunitx_number_group_size_int=\count467
+\l__siunitx_number_group_minimum_int=\count468
 \l__siunitx_table_tmp_box=\box106
 \l__siunitx_table_tmp_dim=\dimen395
 \l__siunitx_table_column_width_dim=\dimen396
@@ -1039,10 +1056,10 @@ Package: siunitx 2022-02-15 v3.0.49 A comprehensive (SI) units package
 \l__siunitx_table_after_box=\box110
 \l__siunitx_table_before_dim=\dimen397
 \l__siunitx_table_carry_dim=\dimen398
-\l__siunitx_unit_tmp_int=\count467
-\l__siunitx_unit_position_int=\count468
-\l__siunitx_unit_total_int=\count469
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/tools/array.sty
+\l__siunitx_unit_tmp_int=\count469
+\l__siunitx_unit_position_int=\count470
+\l__siunitx_unit_total_int=\count471
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/tools/array.sty
 Package: array 2021/10/04 v2.5f Tabular extension package (FMi)
 \col@sep=\dimen399
 \ar@mcellbox=\box111
@@ -1062,7 +1079,7 @@ Loading the chemmacros module `reactants' ...
 Loading the chemmacros module `reactants' ...
 Loading the chemmacros module `translations' ...
 Loading the chemmacros module `translations' ...
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/scalerel/scalerel.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/scalerel/scalerel.sty
 Package: scalerel 2016/12/29 v1.8 Routines for constrained scaling and stretching of objects, relative to a reference object or in absolute terms
 \thesrwidth=\skip87
 \thesrheight=\skip88
@@ -1071,16 +1088,16 @@ Package: scalerel 2016/12/29 v1.8 Routines for constrained scaling and stretchin
 \mnxsrwidth=\skip91
 \LMex=\skip92
 \LMpt=\skip93
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/lipsum/lipsum.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lipsum/lipsum.sty
 Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
-\g__lipsum_par_int=\count470
-\l__lipsum_a_int=\count471
-\l__lipsum_b_int=\count472
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/caption/subcaption.sty
+\g__lipsum_par_int=\count472
+\l__lipsum_a_int=\count473
+\l__lipsum_b_int=\count474
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lipsum/lipsum.ltd.tex)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/caption/subcaption.sty
 Package: subcaption 2022/01/07 v1.5 Sub-captions (AR)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/caption/caption.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/caption/caption.sty
 Package: caption 2022/03/01 v3.6b Customizing captions (AR)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/caption/caption3.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/caption/caption3.sty
 Package: caption3 2022/03/17 v2.3b caption3 kernel (AR)
 \caption@tempdima=\dimen401
 \captionmargin=\dimen402
@@ -1092,22 +1109,22 @@ Package: caption3 2022/03/17 v2.3b caption3 kernel (AR)
 \caption@hangindent=\dimen408
 Package caption Info: Standard document class detected.
 )
-\c@caption@flags=\count473
-\c@continuedfloat=\count474
+\c@caption@flags=\count475
+\c@continuedfloat=\count476
 )
-\c@subfigure=\count475
-\c@subtable=\count476
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/xifthen/xifthen.sty
+\c@subfigure=\count477
+\c@subtable=\count478
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/xifthen/xifthen.sty
 Package: xifthen 2015/11/05 v1.4.0 Extended ifthen features
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/ifmtarg/ifmtarg.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/ifmtarg/ifmtarg.sty
 Package: ifmtarg 2018/04/16 v1.2b check for an empty argument
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/adjustbox/adjustbox.sty
 Package: adjustbox 2020/08/19 v1.3 Adjusting TeX boxes (trim, clip, ...)
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/adjustbox/adjcalc.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/adjustbox/adjcalc.sty
 Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back-ends (calc, etex, pgfmath)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/adjustbox/trimclip.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/adjustbox/trimclip.sty
 Package: trimclip 2020/08/19 v1.2 Trim and clip general TeX material
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/collectbox/collectbox.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/collectbox/collectbox.sty
 Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
 \collectedbox=\box113
 )
@@ -1116,7 +1133,7 @@ Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
 \tc@urx=\dimen411
 \tc@ury=\dimen412
 Package trimclip Info: Using driver 'tc-pdftex.def'.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/adjustbox/tc-pdftex.def
 File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
 ))
 \adjbox@Width=\dimen413
@@ -1127,34 +1144,34 @@ File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
 \adjbox@pheight=\dimen418
 \adjbox@pdepth=\dimen419
 \adjbox@ptotalheight=\dimen420
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
-\c@checkoddpage=\count477
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/varwidth/varwidth.sty
+\c@checkoddpage=\count479
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box114
-\sift@deathcycles=\count478
+\sift@deathcycles=\count480
 \@vwid@loff=\dimen421
 \@vwid@roff=\dimen422
-)) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryarrows.code.tex
+)) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryarrows.code.tex
 File: tikzlibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
+) (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 )
 \pgf@layerbox@background,backgroundlayer=\box115
 \pgf@layerboxsaved@background,backgroundlayer=\box116
- (./RWTHfarben.tex)) (./Symbols.tex) (./Title.tex)
+ (RWTHfarben.tex)) (Symbols.tex) (Title.tex)
 
 Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
 (biblatex)                Loading 'csquotes' recommended.
 
-\@quotelevel=\count479
-\@quotereset=\count480
+\@quotelevel=\count481
+\@quotereset=\count482
 
 Package chemmacros Info: You haven't chosen a formula method so I'm assuming
 (chemmacros)             the default method `chemformula'.
 
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/chemformula/chemformula.sty (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/chemformula/chemformula.sty (/home/gfeldmann/.miktex/texmfs/install/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
 File: pgflibraryarrows.meta.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfarrowinset=\dimen423
 \pgfarrowlength=\dimen424
@@ -1165,9 +1182,9 @@ Package: chemformula 2022/01/23 v4.17 typeset chemical compounds and reactions (
 \l__chemformula_tmpa_dim=\dimen427
 \l__chemformula_tmpb_dim=\dimen428
 \l__chemformula_tmpc_dim=\dimen429
-\l__chemformula_tmpa_int=\count481
-\l__chemformula_tmpb_int=\count482
-\l__chemformula_tmpc_int=\count483
+\l__chemformula_tmpa_int=\count483
+\l__chemformula_tmpb_int=\count484
+\l__chemformula_tmpc_int=\count485
 \l__chemformula_tmpa_box=\box117
 \l__chemformula_tmpb_box=\box118
 \l__chemformula_arrow_length_dim=\dimen430
@@ -1201,8 +1218,8 @@ Package: chemformula 2022/01/23 v4.17 typeset chemical compounds and reactions (
 \l__chemformula_stoich_space_skip=\skip94
 \l__chemformula_math_space_skip=\skip95
 \l__chemformula_additions_symbol_space_skip=\skip96
-\l__chemformula_count_tokens_int=\count484
-\g__chemformula_lewis_int=\count485
+\l__chemformula_count_tokens_int=\count486
+\g__chemformula_lewis_int=\count487
 \l__chemformula_arrow_arg_i_box=\box119
 \l__chemformula_arrow_arg_ii_box=\box120
 \l__chemformula_superscript_box=\box121
@@ -1213,11 +1230,16 @@ Package: chemformula 2022/01/23 v4.17 typeset chemical compounds and reactions (
 
 Package chemmacros Info: Using float defining method `traditional'.
 
-\c@scheme=\count486
+\c@scheme=\count488
 LaTeX Font Info:    Trying to load font information for T1+aess on input line 17.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/ae/t1aess.fd
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/ae/t1aess.fd
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
-) (./maindocument.aux)
+)
+
+LaTeX Warning: Unused global option(s):
+    [margin=0mm,innermargin=12.5mm,blockverticalspace=13.5mm,colspace=12.5mm,subcolspace=5mm].
+
+(maindocument.aux)
 \openout1 = `maindocument.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
@@ -1234,24 +1256,24 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
 LaTeX Font Info:    ... okay on input line 17.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
 LaTeX Font Info:    ... okay on input line 17.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/home/gfeldmann/.miktex/texmfs/install/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count487
+\scratchcounter=\count489
 \scratchdimen=\dimen458
 \scratchbox=\box123
-\nofMPsegments=\count488
-\nofMParguments=\count489
+\nofMPsegments=\count490
+\nofMParguments=\count491
 \everyMPshowfont=\toks41
-\MPscratchCnt=\count490
+\MPscratchCnt=\count492
 \MPscratchDim=\dimen459
-\MPnumerator=\count491
-\makeMPintoPDFobject=\count492
+\MPnumerator=\count493
+\makeMPintoPDFobject=\count494
 \everyMPtoPDFconversion=\toks42
-) (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+) (/home/gfeldmann/.miktex/texmfs/install/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/00miktex/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1290,39 +1312,39 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 LaTeX Font Info:    Font shape `T1/aess/b/n' in size <17.28> not available
 (Font)              Font shape `T1/aess/bx/n' tried instead on input line 17.
 LaTeX Font Info:    Trying to load font information for T1+aer on input line 17.
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/ae/t1aer.fd
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/ae/t1aer.fd
 File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 )
 LaTeX Font Info:    Trying to load font information for U+msa on input line 17.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Trying to load font information for U+msb on input line 17.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/amsfonts/umsb.fd
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/lbx/english.lbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/lbx/english.lbx
 File: english.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
 Package biblatex Info: Trying to load language 'danish'...
 Package biblatex Info: ... file 'danish.lbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/lbx/danish.lbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/lbx/danish.lbx
 File: danish.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
 Package biblatex Info: Trying to load language 'ngerman'...
 Package biblatex Info: ... file 'ngerman.lbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/lbx/ngerman.lbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/lbx/ngerman.lbx
 File: ngerman.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
 Package biblatex Info: Trying to load language 'german'...
 Package biblatex Info: ... file 'german.lbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/lbx/german.lbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/lbx/german.lbx
 File: german.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
 Package biblatex Info: Trying to load language 'german'...
 Package biblatex Info: ... file 'german.lbx' found.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/biblatex/lbx/german.lbx
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/lbx/german.lbx
 File: german.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
 ))
 Package biblatex Info: Input encoding 'utf8' detected.
@@ -1334,16 +1356,17 @@ Package biblatex Info: Data encoding 'utf8' specified.
 \openout4 = `maindocument-blx.bib'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'maindocument.bbl' found.
- (./maindocument.bbl)
+Package biblatex Info: ... file 'maindocument.bbl' not found.
+
+No file maindocument.bbl.
 Package biblatex Info: Reference section=0 on input line 17.
 Package biblatex Info: Reference segment=0 on input line 17.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/translations/translations-basic-dictionary-english.trsl
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/translations/dicts/translations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 17.
 Package translations Info: no dictionary file `translations-basic-dictionary-danish.trsl' found. on input line 17.
- (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/translations/translations-basic-dictionary-german.trsl
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/translations/dicts/translations-basic-dictionary-german.trsl
 File: translations-basic-dictionary-german.trsl (german translation file `translations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' for `german'. on input line 17.
@@ -1359,7 +1382,7 @@ Package chemmacros Warning: You haven't loaded any package for upright Greek
 (chemmacros)                load one of packages specified in the manual or
 (chemmacros)                select a chemgreek mapping manually.
 
-(/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/elements/elements_names_english.def)
+(/home/gfeldmann/.miktex/texmfs/install/tex/latex/elements/elements_names_english.def)
 Missing character: There is no 1 in font nullfont!
 Missing character: There is no = in font nullfont!
 Missing character: There is no 1 in font nullfont!
@@ -1367,7 +1390,7 @@ LaTeX Font Info:    Font shape `T1/aess/b/n' in size <24.88> not available
 (Font)              Font shape `T1/aess/bx/n' tried instead on input line 19.
 LaTeX Font Info:    Font shape `T1/aess/b/n' in size <61.92> not available
 (Font)              Font shape `T1/aess/bx/n' tried instead on input line 19.
-(./Introduction.tex
+(Introduction.tex
 LaTeX Font Info:    Font shape `T1/aess/b/n' in size <43> not available
 (Font)              Font shape `T1/aess/bx/n' tried instead on input line 11.
 LaTeX Font Info:    Trying to load font information for TS1+aess on input line 11.
@@ -1452,12 +1475,12 @@ File: Graphics/RotationPermutationInvariance.pdf Graphic file (type pdf)
 <use Graphics/RotationPermutationInvariance.pdf>
 Package pdftex.def Info: Graphics/RotationPermutationInvariance.pdf  used on input line 9.
 (pdftex.def)             Requested size: 1115.3273pt x 627.39307pt.
-) (./GDB7test.tex
+) (GDB7test.tex
 Package epstopdf Info: Source file: <Graphics/ZPEvZPE_example.eps>
-(epstopdf)                    date: 2022-08-25 15:16:10
+(epstopdf)                    date: 2022-08-30 14:29:07
 (epstopdf)                    size: 1867551 bytes
 (epstopdf)             Output file: <Graphics/ZPEvZPE_example-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-08-25 15:16:51
+(epstopdf)                    date: 2022-08-30 14:29:07
 (epstopdf)                    size: 473247 bytes
 (epstopdf)             Command: <repstopdf --outfile=Graphics/ZPEvZPE_example-eps-converted-to.pdf Graphics/ZPEvZPE_example.eps>
 (epstopdf)             \includegraphics on input line 13.
@@ -1466,7 +1489,7 @@ Package epstopdf Info: Output file is already uptodate.
 File: Graphics/ZPEvZPE_example-eps-converted-to.pdf Graphic file (type pdf)
 <use Graphics/ZPEvZPE_example-eps-converted-to.pdf>
 Package pdftex.def Info: Graphics/ZPEvZPE_example-eps-converted-to.pdf  used on input line 13.
-(pdftex.def)             Requested size: 780.7257pt x 542.11275pt.
+(pdftex.def)             Requested size: 1115.3273pt x 774.45067pt.
 ) (./conclusion.tex) (./reference.tex)
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <29.86> not available
 (Font)              Font shape `T1/aess/m/sl' tried instead on input line 55.
@@ -1480,7 +1503,7 @@ Overfull \hbox (6.2408pt too wide) in paragraph at lines 55--55
 []$[]$ $[]$
  []
 
-(./Footer.tex
+(Footer.tex
 LaTeX Font Info:    Trying to load font information for U+mvs on input line 20.
  (/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/tex/latex/marvosym/umvs.fd)
 <Graphics/rwth_ipc_rgb-eps-converted-to.pdf, id=37, 384.43625pt x 91.34125pt>
@@ -1504,6 +1527,17 @@ pdfTeX warning: pdflatex (file ./Graphics/roterBlock.pdf): PDF inclusion: multip
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please (re)run BibTeX on the file(s):
+(biblatex)                maindocument
+(biblatex)                and rerun LaTeX afterwards.
+
 Package logreq Info: Writing requests to 'maindocument.run.xml'.
 \openout1 = `maindocument.run.xml'.
 
@@ -1524,3 +1558,5 @@ PDF statistics:
  0 named destinations out of 1000 (max. 500000)
  154 words of extra memory for PDF output out of 10000 (max. 10000000)
 
+!pdfTeX error: pdflatex (file tcrm3583): Font tcrm3583 at 600 not found
+ ==> Fatal error occurred, no output PDF file produced!
