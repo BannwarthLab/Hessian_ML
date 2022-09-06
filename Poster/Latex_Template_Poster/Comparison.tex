@@ -2,12 +2,18 @@
 
 \block{Comparison of predicted and GFN2--xTB Hessian}{
 	\Large
-	\begin{itemize}
-		\item Methane as an example of the GDB7 set 
-		\item Heatmaps are used to depict the Matrix
-		\item One can see the overall resemblence of the predicted Hessian compared to the computed one
-	\end{itemize}
+	\begin{minipage}{0.6\linewidth}
+		\begin{itemize}
+			\item Hessian matrix of methane as an example of the GDB7\autocite{Rupp2012} set 
+			\item Heatmaps are used to depict the Hessian matrices
+			\item One can see the overall resemblance of the predicted Hessian compared to the computed one
+		\end{itemize}	
+	\end{minipage}%
+	\begin{minipage}{0.4\linewidth}
+		\hspace*{3cm}
+		\adjincludegraphics[height=10cm,trim={{.2\width} {.3\height} {.3\width} {.3\height}},clip]{Graphics/methane.eps}
+	\end{minipage}
 	\begin{tikzfigure}
-		\includegraphics[width=\linewidth]{Graphics/RotationPermutationInvariance.pdf}
+		\includegraphics[width=0.7\linewidth]{Graphics/ComparisonHessian.eps}
 	\end{tikzfigure}
 	   }

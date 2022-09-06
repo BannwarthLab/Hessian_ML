@@ -97,7 +97,6 @@ for rnd_state in [46,100,0,56,29]:#
         else:
             train_idx.append(i)
     '''
-    '''
     wall_time_1 = time.time()
 
     print(f'All structures are imported. \nWall time: {round(wall_time_1 - wall_time_0)} s')
@@ -107,7 +106,7 @@ for rnd_state in [46,100,0,56,29]:#
     wall_time_2 = time.time()
 
     test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
-    train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.15,random_state=rnd_state)
+    train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.075,random_state=rnd_state)
 
     print(len(train_idx))
 
@@ -200,7 +199,6 @@ for rnd_state in [46,100,0,56,29]:#
 
     dump(regr_heteronuclear,f'ETR_HETERO{rnd_state}.joblib')
     #####Test part
-    '''
     regr_heteronuclear = []
     regr_homonuclear = []
 
@@ -218,7 +216,9 @@ for rnd_state in [46,100,0,56,29]:#
 
     regr_homonuclear = load(f'ETR_HOMO{rnd_state}.joblib')
     regr_heteronuclear = load(f'ETR_HETERO{rnd_state}.joblib')
+
     '''
+
     with open(f'ETR_HETERO{rnd_state}.json','rb') as f:
         print(f)
         regr_heteronuclear= pickle.loads(f)

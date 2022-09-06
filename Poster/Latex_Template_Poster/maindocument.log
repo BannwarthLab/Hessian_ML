@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2022.8.9)  6 SEP 2022 14:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.8.28) (preloaded format=pdflatex 2022.5.5)  6 SEP 2022 19:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -579,10 +579,7 @@ Package biblatex Info: ... file 'blx-dm.def' found.
 File: blx-dm.def 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
 Package biblatex Info: Trying to load biblatex style data model...
-Package biblatex Info: ... file 'phys.dbx' found.
- (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex-phys/phys.dbx
-File: phys.dbx 2019/12/03 v1.1b biblatex database model extension
-)
+Package biblatex Info: ... file 'chem-angew.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \c@afterword=\count340
@@ -700,10 +697,10 @@ File: biblatex.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
 \biburllcskip=\muskip20
 \c@smartand=\count416
 )
-Package biblatex Info: Trying to load bibliography style 'phys'...
-Package biblatex Info: ... file 'phys.bbx' found.
- (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex-phys/phys.bbx
-File: phys.bbx 2019/12/03 v1.1b biblatex bibliography style
+Package biblatex Info: Trying to load bibliography style 'chem-angew'...
+Package biblatex Info: ... file 'chem-angew.bbx' found.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex-chem/chem-angew.bbx
+File: chem-angew.bbx 2021/02/24 v1.1z biblatex bibliography style
 Package biblatex Info: Trying to load bibliography style 'numeric-comp'...
 Package biblatex Info: ... file 'numeric-comp.bbx' found.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/bbx/numeric-comp.bbx
@@ -719,10 +716,10 @@ File: standard.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
 \c@bbx:relatedcount=\count417
 \c@bbx:relatedtotal=\count418
 ))))
-Package biblatex Info: Trying to load citation style 'phys'...
-Package biblatex Info: ... file 'phys.cbx' found.
- (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex-phys/phys.cbx
-File: phys.cbx 2019/12/03 v1.1b biblatex citation style
+Package biblatex Info: Trying to load citation style 'chem-angew'...
+Package biblatex Info: ... file 'chem-angew.cbx' found.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex-chem/chem-angew.cbx
+File: chem-angew.cbx 2021/02/24 v1.1z biblatex citation style
 Package biblatex Info: Trying to load citation style 'numeric-comp'...
 Package biblatex Info: ... file 'numeric-comp.cbx' found.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/cbx/numeric-comp.cbx
@@ -742,7 +739,9 @@ Package biblatex Info: Redefining '\textcites'.
 Package biblatex Info: Redefining '\cites'.
 Package biblatex Info: Redefining '\parencites'.
 Package biblatex Info: Redefining '\smartcites'.
-))
+)
+Package biblatex Info: Redefining '\supercite'.
+)
 Package biblatex Info: Trying to load configuration file...
 Package biblatex Info: ... file 'biblatex.cfg' found.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/biblatex/biblatex.cfg
@@ -1396,7 +1395,14 @@ Package biblatex Info: Data encoding 'utf8' specified.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'maindocument.bbl' found.
- (maindocument.bbl)
+ (maindocument.bbl
+Missing character: There is no [ in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no ] in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no ] in font nullfont!
+)
 Package biblatex Info: Reference section=0 on input line 17.
 Package biblatex Info: Reference segment=0 on input line 17.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/translations/dicts/translations-basic-dictionary-english.trsl
@@ -1434,28 +1440,38 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <14.4> on input line 19.
 (Introduction.tex
-LaTeX Font Info:    Font shape `T1/aess/b/n' in size <43> not available
-(Font)              Font shape `T1/aess/bx/n' tried instead on input line 11.
-LaTeX Font Info:    Trying to load font information for TS1+aess on input line 11.
-LaTeX Font Info:    No file TS1aess.fd. on input line 11.
+LaTeX Font Info:    Trying to load font information for TS1+lmss on input line 11.
+ (/home/gfeldmann/.miktex/texmfs/install/tex/latex/lm/ts1lmss.fd
+File: ts1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)) (Features.tex
+Underfull \hbox (badness 10000) in paragraph at lines 61--61
+\T1/lmss/m/n/35.83 are derivatives either in
+ []
 
 
-LaTeX Font Warning: Font shape `TS1/aess/m/n' undefined
-(Font)              using `TS1/cmr/m/n' instead
-(Font)              for symbol `textbullet' on input line 11.
+Underfull \hbox (badness 10000) in paragraph at lines 61--61
+[]\T1/lmss/m/n/35.83 For the ML model, we
+ []
 
-) (./Features.tex
-LaTeX Font Info:    Font shape `T1/aess/b/n' in size <35.83> not available
-(Font)              Font shape `T1/aess/bx/n' tried instead on input line 58.
-<Graphics/blauerBlock.pdf, id=29, 56.90642pt x 99.58751pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--61
+\T1/lmss/m/n/35.83 distinguish between the
+ []
+
+
+Underfull \hbox (badness 2418) in paragraph at lines 61--61
+\T1/lmss/m/n/35.83 diagonal blocks (blue) and
+ []
+
+<Graphics/blauerBlock.pdf, id=28, 56.90642pt x 99.58751pt>
 File: Graphics/blauerBlock.pdf Graphic file (type pdf)
 <use Graphics/blauerBlock.pdf>
-Package pdftex.def Info: Graphics/blauerBlock.pdf  used on input line 58.
+Package pdftex.def Info: Graphics/blauerBlock.pdf  used on input line 61.
 (pdftex.def)             Requested size: 30.0pt x 52.5pt.
 <Graphics/roterBlock.pdf, id=29, 56.90642pt x 125.19545pt>
 File: Graphics/roterBlock.pdf Graphic file (type pdf)
 <use Graphics/roterBlock.pdf>
-Package pdftex.def Info: Graphics/roterBlock.pdf  used on input line 58.
+Package pdftex.def Info: Graphics/roterBlock.pdf  used on input line 61.
 (pdftex.def)             Requested size: 30.0pt x 65.99986pt.
 Package epstopdf Info: Source file: <Graphics/MatrixHeatmap.eps>
 (epstopdf)                    date: 2022-09-06 16:38:49
@@ -1464,21 +1480,21 @@ Package epstopdf Info: Source file: <Graphics/MatrixHeatmap.eps>
 (epstopdf)                    date: 2022-09-06 16:38:49
 (epstopdf)                    size: 10119 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=Graphics/MatrixHeatmap-eps-converted-to.pdf Graphics/MatrixHeatmap.eps>
-(epstopdf)             \includegraphics on input line 58.
+(epstopdf)             \includegraphics on input line 61.
 Package epstopdf Info: Output file is already uptodate.
 <Graphics/MatrixHeatmap-eps-converted-to.pdf, id=30, 463.7325pt x 347.2975pt>
 File: Graphics/MatrixHeatmap-eps-converted-to.pdf Graphic file (type pdf)
 <use Graphics/MatrixHeatmap-eps-converted-to.pdf>
-Package pdftex.def Info: Graphics/MatrixHeatmap-eps-converted-to.pdf  used on input line 58.
+Package pdftex.def Info: Graphics/MatrixHeatmap-eps-converted-to.pdf  used on input line 61.
 (pdftex.def)             Requested size: 468.44019pt x 350.83128pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 58--58
+Underfull \hbox (badness 10000) in paragraph at lines 61--61
 []$[]$$[]$
  []
 
 File: Graphics/blauerBlock.pdf Graphic file (type pdf)
 <use Graphics/blauerBlock.pdf>
-Package pdftex.def Info: Graphics/blauerBlock.pdf  used on input line 58.
+Package pdftex.def Info: Graphics/blauerBlock.pdf  used on input line 61.
 (pdftex.def)             Requested size: 30.0pt x 52.5pt.
 Package epstopdf Info: Source file: <Graphics/ndNH3.eps>
 (epstopdf)                    date: 2022-09-06 16:38:49
@@ -1487,19 +1503,19 @@ Package epstopdf Info: Source file: <Graphics/ndNH3.eps>
 (epstopdf)                    date: 2022-09-06 16:38:49
 (epstopdf)                    size: 80896 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=Graphics/ndNH3-eps-converted-to.pdf Graphics/ndNH3.eps>
-(epstopdf)             \includegraphics on input line 58.
+(epstopdf)             \includegraphics on input line 61.
 Package epstopdf Info: Output file is already uptodate.
 <Graphics/ndNH3-eps-converted-to.pdf, id=31, 487.8225pt x 794.97pt>
 File: Graphics/ndNH3-eps-converted-to.pdf Graphic file (type pdf)
 <use Graphics/ndNH3-eps-converted-to.pdf>
-Package pdftex.def Info: Graphics/ndNH3-eps-converted-to.pdf  used on input line 58.
+Package pdftex.def Info: Graphics/ndNH3-eps-converted-to.pdf  used on input line 61.
 (pdftex.def)             Requested size: 487.8213pt x 794.96806pt.
 File: Graphics/roterBlock.pdf Graphic file (type pdf)
 <use Graphics/roterBlock.pdf>
-Package pdftex.def Info: Graphics/roterBlock.pdf  used on input line 58.
+Package pdftex.def Info: Graphics/roterBlock.pdf  used on input line 61.
 (pdftex.def)             Requested size: 30.0pt x 65.99986pt.
 
-Underfull \hbox (badness 1622) in paragraph at lines 58--58
+Underfull \hbox (badness 1622) in paragraph at lines 61--61
 []\T1/lmss/m/n/35.83 Model [] : The origin of the
  []
 
@@ -1510,53 +1526,116 @@ Package epstopdf Info: Source file: <Graphics/dNH3.eps>
 (epstopdf)                    date: 2022-09-06 16:38:49
 (epstopdf)                    size: 92243 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=Graphics/dNH3-eps-converted-to.pdf Graphics/dNH3.eps>
-(epstopdf)             \includegraphics on input line 58.
+(epstopdf)             \includegraphics on input line 61.
 Package epstopdf Info: Output file is already uptodate.
 <Graphics/dNH3-eps-converted-to.pdf, id=32, 495.8525pt x 794.97pt>
 File: Graphics/dNH3-eps-converted-to.pdf Graphic file (type pdf)
 <use Graphics/dNH3-eps-converted-to.pdf>
-Package pdftex.def Info: Graphics/dNH3-eps-converted-to.pdf  used on input line 58.
+Package pdftex.def Info: Graphics/dNH3-eps-converted-to.pdf  used on input line 61.
 (pdftex.def)             Requested size: 495.85129pt x 794.96806pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 58--58
-[]\T1/aess/m/n/35.83 Model [] : The ori-gin of
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 58--58
-\T1/aess/m/n/35.83 the co-or-di-nate sys-tem is
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 58--58
-\T1/aess/m/n/35.83 shifted to the the atom.
- []
-
-) (./MappingTest.tex
-<Graphics/RotationPermutationInvariance.pdf, id=34, 1927.2pt x 1084.05pt>
-File: Graphics/RotationPermutationInvariance.pdf Graphic file (type pdf)
-<use Graphics/RotationPermutationInvariance.pdf>
-Package pdftex.def Info: Graphics/RotationPermutationInvariance.pdf  used on input line 9.
-(pdftex.def)             Requested size: 1115.3273pt x 627.39307pt.
-) (GDB7test.tex
-Package epstopdf Info: Source file: <Graphics/ZPEvZPE_example.eps>
-(epstopdf)                    date: 2022-08-30 14:29:07
-(epstopdf)                    size: 1867551 bytes
-(epstopdf)             Output file: <Graphics/ZPEvZPE_example-eps-converted-to.pdf>
-(epstopdf)                    date: 2022-08-30 14:29:07
-(epstopdf)                    size: 473247 bytes
-(epstopdf)             Command: <miktex-epstopdf --outfile=Graphics/ZPEvZPE_example-eps-converted-to.pdf Graphics/ZPEvZPE_example.eps>
-(epstopdf)             \includegraphics on input line 13.
+) (Comparison.tex
+Package epstopdf Info: Source file: <Graphics/methane.eps>
+(epstopdf)                    date: 2022-09-06 18:19:58
+(epstopdf)                    size: 740692 bytes
+(epstopdf)             Output file: <Graphics/methane-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-09-06 18:20:02
+(epstopdf)                    size: 10807 bytes
+(epstopdf)             Command: <miktex-epstopdf --outfile=Graphics/methane-eps-converted-to.pdf Graphics/methane.eps>
+(epstopdf)             \includegraphics on input line 19.
 Package epstopdf Info: Output file is already uptodate.
-<Graphics/ZPEvZPE_example-eps-converted-to.pdf, id=34, 640.3925pt x 444.66125pt>
+
+
+pdfTeX warning: pdflatex (file ./Graphics/methane-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Graphics/methane-eps-converted-to.pdf, id=33, 596.2275pt x 794.97pt>
+File: Graphics/methane-eps-converted-to.pdf Graphic file (type pdf)
+<use Graphics/methane-eps-converted-to.pdf>
+Package pdftex.def Info: Graphics/methane-eps-converted-to.pdf  used on input line 19.
+(pdftex.def)             Requested size: 596.22604pt x 794.96806pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 19--19
+[]$[]$$[]$
+ []
+
+Package epstopdf Info: Source file: <Graphics/ComparisonHessian.eps>
+(epstopdf)                    date: 2022-09-06 18:29:04
+(epstopdf)                    size: 308905 bytes
+(epstopdf)             Output file: <Graphics/ComparisonHessian-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-09-06 18:30:10
+(epstopdf)                    size: 17746 bytes
+(epstopdf)             Command: <miktex-epstopdf --outfile=Graphics/ComparisonHessian-eps-converted-to.pdf Graphics/ComparisonHessian.eps>
+(epstopdf)             \includegraphics on input line 19.
+Package epstopdf Info: Output file is already uptodate.
+
+
+pdfTeX warning: pdflatex (file ./Graphics/ComparisonHessian-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Graphics/ComparisonHessian-eps-converted-to.pdf, id=34, 435.6275pt x 194.7275pt>
+File: Graphics/ComparisonHessian-eps-converted-to.pdf Graphic file (type pdf)
+<use Graphics/ComparisonHessian-eps-converted-to.pdf>
+Package pdftex.def Info: Graphics/ComparisonHessian-eps-converted-to.pdf  used on input line 19.
+(pdftex.def)             Requested size: 780.7257pt x 348.98788pt.
+) (GDB7test.tex
+Underfull \hbox (badness 10000) in paragraph at lines 36--36
+[]\T1/lmss/m/n/35.83 The training set was
+ []
+
+Package epstopdf Info: Source file: <Graphics/LearningPlot.eps>
+(epstopdf)                    date: 2022-09-06 18:38:36
+(epstopdf)                    size: 24678 bytes
+(epstopdf)             Output file: <Graphics/LearningPlot-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-09-06 18:38:49
+(epstopdf)                    size: 15240 bytes
+(epstopdf)             Command: <miktex-epstopdf --outfile=Graphics/LearningPlot-eps-converted-to.pdf Graphics/LearningPlot.eps>
+(epstopdf)             \includegraphics on input line 36.
+Package epstopdf Info: Output file is already uptodate.
+
+
+pdfTeX warning: pdflatex (file ./Graphics/LearningPlot-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Graphics/LearningPlot-eps-converted-to.pdf, id=35, 401.5pt x 264.99pt>
+File: Graphics/LearningPlot-eps-converted-to.pdf Graphic file (type pdf)
+<use Graphics/LearningPlot-eps-converted-to.pdf>
+Package pdftex.def Info: Graphics/LearningPlot-eps-converted-to.pdf  used on input line 36.
+(pdftex.def)             Requested size: 624.58055pt x 412.28293pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--36
+[]\T1/lmss/m/n/35.83 Predicted zero point
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--36
+\T1/lmss/m/n/35.83 vibrational energy for
+ []
+
+
+Underfull \hbox (badness 1019) in paragraph at lines 36--36
+\T1/lmss/m/n/35.83 of the data with a small
+ []
+
+Package epstopdf Info: Source file: <Graphics/ZPEvZPE_example.eps>
+(epstopdf)                    date: 2022-09-06 18:38:39
+(epstopdf)                    size: 50405 bytes
+(epstopdf)             Output file: <Graphics/ZPEvZPE_example-eps-converted-to.pdf>
+(epstopdf)                    date: 2022-09-06 18:38:49
+(epstopdf)                    size: 253062 bytes
+(epstopdf)             Command: <miktex-epstopdf --outfile=Graphics/ZPEvZPE_example-eps-converted-to.pdf Graphics/ZPEvZPE_example.eps>
+(epstopdf)             \includegraphics on input line 36.
+Package epstopdf Info: Output file is already uptodate.
+
+
+pdfTeX warning: pdflatex (file ./Graphics/ZPEvZPE_example-eps-converted-to.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Graphics/ZPEvZPE_example-eps-converted-to.pdf, id=36, 407.5225pt x 297.11pt>
 File: Graphics/ZPEvZPE_example-eps-converted-to.pdf Graphic file (type pdf)
 <use Graphics/ZPEvZPE_example-eps-converted-to.pdf>
-Package pdftex.def Info: Graphics/ZPEvZPE_example-eps-converted-to.pdf  used on input line 13.
-(pdftex.def)             Requested size: 1115.3273pt x 774.45067pt.
-) (conclusion.tex) (reference.tex)
-LaTeX Font Info:    Font shape `T1/aess/m/it' in size <29.86> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 55.
-<Graphics/nrw.jpg, id=36, 1129.21875pt x 234.8775pt>
+Package pdftex.def Info: Graphics/ZPEvZPE_example-eps-converted-to.pdf  used on input line 36.
+(pdftex.def)             Requested size: 624.58055pt x 455.37924pt.
+) (conclusion.tex) (reference.tex
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <29.86> on input line 13.
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <24.88> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 13.
+)
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <29.86> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 55.
+<Graphics/nrw.jpg, id=37, 1129.21875pt x 234.8775pt>
 File: Graphics/nrw.jpg Graphic file (type jpg)
 <use Graphics/nrw.jpg>
 Package pdftex.def Info: Graphics/nrw.jpg  used on input line 55.
@@ -1569,7 +1648,7 @@ Overfull \hbox (6.23994pt too wide) in paragraph at lines 55--55
 (Footer.tex
 LaTeX Font Info:    Trying to load font information for U+mvs on input line 20.
  (/home/gfeldmann/.miktex/texmfs/install/tex/latex/marvosym/umvs.fd)
-<Graphics/rwth_ipc_rgb-eps-converted-to.pdf, id=36, 384.43625pt x 91.34125pt>
+<Graphics/rwth_ipc_rgb-eps-converted-to.pdf, id=38, 384.43625pt x 91.34125pt>
 File: Graphics/rwth_ipc_rgb-eps-converted-to.pdf Graphic file (type pdf)
 <use Graphics/rwth_ipc_rgb-eps-converted-to.pdf>
 Package pdftex.def Info: Graphics/rwth_ipc_rgb-eps-converted-to.pdf  used on input line 41.
@@ -1586,23 +1665,31 @@ Non-PDF special ignored!
 {/home/gfeldmann/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map} <./Graphics/blauerBlock.pdf> <./Graphics/roterBlock.pdf
 
 pdfTeX warning: pdflatex (file ./Graphics/roterBlock.pdf): PDF inclusion: multiple pdfs with page group included in a single page
-> <./Graphics/MatrixHeatmap-eps-converted-to.pdf> <./Graphics/ndNH3-eps-converted-to.pdf> <./Graphics/dNH3-eps-converted-to.pdf> <./Graphics/RotationPermutationInvariance.pdf> <./Graphics/ZPEvZPE_example-eps-converted-to.pdf> <./Graphics/nrw.jpg> <./Graphics/rwth_ipc_rgb-eps-converted-to.pdf>] (maindocument.aux)
+> <./Graphics/MatrixHeatmap-eps-converted-to.pdf> <./Graphics/ndNH3-eps-converted-to.pdf> <./Graphics/dNH3-eps-converted-to.pdf> <./Graphics/methane-eps-converted-to.pdf> <./Graphics/ComparisonHessian-eps-converted-to.pdf> <./Graphics/LearningPlot-eps-converted-to.pdf> <./Graphics/ZPEvZPE_example-eps-converted-to.pdf> <./Graphics/nrw.jpg> <./Graphics/rwth_ipc_rgb-eps-converted-to.pdf>] (maindocument.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+Package biblatex Warning: Please (re)run BibTeX on the file(s):
+(biblatex)                maindocument
+(biblatex)                and rerun LaTeX afterwards.
+
 Package logreq Info: Writing requests to 'maindocument.run.xml'.
 \openout1 = `maindocument.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 41085 strings out of 478268
- 948242 string characters out of 5835367
- 1748751 words of memory out of 5000000
- 58543 multiletter control sequences out of 15000+600000
- 528363 words of font info for 165 fonts, out of 8000000 for 9000
- 1143 hyphenation exceptions out of 8191
- 115i,12n,134p,1965b,3544s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmb10.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi17.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/marvosym/marvosym.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm2986.pfb></opt/homebrew/Cellar/texlive/20220321_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm3583.pfb>
-Output written on maindocument.pdf (1 page, 1154757 bytes).
+ 41603 strings out of 480554
+ 955914 string characters out of 2894676
+ 1741096 words of memory out of 3000000
+ 58780 multiletter control sequences out of 15000+600000
+ 565823 words of font info for 122 fonts, out of 8000000 for 9000
+ 2 hyphenation exceptions out of 8191
+ 115i,12n,134p,1926b,4779s stack positions out of 10000i,1000n,20000p,200000b,80000s
+{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ec.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-rm.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-mathit.enc}{/home/gfeldmann/.miktex/texmfs/install/fonts/enc/dvips/lm/lm-ts1.enc}</home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmbx12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmmi12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmr17.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmri12.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmss17.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmssbx10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsso17.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/lm/lmsy10.pfb></home/gfeldmann/.miktex/texmfs/install/fonts/type1/public/marvosym/marvosym.pfb>
+Output written on maindocument.pdf (1 page, 708080 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
+ 235 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 154 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 164 words of extra memory for PDF output out of 10000 (max. 10000000)
 

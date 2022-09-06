@@ -16,5 +16,92 @@
   {}
 \endgroup
 
-\datalist[entry]{none/global//global/global}\enddatalist
+\datalist[entry]{none/global//global/global}
+  \entry{Bannwarth2019}{article}{}
+    \name{author}{3}{}{%
+      {{hash=BC}{%
+         family={Bannwarth},
+         familyi={B\bibinitperiod},
+         given={Christoph},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=ES}{%
+         family={Ehlert},
+         familyi={E\bibinitperiod},
+         given={Sebastian},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=GS}{%
+         family={Grimme},
+         familyi={G\bibinitperiod},
+         given={Stefan},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {American Chemical Society ({ACS})}%
+    }
+    \strng{namehash}{BC+1}
+    \strng{fullhash}{BCESGS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.1021/acs.jctc.8b01176
+    \endverb
+    \field{number}{3}
+    \field{pages}{1652\bibrangedash 1671}
+    \field{title}{{GFN}2-{xTB}{\textemdash}An Accurate and Broadly Parametrized
+  Self-Consistent Tight-Binding Quantum Chemical Method with Multipole
+  Electrostatics and Density-Dependent Dispersion Contributions}
+    \field{volume}{15}
+    \field{journaltitle}{Journal of Chemical Theory and Computation}
+    \field{month}{02}
+    \field{year}{2019}
+  \endentry
+
+  \entry{Rupp2012}{article}{}
+    \name{author}{4}{}{%
+      {{hash=RM}{%
+         family={Rupp},
+         familyi={R\bibinitperiod},
+         given={Matthias},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Tkatchenko},
+         familyi={T\bibinitperiod},
+         given={Alexandre},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=MKR}{%
+         family={M\"{u}ller},
+         familyi={M\bibinitperiod},
+         given={Klaus-Robert},
+         giveni={K\bibinithyphendelim R\bibinitperiod},
+      }}%
+      {{hash=vLOA}{%
+         prefix={von},
+         prefixi={v\bibinitperiod},
+         family={Lilienfeld},
+         familyi={L\bibinitperiod},
+         given={O.\bibnamedelima Anatole},
+         giveni={O\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {American Physical Society ({APS})}%
+    }
+    \strng{namehash}{RM+1}
+    \strng{fullhash}{RMTAMKRLOAv1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{number}{5}
+    \field{title}{Fast and Accurate Modeling of Molecular Atomization Energies
+  with Machine Learning}
+    \field{volume}{108}
+    \field{journaltitle}{Physical Review Letters}
+    \field{month}{01}
+    \field{year}{2012}
+  \endentry
+\enddatalist
 \endinput

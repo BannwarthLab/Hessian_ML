@@ -1,13 +1,36 @@
 %!TEX root = maindocument.tex
 
 \block{Predicted ZPVE of GBD7 Set}{\Large
-	\begin{itemize}
-		\item Learning plots were computed using the GDB7 set, which consists of 7164 structures
-		\item The test set was fixed to 25~\% of the size of the GBD7 set
-		\item The training set was increased up to 15\% of the 
-	\end{itemize}
+
 	\Large
-	\begin{tikzfigure}
-		\includegraphics[width=0.7\linewidth]{Graphics/ZPEvZPE_example.eps}
-	\end{tikzfigure}
+	\begin{minipage}{0.38\linewidth}
+		\begin{itemize}
+			\item Learning plot is computed using the GDB7\autocite{Rupp2012} set, which consists of 7164 structures
+			\item The test set was fixed to 25~\% of the size of the GBD7 set
+			\item The training set was increased up to 15\% of the 
+		\end{itemize}
+	\end{minipage}%
+	\hspace*{1cm}
+	\begin{minipage}{0.56\linewidth}
+		\begin{tikzfigure}
+			\includegraphics[width=\linewidth]{Graphics/LearningPlot.eps}
+		\end{tikzfigure}
+	\end{minipage}
+
+
+	\vspace{2.0cm}
+
+	\begin{minipage}{0.38\linewidth}
+		\begin{itemize}
+			\item Predicted zero point vibrational energy for the test set
+			\item 15\% of the full set were used for the training of the ML model
+			\item One can see a low scattering of the data with a small systematic overestimation of the ZPVE
+		\end{itemize}
+	\end{minipage}%
+	\hspace*{1cm}
+	\begin{minipage}{0.56\linewidth}
+		\begin{tikzfigure}
+			\includegraphics[width=\linewidth]{Graphics/ZPEvZPE_example.eps}
+		\end{tikzfigure}
+	\end{minipage}
     }

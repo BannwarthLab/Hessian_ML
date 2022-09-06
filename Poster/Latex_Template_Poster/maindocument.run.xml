@@ -41,7 +41,7 @@
   >
 ]>
 <requests version="1.0">
-  <internal package="biblatex" priority="9" active="0">
+  <internal package="biblatex" priority="9" active="1">
     <generic>latex</generic>
     <provides type="dynamic">
       <file>maindocument.aux</file>
@@ -52,23 +52,22 @@
     </requires>
     <requires type="static">
       <file>blx-dm.def</file>
-      <file>phys.dbx</file>
       <file>blx-compat.def</file>
       <file>blx-bibtex.def</file>
       <file>biblatex.def</file>
       <file>standard.bbx</file>
       <file>numeric.bbx</file>
       <file>numeric-comp.bbx</file>
-      <file>phys.bbx</file>
+      <file>chem-angew.bbx</file>
       <file>numeric-comp.cbx</file>
-      <file>phys.cbx</file>
+      <file>chem-angew.cbx</file>
       <file>biblatex.cfg</file>
       <file>english.lbx</file>
       <file>german.lbx</file>
       <file>ngerman.lbx</file>
     </requires>
   </internal>
-  <external package="biblatex" priority="5" active="0">
+  <external package="biblatex" priority="5" active="1">
     <generic>bibtex</generic>
     <cmdline>
       <binary>bibtex</binary>
@@ -89,7 +88,7 @@
       <file>maindocument-blx.bib</file>
     </requires>
     <requires type="editable">
-      <file>Literature/Poster.bib</file>
+      <file>/home/gfeldmann/Documents/GitLab/hessian_ml/Poster/Latex_Template_Poster/Literature/Poster.bib</file>
     </requires>
     <requires type="static">
       <file>biblatex.bst</file>

@@ -4,7 +4,7 @@ The top-level auxiliary file: maindocument.aux
 Reallocating 'name_of_file' (item size: 1) to 9 items.
 The style file: biblatex.bst
 Reallocating 'name_of_file' (item size: 1) to 17 items.
-Reallocating 'name_of_file' (item size: 1) to 18 items.
+Reallocating 'name_of_file' (item size: 1) to 91 items.
 Reallocating 'glb_str_end' (item size: 4) to 20 items.
 Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
 Reallocating 'global_strs' (item size: 1) to 4000000 items.
@@ -21,48 +21,48 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: maindocument-blx.bib
-Database file #2: Literature/Poster.bib
+Database file #2: /home/gfeldmann/Documents/GitLab/hessian_ml/Poster/Latex_Template_Poster/Literature/Poster.bib
 Biblatex version: 3.17
 Reallocating 'wiz_functions' (item size: 4) to 9000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
-You've used 1 entry,
+You've used 3 entries,
             6399 wiz_defined-function locations,
-            1203 strings with 9002 characters,
-and the built_in function-call counts, 2002 in all, are:
-= -- 74
-> -- 182
-< -- 1
-+ -- 161
-- -- 138
-* -- 33
-:= -- 484
+            1221 strings with 9723 characters,
+and the built_in function-call counts, 25014 in all, are:
+= -- 2105
+> -- 491
+< -- 114
++ -- 870
+- -- 241
+* -- 1657
+:= -- 3110
 add.period$ -- 0
-call.type$ -- 1
-change.case$ -- 0
-chr.to.int$ -- 46
-cite$ -- 0
-duplicate$ -- 11
-empty$ -- 105
-format.name$ -- 0
-if$ -- 330
+call.type$ -- 3
+change.case$ -- 74
+chr.to.int$ -- 58
+cite$ -- 4
+duplicate$ -- 2340
+empty$ -- 1998
+format.name$ -- 161
+if$ -- 4983
 int.to.chr$ -- 0
-int.to.str$ -- 0
+int.to.str$ -- 6
 missing$ -- 0
-newline$ -- 20
-num.names$ -- 0
-pop$ -- 47
+newline$ -- 104
+num.names$ -- 140
+pop$ -- 811
 preamble$ -- 1
-purify$ -- 0
+purify$ -- 90
 quote$ -- 0
-skip$ -- 79
+skip$ -- 593
 stack$ -- 0
-substring$ -- 159
-swap$ -- 1
-text.length$ -- 20
+substring$ -- 4003
+swap$ -- 405
+text.length$ -- 80
 text.prefix$ -- 0
 top$ -- 1
-type$ -- 22
+type$ -- 90
 warning$ -- 0
-while$ -- 66
+while$ -- 379
 width$ -- 0
-write$ -- 20
+write$ -- 102
