@@ -1,14 +1,58 @@
 %!TEX root = maindocument.tex
 
-\block{Feature Generation}{
+\block{Overview of the ML Model}{
 	\Large
+	\textbf{Origin of the Features}
 \begin{itemize}
-	\item A
-	\item B
-	\item C
-	\item D
-	\item E
-	\item F
-	\item G
+	\item Atomwise partitioned GFN2--xTB quantities are used for the features and were developed in our group
+	\item The features are physics based and can be categorized into:
+	\begin{itemize}
+		\item[1.] Geomtry: e.g. Coordination Number
+		\item[2.] Density: e.g. Dipole Moment
+		\item[3.] Energy: e.g. Coulomb--repulsion energy
+	\end{itemize}
+\end{itemize}
+\textbf{The Hessian Matrix}
+
+\begin{minipage}{0.55\linewidth}
+\hspace*{7pt}
+
+\begin{itemize}
+	\item A $3N \times 3N$ matrix of second derivatives of the energy in respect to the coordinates of the $N$ atoms
+	\item The derivatives are either in respect of the coordinates of a single atom or of two atoms
+	\item Two submodels are used to describe the diagonal blocks (blue) and off--diagonal blocks (red)
+\end{itemize}
+\end{minipage}%
+\begin{minipage}{0.45\linewidth}
+	\centering
+	$\frac{\partial^2 E }{\partial r_\mathrm{A} \partial r'_\mathrm{A}}$ :~\includegraphics[width=30pt]{Graphics/blauerBlock.pdf}~~ $\frac{\partial^2 E }{\partial r_\mathrm{A} \partial r'_\mathrm{B}}$:~\includegraphics[width=30pt]{Graphics/roterBlock.pdf}
+
+	\includegraphics[width=1\linewidth]{Graphics/MatrixHeatmap.eps}
+\end{minipage}
+\hspace*{10pt}
+
+\textbf{Connecting Features and Target}
+\begin{itemize}
+	\item The feature vector is either build up from the quantities of one or two atoms
+	\item For ML modeling a constant feature vector length is necessary, hence two submodels are used
+	\item The features and targets a computed for each $3 \times 3$ block in a different orientation.
+	\item The molecular structure is oriented differently in the coordinate system in dependence of the submodel
+\end{itemize}
+
+\begin{minipage}{0.45\linewidth}
+	Model~\includegraphics[width=30pt]{Graphics/blauerBlock.pdf}~: Here the origin is shifted to the center of two atoms and the atoms are aligned to the z--axis.
+	\includegraphics[angle=-90,width=\linewidth]{Graphics/ndNH3.eps}
+\end{minipage}\hspace{110pt}%
+\begin{minipage}{0.45\linewidth}
+	Model~\includegraphics[width=30pt]{Graphics/roterBlock.pdf}~: The origin of the coordinate system is shifted to the the atom.
+	\includegraphics[angle=-90,width=\linewidth]{Graphics/dNH3.eps}
+\end{minipage}
+
+
+\textbf{Unifying the Mapping of the Features}
+\begin{itemize}
+	\item A unqiue mapping of the features onto the target is achieved by different means
+	\item An index is introduced to differ between the the derivatives in respect to different coordinates of the same atom
+	\item It is taken care of a consistent alignment to the atom oriented coordinate system
 \end{itemize}
 }
