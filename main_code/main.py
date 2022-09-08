@@ -59,6 +59,9 @@ mol_sys_dirs = sorted(os.listdir(cwd))
         if count%50 == 0:
             print(f'{count} Structures are imported. \n Wall time: {round(time.time() - wall_time_0)} s')'''
 
+test_size = 0.25
+train_size = 0.3
+
 #rnd_state =100#46#,0,56,29,100,208,42,30,39,51]:
 for rnd_state in [46,100,0,56,29]:#
 #Gathering all directories of all molecular systems 
@@ -73,11 +76,9 @@ for rnd_state in [46,100,0,56,29]:#
 
     y_pred_list_hetero_freq = []
     y_pred_list_homo_freq = []
-    
     Systems = []
     
-    full_y_pred= []
-    full_y_test = []
+
 
     with open('Systems','rb') as f:
         for _ in range(7164):
@@ -106,7 +107,7 @@ for rnd_state in [46,100,0,56,29]:#
     wall_time_2 = time.time()
 
     test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
-    train_idx, test_idx = train_test_split(test_train_split_idx,test_size=0.25,train_size=0.075,random_state=rnd_state)
+    train_idx, test_idx = train_test_split(test_train_split_idx,test_size=test_size,train_size=train_size,random_state=rnd_state)
 
     print(len(train_idx))
 
@@ -198,98 +199,101 @@ for rnd_state in [46,100,0,56,29]:#
     print(f'Number of features seen:{regr_heteronuclear.n_features_in_}')
 
     dump(regr_heteronuclear,f'ETR_HETERO{rnd_state}.joblib')
-    #####Test part
-    regr_heteronuclear = []
-    regr_homonuclear = []
 
-    X_hetero = []
-    y_hetero = []
+    if False:
+        #####Test part
+        regr_heteronuclear = []
+        regr_homonuclear = []
 
-    X_homo = []
-    y_homo = []
+        X_hetero = []
+        y_hetero = []
 
-    #Systems = []   
+        X_homo = []
+        y_homo = []
 
-    #with open('Systems','rb') as f:
-    #    for _ in range(7164):
-    #        Systems.append(pickle.load(f))
+        Systems = []   
 
-    regr_homonuclear = load(f'ETR_HOMO{rnd_state}.joblib')
-    regr_heteronuclear = load(f'ETR_HETERO{rnd_state}.joblib')
+        full_y_pred= []
+        full_y_test = []
 
-    '''
+        with open('Systems','rb') as f:
+            for _ in range(7164):
+                Systems.append(pickle.load(f))
 
-    with open(f'ETR_HETERO{rnd_state}.json','rb') as f:
-        print(f)
-        regr_heteronuclear= pickle.loads(f)
+        mol_sys_idx = []
+        for mol in range(1):
+            for sys in range(7164):
+                mol_sys_idx.append([mol,sys])
 
-    with open(f'ETR_HOMO{rnd_state}.json','rb') as f:
-        regr_homonuclear = pickle.loads(f)
-    '''
+        regr_homonuclear = load(f'ETR_HOMO{rnd_state}.joblib')
+        regr_heteronuclear = load(f'ETR_HETERO{rnd_state}.joblib')
 
-    wall_time_4 = time.time()
+        wall_time_4 = time.time()
 
-    print('Testing the Model.')
+        print('Testing the Model.')
 
-    test_sys = None
+        test_sys = None
 
-    for i in test_idx:
-        X_homo_temp,X_hetero_temp = Systems[i].gen_Feature(label = 'indexed')
-        Systems[i].gen_Hessian_vector()
+        test_train_split_idx = np.arange(0,len(mol_sys_idx),1)
+        train_idx, test_idx = train_test_split(test_train_split_idx,test_size=test_size,train_size=train_size,random_state=rnd_state)
 
-        full_y_test.extend((Systems[i].hessian).flatten())
+        for i in test_idx:
+            X_homo_temp,X_hetero_temp = Systems[i].gen_Feature(label = 'indexed')
+            Systems[i].gen_Hessian_vector()
 
-        y_homo_pred = regr_homonuclear.predict(X_homo_temp)
+            full_y_test.extend((Systems[i].hessian).flatten())
 
-        y_hetero_pred = regr_heteronuclear.predict(X_hetero_temp)
+            y_homo_pred = regr_homonuclear.predict(X_homo_temp)
 
-        Systems[i].get_pred_hessian(hessian_homo=y_homo_pred,hessian_hetero=y_hetero_pred,check =False)
+            y_hetero_pred = regr_heteronuclear.predict(X_hetero_temp)
 
-        full_y_pred.extend((Systems[i].H_pred).flatten())
+            Systems[i].get_pred_hessian(hessian_homo=y_homo_pred,hessian_hetero=y_hetero_pred,check =False)
 
-        Systems[i].weight_hessian(label='xTB')
-        Systems[i].weight_hessian(label='pred')
+            full_y_pred.extend((Systems[i].H_pred).flatten())
 
-        Systems[i].gen_eigenvalues()
-        
-        lambd[0].extend(sorted(Systems[i].hessian_lambd))
-        freq = frequency(Systems[i].hessian_lambd)
-        ZPVE[0].append(np.sum(freq)/2)
+            Systems[i].weight_hessian(label='xTB')
+            Systems[i].weight_hessian(label='pred')
 
-        freq_list[0].extend(sorted(freq.copy()))
+            Systems[i].gen_eigenvalues()
+            
+            lambd[0].extend(sorted(Systems[i].hessian_lambd))
+            freq = frequency(Systems[i].hessian_lambd)
+            ZPVE[0].append(np.sum(freq)/2)
 
-        lambd[1].extend(sorted(Systems[i].H_pred_lambd))
-        freq = frequency(Systems[i].H_pred_lambd)
-        ZPVE[1].append(np.sum(freq)/2)
+            freq_list[0].extend(sorted(freq.copy()))
 
-        freq_list[1].extend(sorted(freq.copy()))
-        Systems[i].clear_all()
+            lambd[1].extend(sorted(Systems[i].H_pred_lambd))
+            freq = frequency(Systems[i].H_pred_lambd)
+            ZPVE[1].append(np.sum(freq)/2)
 
-    wall_time_5 = time.time()
-    print(f'Testing is done.\n Wall time: {round(wall_time_5 - wall_time_0)} s')
+            freq_list[1].extend(sorted(freq.copy()))
+            Systems[i].clear_all()
 
-    MSE  = mean_squared_error(full_y_test,full_y_pred)
-    MSE_ZPVE = mean_squared_error(np.array(ZPVE[1])*627.5,np.array(ZPVE[0])*627.5)
-    MSE_list[0].append(MSE)
+        wall_time_5 = time.time()
+        print(f'Testing is done.\n Wall time: {round(wall_time_5 - wall_time_0)} s')
 
-    print(f'RMSE :{round(np.sqrt(MSE),5)}')
-    print(f'RMSE of ZPVE :{round(np.sqrt(MSE_ZPVE),5)}')
+        MSE  = mean_squared_error(full_y_test,full_y_pred)
+        MSE_ZPVE = mean_squared_error(np.array(ZPVE[1])*627.5,np.array(ZPVE[0])*627.5)
+        MSE_list[0].append(MSE)
 
-    plt.loglog( [0,max([max(ZPVE[0]),max(ZPVE[1])])*1.1],[0,max([max(ZPVE[0]),max(ZPVE[1])])*1.1],'k-')
-    plt.loglog(np.array(ZPVE[0]) ,np.array(ZPVE[1]),'x')
+        print(f'RMSE :{round(np.sqrt(MSE),5)}')
+        print(f'RMSE of ZPVE :{round(np.sqrt(MSE_ZPVE),5)}')
 
-    np.savetxt(f'lambda_ML_Delta{rnd_state}.txt',lambd[1])
-    np.savetxt(f'lambda_xTB_Delta{rnd_state}.txt',lambd[0])
+        plt.loglog( [0,max([max(ZPVE[0]),max(ZPVE[1])])*1.1],[0,max([max(ZPVE[0]),max(ZPVE[1])])*1.1],'k-')
+        plt.loglog(np.array(ZPVE[0]) ,np.array(ZPVE[1]),'x')
 
-    np.savetxt(f'lambda_ML_Delta{rnd_state}.txt',lambd[1])
-    np.savetxt(f'lambda_xTB_Delta{rnd_state}.txt',lambd[0])
+        np.savetxt(f'lambda_ML_Delta{rnd_state}.txt',lambd[1])
+        np.savetxt(f'lambda_xTB_Delta{rnd_state}.txt',lambd[0])
 
-    np.savetxt(f'ZPVE_ML_Delta{rnd_state}.txt',ZPVE[1])
-    np.savetxt(f'ZPVE_xTB_Delta{rnd_state}.txt',ZPVE[0])
+        np.savetxt(f'lambda_ML_Delta{rnd_state}.txt',lambd[1])
+        np.savetxt(f'lambda_xTB_Delta{rnd_state}.txt',lambd[0])
 
-    np.savetxt(f'Freq_ML_Delta{rnd_state}.txt',freq_list[1])
-    np.savetxt(f'Freq_xTB_Delta{rnd_state}.txt',freq_list[0])
+        np.savetxt(f'ZPVE_ML_Delta{rnd_state}.txt',ZPVE[1])
+        np.savetxt(f'ZPVE_xTB_Delta{rnd_state}.txt',ZPVE[0])
 
-np.savetxt(f'MSE_Hessian_Elements.txt',MSE_list[0])
+        np.savetxt(f'Freq_ML_Delta{rnd_state}.txt',freq_list[1])
+        np.savetxt(f'Freq_xTB_Delta{rnd_state}.txt',freq_list[0])
 
-#np.savetxt(f'MSE_Hetero.txt',MSE_list[1])
+    np.savetxt(f'MSE_Hessian_Elements.txt',MSE_list[0])
+
+    #np.savetxt(f'MSE_Hetero.txt',MSE_list[1])
