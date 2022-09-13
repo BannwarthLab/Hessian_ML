@@ -1,7 +1,7 @@
 savefig.bbox : tight
 savefig.dpi : 300
 figure.figsize : 10 , 7
-font.size : 18
+font.size : 25
 font.family : DejaVu Sans
 font.sans-serif : Fira Sans
 axes.prop_cycle : cycler('color', ['00549F','F6A800', 'CC071E', 'BDCD00', '0098A1', 'A11035', '006165', '612158', '7A6FAC'])
