@@ -88,7 +88,7 @@
       <file>maindocument-blx.bib</file>
     </requires>
     <requires type="editable">
-      <file>/home/gfeldmann/Documents/GitLab/hessian_ml/Poster/Latex_Template_Poster/Literature/Poster.bib</file>
+      <file>./Literature/Poster.bib</file>
     </requires>
     <requires type="static">
       <file>biblatex.bst</file>
