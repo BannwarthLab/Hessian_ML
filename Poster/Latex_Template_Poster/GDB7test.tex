@@ -1,39 +1,32 @@
 %!TEX root = maindocument.tex
 
 \block{Predicted ZPVE of GBD7 Set}{\Large
-
-	\Large
-	\begin{minipage}{0.38\linewidth}
+	\begin{minipage}{0.36\linewidth}
 		\begin{itemize}
-			\item Learning plot is computed using the GDB7\autocite{Rupp2012} set, which consists of 7164 structures.
-			\item The test set was fixed to 25~\% of the size of the GBD7 set.
+			\item Learning plot computed using the GDB7\autocite{Rupp2012} set.
+			\item The test set was fixed to 25~\% of the full GBD7 set.
 			\item The training set was increased up to 15\% of the full set. 
-			\item Test and Training set are randomly selected.
+			\item Test and training set were randomly selected.
 		\end{itemize}
 	\end{minipage}%
-	\hspace*{1cm}
-	\begin{minipage}{0.56\linewidth}
+	\hspace{0.02\linewidth}
+	\begin{minipage}{0.60\linewidth}
 		\begin{tikzfigure}
 			\includegraphics[width=\linewidth]{Graphics/LearningPlot.eps}
 		\end{tikzfigure}
 	\end{minipage}
+	\vspace{2.76cm}
 
-
-	\vspace{2.0cm}
-	\begin{minipage}{0.56\linewidth}
+	\begin{minipage}{0.60\linewidth}
 		\begin{tikzfigure}
-			\includegraphics[width=\linewidth]{Graphics/ZPEvZPE_example.eps}
+			\includegraphics[width=\linewidth]{Graphics/ZPEvZPE_example_adj.eps}
 		\end{tikzfigure}
 	\end{minipage}%
-	\hspace*{1cm}
 	\begin{minipage}{0.38\linewidth}
 		\begin{itemize}
 			\item Predicted zero point vibrational energy (ZPVE) for the test set with 15~\% training set.
 			\item Low scattering of the data with a small systematic overestimation of the ZPVE.
-			\item MD:
-			\item RMSD: XZ
-			\item rel. RMSD: XY~\%
+			\item Correcting the systematic error by a linear fit reduces RMSD significantly.
 		\end{itemize}
 	\end{minipage}
-
     }

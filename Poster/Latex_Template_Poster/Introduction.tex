@@ -3,16 +3,8 @@
 \block[]{Introduction}{\Large
 
 \begin{itemize}
-    \item The Hessian matrix shall be computed with a machine learning (ML) model
-    \item Hessian matricies are computational costly and thus are a valuable target for accelerated computation.
-    \item The ML model is a ensemble based decision tree method and uses atomistic features dervied from GFN2--xTB\autocite{Bannwarth2019} 
+    \item The nuclear Hessian matrix is an important quantity in quantum chemistry used in geometry optimizations and for computing nuclear quantum effects. 
+    \item Its computation is costly and machine learning (ML) models open up opportunities to accelerate its computation significantly.
+    \item \textbf{Approach: Develop a decision tree--based ML model using atomistic features from GFN2--xTB}\autocite{Bannwarth2019}  \textbf{to predict the Hessian matrix.}
 \end{itemize}
-
 }
-
-%\begin{itemize}
-%    \item The Hessian matrix is a target of interest, due to its high computational cost and its versatile applications.
-%    \item Atomistic Features, based on GFN2--xTB\autocite{Bannwarth2019} quantities, are used for the prediction of the target: Hessian matrix elements
-%    \item The features are permutation and rotational invariant to achieve a unique mapping onto the target.
-%    \item  The zero point vibrational energy is used to quantify the performance of the model.
-%\end{itemize}
