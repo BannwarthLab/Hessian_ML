@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from Rotation_func import Rotation_Functions
 
+import pickle as pickle
 class ReadWrite():
       def __init__(self):
             pass
@@ -56,3 +57,12 @@ class ReadWrite():
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']].values.tolist())
             self.names = GFN2_quantities.columns.tolist()
             return 
+
+      def import_pickle_FT(self,file):
+
+            objects = []
+            with open(file,'rb') as f:
+                  for _ in range(len(self.train_idx)):
+                        objects.extend(pickle.load(f))
+                        
+            return objects

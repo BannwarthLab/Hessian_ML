@@ -21,32 +21,30 @@ class DataGeneration(Geometry):
         self.size = self.comm.Get_size()
         self.rank = self.comm.Get_rank() 
 
-        MPI.COMM_WORLD.Barrier()
+        self.comm.Barrier()
         if self.rank == 0:
             if os.path.isfile(self.output_file):
                 with open(self.output_file,'w') as f:
                     f.truncate(0)
             print(f'Generating Features from {self.folder_data}')
 
-            if self.train_test == True:
-                total_structures = 0
-                molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
-                for mol in range(len(molecule_dir)):
-                    data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
-                    geo_dir = sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
-                    total_structures +=len(sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))]))
+           
+        if self.train_test == True:
+            total_structures = 0
+            molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
+            for mol in range(len(molecule_dir)):
+                data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
+                geo_dir = sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
+                total_structures +=len(sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))]))
 
-                geo_idx = np.arange(total_structures)
-                print(geo_idx)
-                test_idx, train_idx = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size,random_state=self.rnd_seed)
-                np.savetxt('test_idx.txt',test_idx)
-                np.savetxt('train_idx.txt',train_idx)
+            geo_idx = np.arange(total_structures)
 
+            self.test_idx, self.train_idx = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size,random_state=self.rnd_seed)
+            np.savetxt('test_idx.txt',self.test_idx)
+            np.savetxt('train_idx.txt',self.train_idx)
 
         #_______Reading_the_names_of_all_folders______
         wall_time0 = time.time()
-
-        
 
         self.count = 0
         self.idx_list = []
@@ -93,9 +91,12 @@ class DataGeneration(Geometry):
 
                         if system_temp != None:
 
+                            system_temp.add_idx(self.count)
+
                             with open(self.output_file,'ab') as f:
                                 pickle.dump(system_temp,f)
-                            if self.count in train_idx:
+
+                            if self.count in self.train_idx:
                                 for i in range(4):
                                     with open(feature_target_file[i],'ab') as f:
                                         pickle.dump(Feature_Target_temp[i],f)
@@ -108,4 +109,6 @@ class DataGeneration(Geometry):
                                 print(f'{self.count} Structures are imported. Timing: {round(time.time() - wall_time0)} s')
                             
                             del system_temp
+
+        self.comm.Disconnect()
         return

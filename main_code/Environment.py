@@ -1,9 +1,10 @@
 from Parser import Parser
 from DataGeneration import DataGeneration
+from Training import Training
 import os 
 from mpi4py import MPI 
 
-class Environment(DataGeneration,Parser):
+class Environment(DataGeneration,Parser,Training):
     def __init__(self):
         #super().__init__       #initializes all parent classes 
         Parser.__init__(self) #initializes only the toml_parser class

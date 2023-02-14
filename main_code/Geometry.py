@@ -75,3 +75,7 @@ class PickleData:
         self.R_MI_APF_mat = some_class.R_MI_APF_mat
 
         return 
+
+    def add_idx(self,idx):
+        self.idx = idx
+        return

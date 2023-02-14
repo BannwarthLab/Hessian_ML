@@ -95,6 +95,5 @@ class Parser:
                 self.ml_parameter =[{'n_eststimators': 175, 'max_depth': 25}]
 
             else:
-                self.ml_parameter = self.config['training_testing']['homo']
-
+                self.ml_parameter.append(self.config['training_testing']['hetero'])
         return 

@@ -17,9 +17,12 @@ def main():
     if env.config['runtype'] == 'hessian':
         #if env.config.get('feature_gen',False):
         env.generate_data()
+        #MPI.COMM_WORLD.Barrier()
+        #MPI.COMM_WORLD.Disconnect()
 
-    
+        env.train(mode='homo')
+        env.train(mode='hetero')
+
 
 if __name__ == '__main__':
-
     main()
