@@ -81,7 +81,7 @@ class Observables(Rotation_Functions,Const):
                 k+=1
 
         if transpose == True:
-            matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(self.rot_X(np.pi)),np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])),(rf.rot_X(np.pi)))
+            matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(self.rot_X(np.pi)),np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])),(self.rot_X(np.pi)))
 
         matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(R_mat[3*A:3*A+3,3*B:3*B+3]),matrix[3*A:3*A+3,3*B:3*B+3]),(R_mat[3*A:3*A+3,3*B:3*B+3]))
 

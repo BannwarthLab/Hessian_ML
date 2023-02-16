@@ -1,11 +1,14 @@
 import numpy as np
 import pandas as pd
 from Rotation_func import Rotation_Functions
+import numpy as np
+import pickle as pickle 
 
-import pickle as pickle
+from SaveDat import FTHomo,FTHetero
+
 class ReadWrite():
       def __init__(self):
-            pass
+            pass 
 
       def import_coord(self,file):
             with open(file) as myfile:
@@ -58,11 +61,52 @@ class ReadWrite():
             self.names = GFN2_quantities.columns.tolist()
             return 
 
-      def import_pickle_FT(self,file):
 
+      def import_pickle_FT(self,file):
+            print(file)
             objects = []
-            with open(file,'rb') as f:
-                  for _ in range(len(self.train_idx)):
-                        objects.extend(pickle.load(f))
-                        
+            i = 0
+            with open(f'{file}.json','rb') as f:
+                  while True:
+                        try:
+                              i+=1 
+                              print(i)
+                              temp_obj = pickle.load(f)
+                              #objects.extend(temp_obj)
+                        except EOFError:
+                              break
+            f.close()
+            
             return objects
+
+      def import_pickle_FT2(self,file):
+            print(file)
+            feature = []
+            target = []
+
+            i = 0
+            with open(f'{file}','rb') as f:
+                  while True:
+                        try:
+                              i+=1
+                              temp_obj = pickle.load(f)
+                              feature.extend(list(temp_obj.Feature))
+                              target.extend(list(temp_obj.Target))
+                        except EOFError:
+                              print(i-1)
+                              break
+                        ''' i+=1 
+                        print(i)
+                        temp_obj = load(f)
+                        print(type(temp_obj))
+                        feature.extend(list(temp_obj.Feature))
+                        target.extend(list(temp_obj.Target))'''
+
+                       
+            
+            return feature,target
+
+
+
+
+

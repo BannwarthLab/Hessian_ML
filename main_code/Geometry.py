@@ -4,7 +4,7 @@ from Rotation_func import Rotation_Functions
 from Preparation import Preparation
 from HessTarget import HessTarget
 from HessFeature import HessFeature
-
+from SaveDat import FTHetero, FTHomo
 class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Rotation_Functions):#Feature Class --> picks the right feature; same for target class or: ML Class, picks both
 
     def __init__(self):
@@ -69,7 +69,7 @@ class PickleData:
         self.Feature_AB = some_class.Feature_AB
 
         self.Target_AA = some_class.Target_AA
-        self.Target_AB = some_class.Target_AA
+        self.Target_AB = some_class.Target_AB
 
         self.init_R_MI = some_class.init_R_MI
         self.R_MI_APF_mat = some_class.R_MI_APF_mat
@@ -79,3 +79,4 @@ class PickleData:
     def add_idx(self,idx):
         self.idx = idx
         return
+    

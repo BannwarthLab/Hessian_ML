@@ -46,7 +46,6 @@ class Parser:
             self.file_dipm     = self.config['feature_generation'].get('dipm','xyz_dipm.csv')
             self.file_coord    = self.config['feature_generation'].get('coord','xtbopt.xyz')
             self.subfolder     = bool(self.config['feature_generation'].get('subfolder',False))
-            self.model_name    = self.config['feature_generation'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model")
 
         else:
             self.feature_gen = False
@@ -72,7 +71,8 @@ class Parser:
         self.train_size = self.config['training_testing'].get('train_size',0.75)
         self.test_size  = self.config['training_testing'].get('test_size',0.25)
         self.train_test  = self.config['training_testing'].get('test',True)
-
+        self.model_name    = self.config['training_testing'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model")
+        
         if self.config['runtype'] == 'hessian':
 
             try:
@@ -80,7 +80,7 @@ class Parser:
 
             except:
                 print('No parameters for the homonuclear model are specified. Default parameters are set.')
-                self.ml_parameter =[{'n_eststimators': 150, 'max_depth': 30}]
+                self.ml_parameter =[{'n_estimators': 150, 'max_depth': 30}]
 
             else:
                 self.ml_parameter = self.config['training_testing']['homo']
@@ -92,7 +92,7 @@ class Parser:
 
             except:
                 print('No parameters for the heteronuclear model are specified. Default parameters are set')
-                self.ml_parameter =[{'n_eststimators': 175, 'max_depth': 25}]
+                self.ml_parameter =[{'n_estimators': 175, 'max_depth': 25}]
 
             else:
                 self.ml_parameter.append(self.config['training_testing']['hetero'])

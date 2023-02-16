@@ -6,3 +6,4 @@ xtb/
 __pycache__/
 test/
 plots/
+calc/

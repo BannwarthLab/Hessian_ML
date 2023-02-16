@@ -1,5 +1,5 @@
 from Parser import Parser
-from DataGeneration import DataGeneration
+from DataGenerationJOBLIB import DataGeneration
 from Training import Training
 import os 
 from mpi4py import MPI 

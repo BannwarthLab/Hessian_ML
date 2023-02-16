@@ -1,7 +1,5 @@
 ##/usr/bin/env python #for later
 from Environment import Environment
-from mpi4py import MPI
-from DataGeneration import DataGeneration
 
 def main():
     env = Environment()
@@ -15,13 +13,12 @@ def main():
     #__________________________________________
     #____________Choosing runtype______________
     if env.config['runtype'] == 'hessian':
-        #if env.config.get('feature_gen',False):
-        env.generate_data()
-        #MPI.COMM_WORLD.Barrier()
-        #MPI.COMM_WORLD.Disconnect()
 
-        env.train(mode='homo')
+        if env.config.get('feature_generation',False):
+            env.generate_data()
+
         env.train(mode='hetero')
+        env.train(mode='homo')
 
 
 if __name__ == '__main__':

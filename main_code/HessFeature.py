@@ -19,7 +19,7 @@ class HessFeature(Rotation_Functions):
         self.transpose_list = []
         self.check_list = []
         self.Feature_AB = []
-        
+
         for atom_A in range(self.N_atoms):
             for atom_B in range(atom_A+1,self.N_atoms):
 
@@ -93,39 +93,34 @@ class HessFeature(Rotation_Functions):
 
                     j+=1
 
-                Quantity_AB_arr =(np.array(Quantity_AB))
+                Quantity_AB_arr =np.array(Quantity_AB)
 
-                Feature_Arith = (Quantity_AB_arr[0] + Quantity_AB_arr[1])/2
-                Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1])
-                Feature_AbsDiff = np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1])
-
+                Feature_Arith = list((Quantity_AB_arr[0] + Quantity_AB_arr[1])/2)
+                Feature_Prod = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
+                Feature_AbsDiff = list(np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1]))
                 for idx in range(9):
-                    Features = []
+                    Features_temp = []
                     
-                    Features.extend((Quantity_AB[0]))
-                    Features.extend((Quantity_AB[1]))
-                
-                    Features.extend(Feature_Arith)
-                    Features.extend(Feature_Prod)
-                    Features.extend(Feature_AbsDiff)
+                    Features_temp.extend(Quantity_AB[0])
+                    Features_temp.extend(Quantity_AB[1])
+                    Features_temp.extend(Feature_Arith)
+                    #Features_temp.extend(Feature_Prod)
+                    Features_temp.extend(Feature_AbsDiff)
 
-                    Features.extend(index[idx])
-                    Features.extend([R_AB])
-                
-                self.Feature_AB.append(Features)
+                    #Features_temp.extend(index[idx])
+                    Features_temp.extend([R_AB])
 
-        self.transpose_list  = self.transpose_list
-        self.check_list == self.check_list
+                    self.Feature_AB.append(Features_temp)
+
 
         del Quantity_AB_arr
         del Quantity_AB
-        del Features 
+        del Features_temp 
         del R_MI_APF
 
         del Feature_Arith
         del Feature_Prod
         del Feature_AbsDiff
-
         return
 
 
@@ -184,15 +179,15 @@ class HessFeature(Rotation_Functions):
             #Quantity_A.extend(gradient)
 
             for i in range(9):
-                Features = []
-                Features.extend(np.abs(np.array(Quantity_A)))
-                Features.extend(index[i])
+                Features_temp = []
+                Features_temp.extend(np.abs(np.array(Quantity_A)))
+                Features_temp.extend(index[i])
 
-            self.Feature_AA.append(Features)
+                self.Feature_AA.append(Features_temp)
 
-            del Quantity_A
-            
-            return
+        del Quantity_A
+        
+        return
 
 
 
