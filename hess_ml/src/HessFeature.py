@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy import linalg
-from Rotation_func import Rotation_Functions
+from src.Rotation_func import Rotation_Functions
 from operator import matmul
 
 class HessFeature(Rotation_Functions):
@@ -98,20 +98,22 @@ class HessFeature(Rotation_Functions):
                 Feature_Arith = list((Quantity_AB_arr[0] + Quantity_AB_arr[1])/2)
                 Feature_Prod = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
                 Feature_AbsDiff = list(np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1]))
+
+                Features_temp = []
+                Features_temp.extend(Quantity_AB[0])
+                Features_temp.extend(Quantity_AB[1])
+                Features_temp.extend(Feature_Arith)
+                Features_temp.extend(Feature_Prod)
+                Features_temp.extend(Feature_AbsDiff)
+
                 for idx in range(9):
-                    Features_temp = []
-                    
-                    Features_temp.extend(Quantity_AB[0])
-                    Features_temp.extend(Quantity_AB[1])
-                    Features_temp.extend(Feature_Arith)
-                    #Features_temp.extend(Feature_Prod)
-                    Features_temp.extend(Feature_AbsDiff)
+                    Features_temp2 = Features_temp.copy()
+                    Features_temp2.extend(index[idx])
+                    Features_temp2.extend([R_AB])
 
-                    #Features_temp.extend(index[idx])
-                    Features_temp.extend([R_AB])
-
-                    self.Feature_AB.append(Features_temp)
-
+                    self.Feature_AB.append(Features_temp2)
+                    if len(self.Feature_AB[-1]) != 169:
+                        print(len(self.Feature_AB[-1]))
 
         del Quantity_AB_arr
         del Quantity_AB

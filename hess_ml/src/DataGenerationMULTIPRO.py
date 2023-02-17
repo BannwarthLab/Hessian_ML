@@ -7,10 +7,9 @@ import time as time
 from sklearn.model_selection import train_test_split
 
 from Geometry import Geometry
-from SaveDat import FTHetero,FTHomo
-from Geometry import PickleData
-from joblib import Parallel, delayed, parallel_backend
-import multiprocessing as mp 
+from SaveDat import FTHetero,FTHomo,PickleData
+
+import multiprocessing as mp
 import pickle as pickle
 class DataGeneration(Geometry):
     
@@ -22,17 +21,21 @@ class DataGeneration(Geometry):
         self.feature_target_file = ['Feature_Vector_Homo','Target_Vector_Homo','Feature_Vector_Hetero','Target_Vector_Hetero']
         
 
-        if os.path.isfile('Model_Homo'):
-            with open(f'Model_Homo.json','wb') as f:
-                f.truncate(0)
+        if os.path.isfile('Model_Homo.json'):
+            with open(f'Model_Homo.json','wb') as f1:
+                f1.truncate(0)
 
-        if os.path.isfile('Model_Hetero'):
-            with open(f'Model_Hetero.json','wb') as f:
-                f.truncate(0)
+        if os.path.isfile('Model_Hetero.json'):
+            with open(f'Model_Hetero.json','wb') as f2:
+                f2.truncate(0)
+
+        if os.path.isfile('test_structures.json'):
+            with open(f'test_structures.json','wb') as f3:
+                f3.truncate(0)
 
         if os.path.isfile(self.output_file):
-            with open(self.output_file,'wb') as f:
-                f.truncate(0)
+            with open(self.output_file,'wb') as f4:
+                f4.truncate(0)
 
         print(f'Generating Features from {self.folder_data}')
 
@@ -47,6 +50,9 @@ class DataGeneration(Geometry):
 
             geo_idx = np.arange(total_structures)
 
+            print(f'{self.train_size*100} % of the set is used for testing.')
+            print(f'{self.test_size*100} % of the set is used for training.')
+
             self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size,random_state=self.rnd_seed)
             np.savetxt('test_idx.txt',self.test_idx)
             np.savetxt('train_idx.txt',self.train_idx)
@@ -56,7 +62,6 @@ class DataGeneration(Geometry):
 
         self.count = 0
         self.idx_list = []
-        print(len(self.train_idx))
         molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
         for mol in range(len(molecule_dir)):
             #_______Reading_the_names_of_all_subfolders_______
@@ -71,37 +76,60 @@ class DataGeneration(Geometry):
                 #_____MPI_parallelized_with_mpi4py____________________
             dir_idx = np.arange(len(geo_dir))
 
-            print(len(geo_dir))
+            for geo in dir_idx:
+                lock = mp.Lock()
+                mp.Process(target=self.generation_procedure,args=(lock,mol,geo)).start()
 
-            with parallel_backend('loky',n_jobs=self.threads):
-                Parallel()(delayed(self.generation_procedure)(geom=geo,mol=mol) for geo in dir_idx)
+            '''dir_idx = np.arange(len(geo_dir))
 
-            print(f'A total of {len(geo_dir)} structures were imported in {round(time.time() - self.wall_time0)} s')
+            for geo in dir_idx:
+                lock = Lock()
+                pool = Pool(processes=self.threads) 
+                pool.apply_async(self.generation_procedure,args=(lock,mol,geo))
+                
+            pool.close()'''
+            #            with parallel_backend('loky',n_jobs=self.threads):
+            #for geo in dir_idx:
+            #    self.generation_procedure(geom=geo,mol=mol) #for geo in dir_idx
+
+            print(f'Features and Targets of {len(geo_dir)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
                 
         return
 
 
-    def generation_procedure(self,mol=None,geom=None):
-
+    def generation_procedure(self,mol,geom):
+        print(mp.current_process())
         #INIT GEOMETRY
         #
         #GENERATE TARGET & FEATURE --> picks dependend on env the right features and target
         self.gen_data(os.path.join(self.data_dir,self.geo_dir[geom]),mol,geom)
 
-        het = FTHetero(self)
-        hom = FTHomo(self)
-
         self.clear_quantities()
         idx = [self.mol,geom]
 
         if geom in self.train_idx:
+
+            het = FTHetero(self,mol,geom)
+            hom = FTHomo(self,mol,geom)
+
             with open(f'Model_Homo.json','ab+') as f:
                 pickle.dump(hom,f)
-            #f.close()
 
             with open(f'Model_Hetero.json','ab+') as g:
                 pickle.dump(het,g)
-            #f.close()
 
+        if geom in self.test_idx:
+
+            struc = PickleData(self,mol,geom)
+
+            for i in range(len(struc.Feature_AB)):
+                if len(struc.Feature_AB[i]) != 169:
+                    print(struc.geo,i)
+
+            with open(f'test_structures.json','ab+') as h:
+                pickle.dump(struc,h)
+
+
+            #f.close()
         self.idx_list.append(idx)
         return

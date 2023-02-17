@@ -1,5 +1,5 @@
-##/usr/bin/env python #for later
-from Environment import Environment
+#!gfeldmann/Documents/GitLab/hessian_ml/venv/bin/python3
+from src.Environment import Environment
 
 def main():
     env = Environment()
@@ -17,8 +17,10 @@ def main():
         if env.config.get('feature_generation',False):
             env.generate_data()
 
-        env.train(mode='hetero')
-        env.train(mode='homo')
+        if env.config.get('training_testing',False):
+            env.train(mode='hetero')
+            env.train(mode='homo')
+            env.test()
 
 
 if __name__ == '__main__':

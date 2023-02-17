@@ -3,6 +3,7 @@ from scipy import linalg
 from constants import Const
 from operator import matmul
 from Rotation_func import Rotation_Functions
+
 class Observables(Rotation_Functions,Const):
     def __init__(self) -> None:
         super().__init__
@@ -139,3 +140,8 @@ class Observables(Rotation_Functions,Const):
             M_sum[idx] -= M_sum[idx]
 
         return idx_list,lamb,Q
+
+
+        def reconst_hess(self,Natoms,Hess_vec_AA,Hess_vec_AB):
+            
+            return

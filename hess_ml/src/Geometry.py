@@ -1,10 +1,10 @@
 import os 
-from ReadWrite import ReadWrite
-from Rotation_func import Rotation_Functions
-from Preparation import Preparation
-from HessTarget import HessTarget
-from HessFeature import HessFeature
-from SaveDat import FTHetero, FTHomo
+from src.ReadWrite import ReadWrite
+from src.Rotation_func import Rotation_Functions
+from src.Preparation import Preparation
+from src.HessTarget import HessTarget
+from src.HessFeature import HessFeature
+from src.SaveDat import FTHetero, FTHomo,PickleData
 class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Rotation_Functions):#Feature Class --> picks the right feature; same for target class or: ML Class, picks both
 
     def __init__(self):
@@ -54,29 +54,3 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Rotation_Functions)
 
     def get_target(self):
         return self.Target_AA, self.Target_AB
-
-
-class PickleData:
-    def __init__(self,some_class) -> None:
-
-        self.mol = some_class.mol
-        self.geo = some_class.geo
-
-        self.xyz = some_class.xyz
-        self.N_at = some_class.N_atoms
-
-        self.Feature_AA = some_class.Feature_AA
-        self.Feature_AB = some_class.Feature_AB
-
-        self.Target_AA = some_class.Target_AA
-        self.Target_AB = some_class.Target_AB
-
-        self.init_R_MI = some_class.init_R_MI
-        self.R_MI_APF_mat = some_class.R_MI_APF_mat
-
-        return 
-
-    def add_idx(self,idx):
-        self.idx = idx
-        return
-    

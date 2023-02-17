@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
-from Rotation_func import Rotation_Functions
+from src.Rotation_func import Rotation_Functions
 import numpy as np
 import pickle as pickle 
-
-from SaveDat import FTHomo,FTHetero
+import os 
+from src.SaveDat import FTHomo,FTHetero
 
 class ReadWrite():
       def __init__(self):
@@ -63,24 +63,6 @@ class ReadWrite():
 
 
       def import_pickle_FT(self,file):
-            print(file)
-            objects = []
-            i = 0
-            with open(f'{file}.json','rb') as f:
-                  while True:
-                        try:
-                              i+=1 
-                              print(i)
-                              temp_obj = pickle.load(f)
-                              #objects.extend(temp_obj)
-                        except EOFError:
-                              break
-            f.close()
-            
-            return objects
-
-      def import_pickle_FT2(self,file):
-            print(file)
             feature = []
             target = []
 
@@ -93,20 +75,27 @@ class ReadWrite():
                               feature.extend(list(temp_obj.Feature))
                               target.extend(list(temp_obj.Target))
                         except EOFError:
-                              print(i-1)
+                              #print(f'Features and Targets of a total of {i-1} structures are used.\n')
                               break
-                        ''' i+=1 
-                        print(i)
-                        temp_obj = load(f)
-                        print(type(temp_obj))
-                        feature.extend(list(temp_obj.Feature))
-                        target.extend(list(temp_obj.Target))'''
-
-                       
-            
+                            
             return feature,target
 
+      def truncate_file(self,file):
+            if os.path.isfile(file):
+                  with open(file,'wb+') as f:
+                        f.truncate(0)
+                  f.close()
+            return
 
+      def merge_JsonFiles(self,files,final_file):
+            print(files)
+            result = list()
+            for f1 in files:
+                  with open(f1, 'rb') as infile:
+                        result.extend(pickle.load(infile))
 
+            with open(final_file, 'wb') as output_file:
+                  pickle.dump(result, output_file)
 
-
+            for f1 in files:
+                  os.remove(f1)
