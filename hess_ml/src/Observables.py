@@ -1,8 +1,8 @@
 import numpy as np
 from scipy import linalg
-from constants import Const
+from src.constants import Const
 from operator import matmul
-from Rotation_func import Rotation_Functions
+from src.Rotation_func import Rotation_Functions
 
 class Observables(Rotation_Functions,Const):
     def __init__(self) -> None:
@@ -12,61 +12,52 @@ class Observables(Rotation_Functions,Const):
     def get_coord_state(self):
         return self.coord_state[0]
 
-    def project_hessian(self,label=None):
-        if label=='xTB':
-            idx_list,lamb,Q = self.find_trans_rot(self.hessian,self.xyz)
+    def gen_Frequencies(self,hess_vec_aa,hess_vec_ab): #in cm^-1
 
-            self.hessian_lambd = lamb 
+        Hessian = self.gen_hess_from_vec(hess_vec_aa,hess_vec_ab)
+        Hess_prj,lamb_len = self.project_hessian(Hessian)
+        Hess_prj_wgt = self.weight_hessian(Hess_prj)
+        lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
+        eigv = sorted(lambd_temp,key=abs)[lamb_len:]
 
-            for i in idx_list:
-                    i = int(i)
-                    self.hessian -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
+        freq = np.zeros(len(eigv))
+        for i in range(len(eigv)):
+            if eigv[i] < 0.0:
+                freq[i] =  -np.sqrt(np.abs(eigv[i]))
+            else:
+                freq[i] =  np.sqrt(eigv[i])
+
+        return freq*219474.63
+
+    def get_ZPE(self,freq): # in kJ/mol
+        for i in range(len(freq)):
+            if freq[i]< 0.0:
+                freq[i] = 0.0
+
+        ZPE = 1/2*np.sum(freq)*0.01196265919
+
+        return ZPE  
+    def project_hessian(self,Hessian):
                     
-        elif label=='pred':
-            idx_list,lamb,Q = self.find_trans_rot(self.H_pred,self.xyz)
+        idx_list,lamb,Q = self.find_trans_rot(Hessian,self.xyz)
+        lamb_len = len(idx_list)
+        for i in idx_list:
+                i = int(i)
+                Hessian -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
 
-            self.lambd_len = len(idx_list)
+        return Hessian,lamb_len
 
-            self.H_pred_lambd = lamb
-
-            for i in idx_list:
-                    i = int(i)
-                    self.H_pred -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
-        else: 
-            print('No hessian was projected')
-        return 
-
-    def weight_hessian(self,label=None):
+    def weight_hessian(self,Hessian):
         atoms = self.xyz['atoms']
 
-        if label=='xTB':
-            for k in range(len(atoms)):
-                for l in range(len(atoms)):
+        for k in range(len(atoms)):
+            for l in range(len(atoms)):
 
-                    mass_n = Const.elements_dict[atoms[k]]
-                    mass_m = Const.elements_dict[atoms[l]]
+                mass_n = Const.elements_dict[atoms[k]]
+                mass_m = Const.elements_dict[atoms[l]]
 
-                    self.hessian[3*k:3*k+3,3*l:3*l+3] =  1/np.sqrt(mass_n*mass_m*Const.mass_unit_in_au**2)*self.hessian[3*k:3*k+3,3*l:3*l+3]
-
-        elif label=='pred':
-            for k in range(len(atoms)):
-                for l in range(len(atoms)):
-
-                    mass_n = Const.elements_dict[atoms[k]]
-                    mass_m = Const.elements_dict[atoms[l]]
-
-                    self.H_pred[3*k:3*k+3,3*l:3*l+3] =  1/np.sqrt(mass_n*mass_m*Const.mass_unit_in_au**2)*self.H_pred[3*k:3*k+3,3*l:3*l+3]
-        else:
-            print('No hessian was weighted')
-        return 
-
-    def gen_eigenvalues(self):
-        lambd_temp,Q = linalg.eigh(self.H_pred)
-        self.H_pred_lambd =sorted(lambd_temp,key=abs)[self.lambd_len:]
-
-        lambd_temp,Q = linalg.eigh(self.hessian)
-        self.hessian_lambd =sorted(lambd_temp,key=abs)[self.lambd_len:]
-        return
+                Hessian[3*k:3*k+3,3*l:3*l+3] =  1/np.sqrt(mass_n*mass_m*Const.mass_unit_in_au**2)*Hessian[3*k:3*k+3,3*l:3*l+3]
+        return Hessian
 
 
     def fill_matrix_block(self,vector,matrix,R_mat=None,A=None,B=None,ite=None,transpose=None):
@@ -142,6 +133,21 @@ class Observables(Rotation_Functions,Const):
         return idx_list,lamb,Q
 
 
-        def reconst_hess(self,Natoms,Hess_vec_AA,Hess_vec_AB):
-            
-            return
+    def gen_hess_from_vec(self,hess_vec_aa,hess_vec_ab):
+        ite_homo = 0
+        ite_hetero = 0
+        Hessian = np.zeros([self.N_atoms*3,self.N_atoms*3])
+
+        for atom_A in range(self.N_atoms):
+            Hessian = self.fill_matrix_block(hess_vec_aa,Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,ite=ite_homo)
+            ite_homo += 1
+
+            transpose = None
+            for atom_B in range(atom_A+1,self.N_atoms):
+
+                if [atom_A,atom_B] in self.transpose_list:
+                    transpose = True
+                Hessian = self.fill_matrix_block(hess_vec_ab,Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
+                ite_hetero +=1
+            #self.H_pred += self.H_approx ## Change Hessian
+        return Hessian

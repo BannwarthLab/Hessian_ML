@@ -1,3 +1,4 @@
+
 class FTHomo:
     def __init__(self,some_class,mol,geom) -> None:
 
@@ -8,7 +9,6 @@ class FTHomo:
         self.N_at = some_class.N_atoms
 
         self.Feature = some_class.Feature_AA
-
         self.Target = some_class.Target_AA
 
         self.init_R_MI = some_class.init_R_MI
@@ -47,8 +47,10 @@ class PickleData:
         self.mol = mol
         self.geo = geom
 
+        self.transpose_list = some_class.transpose_list
+
         self.xyz = some_class.xyz
-        self.N_at = some_class.N_atoms
+        self.N_atoms = some_class.N_atoms
 
         self.Feature_AA = some_class.Feature_AA
         self.Feature_AB = some_class.Feature_AB

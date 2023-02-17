@@ -8,11 +8,11 @@ from sklearn.model_selection import train_test_split
 
 from src.Geometry import Geometry
 from src.SaveDat import FTHetero,FTHomo,PickleData
-from joblib import Parallel, delayed, parallel_backend
+
+from joblib import Parallel, delayed
 
 from multiprocessing import current_process
 import pickle as pickle
-import tempfile as tf
 import glob as glob
 
 
@@ -131,7 +131,5 @@ class DataGeneration(Geometry):
             with open(f'test_structures{current_process()._identity[0]}.json','ab+') as h:
                 pickle.dump(struc,h)
 
-
-            #f.close()
         self.idx_list.append(idx)
         return

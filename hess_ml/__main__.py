@@ -1,4 +1,4 @@
-#!gfeldmann/Documents/GitLab/hessian_ml/venv/bin/python3
+## gfeldmann/Documents/GitLab/hessian_ml/venv/bin/python3
 from src.Environment import Environment
 
 def main():
