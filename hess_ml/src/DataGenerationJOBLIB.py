@@ -61,7 +61,7 @@ class DataGeneration(Geometry):
             self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size,random_state=self.rnd_seed)
             np.savetxt('test_idx.txt',self.test_idx)
             np.savetxt('train_idx.txt',self.train_idx)
-            self.comp_idx = self.train_idx.copy().extend(self.test_idx.copy())
+            self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
 
         #_______Reading_the_names_of_all_folders______
         self.wall_time0 = time.time()
