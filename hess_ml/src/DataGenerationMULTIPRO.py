@@ -56,7 +56,7 @@ class DataGeneration(Geometry):
             self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size,random_state=self.rnd_seed)
             np.savetxt('test_idx.txt',self.test_idx)
             np.savetxt('train_idx.txt',self.train_idx)
-
+            self.comp_idx = self.train_idx.copy().extend(self.test_idx.copy())
         #_______Reading_the_names_of_all_folders______
         self.wall_time0 = time.time()
 
@@ -102,33 +102,33 @@ class DataGeneration(Geometry):
         #INIT GEOMETRY
         #
         #GENERATE TARGET & FEATURE --> picks dependend on env the right features and target
-        self.gen_data(os.path.join(self.data_dir,self.geo_dir[geom]),mol,geom)
+        if geom in self.comp_idx:
+            self.gen_data(os.path.join(self.data_dir,self.geo_dir[geom]),mol,geom)
 
-        self.clear_quantities()
-        idx = [self.mol,geom]
+            self.clear_quantities()
+            idx = [self.mol,geom]
 
-        if geom in self.train_idx:
+            if geom in self.train_idx:
 
-            het = FTHetero(self,mol,geom)
-            hom = FTHomo(self,mol,geom)
+                het = FTHetero(self,mol,geom)
+                hom = FTHomo(self,mol,geom)
 
-            with open(f'Model_Homo.json','ab+') as f:
-                pickle.dump(hom,f)
+                with open(f'Model_Homo.json','ab+') as f:
+                    pickle.dump(hom,f)
 
-            with open(f'Model_Hetero.json','ab+') as g:
-                pickle.dump(het,g)
+                with open(f'Model_Hetero.json','ab+') as g:
+                    pickle.dump(het,g)
 
-        if geom in self.test_idx:
+            if geom in self.test_idx:
 
-            struc = PickleData(self,mol,geom)
+                struc = PickleData(self,mol,geom)
 
-            for i in range(len(struc.Feature_AB)):
-                if len(struc.Feature_AB[i]) != 169:
-                    print(struc.geo,i)
+                for i in range(len(struc.Feature_AB)):
+                    if len(struc.Feature_AB[i]) != 169:
+                        print(struc.geo,i)
 
-            with open(f'test_structures.json','ab+') as h:
-                pickle.dump(struc,h)
-
+                with open(f'test_structures.json','ab+') as h:
+                    pickle.dump(struc,h)
 
             #f.close()
         self.idx_list.append(idx)
