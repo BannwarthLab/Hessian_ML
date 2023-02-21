@@ -179,13 +179,19 @@ class HessFeature(Rotation_Functions):
 
             Quantity_A.extend(self.energy_based[A])
             #Quantity_A.extend(gradient)
+            if self.diag == 'DTR':
+                for i in range(9):
+                    Features_temp = []
+                    Features_temp.extend(np.abs(np.array(Quantity_A)))
+                    Features_temp.extend(index[i])
 
-            for i in range(9):
+                    self.Feature_AA.append(Features_temp)
+
+            if self.diag == 'GNN':
                 Features_temp = []
                 Features_temp.extend(np.abs(np.array(Quantity_A)))
-                Features_temp.extend(index[i])
-
                 self.Feature_AA.append(Features_temp)
+
 
         del Quantity_A
         

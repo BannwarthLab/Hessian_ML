@@ -28,7 +28,21 @@ class HessTarget:
         
         return
 
+    def gen_Hessian_GNN(self):
+        self.Target_AA = np.zeros([self.N_atoms,6])
+        for atom_A in range(self.N_atoms):
+            self.Target_AA[atom_A] =  self.Hess_to_vec(self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3])
 
+        return
+
+    def Hess_to_vec(self,hess):
+
+        vec = np.zeros(6)
+        vec[:3] = hess[0,:3]
+        vec[3:5] = hess[1,1:]
+        vec[5] = hess[2,2]
+
+        return vec
 #Maybe at other point --> at predict or something
 
 '''    def get_pred_hessian(self,hessian_homo=None,hessian_hetero=None,check=None):

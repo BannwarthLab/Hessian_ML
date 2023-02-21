@@ -60,6 +60,10 @@ class ReadWrite():
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']].values.tolist())
             self.names = GFN2_quantities.columns.tolist()
             return 
+      
+      def import_wbo(self,file):
+            wbo = pd.read_csv(file,names=['at1','at2','wbo'],sep='\s+')
+            return wbo
 
 
       def import_pickle_FT(self,file):

@@ -29,10 +29,16 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Rotation_Functions)
         self.rot_init_inert()
         self.rot_inert_apf()
 
-        self.get_Feature_heteronuclear()
+        if self.diag == 'DTR':
+            self.get_Feature_heteronuclear()
+            self.gen_Hessian_vector(self.transpose_list)
+
         self.get_Feature_homonuclear()
 
-        self.gen_Hessian_vector(self.transpose_list)
+        if self.diag == 'GNN':
+            self.wbo = self.import_wbo(os.path.join(self.geo_working_dir,self.file_wbo))
+            self.gen_Hessian_GNN()
+       
         return
 
     def clear_quantities(self):

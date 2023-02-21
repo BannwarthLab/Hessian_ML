@@ -22,6 +22,5 @@ def main():
             env.train(mode='homo')
             env.test()
 
-
 if __name__ == '__main__':
     main()

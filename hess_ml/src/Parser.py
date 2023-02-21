@@ -35,6 +35,7 @@ class Parser:
         return 
 
     def parse_feature_generation(self): #Set parameters for features
+        self.train_test = False
 
         if not(self.config['feature_generation'].get('feature_aa',False)):
             self.feature_gen = True
@@ -45,7 +46,11 @@ class Parser:
             self.output_file   = f"{self.config['feature_generation'].get('output_file','systems')}.json"
             self.file_dipm     = self.config['feature_generation'].get('dipm','xyz_dipm.csv')
             self.file_coord    = self.config['feature_generation'].get('coord','xtbopt.xyz')
-            self.subfolder     = bool(self.config['feature_generation'].get('subfolder',False))
+            self.subfolder     = bool(self.config['feature_generation'].get('subfolder',False))            
+            self.diag          = self.config['feature_generation'].get('diag','DTR')
+            
+            if self.diag == 'GNN':
+                self.file_wbo      = self.config['feature_generation'].get('wbo','wbo')
 
         else:
             self.feature_gen = False
@@ -59,7 +64,6 @@ class Parser:
         return 
 
     def parse_train_test_parameter(self): #Set parameters for features
-        self.train_test = False
         self.rnd_seed    = self.config['training_testing'].get('random_seed',np.random.randint(0,1000))
 
         try: 
