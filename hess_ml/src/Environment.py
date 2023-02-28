@@ -4,7 +4,6 @@ from src.Training import Training
 from src.Testing import Testing
 
 import os 
-from mpi4py import MPI 
 
 class Environment(DataGeneration,Parser,Training,Testing):
     def __init__(self):
