@@ -7,47 +7,62 @@ from src.SaveDat import PickleData
 import glob as glob
 import os 
 from src.Observables import Observables
+
+
 class Testing(ReadWrite,Observables):
     def __init__(self) -> None:
         super().__init__
         pass
 
-    def test(self):
+    def test(self,only_hom):
         self.predict_hess()
-        self.comp_test_observables()
+        self.comp_test_observables(only_hom)
         return
 
-    def comp_test_observables(self):
+    def comp_test_observables(self,only_hom):
         print('Computing Observables ...',end="")
         freq_pred_list = []
         ZPE_pred = []
+        ZPE_harm_pred = []
 
         freq_true_list = []
         ZPE_true  = []
+        ZPE_harm_true  = []
 
         with open('pred_structures_final.json','rb') as f:
             while True:
                 try:
                     temp_obj = pickle.load(f)
-                    self.R_MI_APF_mat = temp_obj.R_MI_APF_mat
-                    self.xyz = temp_obj.xyz
-                    self.transpose_list = temp_obj.transpose_list
-                    self.N_atoms = temp_obj.N_atoms
-                    hess_vec_aa = np.array(temp_obj.pred_target_AA)
-                    hess_vec_ab = np.array(temp_obj.pred_target_AB)
 
-                    
+                    self.R_MI_APF_mat = temp_obj.get('R_MI_APF_mat')
+                    self.xyz = temp_obj.get('xyz')
+                    self.transpose_list = temp_obj.get('transpose_list')
+                    self.N_atoms = temp_obj.get('N_atoms')
+        
+                    hess_vec_aa = np.array(temp_obj.get('pred_target_AA'))
+
+                    if only_hom:
+                        hess_vec_ab = np.array(temp_obj.get('Target_AB'))
+                    else:
+                        hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
+
                     freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab)
                     ZPE = self.get_ZPE(freq)
+                    ZPE_harm = self.get_harmonic_ZPE(freq)
+
+                    ZPE_harm_pred.append(ZPE_harm)
                     ZPE_pred.append(ZPE)
+
                     freq_pred_list.extend(freq)
 
-
-                    hess_vec_aa = np.array(temp_obj.Target_AA)
-                    hess_vec_ab = np.array(temp_obj.Target_AB)
+                    hess_vec_aa = np.array(temp_obj.get('Target_AA'))
+                    hess_vec_ab = np.array(temp_obj.get('Target_AB'))
 
                     freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab)
                     ZPE = self.get_ZPE(freq)
+                    ZPE_harm = self.get_harmonic_ZPE(freq)
+
+                    ZPE_harm_true.append(ZPE_harm)
                     ZPE_true.append(ZPE)
                     freq_true_list.extend(freq)
 
@@ -56,8 +71,13 @@ class Testing(ReadWrite,Observables):
         
         np.savetxt('pred_frequencies.txt',freq_pred_list)
         np.savetxt('true_frequencies.txt',freq_true_list)
+
         np.savetxt('pred_ZPEs.txt',ZPE_pred)
         np.savetxt('true_ZPEs.txt',ZPE_true)
+
+        np.savetxt('pred_ZPEs_harm.txt',ZPE_harm_pred)
+        np.savetxt('true_ZPEs_harm.txt',ZPE_harm_true)
+
         print('done')
 
         return
@@ -80,9 +100,8 @@ class Testing(ReadWrite,Observables):
                     try:
                         temp_obj = pickle.load(f)
 
-                        H_hetero = het_model.predict(np.array(temp_obj.Feature_AB))
-
-                        temp_obj.add_pred_target_AB(H_hetero)
+                        H_hetero = het_model.predict(np.array(temp_obj.get('Feature_AB')))
+                        temp_obj['pred_target_AB'] = H_hetero
                         with open('pred_structures.json','ab') as g:
                             pickle.dump(temp_obj,g)
 
@@ -103,8 +122,8 @@ class Testing(ReadWrite,Observables):
                     try:
                         temp_obj = pickle.load(f)
 
-                        H_hom = hom_model.predict(np.array(temp_obj.Feature_AA))
-                        temp_obj.add_pred_target_AA(H_hom)
+                        H_hom = hom_model.predict(np.array(temp_obj.get('Feature_AA')))
+                        temp_obj['pred_target_AA'] = H_hom
 
                         with open('pred_structures_final.json','ab') as g:
                             pickle.dump(temp_obj,g)

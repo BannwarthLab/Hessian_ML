@@ -15,10 +15,11 @@ class Observables(Rotation_Functions,Const):
     def gen_Frequencies(self,hess_vec_aa,hess_vec_ab): #in cm^-1
 
         Hessian = self.gen_hess_from_vec(hess_vec_aa,hess_vec_ab)
+
         Hess_prj,lamb_len = self.project_hessian(Hessian)
         Hess_prj_wgt = self.weight_hessian(Hess_prj)
         lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
-        eigv = sorted(lambd_temp,key=abs)[lamb_len:]
+        eigv = lambd_temp#sorted(lambd_temp,key=abs)[lamb_len:]
 
         freq = np.zeros(len(eigv))
         for i in range(len(eigv)):
@@ -27,16 +28,23 @@ class Observables(Rotation_Functions,Const):
             else:
                 freq[i] =  np.sqrt(eigv[i])
 
-        return freq*219474.63
+        return sorted(freq*219474.63,key=abs)[lamb_len:]
 
     def get_ZPE(self,freq): # in kJ/mol
-        for i in range(len(freq)):
-            if freq[i]< 0.0:
-                freq[i] = 0.0
 
         ZPE = 1/2*np.sum(freq)*0.01196265919
 
         return ZPE  
+    
+    def get_harmonic_ZPE(self,freq): # in kJ/mol
+        for i in range(len(freq)):
+            if freq[-i] == 0.0:
+                freq.pop(-i)
+
+        ZPE = 1/2*np.sum(1/np.array(freq))**-1*0.01196265919
+
+        return ZPE  
+    
     def project_hessian(self,Hessian):
                     
         idx_list,lamb,Q = self.find_trans_rot(Hessian,self.xyz)
@@ -60,7 +68,7 @@ class Observables(Rotation_Functions,Const):
         return Hessian
 
 
-    def fill_matrix_block(self,vector,matrix,R_mat=None,A=None,B=None,ite=None,transpose=None):
+    def fill_matrix_block(self,vector,matrix,R_mat=None,A=None,B=None,ite=None,transpose=False):
         
         if B == None:
             B = A
@@ -68,7 +76,7 @@ class Observables(Rotation_Functions,Const):
         k = 9*ite
         for i in range(3):
             for j in range(3):
-                matrix[3*A+i,3*B+j] = vector[k]
+                matrix[3*A+i,3*B+j] = vector[k] #reshape may also be possible
                 #print(f'{k}:{vector[k]}')
                 k+=1
 
@@ -142,7 +150,7 @@ class Observables(Rotation_Functions,Const):
             Hessian = self.fill_matrix_block(hess_vec_aa,Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,ite=ite_homo)
             ite_homo += 1
 
-            transpose = None
+            transpose = False
             for atom_B in range(atom_A+1,self.N_atoms):
 
                 if [atom_A,atom_B] in self.transpose_list:

@@ -43,7 +43,7 @@ class Parser:
             self.file_feature  = self.config['feature_generation'].get('feature','ml_feature.csv')
             self.file_target   = self.config['feature_generation'].get('target',self.runtype_target[self.config['runtype']])
             self.folder_data   = self.config['feature_generation'].get('binary','')
-            self.output_file   = f"{self.config['feature_generation'].get('output_file','systems')}.json"
+            self.output_file   = f"{self.config['feature_generation'].get('output_file','systems')}*.json"
             self.file_dipm     = self.config['feature_generation'].get('dipm','xyz_dipm.csv')
             self.file_coord    = self.config['feature_generation'].get('coord','xtbopt.xyz')
             self.subfolder     = bool(self.config['feature_generation'].get('subfolder',False))            
@@ -75,8 +75,10 @@ class Parser:
         self.train_size = self.config['training_testing'].get('train_size',0.75)
         self.test_size  = self.config['training_testing'].get('test_size',0.25)
         self.train_test  = self.config['training_testing'].get('test',True)
+        self.only_hom  = bool(self.config['training_testing'].get('only_hom',False))
+
         self.model_name    = self.config['training_testing'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model")
-        
+
         if self.config['runtype'] == 'hessian':
 
             try:
@@ -89,10 +91,10 @@ class Parser:
             else:
                 self.ml_parameter = self.config['training_testing']['homo']
 
-        if self.config['runtype'] == 'hessian':
+        if self.config['runtype'] == 'hessian' and not(self.only_hom):
 
             try:
-                self.config['training_testing']['homo']
+                self.config['training_testing']['hetero']
 
             except:
                 print('No parameters for the heteronuclear model are specified. Default parameters are set')

@@ -25,8 +25,11 @@ class DataGeneration(Geometry):
     def generate_feature_target_sf_dtr(self):
         self.feature_target_file = ['Feature_Vector_Homo','Target_Vector_Homo','Feature_Vector_Hetero','Target_Vector_Hetero']
         
-        for file in ['Model_Homo.json','Model_Hetero.json','test_structures.json',self.output_file]:
-            self.truncate_file(file)
+        for file in ['Model_Homo*.json','Model_Hetero*.json','test_structures*.json',self.output_file]:
+            files = glob.glob(file)
+            for f in files:
+                os.remove(f)
+            #self.truncate_file(file)
 
         print(f'Generating Features from {self.folder_data}')
 
@@ -41,8 +44,8 @@ class DataGeneration(Geometry):
 
             geo_idx = np.arange(total_structures)
 
-            print(f'{self.train_size*100} % of the set is used for testing.')
-            print(f'{self.test_size*100} % of the set is used for training.')
+            print(f'{self.train_size*100} % of the set is used for training.')
+            print(f'{self.test_size*100} % of the set is used for testing.')
 
             self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size,random_state=self.rnd_seed)
             np.savetxt('test_idx.txt',self.test_idx)
@@ -77,17 +80,17 @@ class DataGeneration(Geometry):
 
             dir_idx = np.arange(len(geo_dir))
             #with parallel_backend('loky',n_jobs=self.threads):
-            Parallel(n_jobs=self.threads)(delayed(self.generation_procedure_dtr)(geom=geo,mol=mol) for geo in dir_idx)
+            Parallel(n_jobs=self.threads)(delayed(self.generation_procedure_dtr)(geom=geo,mol=mol,dir=geo_dir[geo]) for geo in dir_idx)
             #            with parallel_backend('loky',n_jobs=self.threads):
             #for geo in dir_idx:
             #    self.generation_procedure(geom=geo,mol=mol) #for geo in dir_idx
 
             print(f'Features and Targets of {len(geo_dir)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
-                
+
         return
 
 
-    def generation_procedure_dtr(self,mol=None,geom=None):
+    def generation_procedure_dtr(self,mol=None,geom=None,dir=None):
         #INIT GEOMETRY
         #
         #GENERATE TARGET & FEATURE --> picks dependend on env the right features and target
@@ -100,21 +103,21 @@ class DataGeneration(Geometry):
 
             if geom in self.train_idx:
 
-                het = FTHetero(self,mol,geom)
-                hom = FTHomo(self,mol,geom)
+                het = FTHetero(self,mol,geom,dir)
+                hom = FTHomo(self,mol,geom,dir)
 
                 with open(f'Model_Homo{current_process()._identity[0]}.json','ab+') as f:
-                    pickle.dump(hom,f)
+                    pickle.dump(hom.dict,f)
 
                 with open(f'Model_Hetero{current_process()._identity[0]}.json','ab+') as g:
-                    pickle.dump(het,g)
+                    pickle.dump(het.dict,g)
 
             if geom in self.test_idx:
 
-                struc = PickleData(self,mol,geom)
+                struc = PickleData(self,mol,geom,dir)
 
                 with open(f'test_structures{current_process()._identity[0]}.json','ab+') as h:
-                    pickle.dump(struc,h)
+                    pickle.dump(struc.dict,h)
 
             self.idx_list.append(idx)
         return

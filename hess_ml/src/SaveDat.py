@@ -1,18 +1,18 @@
 
 class FTHomo:
-    def __init__(self,some_class,mol,geom) -> None:
+    def __init__(self,some_class,mol,geom,dir) -> None:
 
-        self.mol = mol
-        self.geo = geom
+        self.dict = {}
+        self.dict['dir'] =  dir
 
-        self.xyz = some_class.xyz
-        self.N_at = some_class.N_atoms
+        
+        self.dict['xyz'] = some_class.xyz
+        self.dict['N_atoms'] = some_class.N_atoms
+        self.dict['Feature'] = some_class.Feature_AA
+        self.dict['Target'] = some_class.Target_AA
 
-        self.Feature = some_class.Feature_AA
-        self.Target = some_class.Target_AA
-
-        self.init_R_MI = some_class.init_R_MI
-        self.R_MI_APF_mat = some_class.R_MI_APF_mat
+        self.dict['init_R_MI'] = some_class.init_R_MI
+        self.dict['R_MI_APF_mat'] = some_class.R_MI_APF_mat
 
         return 
 
@@ -21,19 +21,21 @@ class FTHomo:
         return
 
 class FTHetero:
-    def __init__(self,some_class,mol,geom) -> None:
+    def __init__(self,some_class,mol,geom,dir) -> None:
 
-        self.mol = mol
-        self.geo = geom
+        self.dict = {}
+        self.dict['dir'] =  dir
 
-        self.xyz = some_class.xyz
-        self.N_at = some_class.N_atoms
+        self.dict['xyz'] = some_class.xyz
+        self.dict['N_atoms'] = some_class.N_atoms
 
-        self.Feature = some_class.Feature_AB
-        self.Target = some_class.Target_AB
+        self.dict['transpose_list'] = some_class.transpose_list
 
-        self.init_R_MI = some_class.init_R_MI
-        self.R_MI_APF_mat = some_class.R_MI_APF_mat
+        self.dict['Feature'] = some_class.Feature_AB
+        self.dict['Target'] = some_class.Target_AB
+
+        self.dict['init_R_MI'] = some_class.init_R_MI
+        self.dict['R_MI_APF_mat'] = some_class.R_MI_APF_mat
 
         return 
 
@@ -42,23 +44,26 @@ class FTHetero:
         return
 
 class PickleData:
-    def __init__(self,some_class,mol,geom) -> None:
+    def __init__(self,some_class,mol,geom,dir) -> None:
 
-        self.mol = mol
-        self.geo = geom
+        self.dict = {}
+
+        self.dict['dir'] =  dir
 
         if not(some_class.diag == 'GNN'):
-            self.transpose_list = some_class.transpose_list
+            self.dict['transpose_list'] = some_class.transpose_list
+        
+        self.dict['xyz'] = some_class.xyz
+        self.dict['N_atoms'] = some_class.N_atoms
 
-        self.xyz = some_class.xyz
-        self.N_atoms = some_class.N_atoms
+        self.dict['Feature_AA'] = some_class.Feature_AA
+        self.dict['Feature_AB'] = some_class.Feature_AB
 
-        self.Feature_AA = some_class.Feature_AA
+        self.dict['Target_AA'] = some_class.Target_AA
+        self.dict['Target_AB'] = some_class.Target_AB
 
-        self.Target_AA = some_class.Target_AA
-
-        self.init_R_MI = some_class.init_R_MI
-        self.R_MI_APF_mat = some_class.R_MI_APF_mat
+        self.dict['init_R_MI'] = some_class.init_R_MI
+        self.dict['R_MI_APF_mat'] = some_class.R_MI_APF_mat
 
         return 
 

@@ -76,8 +76,8 @@ class ReadWrite():
                         try:
                               i+=1
                               temp_obj = pickle.load(f)
-                              feature.extend(list(temp_obj.Feature))
-                              target.extend(list(temp_obj.Target))
+                              feature.extend(temp_obj['Feature'])
+                              target.extend(temp_obj['Target'])
                         except EOFError:
                               #print(f'Features and Targets of a total of {i-1} structures are used.\n')
                               break
