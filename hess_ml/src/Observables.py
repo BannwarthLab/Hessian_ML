@@ -16,8 +16,8 @@ class Observables(Rotation_Functions,Const):
 
         Hessian = self.gen_hess_from_vec(hess_vec_aa,hess_vec_ab)
 
-        #Hess_prj,lamb_len = self.project_hessian(Hessian)
-        Hess_prj_wgt = self.weight_hessian(Hessian)
+        Hess_prj,lamb_len = self.project_hessian(Hessian)
+        Hess_prj_wgt = self.weight_hessian(Hess_prj)
         lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
         eigv = lambd_temp#sorted(lambd_temp,key=abs)[lamb_len:]
 
@@ -60,15 +60,15 @@ class Observables(Rotation_Functions,Const):
 
         return ZPE  
     
-    def project_hessian(self):
+    def project_hessian(self,Hessian):
                     
-        idx_list,lamb,Q = self.find_trans_rot(self.hessian,self.xyz)
-        self.lamb_len = len(idx_list)
+        idx_list,lamb,Q = self.find_trans_rot(Hessian,self.xyz)
+        lamb_len = len(idx_list)
         for i in idx_list:
                 i = int(i)
-                self.hessian -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
+                Hessian -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
 
-        return 
+        return Hessian,lamb_len
 
     def weight_hessian(self,Hessian):
         atoms = self.xyz['atoms']

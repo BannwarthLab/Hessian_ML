@@ -27,8 +27,6 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
 
         self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
 
-        self.project_hessian()
-
         self.rot_init_inert()
         
         self.rot_inert_apf()

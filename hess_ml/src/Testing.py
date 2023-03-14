@@ -38,7 +38,6 @@ class Testing(ReadWrite,Observables):
                     self.xyz = temp_obj.get('xyz')
                     self.transpose_list = temp_obj.get('transpose_list')
                     self.N_atoms = temp_obj.get('N_atoms')
-                    self.lamb_len = temp_obj.get('lamb_len')
 
                     hess_vec_aa = np.array(temp_obj.get('pred_target_AA'))
 
