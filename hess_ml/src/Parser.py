@@ -75,7 +75,12 @@ class Parser:
         self.train_size = self.config['training_testing'].get('train_size',0.75)
         self.test_size  = self.config['training_testing'].get('test_size',0.25)
         self.train_test  = self.config['training_testing'].get('test',True)
-        self.only_hom  = bool(self.config['training_testing'].get('only_hom',False))
+        self.only_hom  = self.config['training_testing'].get('only_hom','False')
+
+        if self.only_hom == 'False':
+            self.only_hom = False
+        elif self.only_hom == 'True':
+            self.only_hom = True 
 
         self.model_name    = self.config['training_testing'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model")
 

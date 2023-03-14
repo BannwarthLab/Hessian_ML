@@ -112,8 +112,7 @@ class HessFeature(Rotation_Functions):
                     Features_temp2.extend([R_AB])
 
                     self.Feature_AB.append(Features_temp2)
-                    if len(self.Feature_AB[-1]) != 169:
-                        print(len(self.Feature_AB[-1]))
+
 
         del Quantity_AB_arr
         del Quantity_AB
@@ -139,13 +138,16 @@ class HessFeature(Rotation_Functions):
         self.Feature_AA = []
 
         for A in range(self.N_atoms):
+            rot_Mat = self.rot_X(0.0/360*2*np.pi)
 
             i0 = 3*A
             i3 = 3*A + 3
 
             R_MI_APF = self.R_MI_APF_mat[i0:i3,i0:i3]
+            R_MI_APF = matmul(rot_Mat,R_MI_APF)
 
             Quantity_A = []
+
 
             vector_of_ones = np.array([1,1,1])
 
@@ -172,14 +174,16 @@ class HessFeature(Rotation_Functions):
             Quantity_A.extend(self.CN[A])
 
             Quantity_A.extend(dipm_atom)
-            #Quantity_A.extend(dipm_delta)
-            #Quantity_A.extend(dipm_only_mull)
+            Quantity_A.extend(dipm_delta)
+            Quantity_A.extend(dipm_only_mull)
 
             Quantity_A.extend(qm_atom)
-            #Quantity_A.extend(qm_delta)
+            Quantity_A.extend(qm_delta)
 
             Quantity_A.extend(self.energy_based[A])
+
             #Quantity_A.extend(gradient)
+            
             if self.diag == 'DTR':
                 for i in range(9):
                     Features_temp = []

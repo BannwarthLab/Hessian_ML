@@ -19,17 +19,18 @@ class Observables(Rotation_Functions,Const):
         Hess_prj,lamb_len = self.project_hessian(Hessian)
         Hess_prj_wgt = self.weight_hessian(Hess_prj)
         lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
-        eigv = lambd_temp#sorted(lambd_temp,key=abs)[lamb_len:]
+        
+        eigv = sorted(lambd_temp,key=abs)[lamb_len:]
 
         freq = np.zeros(len(eigv))
         
         for i in range(len(eigv)):
             if eigv[i] < 0.0:
-                freq[i] = 0 # -np.sqrt(np.abs(eigv[i]))
+                freq[i] = 0#-np.sqrt(np.abs(eigv[i]))
             else:
                 freq[i] =  np.sqrt(eigv[i])
 
-        return freq*219474.63#sorted(freq*219474.63,key=abs)[self.lamb_len:]
+        return freq*219474.63#sorted(freq*219474.63,key=abs)[lamb_len:]
     
     def frequency(lamb):
      
@@ -165,9 +166,8 @@ class Observables(Rotation_Functions,Const):
             Hessian = self.fill_matrix_block(hess_vec_aa,Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,ite=ite_homo)
             ite_homo += 1
 
-            transpose = False
             for atom_B in range(atom_A+1,self.N_atoms):
-
+                transpose = False
                 if [atom_A,atom_B] in self.transpose_list:
                     transpose = True
                 Hessian = self.fill_matrix_block(hess_vec_ab,Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)

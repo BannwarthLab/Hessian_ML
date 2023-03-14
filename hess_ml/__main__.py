@@ -18,8 +18,10 @@ def main():
             env.generate_data()
 
         if env.config.get('training_testing',False):
+            
             if not(env.only_hom):
                 env.train(mode='hetero')
+
             env.train(mode='homo')
             env.test(env.only_hom)
 

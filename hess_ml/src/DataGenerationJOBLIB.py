@@ -33,7 +33,6 @@ class DataGeneration(Geometry):
 
         print(f'Generating Features from {self.folder_data}')
 
-           
         if self.train_test == True:
             total_structures = 0
             molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
@@ -59,31 +58,13 @@ class DataGeneration(Geometry):
         self.idx_list = []
         molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
         for mol in range(len(molecule_dir)):
-            #_______Reading_the_names_of_all_subfolders_______
+            #_______Reading_the_names_of_all_subfolders_______ 
             self.data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
 
             self.geo_dir = sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
-
-            #self.rest_array = np.arange(len(geo_dir),len(geo_dir)+(self.threads-1)-len(geo_dir)%(self.threads-1))
-
-            #for geo in range(len(geo_dir)):
-                #_____Rotating_Feature_and_Target_for_each_system_____
-                #_____MPI_parallelized_with_mpi4py____________________
-            # self.het_files = []
-            # self.hom_files = []
-            # self.test_files = []
-
-            #for i in range(self.threads):
-            #self.het_files.append(tf.TemporaryFile(mode='w+b',suffix='.json',prefix='Other',dir=self.cwd))
-                #self.hom_files.append(tf.NamedTemporaryFile(mode='w+b',suffix='.json',prefix='HomoModel',dir=self.cwd))
-                #self.test_files.append(tf.NamedTemporaryFile(mode='w+b',suffix='.json',prefix='test_structures',dir=self.cwd))
-
             dir_idx = np.arange(len(geo_dir))
-            #with parallel_backend('loky',n_jobs=self.threads):
+            #________Paralleized Feature Generation___________ 
             Parallel(n_jobs=self.threads)(delayed(self.generation_procedure_dtr)(geom=geo,mol=mol,dir=geo_dir[geo]) for geo in dir_idx)
-            #            with parallel_backend('loky',n_jobs=self.threads):
-            #for geo in dir_idx:
-            #    self.generation_procedure(geom=geo,mol=mol) #for geo in dir_idx
 
             print(f'Features and Targets of {len(geo_dir)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
 
@@ -174,27 +155,10 @@ class DataGeneration(Geometry):
             self.data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
 
             self.geo_dir = sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
-
-            #self.rest_array = np.arange(len(geo_dir),len(geo_dir)+(self.threads-1)-len(geo_dir)%(self.threads-1))
-
-            #for geo in range(len(geo_dir)):
-                #_____Rotating_Feature_and_Target_for_each_system_____
-                #_____MPI_parallelized_with_mpi4py____________________
-            # self.het_files = []
-            # self.hom_files = []
-            # self.test_files = []
-
-            #for i in range(self.threads):
-            #self.het_files.append(tf.TemporaryFile(mode='w+b',suffix='.json',prefix='Other',dir=self.cwd))
-                #self.hom_files.append(tf.NamedTemporaryFile(mode='w+b',suffix='.json',prefix='HomoModel',dir=self.cwd))
-                #self.test_files.append(tf.NamedTemporaryFile(mode='w+b',suffix='.json',prefix='test_structures',dir=self.cwd))
-
             dir_idx = np.arange(len(geo_dir))
-            #with parallel_backend('loky',n_jobs=self.threads):
+
+            #________Paralleized Feature Generation___________ 
             Parallel(n_jobs=self.threads)(delayed(self.generation_procedure_gnn)(geom=geo,mol=mol,dir=geo_dir[geo]) for geo in dir_idx)
-            #            with parallel_backend('loky',n_jobs=self.threads):
-            #for geo in dir_idx:
-            #    self.generation_procedure(geom=geo,mol=mol) #for geo in dir_idx
 
             print(f'Features and Targets of {len(geo_dir)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
                 
