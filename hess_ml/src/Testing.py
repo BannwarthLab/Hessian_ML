@@ -38,7 +38,8 @@ class Testing(ReadWrite,Observables):
                     self.xyz = temp_obj.get('xyz')
                     self.transpose_list = temp_obj.get('transpose_list')
                     self.N_atoms = temp_obj.get('N_atoms')
-        
+                    self.lamb_len = temp_obj.get('lamb_len')
+
                     hess_vec_aa = np.array(temp_obj.get('pred_target_AA'))
 
                     if only_hom:
@@ -48,9 +49,9 @@ class Testing(ReadWrite,Observables):
 
                     freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab)
                     ZPE = self.get_ZPE(freq)
-                    ZPE_harm = self.get_harmonic_ZPE(freq)
+                    #ZPE_harm = self.get_harmonic_ZPE(freq)
 
-                    ZPE_harm_pred.append(ZPE_harm)
+                    #ZPE_harm_pred.append(ZPE_harm)
                     ZPE_pred.append(ZPE)
 
                     freq_pred_list.extend(freq)
@@ -60,9 +61,9 @@ class Testing(ReadWrite,Observables):
 
                     freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab)
                     ZPE = self.get_ZPE(freq)
-                    ZPE_harm = self.get_harmonic_ZPE(freq)
+                    #ZPE_harm = self.get_harmonic_ZPE(freq)
 
-                    ZPE_harm_true.append(ZPE_harm)
+                    #ZPE_harm_true.append(ZPE_harm)
                     ZPE_true.append(ZPE)
                     freq_true_list.extend(freq)
 
@@ -75,8 +76,8 @@ class Testing(ReadWrite,Observables):
         np.savetxt('pred_ZPEs.txt',ZPE_pred)
         np.savetxt('true_ZPEs.txt',ZPE_true)
 
-        np.savetxt('pred_ZPEs_harm.txt',ZPE_harm_pred)
-        np.savetxt('true_ZPEs_harm.txt',ZPE_harm_true)
+        #np.savetxt('pred_ZPEs_harm.txt',ZPE_harm_pred)
+        #np.savetxt('true_ZPEs_harm.txt',ZPE_harm_true)
 
         print('done')
 

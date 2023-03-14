@@ -36,7 +36,7 @@ class FTHetero:
 
         self.dict['init_R_MI'] = some_class.init_R_MI
         self.dict['R_MI_APF_mat'] = some_class.R_MI_APF_mat
-
+        self.dict['lamb_len'] = some_class.lamb_len
         return 
 
     def add_idx(self,idx):

@@ -4,8 +4,9 @@ from src.Rotation_func import Rotation_Functions
 from src.Preparation import Preparation
 from src.HessTarget import HessTarget
 from src.HessFeature import HessFeature
+from src.Observables import Observables
 from src.SaveDat import FTHetero, FTHomo,PickleData
-class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Rotation_Functions):#Feature Class --> picks the right feature; same for target class or: ML Class, picks both
+class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotation_Functions):#Feature Class --> picks the right feature; same for target class or: ML Class, picks both
 
     def __init__(self):
         super().__init__
@@ -26,7 +27,10 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Rotation_Functions)
 
         self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
 
+        self.project_hessian()
+
         self.rot_init_inert()
+        
         self.rot_inert_apf()
 
         if self.diag == 'DTR':

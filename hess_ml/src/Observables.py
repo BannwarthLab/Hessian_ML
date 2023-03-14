@@ -16,19 +16,34 @@ class Observables(Rotation_Functions,Const):
 
         Hessian = self.gen_hess_from_vec(hess_vec_aa,hess_vec_ab)
 
-        Hess_prj,lamb_len = self.project_hessian(Hessian)
-        Hess_prj_wgt = self.weight_hessian(Hess_prj)
+        #Hess_prj,lamb_len = self.project_hessian(Hessian)
+        Hess_prj_wgt = self.weight_hessian(Hessian)
         lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
         eigv = lambd_temp#sorted(lambd_temp,key=abs)[lamb_len:]
 
         freq = np.zeros(len(eigv))
+        
         for i in range(len(eigv)):
             if eigv[i] < 0.0:
-                freq[i] =  -np.sqrt(np.abs(eigv[i]))
+                freq[i] = 0 # -np.sqrt(np.abs(eigv[i]))
             else:
                 freq[i] =  np.sqrt(eigv[i])
 
-        return sorted(freq*219474.63,key=abs)[lamb_len:]
+        return freq*219474.63#sorted(freq*219474.63,key=abs)[self.lamb_len:]
+    
+    def frequency(lamb):
+     
+     freq_val = np.zeros(len(lamb))
+
+     for i in range(len(lamb)):
+          
+          if lamb[i] >= 0:
+               freq_val[i] = np.sqrt(lamb[i])
+          else:
+               freq_val[i] = 0
+
+     return freq_val
+
 
     def get_ZPE(self,freq): # in kJ/mol
 
@@ -45,15 +60,15 @@ class Observables(Rotation_Functions,Const):
 
         return ZPE  
     
-    def project_hessian(self,Hessian):
+    def project_hessian(self):
                     
-        idx_list,lamb,Q = self.find_trans_rot(Hessian,self.xyz)
-        lamb_len = len(idx_list)
+        idx_list,lamb,Q = self.find_trans_rot(self.hessian,self.xyz)
+        self.lamb_len = len(idx_list)
         for i in idx_list:
                 i = int(i)
-                Hessian -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
+                self.hessian -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
 
-        return Hessian,lamb_len
+        return 
 
     def weight_hessian(self,Hessian):
         atoms = self.xyz['atoms']
