@@ -1,8 +1,10 @@
 import numpy as np
 from operator import matmul
+from src.Rotation_func import Rotation_Functions
 
-class Preparation:
+class Preparation(Rotation_Functions):
     def __init__(self):
+        super().__init__
         pass
 
     def rot_init_inert(self):
@@ -26,7 +28,12 @@ class Preparation:
 
         for atom_A in range(self.N_atoms):
             for atom_B in range(atom_A,self.N_atoms):
+                xyz_temp = self.xyz.copy()
                 R_MI_APF = self.get_R_euler(self.xyz,self.dipm,atom_A,atom_B)
+                nomr_temp = np.linalg.norm(self.xyz.iloc[:,1:]-xyz_temp.iloc[:,1:])
+                if nomr_temp != 0.0 :
+                    print(nomr_temp)
+
                 H_APF = np.zeros([3,3])
                 #Generate the final hessian
 
@@ -39,4 +46,5 @@ class Preparation:
 
                 self.R_MI_APF_mat[i0:i3,j0:j3] = R_MI_APF 
                 self.H_APF_mat[i0:i3,j0:j3] = H_APF
+
         return

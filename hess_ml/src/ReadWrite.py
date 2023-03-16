@@ -50,6 +50,7 @@ class ReadWrite():
       def import_ml_features(self,file):
             GFN2_quantities = pd.read_csv(f'{file}')
             self.CN = np.array(GFN2_quantities.loc[:,['coordination number','delta coordination number']].values.tolist())
+            self.q_atom = np.array(GFN2_quantities.loc[:,['atomic partial charges','delta partial charges']].values.tolist())
             self.dipm_atom = np.array(GFN2_quantities.loc[:,['dipm_atom_x','dipm_atom_y','dipm_atom_z']].values.tolist())
             self.dipm_delta = np.array(GFN2_quantities.loc[:,['dipm_delta_x','dipm_delta_y','dipm_delta_z']].values.tolist())
             self.dipm_only_mull = np.array(GFN2_quantities.loc[:,['delta dipm only mull x','delta dipm only mull y','delta dipm only mull z']].values.tolist())

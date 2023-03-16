@@ -58,6 +58,9 @@ class Rotation_Functions:
                coord_var_new.iloc[i,1:] = np.array(coord_var.iloc[i,1:]) - np.array(trans)
           return coord_var_new
      
+
+
+     #____Uses for i=j the mean of the xyz's atoms as an artifical atom____
      def get_R_euler(self,coord_end,dipm,i,j):
      #Translation
           axis = np.identity(3)
@@ -105,24 +108,116 @@ class Rotation_Functions:
           
           # Rotation for i = j
           elif i == j:
-               """ #Fixing the angle for rotation to the z directional dipole moment of each atom
-               #Atom pair focussed coordinate system
-               vec_z[2] = 1
+               vec_z  = coord_end.iloc[i,1:].astype('float64')
                vec_x = np.cross(vec_z,vec_dipm)
-               #vec_y = np.cross(vec_z,vec_x)
 
-               #Euler angles
-               LL = axis[0]
-               beta = 0
-               alpha = 0
-               gamma = angle_two_vec(LL,vec_x)
+               LL = np.cross(vec_z,axis[2])
+               if  np.sum(np.abs(np.array(coord_end.iloc[i,1:3])+center_CN[1:])) < 1e-9:
+                    beta = self.angle_two_vec(vec_z,axis[2])
+                    alpha = 2*np.pi - self.angle_two_vec(vec_x,axis[0])
+                    gamma = 0
+
+                    if linalg.det(np.array([axis[0],axis[2],vec_x])) > 0.:
+                         alpha = 2*np.pi - alpha
+
+               else:
+                    alpha = self.angle_two_vec(LL,axis[0])
+                    beta = self.angle_two_vec(vec_z,axis[2])
+                    gamma = self.angle_two_vec(LL,vec_x)
+
+                    #Find right rotation angle
+                    if linalg.det(np.array([axis[0],axis[2],LL])) < 0.:
+                         alpha = 2*np.pi - alpha
+                    
+                    if linalg.det(np.array([LL,vec_x,vec_z])) > 0.:
+                         gamma = 2*np.pi - gamma 
+
+          R_euler = matmul(matmul(self.rot_Z(gamma),self.rot_X(beta)),self.rot_Z(alpha))
+
+          #Rotation by 180 ° if dipole moment is negative in x
+
+          if matmul(R_euler,vec_x)[0] < 0.:
+               vec_z_norm = matmul(R_euler,vec_z)
+               vec_z_norm = vec_z_norm/linalg.norm(vec_z_norm)
+               R_z = self.rot_Z(np.pi)
+               R_euler = matmul(R_z,R_euler)
+
+
+          #Apply the euler rotation matrix on the new x axis for verification reasons
+          vec_x = matmul(R_euler,vec_x)
+
+          coord_end = self.coord_rot(coord_end.copy(),R_euler)
+
+          #Check for Errors in dipole moment or the coordinates
+          if vec_x[0] < 0.:
+               print(f'Error in vec_x[0] in {i,j}')
+
+          if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
+               print(vec_x)
+               print('Error in vec_x')
+
+          if coord_end.iloc[i,1] > 1e-8 or coord_end.iloc[i,2] > 1e-8:
+               print('Error in coord i') 
+
+          if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
+               print('Error in coord j') 
+
+          return R_euler
+     
+
+     #____Uses for i=j the a damped version of the mean of the xyz's atoms as an artifical atom____
+
+     def get_R_euler_CN(self,coord_end,dipm,i,j):
+          #Translation
+          axis = np.identity(3)
+
+          if i < j:
+               T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+               vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])#
+
+          elif i == j:
+
+
+               center_CN = np.sum(coord_end.iloc[:,1:])/len(coord_end.iloc[:,1:])
+
                
-               #Find right rotation angle
-               if vec_x[1]>= 0. : #is this still right??
-                    gamma = 2*np.pi - gamma
-               #Fixing the angle for rotation to the center of the coordinates to have a general fixing point
-               #Euler Rotationmatrix """
+               T = 1/2 * coord_end.iloc[i,1:] + center_CN # + 1/2 * coord_end.iloc[j,1:]
+               vec_dipm = dipm.iloc[i,1:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])+
 
+          coord_end = self.vec_trans(coord_end,T)
+
+          vec_z = np.zeros(3)
+     
+          #Rotation for i < j 
+          if i < j:
+               #Atom pair focussed coordinate system
+               vec_z  = coord_end.iloc[i,1:].astype('float64')
+               vec_x = np.cross(vec_z,vec_dipm)
+
+               LL = np.cross(vec_z,axis[2])
+
+               if  np.sum(np.abs(np.array(coord_end.iloc[[i,j],1:3]))) < 1e-9:
+                    beta = self.angle_two_vec(vec_z,axis[2])
+                    alpha = 2*np.pi - self.angle_two_vec(vec_x,axis[0])
+                    gamma = 0
+
+                    if linalg.det(np.array([axis[0],axis[2],vec_x])) > 0.:
+                         alpha = 2*np.pi - alpha
+
+               else:
+                    alpha = self.angle_two_vec(LL,axis[0])
+                    beta = self.angle_two_vec(vec_z,axis[2])
+                    gamma =self.angle_two_vec(LL,vec_x)
+
+                    #Find right rotation angle
+                    if linalg.det(np.array([axis[0],axis[2],LL])) < 0.:
+                         alpha = 2*np.pi - alpha
+                    
+                    if linalg.det(np.array([LL,vec_x,vec_z])) > 0.:
+                         gamma = 2*np.pi - gamma
+          
+          # Rotation for i = j
+          elif i == j:
                vec_z  = coord_end.iloc[i,1:].astype('float64')
                vec_x = np.cross(vec_z,vec_dipm)
 
@@ -179,7 +274,7 @@ class Rotation_Functions:
 
           return R_euler
 
-     def get_R_euler_new(self,coord_end,dipm,i,j):
+     def get_R_euler_old(self,coord_end,dipm,i,j):
           #Translation
           axis = np.identity(3)
 
@@ -321,7 +416,7 @@ class Rotation_Functions:
                                    [ txy ,tyy , tyz ],
                                    [ txz , tyz , tzz ]])
 
-          return inert_t/m/Const.bohr2angs**2,coord_var
+          return inert_t/m/Const.bohr2angs**2
 
      def H_Approx(grad):
           return np.outer(grad,grad)
@@ -394,7 +489,7 @@ class Rotation_Functions:
           #vec_trans(dipm,s)
 
           # Calculating moment of inertia
-          I,coord = self.inert_tensor(coord)
+          I = self.inert_tensor(coord)
           # Calculating eigenvalues and eigenvectors 
           eig_val,eig_vec = linalg.eigh(I)
 

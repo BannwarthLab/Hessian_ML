@@ -101,6 +101,7 @@ class DataGeneration(Geometry):
                     pickle.dump(struc.dict,h)
 
             self.idx_list.append(idx)
+            
         return
 
 

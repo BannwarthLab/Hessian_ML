@@ -13,6 +13,7 @@ class FTHomo:
 
         self.dict['init_R_MI'] = some_class.init_R_MI
         self.dict['R_MI_APF_mat'] = some_class.R_MI_APF_mat
+        self.dict['lamb_len'] = some_class.lamb_len
 
         return 
 
@@ -36,6 +37,7 @@ class FTHetero:
 
         self.dict['init_R_MI'] = some_class.init_R_MI
         self.dict['R_MI_APF_mat'] = some_class.R_MI_APF_mat
+        self.dict['lamb_len'] = some_class.lamb_len
         return 
 
     def add_idx(self,idx):
@@ -50,6 +52,7 @@ class PickleData:
         self.dict['dir'] =  dir
 
         if not(some_class.diag == 'GNN'):
+
             self.dict['transpose_list'] = some_class.transpose_list
         
         self.dict['xyz'] = some_class.xyz
@@ -63,6 +66,7 @@ class PickleData:
 
         self.dict['init_R_MI'] = some_class.init_R_MI
         self.dict['R_MI_APF_mat'] = some_class.R_MI_APF_mat
+        self.dict['lamb_len'] = some_class.lamb_len
 
         return 
 

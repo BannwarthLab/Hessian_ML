@@ -38,7 +38,6 @@ class HessFeature(Rotation_Functions):
                 if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
                     B,A = A,B
                     self.transpose_list.append([B,A])
-
                     rot_Mat = self.rot_X(np.pi)
     
                     R_MI_APF = matmul(rot_Mat,R_MI_APF)
@@ -52,7 +51,7 @@ class HessFeature(Rotation_Functions):
                 j = 0
 
                 for atom in [A,B]:
-                    
+                    #____Rotation from initial coordinate system to atom pair focused system____
                     dipm_atom = matmul(self.init_R_MI,self.dipm_atom[atom])
                     dipm_delta = matmul(self.init_R_MI,self.dipm_delta[atom])
                     dipm_only_mull = matmul(self.init_R_MI,self.dipm_only_mull[atom])
@@ -61,7 +60,6 @@ class HessFeature(Rotation_Functions):
                     dipm_delta = matmul(R_MI_APF,dipm_delta)
                     dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
                         
-
                     qm_atom = matmul(matmul(self.init_R_MI,self.qm_atom[atom]),np.transpose(self.init_R_MI))
                     qm_delta = matmul(matmul(self.init_R_MI,self.qm_delta[atom]),np.transpose(self.init_R_MI))
 
@@ -71,25 +69,18 @@ class HessFeature(Rotation_Functions):
                     qm_atom = matmul(qm_atom,vector_of_ones)
                     qm_delta = matmul(qm_delta,vector_of_ones)
 
-                    #gradient = matmul(R_MI_APF,self.grad[3*atom:3*atom+3])
-
-                    #for k in range(3):
-                    #    Quantity_AB[j].extend([np.sum(qm_atom[k,:])])
-
-                    #for k in range(3):
-                    #    Quantity_AB[j].extend([np.sum(qm_delta[k,:])])
-
+                    #____Append Features to Feature Vector____
                     Quantity_AB[j].extend(self.CN[atom])
+                    Quantity_AB[j].extend(self.q_atom[atom])
+                    
                     Quantity_AB[j].extend(dipm_atom)
                     Quantity_AB[j].extend(dipm_delta)
                     Quantity_AB[j].extend(dipm_only_mull)
 
                     Quantity_AB[j].extend(qm_atom)
                     Quantity_AB[j].extend(qm_delta)
+
                     Quantity_AB[j].extend(self.energy_based[atom])
-
-                    #Quantity_AB[j].extend(gradient)
-
 
                     j+=1
 
@@ -97,7 +88,7 @@ class HessFeature(Rotation_Functions):
 
                 Feature_Arith = list((Quantity_AB_arr[0] + Quantity_AB_arr[1])/2)
                 Feature_Prod = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
-                Feature_AbsDiff = list(np.abs(Quantity_AB_arr[0] - Quantity_AB_arr[1]))
+                Feature_AbsDiff = list((Quantity_AB_arr[0] - Quantity_AB_arr[1]))
 
                 Features_temp = []
                 Features_temp.extend(Quantity_AB[0])
@@ -105,19 +96,19 @@ class HessFeature(Rotation_Functions):
                 Features_temp.extend(Feature_Arith)
                 Features_temp.extend(Feature_Prod)
                 Features_temp.extend(Feature_AbsDiff)
+                Features_temp.extend([R_AB])
 
-                for idx in range(9):
+                self.Feature_AB.append(Features_temp)
+                
+                '''for idx in range(9):
                     Features_temp2 = Features_temp.copy()
                     Features_temp2.extend(index[idx])
-                    Features_temp2.extend([R_AB])
-
-                    self.Feature_AB.append(Features_temp2)
+                    self.Feature_AB.append(Features_temp2)'''
 
 
         del Quantity_AB_arr
         del Quantity_AB
         del Features_temp 
-        del R_MI_APF
 
         del Feature_Arith
         del Feature_Prod
@@ -130,15 +121,14 @@ class HessFeature(Rotation_Functions):
 
 
     def get_Feature_homonuclear(self):
-
         index = [[2,0,0],[1,1,0],[1,0,1],
                 [1,1,0],[0,2,0],[0,1,1],
                 [1,0,1],[0,1,1],[0,0,2]]
                 
-        self.Feature_AA = []
+        self.Feature_AA = []            
+        rot_Mat = self.rot_X(0.0/360*2*np.pi)
 
         for A in range(self.N_atoms):
-            rot_Mat = self.rot_X(0.0/360*2*np.pi)
 
             i0 = 3*A
             i3 = 3*A + 3
@@ -155,12 +145,15 @@ class HessFeature(Rotation_Functions):
             dipm_delta = matmul(self.init_R_MI,self.dipm_delta[A])
             dipm_only_mull = matmul(self.init_R_MI,self.dipm_only_mull[A])
 
-            dipm_atom = matmul(R_MI_APF,self.dipm_atom[A])
-            dipm_delta = matmul(R_MI_APF,self.dipm_delta[A])
-            dipm_only_mull = matmul(R_MI_APF,self.dipm_only_mull[A])
+            dipm_atom = matmul(R_MI_APF,dipm_atom)
+            dipm_delta = matmul(R_MI_APF,dipm_delta)
+            dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
 
-            qm_atom = matmul(matmul(R_MI_APF,self.qm_atom[A]),np.transpose(R_MI_APF))
-            qm_delta = matmul(matmul(R_MI_APF,self.qm_delta[A]),np.transpose(R_MI_APF))
+            qm_atom = matmul(matmul(self.init_R_MI,self.qm_atom[A]),np.transpose(self.init_R_MI))
+            qm_delta = matmul(matmul(self.init_R_MI,self.qm_delta[A]),np.transpose(self.init_R_MI))
+            
+            qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
+            qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
             #gradient = matmul(R_MI_APF,self.grad[3*A:3*A+3])
 
             #for i in range(3):
@@ -172,6 +165,7 @@ class HessFeature(Rotation_Functions):
             #    Quantity_A.extend([np.sum(qm_delta[i,:])])
 
             Quantity_A.extend(self.CN[A])
+            Quantity_A.extend(self.q_atom[A])
 
             Quantity_A.extend(dipm_atom)
             Quantity_A.extend(dipm_delta)
@@ -183,19 +177,20 @@ class HessFeature(Rotation_Functions):
             Quantity_A.extend(self.energy_based[A])
 
             #Quantity_A.extend(gradient)
-            
-            if self.diag == 'DTR':
+            self.Feature_AA.append(Quantity_A)
+
+            '''if self.diag == 'DTR':
                 for i in range(9):
                     Features_temp = []
                     Features_temp.extend(np.abs(np.array(Quantity_A)))
-                    Features_temp.extend(index[i])
+                    #Features_temp.extend(index[i])
 
                     self.Feature_AA.append(Features_temp)
 
             if self.diag == 'GNN':
                 Features_temp = []
                 Features_temp.extend(np.abs(np.array(Quantity_A)))
-                self.Feature_AA.append(Features_temp)
+                self.Feature_AA.append(Features_temp)'''
 
 
         del Quantity_A

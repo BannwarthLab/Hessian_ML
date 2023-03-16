@@ -26,10 +26,13 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
         self.init_R_MI,self.xyz = (self.calc_R(self.xyz))
 
         self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
+        self.lamb_len  = None
+        #self.hessian, self.lamb_len = self.project_hessian(self.hessian)
 
         self.rot_init_inert()
         
         self.rot_inert_apf()
+
 
         if self.diag == 'DTR':
             self.get_Feature_heteronuclear()

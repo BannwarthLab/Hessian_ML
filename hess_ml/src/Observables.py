@@ -13,42 +13,29 @@ class Observables(Rotation_Functions,Const):
         return self.coord_state[0]
 
     def gen_Frequencies(self,hess_vec_aa,hess_vec_ab): #in cm^-1
+        hess_vec_aa = hess_vec_aa.reshape(len(hess_vec_aa)*9)
+        hess_vec_ab = hess_vec_ab.reshape(len(hess_vec_ab)*9)
 
         Hessian = self.gen_hess_from_vec(hess_vec_aa,hess_vec_ab)
-
         Hess_prj,lamb_len = self.project_hessian(Hessian)
         Hess_prj_wgt = self.weight_hessian(Hess_prj)
         lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
         
-        eigv = sorted(lambd_temp,key=abs)[lamb_len:]
+        eigv = lambd_temp#sorted(lambd_temp,key=abs)[self.lamb_len:]
 
         freq = np.zeros(len(eigv))
         
         for i in range(len(eigv)):
-            if eigv[i] < 0.0:
-                freq[i] = 0#-np.sqrt(np.abs(eigv[i]))
+            if eigv[i] >= 0.0:
+                freq[i] = np.sqrt(eigv[i])#
             else:
-                freq[i] =  np.sqrt(eigv[i])
+                freq[i] = -np.sqrt(abs(eigv[i]))
 
-        return freq*219474.63#sorted(freq*219474.63,key=abs)[lamb_len:]
-    
-    def frequency(lamb):
-     
-     freq_val = np.zeros(len(lamb))
-
-     for i in range(len(lamb)):
-          
-          if lamb[i] >= 0:
-               freq_val[i] = np.sqrt(lamb[i])
-          else:
-               freq_val[i] = 0
-
-     return freq_val
-
+        return freq#*219474.63#sorted(freq*219474.63,key=abs)[lamb_len:]
 
     def get_ZPE(self,freq): # in kJ/mol
 
-        ZPE = 1/2*np.sum(freq)*0.01196265919
+        ZPE = 1/2*np.sum(freq)#*0.01196265919
 
         return ZPE  
     
