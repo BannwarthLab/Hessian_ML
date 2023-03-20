@@ -1,0 +1,2 @@
+[console_scripts]
+hess_ml = src.main:main

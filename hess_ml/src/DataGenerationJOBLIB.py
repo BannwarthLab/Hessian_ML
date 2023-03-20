@@ -50,13 +50,15 @@ class DataGeneration(Geometry):
             np.savetxt('test_idx.txt',self.test_idx)
             np.savetxt('train_idx.txt',self.train_idx)
             self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
+            molecule_dir = molecule_dir[self.comp_idx]
+        else:
+            molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
 
         #_______Reading_the_names_of_all_folders______
         self.wall_time0 = time.time()
 
         self.count = 0
         self.idx_list = []
-        molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
         for mol in range(len(molecule_dir)):
             #_______Reading_the_names_of_all_subfolders_______ 
             self.data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
@@ -66,7 +68,7 @@ class DataGeneration(Geometry):
             #________Paralleized Feature Generation___________ 
             Parallel(n_jobs=self.threads)(delayed(self.generation_procedure_dtr)(geom=geo,mol=mol,dir=geo_dir[geo]) for geo in dir_idx)
 
-            print(f'Features and Targets of {len(geo_dir)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
+            print(f'Features and Targets of {len(self.train_idx)+len(self.test_idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
 
         return
 

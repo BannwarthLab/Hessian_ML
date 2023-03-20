@@ -1,0 +1,9 @@
+{ "ETR":{"max_feature" : [0.25,0.5,1.0],
+         "min_samples_leaf" : [1,5,15],
+         "min_samples_split" : [2,10,30],
+         "ccp_alpha" : [0.001,0.002,0.004]},
+    "RFR":{"max_feature" : [0.25,0.5,1.0],
+    "min_samples_leaf" : [1,5,15],
+    "min_samples_split" : [2,10,30],
+    "ccp_alpha" : [0.001,0.002,0.004]}
+}

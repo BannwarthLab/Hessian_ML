@@ -46,7 +46,7 @@ class Parser:
             self.output_file   = f"{self.config['feature_generation'].get('output_file','systems')}*.json"
             self.file_dipm     = self.config['feature_generation'].get('dipm','xyz_dipm.csv')
             self.file_coord    = self.config['feature_generation'].get('coord','xtbopt.xyz')
-            self.subfolder     = bool(self.config['feature_generation'].get('subfolder',False))            
+            self.subfolder     = bool(self.config['feature_generation'].get('subfolder',False))
             self.diag          = self.config['feature_generation'].get('diag','DTR')
             
             if self.diag == 'GNN':
@@ -76,6 +76,8 @@ class Parser:
         self.test_size  = self.config['training_testing'].get('test_size',0.25)
         self.train_test  = self.config['training_testing'].get('test',True)
         self.only_hom  = self.config['training_testing'].get('only_hom','False')
+        self.method     = self.config['training_testing'].get('method','ETR')    
+        self.SearchCV     = self.config['training_testing'].get('SearchCV',None)    
 
         if self.only_hom == 'False':
             self.only_hom = False

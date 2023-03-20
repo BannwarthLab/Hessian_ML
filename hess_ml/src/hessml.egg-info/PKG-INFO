@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: hessml
+Version: 0.0.1
+Summary: A tool for learning and predicting Hessian matrices based on semiemprical electronic structure theory atomic quantities derived from xtb
+Home-page: https://git.rwth-aachen.de/bannwarthlab/Hessian_ML
+Author: Gereon Feldmann
+Author-email: feldmann@pc.rwth-aachen.de

@@ -1,8 +1,13 @@
 from sklearn.ensemble import ExtraTreesRegressor,RandomForestRegressor
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from joblib import parallel_backend
 from joblib import dump,load
-
+import json as json 
 from sklearn.multioutput import MultiOutputRegressor
+from sklearn.neural_network import MLPRegressor
+from sklearn.svm import SVR
+from sklearn.preprocessing import Normalizer
+from sklearn.preprocessing import StandardScaler
 
 from src.ReadWrite import ReadWrite
 import os
@@ -14,10 +19,10 @@ class Training(ReadWrite):
         super().__init__
         pass
 
-    def train(self,mode=None):
+    def train(self,train_conf,mode=None):
         self.mode = mode
         self.import_FT()
-        self.training_model()
+        self.training_model(train_conf)
         
         # if mode == 'hetero':
         #     final_file = 'Model_Hetero.json'
@@ -25,7 +30,6 @@ class Training(ReadWrite):
         #     final_file = 'Model_Homo.json'
         
         # self.merge_JsonFiles(self.files,final_file)
-
 
         return
 
@@ -65,24 +69,76 @@ class Training(ReadWrite):
 
         return 
 
-    def training_model(self):
+    def training_model(self,train_conf):
         if self.mode == 'homo':
             N_est = self.ml_parameter[0].get('n_estimators')
             max_depth = self.ml_parameter[0].get('max_depth')
 
         if self.mode == 'hetero':
             N_est = self.ml_parameter[1][0].get('n_estimators')
-            max_depth = self.ml_parameter[1][0].get('max_depth')
+            max_depth = self.ml_parameter[1][0].get('max_depth')            
 
         print(f'Training {self.mode}nuclear model with a feature matrix of shape {np.shape(self.Features)}... ',end="")
-        regr_model = ExtraTreesRegressor(max_depth=max_depth,bootstrap=True,random_state=self.rnd_seed,max_features=1.0)#)#min_samples_leaf=5,min_samples_split=15
 
+        method = train_conf.get('method', 'ETR')
+        SearchCV = train_conf.get('SearchCV',None)
+
+        if method == 'ETR':
+            regr_model = ExtraTreesRegressor(max_depth=max_depth,bootstrap=True,random_state=self.rnd_seed,max_features=1.0)
+            self.normalization = False
+        
+        if method == 'RFR':
+            regr_model = RandomForestRegressor(n_estimators=N_est,max_depth=max_depth,bootstrap=True,random_state=self.rnd_seed,max_features=1.0)
+            self.normalization = False
+
+        if method == 'SVR':
+            single_regr_model = SVR(epsilon=1e-3,C=1.0,tol=1e-3,kernel='rbf')
+            regr_model = MultiOutputRegressor(single_regr_model)
+            self.normalization = True
+
+        if method == 'MLPR':
+            regr_model = MLPRegressor(hidden_layer_sizes=300,alpha=0.0001,learning_rate_init=0.0001)
+            self.normalization = True
+
+
+        if SearchCV == 'Random':
+
+            params_grid_path = 'SearchCVParams.json'
+            with open(params_grid_path) as f:
+                param_grid = json.load(f)
+            f.close()
+
+            regr_model = RandomizedSearchCV(regr_model,param_distributions=param_grid.get(method),n_iter=25,random_state=self.rnd_seed)
+
+        if SearchCV == 'Grid':
+            params_grid_path = 'SearchCVParams.json'
+            with open(params_grid_path) as f:
+                param_grid = json.load(f)
+            f.close()
+            regr_model = GridSearchCV(regr_model,param_grid=param_grid.get(method))
+
+        
         self.Targets = self.Targets.astype(np.float32)
         self.Features = self.Features.astype(np.float32)
 
-        multi_reg_model = MultiOutputRegressor(regr_model)
-        with parallel_backend('threading',n_jobs=self.threads): 
+
+        if self.normalization == True:
+            transformer = StandardScaler().fit(self.Features)
+            self.Features = transformer.transform(self.Features)
+
+            with open(f'{self.model_name}_{self.mode}_transformer.joblib','w') as g:
+                g.truncate(0)
+            g.close()
+
+            pathname = f'{self.model_name}_{self.mode}_transformer.joblib'
+            print(f'done')
+            dump(transformer,pathname)
+            print(f'Transformer is saved in {pathname}.\n')
+
+
+        with parallel_backend('threading',n_jobs=self.threads):
             regr_model.fit(self.Features,self.Targets)
+
 
         with open(f'{self.model_name}_{self.mode}.joblib','w') as g:
             g.truncate(0)
@@ -93,9 +149,16 @@ class Training(ReadWrite):
         dump(regr_model,pathname)
         print(f'Model is saved in {pathname}.\n')
 
+
+
+
         del g
         del regr_model
+        #del clf
         del self.Features
         del self.Targets
+
+        if self.normalization:
+            del transformer
 
         return

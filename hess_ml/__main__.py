@@ -1,7 +1,7 @@
 ## gfeldmann/Documents/GitLab/hessian_ml/venv/bin/python3
 from src.Environment import Environment
 
-def main():
+def main() -> None:
     env = Environment()
 
     if env.config.get('feature_generation',False):
@@ -9,7 +9,6 @@ def main():
 
     if env.config.get('training_testing',False):
         env.parse_train_test_parameter()
-
     #__________________________________________
     #____________Choosing runtype______________
     if env.config['runtype'] == 'hessian':
@@ -20,9 +19,11 @@ def main():
         if env.config.get('training_testing',False):
             
             if not(env.only_hom):
-                env.train(mode='hetero')
+                env.train(train_conf = env.config['training_testing'],mode='hetero')
 
-            env.train(mode='homo')
+            env.train(train_conf = env.config['training_testing'],mode='homo')
+
+            
             env.test(env.only_hom)
 
 if __name__ == '__main__':

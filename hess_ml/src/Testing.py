@@ -42,19 +42,10 @@ class Testing(ReadWrite,Observables):
 
                     hess_vec_aa = np.array(temp_obj.get('pred_target_AA'))
 
-                    if False:
+                    if self.only_hom:
                         hess_vec_ab = np.array(temp_obj.get('Target_AB'))
                     else:
                         hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
-
-                    if temp_obj.get('dir') == '42':
-                         np.savetxt('init_R_MI.txt',temp_obj.get('init_R_MI'))
-                         np.savetxt('RImat.txt',temp_obj.get('R_MI_APF_mat'))
-                         np.savetxt('feat_ab_test.txt',temp_obj.get('Feature_AB'))
-                         np.savetxt('feat_aa_test.txt',temp_obj.get('Feature_AA'))
-                         np.savetxt('tar_aa.txt',temp_obj.get('Target_AA'))
-                         np.savetxt('tar_ab.txt',temp_obj.get('Target_AB'))
-
 
                     freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab)
                     ZPE = self.get_ZPE(freq)
@@ -101,6 +92,10 @@ class Testing(ReadWrite,Observables):
 
         #with open(f'{self.model_name}_hetero.joblib','rb') as f1:
         het_model = load(f'{self.model_name}_hetero.joblib')
+
+        if self.normalization:
+            pathname = f'{self.model_name}_hetero_transformer.joblib'
+            transformer = load(pathname)
         #f1.close()
 
         test_files = glob.glob('test_structures*.json')
@@ -110,10 +105,10 @@ class Testing(ReadWrite,Observables):
                     try:
                         temp_obj = pickle.load(f)
 
-                        H_hetero = het_model.predict(np.array(temp_obj.get('Feature_AB')))#[::9,:]
-                        if temp_obj.get('dir') == '42':
-                            np.savetxt('vec_ab.txt',H_hetero)
-
+                        if self.normalization:
+                            H_hetero = het_model.predict(transformer.transform(np.array(temp_obj.get('Feature_AB'))))#[::9,:]
+                        else:
+                            H_hetero = het_model.predict((np.array(temp_obj.get('Feature_AB'))))#[::9,:]
                         temp_obj['pred_target_AB'] = H_hetero#.reshape(len(H_hetero)*9)
                         with open('pred_structures.json','ab') as g:
                             pickle.dump(temp_obj,g)
@@ -127,31 +122,33 @@ class Testing(ReadWrite,Observables):
 
         #with open(f'{self.model_name}_homo.joblib','rb') as f:
         hom_model = load(f'{self.model_name}_homo.joblib')
-
+        if self.normalization:
+            pathname = f'{self.model_name}_homo_transformer.joblib'
+            transformer = load(pathname)
         #f.close()
 
         with open('pred_structures.json','rb') as f:
-                while True:
-                    try:
-                        temp_obj = pickle.load(f)
+            while True:
+                try:
+                    temp_obj = pickle.load(f)
 
-                        H_hom = hom_model.predict(np.array(temp_obj.get('Feature_AA')))#[::9,:]
-                        temp_obj['pred_target_AA'] = H_hom#.reshape(len(H_hom)*9)
+                    if self.normalization:
+                        H_hom = hom_model.predict(transformer.transform(np.array(temp_obj.get('Feature_AA'))))#[::9,:]
+                    else:
+                        H_hom = hom_model.predict((np.array(temp_obj.get('Feature_AA'))))#[::9,:]
+                       
+                    temp_obj['pred_target_AA'] = H_hom#.reshape(len(H_hom)*9)
 
-                        if temp_obj.get('dir') == '42':
-                            np.savetxt('vec_aa.txt',H_hom)
 
-                        with open('pred_structures_final.json','ab') as g:
-                            pickle.dump(temp_obj,g)
+                    with open('pred_structures_final.json','ab') as g:
+                        pickle.dump(temp_obj,g)
 
-                    except EOFError:
-                            break
+                except EOFError:
+                        break
         g.close()
         f.close()
         del hom_model
 
-        for f1 in test_files:
-            os.remove(f1)
         os.remove('pred_structures.json')
 
         return
