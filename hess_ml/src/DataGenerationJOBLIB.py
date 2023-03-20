@@ -50,7 +50,7 @@ class DataGeneration(Geometry):
             np.savetxt('test_idx.txt',self.test_idx)
             np.savetxt('train_idx.txt',self.train_idx)
             self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
-            molecule_dir = molecule_dir[self.comp_idx]
+            geo_dir = np.array(geo_dir)[self.comp_idx]
         else:
             molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
 

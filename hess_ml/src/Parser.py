@@ -79,6 +79,9 @@ class Parser:
         self.method     = self.config['training_testing'].get('method','ETR')    
         self.SearchCV     = self.config['training_testing'].get('SearchCV',None)    
 
+        if self.SearchCV == 'Random':
+            self.n_iter_search     = self.config['training_testing'].get('n_iter',25)    
+
         if self.only_hom == 'False':
             self.only_hom = False
         elif self.only_hom == 'True':
@@ -93,7 +96,7 @@ class Parser:
 
             except:
                 print('No parameters for the homonuclear model are specified. Default parameters are set.')
-                self.ml_parameter =[{'n_estimators': 150, 'max_depth': 30}]
+                self.config['training_testing']['homo'] = [{}]
 
             else:
                 self.ml_parameter = self.config['training_testing']['homo']
@@ -105,7 +108,7 @@ class Parser:
 
             except:
                 print('No parameters for the heteronuclear model are specified. Default parameters are set')
-                self.ml_parameter =[{'n_estimators': 175, 'max_depth': 25}]
+                self.config['training_testing']['hetero'] = [{}]
 
             else:
                 self.ml_parameter.append(self.config['training_testing']['hetero'])

@@ -70,52 +70,44 @@ class Training(ReadWrite):
         return 
 
     def training_model(self,train_conf):
-        if self.mode == 'homo':
-            N_est = self.ml_parameter[0].get('n_estimators')
-            max_depth = self.ml_parameter[0].get('max_depth')
 
-        if self.mode == 'hetero':
-            N_est = self.ml_parameter[1][0].get('n_estimators')
-            max_depth = self.ml_parameter[1][0].get('max_depth')            
+        params = self.config['training_testing'][self.mode][0]
 
-        print(f'Training {self.mode}nuclear model with a feature matrix of shape {np.shape(self.Features)}... ',end="")
+        print(f'Training {self.mode}nuclear model with a feature matrix of shape {np.shape(self.Features)}')
 
         method = train_conf.get('method', 'ETR')
         SearchCV = train_conf.get('SearchCV',None)
 
         if method == 'ETR':
-            regr_model = ExtraTreesRegressor(max_depth=max_depth,bootstrap=True,random_state=self.rnd_seed,max_features=1.0)
+            regr_model = ExtraTreesRegressor(random_state=self.rnd_seed)
+            regr_model.set_params(**params)
             self.normalization = False
         
         if method == 'RFR':
-            regr_model = RandomForestRegressor(n_estimators=N_est,max_depth=max_depth,bootstrap=True,random_state=self.rnd_seed,max_features=1.0)
+            regr_model = RandomForestRegressor(random_state=self.rnd_seed)
+            regr_model.set_params(**params)
             self.normalization = False
 
         if method == 'SVR':
-            single_regr_model = SVR(epsilon=1e-3,C=1.0,tol=1e-3,kernel='rbf')
+            single_regr_model = SVR()
+            single_regr_model.set_params(**params)
             regr_model = MultiOutputRegressor(single_regr_model)
             self.normalization = True
 
         if method == 'MLPR':
-            regr_model = MLPRegressor(hidden_layer_sizes=300,alpha=0.0001,learning_rate_init=0.0001)
+            regr_model = MLPRegressor()
+            regr_model.set_params(**params)
             self.normalization = True
 
+        search = False
 
         if SearchCV == 'Random':
-
-            params_grid_path = 'SearchCVParams.json'
-            with open(params_grid_path) as f:
-                param_grid = json.load(f)
-            f.close()
-
-            regr_model = RandomizedSearchCV(regr_model,param_distributions=param_grid.get(method),n_iter=25,random_state=self.rnd_seed)
+            search = True
+            regr_model = RandomizedSearchCV(regr_model,param_distributions=params,n_iter=self.n_iter_search,random_state=self.rnd_seed)
 
         if SearchCV == 'Grid':
-            params_grid_path = 'SearchCVParams.json'
-            with open(params_grid_path) as f:
-                param_grid = json.load(f)
-            f.close()
-            regr_model = GridSearchCV(regr_model,param_grid=param_grid.get(method))
+            search = True
+            regr_model = GridSearchCV(regr_model,param_grid=params)
 
         
         self.Targets = self.Targets.astype(np.float32)
@@ -131,7 +123,7 @@ class Training(ReadWrite):
             g.close()
 
             pathname = f'{self.model_name}_{self.mode}_transformer.joblib'
-            print(f'done')
+
             dump(transformer,pathname)
             print(f'Transformer is saved in {pathname}.\n')
 
@@ -139,13 +131,18 @@ class Training(ReadWrite):
         with parallel_backend('threading',n_jobs=self.threads):
             regr_model.fit(self.Features,self.Targets)
 
+        
+        if search:
+            print(f'Used Parameters:\n {regr_model.best_params_}')
+
+        else:
+            print(f'Used Parameters:\n {regr_model.get_params()}')
 
         with open(f'{self.model_name}_{self.mode}.joblib','w') as g:
             g.truncate(0)
         g.close()
 
         pathname = f'{self.model_name}_{self.mode}.joblib'
-        print(f'done')
         dump(regr_model,pathname)
         print(f'Model is saved in {pathname}.\n')
 

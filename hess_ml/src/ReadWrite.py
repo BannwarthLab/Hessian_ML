@@ -57,7 +57,7 @@ class ReadWrite():
             self.qm_atom = Rotation_Functions.qm_matrix(np.array(GFN2_quantities.loc[:,['qm_atom_xx','qm_atom_yy', 'qm_atom_zz','qm_atom_xy','qm_atom_xz','qm_atom_yz']].values.tolist()))
             self.qm_delta = Rotation_Functions.qm_matrix(np.array(GFN2_quantities.loc[:,['qm_delta_xx','qm_delta_yy', 'qm_delta_zz','qm_delta_xy','qm_delta_xz','qm_delta_yz']].values.tolist()))
             self.energy_based = np.array(GFN2_quantities.loc[:,['chem pot','HOAO_a (eV)','LUAO_a (eV)','HOAO_b (eV)','LUAO_b (eV)',
-                                    'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes',' E_tot',
+                                    'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes','E_tot',
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']].values.tolist())
             self.names = GFN2_quantities.columns.tolist()
             return 
