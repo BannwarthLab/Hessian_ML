@@ -35,11 +35,13 @@ class DataGeneration(Geometry):
 
         if self.train_test == True:
             total_structures = 0
+            geo_dirs = []
             molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
             for mol in range(len(molecule_dir)):
                 data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
                 geo_dir = sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
-                total_structures +=len(sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))]))
+                geo_dirs.extend(geo_dir)
+                total_structures += len(geo_dir)
 
             geo_idx = np.arange(total_structures)
 
