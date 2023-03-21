@@ -157,10 +157,10 @@ class Rotation_Functions:
                print('Error in vec_x')
 
           if coord_end.iloc[i,1] > 1e-8 or coord_end.iloc[i,2] > 1e-8:
-               print('Error in coord i') 
+               print(f'Error in coord i:\n{coord_end.iloc[i,:]}') 
 
           if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
-               print('Error in coord j') 
+               print(f'Error in coord j:\n{coord_end.iloc[j,:]}') 
 
           return R_euler
      

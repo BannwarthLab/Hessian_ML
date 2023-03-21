@@ -35,16 +35,15 @@ class DataGeneration(Geometry):
 
         if self.train_test == True:
             total_structures = 0
-            geo_dirs = []
+            self.geo_dir = []
             molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
             for mol in range(len(molecule_dir)):
                 data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
-                geo_dir = sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
-                geo_dirs.extend(geo_dir)
-                total_structures += len(geo_dir)
+                temp_dir = sorted([os.path.join(data_dir,geo) for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
+                self.geo_dir.extend(temp_dir)
+                total_structures += len(temp_dir)
 
-            geo_idx = np.arange(total_structures)
-
+            geo_idx = np.arange(0,total_structures-1)
             print(f'{self.train_size*100} % of the set is used for training.')
             print(f'{self.test_size*100} % of the set is used for testing.')
 
@@ -52,7 +51,9 @@ class DataGeneration(Geometry):
             np.savetxt('test_idx.txt',self.test_idx)
             np.savetxt('train_idx.txt',self.train_idx)
             self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
-            geo_dir = np.array(geo_dir)[self.comp_idx]
+            #self.geo_dir = np.array(self.geo_dir)[self.comp_idx]
+            geo_idx = geo_idx[self.comp_idx]
+
         else:
             molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
 
@@ -61,16 +62,16 @@ class DataGeneration(Geometry):
 
         self.count = 0
         self.idx_list = []
+        '''
         for mol in range(len(molecule_dir)):
             #_______Reading_the_names_of_all_subfolders_______ 
             self.data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
 
-            self.geo_dir = sorted([geo for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
-            dir_idx = np.arange(len(geo_dir))
+            self.geo_dir = sorted([os.path.join(data_dir,geo) for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])'''
             #________Paralleized Feature Generation___________ 
-            Parallel(n_jobs=self.threads)(delayed(self.generation_procedure_dtr)(geom=geo,mol=mol,dir=geo_dir[geo]) for geo in dir_idx)
+        Parallel(n_jobs=self.threads)(delayed(self.generation_procedure_dtr)(geom=geo,mol=mol,dir=self.geo_dir[geo]) for geo in self.comp_idx)
 
-            print(f'Features and Targets of {len(self.train_idx)+len(self.test_idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
+        print(f'Features and Targets of {len(self.train_idx)+len(self.test_idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
 
         return
 
@@ -81,7 +82,7 @@ class DataGeneration(Geometry):
         #GENERATE TARGET & FEATURE --> picks dependend on env the right features and target
         if geom in self.comp_idx:
 
-            self.gen_data(os.path.join(self.data_dir,self.geo_dir[geom]),mol,geom)
+            self.gen_data(self.geo_dir[geom],mol,geom)
 
             self.clear_quantities()
             idx = [self.mol,geom]
