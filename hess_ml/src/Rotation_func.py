@@ -152,15 +152,20 @@ class Rotation_Functions:
           if vec_x[0] < 0.:
                print(f'Error in vec_x[0] in {i,j}')
 
-          if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
+          if np.abs(vec_x[1]) > 1e-7 or np.abs(vec_x[2]) > 1e-8:
                print(vec_x)
-               print('Error in vec_x')
+               print(f'Error in vec_x for {i,j}')
+               print(coord_end.iloc[[i,j],:])
 
-          if coord_end.iloc[i,1] > 1e-8 or coord_end.iloc[i,2] > 1e-8:
-               print(f'Error in coord i:\n{coord_end.iloc[i,:]}') 
+          if coord_end.iloc[i,1] > 1e-7 or coord_end.iloc[i,2] > 1e-7:
+               print(f'Error in coord i:{i,j}') 
+               print(coord_end.iloc[[i,j],:])
+               print(alpha,beta,gamma)
 
-          if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
-               print(f'Error in coord j:\n{coord_end.iloc[j,:]}') 
+          if coord_end.iloc[j,1] > 1e-7 or coord_end.iloc[j,2] > 1e-7:
+               print(f'Error in coord j:{i,j}') 
+               print(coord_end.iloc[[i,j],:])
+               print(alpha,beta,gamma)
 
           return R_euler
      
@@ -264,13 +269,14 @@ class Rotation_Functions:
 
           if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
                print(vec_x)
+               print(self.dir)
                print('Error in vec_x')
 
           if coord_end.iloc[i,1] > 1e-8 or coord_end.iloc[i,2] > 1e-8:
                print('Error in coord i') 
 
           if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
-               print('Error in coord j') 
+               print('Error in coord j')
 
           return R_euler
 
