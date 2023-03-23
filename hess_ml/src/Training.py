@@ -128,8 +128,8 @@ class Training(ReadWrite):
             print(f'Transformer is saved in {pathname}.\n')
 
 
-        with parallel_backend('threading',n_jobs=self.threads):
-            regr_model.fit(self.Features,self.Targets)
+        regr_model.set_params(n_jobs=self.threads)
+        regr_model.fit(self.Features,self.Targets)
 
         
         if search:
