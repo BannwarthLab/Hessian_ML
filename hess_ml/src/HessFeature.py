@@ -99,11 +99,7 @@ class HessFeature(Rotation_Functions):
                 Features_temp.extend([R_AB])
 
                 self.Feature_AB.append(Features_temp)
-                
-                '''for idx in range(9):
-                    Features_temp2 = Features_temp.copy()
-                    Features_temp2.extend(index[idx])
-                    self.Feature_AB.append(Features_temp2)'''
+
 
 
         del Quantity_AB_arr

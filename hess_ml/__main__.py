@@ -1,5 +1,6 @@
 ## gfeldmann/Documents/GitLab/hessian_ml/venv/bin/python3
 from src.Environment import Environment
+import time as time 
 
 def main() -> None:
     env = Environment()
@@ -13,18 +14,29 @@ def main() -> None:
     #____________Choosing runtype______________
     if env.config['runtype'] == 'hessian':
 
+
         if env.config.get('feature_generation',False):
             env.generate_data()
-
+             
         if env.config.get('training_testing',False):
-            
+
+            temp_time_old = time.time()
+
             if not(env.only_hom):
+                        
                 env.train(train_conf = env.config['training_testing'],mode='hetero')
+
 
             env.train(train_conf = env.config['training_testing'],mode='homo')
 
-            
+            temp_time_new = time.time()
+
+            print(f'Training was done in {round(temp_time_new - temp_time_old)} s' )
+
+            temp_time_old = time.time()
             env.test(env.only_hom)
+            temp_time_new = time.time()
+            print(f'Testing was done in {round(temp_time_new - temp_time_old)} s')
 
 if __name__ == '__main__':
     main()

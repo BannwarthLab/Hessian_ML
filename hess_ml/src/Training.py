@@ -8,7 +8,7 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import StandardScaler
-
+from sklearn.feature_selection import VarianceThreshold
 from src.ReadWrite import ReadWrite
 import os
 import numpy as np
@@ -37,7 +37,6 @@ class Training(ReadWrite):
         
         self.Features = []
         self.Targets = []
-
         if self.mode =='homo':
             print(f'Importing Features and Targets of homonuclear model ... ', end="")
             self.files = glob.glob('Model_Homo*.json')
@@ -78,6 +77,8 @@ class Training(ReadWrite):
         method = train_conf.get('method', 'ETR')
         SearchCV = train_conf.get('SearchCV',None)
 
+
+
         if method == 'ETR':
             regr_model = ExtraTreesRegressor(random_state=self.rnd_seed)
             regr_model.set_params(**params)
@@ -112,6 +113,26 @@ class Training(ReadWrite):
         
         self.Targets = self.Targets.astype(np.float32)
         self.Features = self.Features.astype(np.float32)
+        
+        print(self.Features.shape)
+
+        self.selection = True
+
+        if self.selection:
+            selector = VarianceThreshold(threshold=0.1*(1-0.1))
+            self.Features = selector.fit_transform(self.Features)
+
+            with open(f'{self.model_name}_{self.mode}_selector.joblib','w') as g:
+                g.truncate(0)
+            g.close()
+
+            pathname = f'{self.model_name}_{self.mode}_selector.joblib'
+
+            dump(selector,pathname)
+            print(f'Selector is saved in {pathname}.\n')
+
+
+        print(self.Features.shape)
 
 
         if self.normalization == True:
@@ -126,6 +147,8 @@ class Training(ReadWrite):
 
             dump(transformer,pathname)
             print(f'Transformer is saved in {pathname}.\n')
+
+
 
 
         regr_model.set_params(n_jobs=self.threads)
@@ -158,4 +181,6 @@ class Training(ReadWrite):
         if self.normalization:
             del transformer
 
+        if self.selection:
+            del selector
         return

@@ -34,7 +34,6 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
         
         self.rot_inert_apf()
 
-
         if self.diag == 'DTR':
             self.get_Feature_heteronuclear()
             self.gen_Hessian_vector(self.transpose_list)

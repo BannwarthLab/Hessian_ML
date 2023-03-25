@@ -13,8 +13,8 @@ class Observables(Rotation_Functions,Const):
         return self.coord_state[0]
 
     def gen_Frequencies(self,hess_vec_aa,hess_vec_ab): #in cm^-1
-        hess_vec_aa = hess_vec_aa.reshape(len(hess_vec_aa)*9)
-        hess_vec_ab = hess_vec_ab.reshape(len(hess_vec_ab)*9)
+        #hess_vec_aa = hess_vec_aa.reshape(len(hess_vec_aa)*6)
+        #hess_vec_ab = hess_vec_ab.reshape(len(hess_vec_ab)*9)
 
         Hessian = self.gen_hess_from_vec(hess_vec_aa,hess_vec_ab)
         Hess_prj,lamb_len = self.project_hessian(Hessian)
@@ -62,38 +62,50 @@ class Observables(Rotation_Functions,Const):
         atoms = self.xyz['atoms']
 
         for k in range(len(atoms)):
-            for l in range(len(atoms)):
-
+            for l in range(k,len(atoms)):
+                k3 = 3*k 
+                l3 = 3*l
+                
                 mass_n = Const.elements_dict[atoms[k]]
                 mass_m = Const.elements_dict[atoms[l]]
 
-                Hessian[3*k:3*k+3,3*l:3*l+3] =  1/np.sqrt(mass_n*mass_m*Const.mass_unit_in_au**2)*Hessian[3*k:3*k+3,3*l:3*l+3]
+                Hessian[k3:k3+3,l3:l3+3] =  1/np.sqrt(mass_n*mass_m*Const.mass_unit_in_au**2)*Hessian[k3:k3+3,l3:l3+3]
+                if k != l:
+                    Hessian[l3:l3+3,k3:k3+3] = Hessian[k3:k3+3,l3:l3+3]
+
         return Hessian
 
 
-    def fill_matrix_block(self,vector,matrix,R_mat=None,A=None,B=None,ite=None,transpose=False):
-        
-        if B == None:
-            B = A
+    def fill_matrix_block_AB(self,vector,matrix,R_mat=None,A=None,B=None,ite=None,transpose=False):
 
-        k = 9*ite
-        for i in range(3):
-            for j in range(3):
-                matrix[3*A+i,3*B+j] = vector[k] #reshape may also be possible
-                #print(f'{k}:{vector[k]}')
-                k+=1
+        A3 = 3*A 
+        B3 = 3*B
+
+        matrix[A3:A3+3,B3:B3+3] = vector.reshape(3,3)
 
         if transpose == True:
-            matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(self.rot_X(np.pi)),np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])),(self.rot_X(np.pi)))
+            matrix[A3:A3+3,B3:B3+3] = matmul(matmul(np.transpose(self.rot_X(np.pi)),np.transpose(matrix[A3:A3+3,B3:B3+3])),(self.rot_X(np.pi)))
 
-        matrix[3*A:3*A+3,3*B:3*B+3] = matmul(matmul(np.transpose(R_mat[3*A:3*A+3,3*B:3*B+3]),matrix[3*A:3*A+3,3*B:3*B+3]),(R_mat[3*A:3*A+3,3*B:3*B+3]))
+        matrix[A3:A3+3,B3:B3+3] = matmul(matmul(np.transpose(R_mat[A3:A3+3,B3:B3+3]),matrix[A3:A3+3,B3:B3+3]),(R_mat[A3:A3+3,B3:B3+3]))
 
-        if A != B:
-            matrix[3*B:3*B+3,3*A:3*A+3] = np.transpose(matrix[3*A:3*A+3,3*B:3*B+3])
+        matrix[B3:B3+3,A3:A3+3] = np.transpose(matrix[A3:A3+3,B3:B3+3])
 
         return matrix
+    
+    def fill_matrix_block_AA(self,vector,matrix,R_mat=None,A=None,ite=None):
 
+        A3 = 3*A
 
+        temp_mat = np.zeros([3,3])
+        temp_mat[np.triu_indices(temp_mat.shape[0],k=0)] = vector
+        temp_mat = temp_mat + temp_mat.T - np.diag(np.diag(temp_mat))
+
+        matrix[A3:A3+3,A3:A3+3] = temp_mat
+
+        matrix[A3:A3+3,A3:A3+3] = matmul(matmul(np.transpose(R_mat[A3:A3+3,A3:A3+3]),matrix[A3:A3+3,A3:A3+3]),(R_mat[A3:A3+3,A3:A3+3]))
+
+        return matrix
+    
     def find_trans_rot(self,hess,coord):
         Nat = len(coord)
 
@@ -104,13 +116,14 @@ class Observables(Rotation_Functions,Const):
         trans_z = np.array([0.,0.,1.])
 
         for i in range(Nat):
-            overlap_mat[0,3*i:3*i+3] = trans_x
-            overlap_mat[1,3*i:3*i+3] = trans_y
-            overlap_mat[2,3*i:3*i+3] = trans_z
+            i3 = 3*i
+            overlap_mat[0,i3:i3+3] = trans_x
+            overlap_mat[1,i3:i3+3] = trans_y
+            overlap_mat[2,i3:i3+3] = trans_z
 
-            overlap_mat[3,3*i:3*i+3] = np.array([0.,coord.loc[i,'z'],-coord.loc[i,'y']])
-            overlap_mat[4,3*i:3*i+3] = np.array([-coord.loc[i,'z'],0.,coord.loc[i,'x']])
-            overlap_mat[5,3*i:3*i+3] = np.array([coord.loc[i,'y'],-coord.loc[i,'x'],0.])
+            overlap_mat[3,i3:i3+3] = np.array([0.,coord.loc[i,'z'],-coord.loc[i,'y']])
+            overlap_mat[4,i3:i3+3] = np.array([-coord.loc[i,'z'],0.,coord.loc[i,'x']])
+            overlap_mat[5,i3:i3+3] = np.array([coord.loc[i,'y'],-coord.loc[i,'x'],0.])
 
         overlap_mat = overlap_mat / Nat
         overlap_mat = 1/(linalg.norm(overlap_mat,1)) * overlap_mat
@@ -150,14 +163,14 @@ class Observables(Rotation_Functions,Const):
         Hessian = np.zeros([self.N_atoms*3,self.N_atoms*3])
 
         for atom_A in range(self.N_atoms):
-            Hessian = self.fill_matrix_block(hess_vec_aa,Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,ite=ite_homo)
+            Hessian = self.fill_matrix_block_AA(hess_vec_aa[atom_A],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A)
             ite_homo += 1
 
             for atom_B in range(atom_A+1,self.N_atoms):
                 transpose = False
                 if [atom_A,atom_B] in self.transpose_list:
                     transpose = True
-                Hessian = self.fill_matrix_block(hess_vec_ab,Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
+                Hessian = self.fill_matrix_block_AB(hess_vec_ab[ite_hetero],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
                 ite_hetero +=1
             #self.H_pred += self.H_approx ## Change Hessian
         return Hessian

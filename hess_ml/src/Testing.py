@@ -21,7 +21,7 @@ class Testing(ReadWrite,Observables):
 
     def comp_test_observables(self,only_hom):
         print('Computing Observables ...',end="")
-        freq_pred_list = []
+        freq_pred_list = []      
         ZPE_pred = []
         ZPE_harm_pred = []
 
@@ -42,10 +42,7 @@ class Testing(ReadWrite,Observables):
 
                     hess_vec_aa = np.array(temp_obj.get('pred_target_AA'))
 
-                    if self.only_hom:
-                        hess_vec_ab = np.array(temp_obj.get('Target_AB'))
-                    else:
-                        hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
+                    hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
 
                     freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab)
                     ZPE = self.get_ZPE(freq)
@@ -96,6 +93,11 @@ class Testing(ReadWrite,Observables):
         if self.normalization:
             pathname = f'{self.model_name}_hetero_transformer.joblib'
             transformer = load(pathname)
+
+        if self.selection:
+            pathname = f'{self.model_name}_hetero_selector.joblib'
+            selector = load(pathname)
+
         #f1.close()
 
         test_files = glob.glob('test_structures*.json')
@@ -107,6 +109,10 @@ class Testing(ReadWrite,Observables):
 
                         if self.normalization:
                             H_hetero = het_model.predict(transformer.transform(np.array(temp_obj.get('Feature_AB'))))#[::9,:]
+                        
+                        elif self.selection:
+                            H_hetero = het_model.predict(selector.transform(np.array(temp_obj.get('Feature_AB'))))
+
                         else:
                             H_hetero = het_model.predict((np.array(temp_obj.get('Feature_AB'))))#[::9,:]
                         temp_obj['pred_target_AB'] = H_hetero#.reshape(len(H_hetero)*9)
@@ -125,6 +131,11 @@ class Testing(ReadWrite,Observables):
         if self.normalization:
             pathname = f'{self.model_name}_homo_transformer.joblib'
             transformer = load(pathname)
+
+        if self.selection:
+            pathname = f'{self.model_name}_homo_selector.joblib'
+            selector = load(pathname)
+
         #f.close()
 
         with open('pred_structures.json','rb') as f:
@@ -134,6 +145,10 @@ class Testing(ReadWrite,Observables):
 
                     if self.normalization:
                         H_hom = hom_model.predict(transformer.transform(np.array(temp_obj.get('Feature_AA'))))#[::9,:]
+
+                    elif self.selection:
+                        H_hom = hom_model.predict(selector.transform(np.array(temp_obj.get('Feature_AA'))))
+
                     else:
                         H_hom = hom_model.predict((np.array(temp_obj.get('Feature_AA'))))#[::9,:]
                        
