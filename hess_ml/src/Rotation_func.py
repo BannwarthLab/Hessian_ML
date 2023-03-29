@@ -58,6 +58,49 @@ class Rotation_Functions:
                coord_var_new.iloc[i,1:] = np.array(coord_var.iloc[i,1:]) - np.array(trans)
           return coord_var_new
      
+     def get_artificial_coord(self,coord, aktiv):
+     
+          r0 = {'H': 0.32, 'D': 0.32, 'He': 0.46, 'Li': 1.20, 'Be': 0.94, 'B': 0.77, 'C': 0.75, 'N': 0.71, 'O': 0.63,
+                    'F': 0.64,
+                    'Ne': 0.67, 'Na': 1.40, 'Mg': 1.25, 'Al': 1.13, 'Si': 1.04, 'P': 1.10, 'S': 1.02, 'CL': 0.99, 'Ar': 0.96,
+                    'K': 1.76, 'Ca': 1.54, 'Sc': 1.48, 'Ti': 1.36, 'V': 1.34, 'Cr': 1.22, 'Mn': 1.19, 'Fe': 1.16, 'Co': 1.11,
+                    'Ni': 1.10, 'Cu': 1.12, 'Zn': 1.18, 'Ga': 1.24, 'Ge': 1.21, 'As': 1.21, 'Se': 1.16, 'Br': 1.14, 'Kr': 1.17,
+                    'Rb': 2.10, 'Sr': 1.85, 'Y': 1.63, 'Zr': 1.54, 'Nb': 1.47, 'Mo': 1.38, 'Tc': 1.28, 'Ru': 1.25, 'Rh': 1.25,
+                    'Pd': 1.20, 'Ag': 1.28, 'Cd': 1.36, 'In': 1.42, 'Sn': 1.40, 'Sb': 1.40, 'Te': 1.36, 'I': 1.33, 'Xe': 1.31,
+                    'Cs': 2.32, 'Ba': 1.96, 'La': 1.80, 'Ce': 1.63, 'Pr': 1.76, 'Nd': 1.74, 'Pm': 1.73, 'Sm': 1.72, 'Eu': 1.68,
+                    'Gd': 1.69, 'Tb': 1.68, 'Dy': 1.67, 'Ho': 1.66, 'Er': 1.65, 'Tm': 1.64, 'Yb': 1.70, 'Lu': 1.62, 'Hf': 1.52,
+                    'Ta': 1.46, 'W': 0.95 * 1.37, 'Re': 1.31, 'Os': 1.29, 'Ir': 1.22, 'Pt': 1.23, 'Au': 1.24, 'Hg': 1.33,
+                    'Tl': 1.44,
+                    'Pb': 1.44, 'Bi': 1.51, 'Po': 1.45, 'At': 1.47, 'Rn': 1.42, 'Fr': 2.23, 'Ra': 2.01, 'Ac': 1.86, 'Th': 1.75,
+                    'Pa': 1.69, 'U': 1.70, 'Np': 1.71, 'Pu': 1.72, 'Am': 1.66, 'Cm': 1.66, 'Bk': 1.68, 'Cf': 1.68, 'Es': 1.65,
+                    'Fm': 1.67, 'Md': 1.73, 'No': 1.76, 'Lr': 1.61, 'Rf': 1.57, 'Db': 1.49, 'Sg': 1.43, 'Bh': 1.41, 'Hs': 1.34,
+                    'Mt': 1.29, 'Ds': 1.21, 'Rg': 1.21, 'Cn': 1.22, 'Nh': 1.36, 'Fl': 1.43, 'Mc': 1.62, 'Lv': 1.75, 'Ts': 1.65,
+                    'Og': 1.57, 'Cl': 0.99}
+
+          coord_new = np.zeros(3)
+
+          cn = 0
+          cn_sum =  0
+
+          for i in range(coord.shape[0]):
+               if i != aktiv:
+
+                    x = coord.iloc[i, 1] - coord.iloc[aktiv, 1]
+                    y = coord.iloc[i, 2] - coord.iloc[aktiv, 2]
+                    z = coord.iloc[i, 3] - coord.iloc[aktiv, 3]
+
+                    r = np.linalg.norm(np.array([x, y, z]))
+                    rcov_c = float(r0[f'{coord.iloc[aktiv,0]}'])
+                    rcov_i = float(r0[f'{coord.iloc[aktiv,0]}'])
+                    rr = (rcov_i + rcov_c) / r
+
+                    cn = 1 / (1 + np.exp( - 16 * (rr - 1)))
+
+                    coord_new += cn*coord.iloc[i, 1:]
+                    cn_sum += cn
+     
+
+          return coord_new/cn_sum
 
 
      #____Uses for i=j the mean of the xyz's atoms as an artifical atom____
@@ -70,7 +113,7 @@ class Rotation_Functions:
                vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])#
 
           elif i == j:
-               center_CN = np.sum(coord_end.iloc[:,1:])/len(coord_end.iloc[:,1:])
+               center_CN = self.get_artificial_coord(coord_end,i)#np.sum(coord_end.iloc[:,1:])/len(coord_end.iloc[:,1:])#
                T = 1/2 * coord_end.iloc[i,1:] + center_CN # + 1/2 * coord_end.iloc[j,1:]
                vec_dipm = dipm.iloc[i,1:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])+
 
@@ -368,6 +411,7 @@ class Rotation_Functions:
                print('Error in coord j') 
 
           return R_euler
+     
 
 
      def rot_Z(self,alpha):

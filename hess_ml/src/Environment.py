@@ -15,10 +15,6 @@ class Environment(DataGeneration,Parser,Training,Testing):
         DataGeneration.__init__
         if self.feature_gen:
             if self.subfolder:
-                if self.diag == 'DTR':
-                    self.mol_geo_idx = []
-                    self.generate_feature_target_sf_dtr() 
-                if self.diag == 'GNN':
-                    self.mol_geo_idx = []
-                    self.generate_feature_target_sf_gnn()
+                self.mol_geo_idx = []
+                self.generate_feature_target_sf_dtr() 
         return 

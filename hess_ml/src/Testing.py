@@ -14,12 +14,12 @@ class Testing(ReadWrite,Observables):
         super().__init__
         pass
 
-    def test(self,only_hom):
+    def test(self):
         self.predict_hess()
-        self.comp_test_observables(only_hom)
+        self.comp_test_observables()
         return
 
-    def comp_test_observables(self,only_hom):
+    def comp_test_observables(self):
         print('Computing Observables ...',end="")
         freq_pred_list = []      
         ZPE_pred = []
@@ -30,7 +30,9 @@ class Testing(ReadWrite,Observables):
         ZPE_harm_true  = []
 
         with open('pred_structures_final.json','rb') as f:
+            i = 0 
             while True:
+                i +=1 
                 try:
                     temp_obj = pickle.load(f)
                     self.R_MI_APF_mat = temp_obj.get('R_MI_APF_mat')
@@ -39,12 +41,10 @@ class Testing(ReadWrite,Observables):
                     self.N_atoms = temp_obj.get('N_atoms')
                     self.lamb_len = temp_obj.get('lamb_len')
 
-
-                    hess_vec_aa = np.array(temp_obj.get('pred_target_AA'))
-
                     hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
-
-                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab)
+                    hess_vec_aa = None
+                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,pred=True)
+                    
                     ZPE = self.get_ZPE(freq)
                     #ZPE_harm = self.get_harmonic_ZPE(freq)
 
@@ -56,7 +56,7 @@ class Testing(ReadWrite,Observables):
                     hess_vec_aa = np.array(temp_obj.get('Target_AA'))
                     hess_vec_ab = np.array(temp_obj.get('Target_AB'))
 
-                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab)
+                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,pred=False)
                     ZPE = self.get_ZPE(freq)
                     #ZPE_harm = self.get_harmonic_ZPE(freq)
 
@@ -72,10 +72,9 @@ class Testing(ReadWrite,Observables):
 
         np.savetxt('pred_ZPEs.txt',ZPE_pred)
         np.savetxt('true_ZPEs.txt',ZPE_true)
-
+        
         #np.savetxt('pred_ZPEs_harm.txt',ZPE_harm_pred)
         #np.savetxt('true_ZPEs_harm.txt',ZPE_harm_true)
-
         print('done')
 
         return
@@ -116,7 +115,7 @@ class Testing(ReadWrite,Observables):
                         else:
                             H_hetero = het_model.predict((np.array(temp_obj.get('Feature_AB'))))#[::9,:]
                         temp_obj['pred_target_AB'] = H_hetero#.reshape(len(H_hetero)*9)
-                        with open('pred_structures.json','ab') as g:
+                        with open('pred_structures_final.json','ab') as g:
                             pickle.dump(temp_obj,g)
 
                     except EOFError:
@@ -126,44 +125,5 @@ class Testing(ReadWrite,Observables):
 
         del het_model
 
-        #with open(f'{self.model_name}_homo.joblib','rb') as f:
-        hom_model = load(f'{self.model_name}_homo.joblib')
-        if self.normalization:
-            pathname = f'{self.model_name}_homo_transformer.joblib'
-            transformer = load(pathname)
-
-        if self.selection:
-            pathname = f'{self.model_name}_homo_selector.joblib'
-            selector = load(pathname)
-
-        #f.close()
-
-        with open('pred_structures.json','rb') as f:
-            while True:
-                try:
-                    temp_obj = pickle.load(f)
-
-                    if self.normalization:
-                        H_hom = hom_model.predict(transformer.transform(np.array(temp_obj.get('Feature_AA'))))#[::9,:]
-
-                    elif self.selection:
-                        H_hom = hom_model.predict(selector.transform(np.array(temp_obj.get('Feature_AA'))))
-
-                    else:
-                        H_hom = hom_model.predict((np.array(temp_obj.get('Feature_AA'))))#[::9,:]
-                       
-                    temp_obj['pred_target_AA'] = H_hom#.reshape(len(H_hom)*9)
-
-
-                    with open('pred_structures_final.json','ab') as g:
-                        pickle.dump(temp_obj,g)
-
-                except EOFError:
-                        break
-        g.close()
-        f.close()
-        del hom_model
-
-        os.remove('pred_structures.json')
 
         return

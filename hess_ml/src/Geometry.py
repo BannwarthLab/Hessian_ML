@@ -7,8 +7,8 @@ from src.HessFeature import HessFeature
 from src.Observables import Observables
 from src.SaveDat import FTHetero, FTHomo, PickleData
 
-class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotation_Functions):#Feature Class --> picks the right feature; same for target class or: ML Class, picks both
-
+class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotation_Functions):
+    
     def __init__(self):
         super().__init__
         return 
@@ -34,16 +34,9 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
         
         self.rot_inert_apf()
 
-        if self.diag == 'DTR':
-            self.get_Feature_heteronuclear()
-            self.gen_Hessian_vector(self.transpose_list)
-
-        self.get_Feature_homonuclear()
-
-        if self.diag == 'GNN':
-            self.wbo = self.import_wbo(os.path.join(self.geo_working_dir,self.file_wbo))
-            self.gen_Hessian_GNN()
-       
+        self.get_Feature_heteronuclear()
+        self.gen_Hessian_vector(self.transpose_list)
+        
         return
 
     def clear_quantities(self):

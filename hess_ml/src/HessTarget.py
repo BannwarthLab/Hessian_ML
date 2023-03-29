@@ -17,7 +17,7 @@ class HessTarget:
 
             H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3]
             self.Target_AA.append(list(H_APF[np.triu_indices(3)]))
-
+        
             for atom_B in range(atom_A+1,self.N_atoms):
                 H_APF =  self.H_APF_mat[3*atom_A:3*atom_A+3,3*atom_B:3*atom_B+3].copy()
 

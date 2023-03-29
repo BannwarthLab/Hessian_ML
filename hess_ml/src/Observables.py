@@ -12,11 +12,14 @@ class Observables(Rotation_Functions,Const):
     def get_coord_state(self):
         return self.coord_state[0]
 
-    def gen_Frequencies(self,hess_vec_aa,hess_vec_ab): #in cm^-1
+    def gen_Frequencies(self,hess_vec_aa,hess_vec_ab,pred=False): #in cm^-1
         #hess_vec_aa = hess_vec_aa.reshape(len(hess_vec_aa)*6)
         #hess_vec_ab = hess_vec_ab.reshape(len(hess_vec_ab)*9)
+        if pred == True:
+            Hessian = self.gen_hess_from_vec_pred(hess_vec_aa,hess_vec_ab)
+        else:
+            Hessian = self.gen_hess_from_vec_true(hess_vec_aa,hess_vec_ab)
 
-        Hessian = self.gen_hess_from_vec(hess_vec_aa,hess_vec_ab)
         Hess_prj,lamb_len = self.project_hessian(Hessian)
         Hess_prj_wgt = self.weight_hessian(Hess_prj)
         lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
@@ -157,7 +160,33 @@ class Observables(Rotation_Functions,Const):
         return idx_list,lamb,Q
 
 
-    def gen_hess_from_vec(self,hess_vec_aa,hess_vec_ab):
+    def gen_hess_from_vec_pred(self,hess_vec_aa,hess_vec_ab):
+        ite_homo = 0
+        ite_hetero = 0
+        Hessian = np.zeros([self.N_atoms*3,self.N_atoms*3])
+
+        for atom_A in range(self.N_atoms):
+            #Hessian = self.fill_matrix_block_AA(hess_vec_aa[atom_A],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A)
+            #ite_homo += 1
+
+            for atom_B in range(atom_A+1,self.N_atoms):
+                transpose = False
+                if [atom_A,atom_B] in self.transpose_list:
+                    transpose = True
+                Hessian = self.fill_matrix_block_AB(hess_vec_ab[ite_hetero],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
+                ite_hetero +=1
+            #self.H_pred += self.H_approx ## Change Hessian
+
+
+        for atom_A in range(self.N_atoms):
+            for atom_B in range(self.N_atoms):
+                if atom_A != atom_B:
+                    Hessian[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3] -= Hessian[3*atom_A:3*atom_A+3,3*atom_B:3*atom_B+3]
+
+        return Hessian
+    
+
+    def gen_hess_from_vec_true(self,hess_vec_aa,hess_vec_ab):
         ite_homo = 0
         ite_hetero = 0
         Hessian = np.zeros([self.N_atoms*3,self.N_atoms*3])
