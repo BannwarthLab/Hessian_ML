@@ -12,19 +12,20 @@ class Observables(Rotation_Functions,Const):
     def get_coord_state(self):
         return self.coord_state[0]
 
-    def gen_Frequencies(self,hess_vec_aa,hess_vec_ab,pred=False): #in cm^-1
-        #hess_vec_aa = hess_vec_aa.reshape(len(hess_vec_aa)*6)
-        #hess_vec_ab = hess_vec_ab.reshape(len(hess_vec_ab)*9)
+    def gen_Frequencies(self,hess_vec_aa,hess_vec_ab,hess_d4=False,pred=False): 
         if pred == True:
             Hessian = self.gen_hess_from_vec_pred(hess_vec_aa,hess_vec_ab)
         else:
             Hessian = self.gen_hess_from_vec_true(hess_vec_aa,hess_vec_ab)
 
+        Hessian += hess_d4
+        
         Hess_prj,lamb_len = self.project_hessian(Hessian)
         Hess_prj_wgt = self.weight_hessian(Hess_prj)
+
         lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
         
-        eigv = lambd_temp#sorted(lambd_temp,key=abs)[self.lamb_len:]
+        eigv = lambd_temp
 
         freq = np.zeros(len(eigv))
         
@@ -34,11 +35,11 @@ class Observables(Rotation_Functions,Const):
             else:
                 freq[i] = -np.sqrt(abs(eigv[i]))
 
-        return freq#*219474.63#sorted(freq*219474.63,key=abs)[lamb_len:]
+        return freq
 
-    def get_ZPE(self,freq): # in kJ/mol
+    def get_ZPE(self,freq): 
 
-        ZPE = 1/2*np.sum(freq)#*0.01196265919
+        ZPE = 1/2*np.sum(freq)
 
         return ZPE  
     

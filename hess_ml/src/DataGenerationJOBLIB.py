@@ -48,28 +48,21 @@ class DataGeneration(Geometry):
             print(f'{self.test_size*100} % of the set is used for testing.')
 
             self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size,random_state=self.rnd_seed)
+
             np.savetxt('test_idx.txt',self.test_idx)
             np.savetxt('train_idx.txt',self.train_idx)
+
             self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
             #self.geo_dir = np.array(self.geo_dir)[self.comp_idx]
             geo_idx = geo_idx[self.comp_idx]
-
         else:
             molecule_dir = sorted([mol for mol in os.listdir(f'{self.cwd}/{self.folder_data}') if os.path.isdir(os.path.join(f'{self.cwd}/{self.folder_data}',mol))])
 
-        #_______Reading_the_names_of_all_folders______
         self.wall_time0 = time.time()
 
-        self.count = 0
         self.idx_list = []
         
-        '''
-        for mol in range(len(molecule_dir)):
-            #_______Reading_the_names_of_all_subfolders_______ 
-            self.data_dir = os.path.join(f'{self.cwd}/{self.folder_data}',molecule_dir[mol])
-
-            self.geo_dir = sorted([os.path.join(data_dir,geo) for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])'''
-            #________Paralleized Feature Generation___________ 
+        #________Paralleized Feature Generation___________ 
         Parallel(n_jobs=self.threads)(delayed(self.generation_procedure_dtr)(geom=geo,mol=mol,dir=self.geo_dir[geo]) for geo in self.comp_idx)
 
         print(f'Features and Targets of {len(self.train_idx)+len(self.test_idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
@@ -84,7 +77,6 @@ class DataGeneration(Geometry):
         if geom in self.comp_idx:
 
             self.gen_data(self.geo_dir[geom],mol,geom)
-
             self.clear_quantities()
             idx = [self.mol,geom]
 
@@ -102,7 +94,7 @@ class DataGeneration(Geometry):
                     pickle.dump(struc.dict,h)
 
             self.idx_list.append(idx)
-            
+
         return
 
 

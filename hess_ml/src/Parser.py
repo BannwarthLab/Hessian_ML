@@ -96,10 +96,8 @@ class Parser:
 
             except:
                 print('No parameters for the homonuclear model are specified. Default parameters are set.')
-                self.config['training_testing']['homo'] = [{}]
+                self.config['training_testing']['homo'] = {}
 
-            else:
-                self.ml_parameter = self.config['training_testing']['homo']
 
         if self.config['runtype'] == 'hessian' and not(self.only_hom):
 
@@ -108,8 +106,6 @@ class Parser:
 
             except:
                 print('No parameters for the heteronuclear model are specified. Default parameters are set')
-                self.config['training_testing']['hetero'] = [{}]
+                self.config['training_testing']['hetero'] = {}
 
-            else:
-                self.ml_parameter.append(self.config['training_testing']['hetero'])
         return 

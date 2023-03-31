@@ -66,6 +66,7 @@ class PickleData:
         self.dict['init_R_MI'] = some_class.init_R_MI
         self.dict['R_MI_APF_mat'] = some_class.R_MI_APF_mat
         self.dict['lamb_len'] = some_class.lamb_len
+        self.dict['hessian_dftd4'] = some_class.hessian_dftd4 
 
         return 
 

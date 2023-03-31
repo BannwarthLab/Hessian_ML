@@ -16,7 +16,8 @@ class Preparation(Rotation_Functions):
 
         self.dipm = self.coord_rot(self.dipm,self.init_R_MI)
 
-        self.hessian = matmul(matmul(self.init_P_MI,self.hessian),np.transpose(self.init_P_MI)) ##Change Hessian 2 times
+        self.hessian = matmul(matmul(self.init_P_MI,self.hessian),np.transpose(self.init_P_MI)) 
+        self.hessian_dftd4 = matmul(matmul(self.init_P_MI,self.hessian_dftd4),np.transpose(self.init_P_MI)) 
 
         return
 
@@ -29,10 +30,7 @@ class Preparation(Rotation_Functions):
         for atom_A in range(self.N_atoms):
             for atom_B in range(atom_A,self.N_atoms):
                 xyz_temp = self.xyz.copy()
-                R_MI_APF = self.get_R_euler(self.xyz,self.dipm,atom_A,atom_B)
-                nomr_temp = np.linalg.norm(self.xyz.iloc[:,1:]-xyz_temp.iloc[:,1:])
-                if nomr_temp != 0.0 :
-                    print(nomr_temp)
+                R_MI_APF = self.get_R_euler(xyz_temp,self.dipm,atom_A,atom_B)
 
                 H_APF = np.zeros([3,3])
                 #Generate the final hessian

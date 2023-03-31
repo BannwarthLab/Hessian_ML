@@ -6,6 +6,9 @@ from src.HessTarget import HessTarget
 from src.HessFeature import HessFeature
 from src.Observables import Observables
 from src.SaveDat import FTHetero, FTHomo, PickleData
+from src.constants import Const 
+import json as json
+import numpy as np
 
 class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotation_Functions):
     
@@ -18,16 +21,28 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
         self.mol = mol
         self.geo_working_dir = geo_file
         self.xyz,self.header = self.import_coord(os.path.join(self.geo_working_dir,self.file_coord))
+        self.N_atoms = len(self.xyz['atoms'])
+
+        self.nuc_charge = np.zeros(self.N_atoms)
+
+        for i in range(self.N_atoms):
+            self.nuc_charge[i] = Const.ELEMENTS2Z[self.xyz.loc[i,'atoms']]
+
         self.dipm = self.import_dipm(os.path.join(self.geo_working_dir,self.file_dipm)).iloc[:,:-3]
+
         self.hessian = self.import_hessian(os.path.join(self.geo_working_dir,self.file_target),self.xyz)
+
+        self.hessian_dftd4 = self.import_hessian_dftd4(self.geo_working_dir,self.xyz)
+
         self.ml_features = self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
 
-        self.N_atoms = len(self.xyz['atoms'])
+        self.hessian -= self.hessian_dftd4
 
         self.init_R_MI,self.xyz = (self.calc_R(self.xyz))
 
         self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
         self.lamb_len  = None
+
         #self.hessian, self.lamb_len = self.project_hessian(self.hessian)
 
         self.rot_init_inert()
@@ -35,6 +50,7 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
         self.rot_inert_apf()
 
         self.get_Feature_heteronuclear()
+
         self.gen_Hessian_vector(self.transpose_list)
         
         return

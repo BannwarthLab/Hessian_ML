@@ -43,7 +43,10 @@ class Testing(ReadWrite,Observables):
 
                     hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
                     hess_vec_aa = None
-                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,pred=True)
+
+                    hessian_dftdt4 = temp_obj.get('hessian_dftd4')
+
+                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,hess_d4=hessian_dftdt4,pred=True)
                     
                     ZPE = self.get_ZPE(freq)
                     #ZPE_harm = self.get_harmonic_ZPE(freq)
@@ -56,7 +59,7 @@ class Testing(ReadWrite,Observables):
                     hess_vec_aa = np.array(temp_obj.get('Target_AA'))
                     hess_vec_ab = np.array(temp_obj.get('Target_AB'))
 
-                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,pred=False)
+                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,hess_d4=hessian_dftdt4,pred=False)
                     ZPE = self.get_ZPE(freq)
                     #ZPE_harm = self.get_harmonic_ZPE(freq)
 
@@ -73,8 +76,6 @@ class Testing(ReadWrite,Observables):
         np.savetxt('pred_ZPEs.txt',ZPE_pred)
         np.savetxt('true_ZPEs.txt',ZPE_true)
         
-        #np.savetxt('pred_ZPEs_harm.txt',ZPE_harm_pred)
-        #np.savetxt('true_ZPEs_harm.txt',ZPE_harm_true)
         print('done')
 
         return
@@ -86,7 +87,7 @@ class Testing(ReadWrite,Observables):
         self.truncate_file('pred_structures.json')
         self.truncate_file('pred_structures_final.json')
 
-        #with open(f'{self.model_name}_hetero.joblib','rb') as f1:
+
         het_model = load(f'{self.model_name}_hetero.joblib')
 
         if self.normalization:
@@ -97,7 +98,6 @@ class Testing(ReadWrite,Observables):
             pathname = f'{self.model_name}_hetero_selector.joblib'
             selector = load(pathname)
 
-        #f1.close()
 
         test_files = glob.glob('test_structures*.json')
         for file in test_files:

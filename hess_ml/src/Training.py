@@ -70,20 +70,22 @@ class Training(ReadWrite):
 
     def training_model(self,train_conf):
 
-        params = self.config['training_testing'][self.mode][0]
+        params = self.config['training_testing'][self.mode]
 
         print(f'Training {self.mode}nuclear model with a feature matrix of shape {np.shape(self.Features)}')
 
         method = train_conf.get('method', 'ETR')
         SearchCV = train_conf.get('SearchCV',None)
 
+        self.selection = False
 
 
         if method == 'ETR':
             regr_model = ExtraTreesRegressor(random_state=self.rnd_seed)
             regr_model.set_params(**params)
             self.normalization = False
-        
+            self.selection = False
+
         if method == 'RFR':
             regr_model = RandomForestRegressor(random_state=self.rnd_seed)
             regr_model.set_params(**params)
@@ -114,9 +116,7 @@ class Training(ReadWrite):
         self.Targets = self.Targets.astype(np.float32)
         self.Features = self.Features.astype(np.float32)
         
-        print(self.Features.shape)
-
-        self.selection = True
+        print(f'Feature vector shape {self.Features.shape}')
 
         if self.selection:
             selector = VarianceThreshold(threshold=0.1*(1-0.1))
@@ -131,8 +131,7 @@ class Training(ReadWrite):
             dump(selector,pathname)
             print(f'Selector is saved in {pathname}.\n')
 
-
-        print(self.Features.shape)
+            print(f'Feature vector reduced to shape {self.Features.shape}')
 
 
         if self.normalization == True:
