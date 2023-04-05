@@ -36,7 +36,7 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
 
         self.ml_features = self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
 
-        self.hessian -= self.hessian_dftd4
+        #self.hessian -= self.hessian_dftd4
 
         self.init_R_MI,self.xyz = (self.calc_R(self.xyz))
 

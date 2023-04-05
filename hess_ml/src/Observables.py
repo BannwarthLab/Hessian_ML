@@ -18,9 +18,10 @@ class Observables(Rotation_Functions,Const):
         else:
             Hessian = self.gen_hess_from_vec_true(hess_vec_aa,hess_vec_ab)
 
-        Hessian += hess_d4
+        #Hessian += hess_d4
         
         Hess_prj,lamb_len = self.project_hessian(Hessian)
+        
         Hess_prj_wgt = self.weight_hessian(Hess_prj)
 
         lambd_temp,Q = linalg.eigh(Hess_prj_wgt)
@@ -30,13 +31,26 @@ class Observables(Rotation_Functions,Const):
         freq = np.zeros(len(eigv))
         
         for i in range(len(eigv)):
+
             if eigv[i] >= 0.0:
-                freq[i] = np.sqrt(eigv[i])#
+                freq[i] = np.sqrt(eigv[i])
+
             else:
                 freq[i] = -np.sqrt(abs(eigv[i]))
 
         return freq
 
+    def get_partition_func(self,freq):
+        Z = 1
+        #temp_freq = sorted(freq,key=abs)[6:]
+        
+        for i in range(len(freq)):
+            
+            if freq[i] > 0.0:
+                Z *= (1 - np.exp(-freq[i]*Const.conv_Eh_to_J/(Const.boltzmann_const*298.15)))**-1
+
+        return Z 
+    
     def get_ZPE(self,freq): 
 
         ZPE = 1/2*np.sum(freq)
@@ -44,6 +58,7 @@ class Observables(Rotation_Functions,Const):
         return ZPE  
     
     def get_harmonic_ZPE(self,freq): # in kJ/mol
+        freq = freq.copy()
         for i in range(len(freq)):
             if freq[-i] == 0.0:
                 freq.pop(-i)
@@ -53,7 +68,6 @@ class Observables(Rotation_Functions,Const):
         return ZPE  
     
     def project_hessian(self,Hessian):
-                    
         idx_list,lamb,Q = self.find_trans_rot(Hessian,self.xyz)
         lamb_len = len(idx_list)
         for i in idx_list:
@@ -61,6 +75,7 @@ class Observables(Rotation_Functions,Const):
                 Hessian -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
 
         return Hessian,lamb_len
+    
 
     def weight_hessian(self,Hessian):
         atoms = self.xyz['atoms']
@@ -132,7 +147,6 @@ class Observables(Rotation_Functions,Const):
         overlap_mat = overlap_mat / Nat
         overlap_mat = 1/(linalg.norm(overlap_mat,1)) * overlap_mat
 
-
         lamb, Q = linalg.eigh(hess)
 
         M = matmul(overlap_mat,Q)
@@ -153,6 +167,7 @@ class Observables(Rotation_Functions,Const):
             M_sum[i] = np.sum(np.abs(M[:,i]))
 
         idx_list = np.zeros(idx_len)
+
         for i in range(idx_len):
             idx = np.where(M_sum == np.amax(M_sum))[0][0]
             idx_list[i] = int(idx)

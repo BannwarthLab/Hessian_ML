@@ -23,11 +23,11 @@ class Testing(ReadWrite,Observables):
         print('Computing Observables ...',end="")
         freq_pred_list = []      
         ZPE_pred = []
-        ZPE_harm_pred = []
+        Z_pred = []
 
         freq_true_list = []
         ZPE_true  = []
-        ZPE_harm_true  = []
+        Z_true  = []
 
         with open('pred_structures_final.json','rb') as f:
             i = 0 
@@ -49,8 +49,9 @@ class Testing(ReadWrite,Observables):
                     freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,hess_d4=hessian_dftdt4,pred=True)
                     
                     ZPE = self.get_ZPE(freq)
+                    Z = self.get_partition_func(freq)
                     #ZPE_harm = self.get_harmonic_ZPE(freq)
-
+                    Z_pred.append(Z)
                     #ZPE_harm_pred.append(ZPE_harm)
                     ZPE_pred.append(ZPE)
 
@@ -61,7 +62,10 @@ class Testing(ReadWrite,Observables):
 
                     freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,hess_d4=hessian_dftdt4,pred=False)
                     ZPE = self.get_ZPE(freq)
+                    Z = self.get_partition_func(freq)
+
                     #ZPE_harm = self.get_harmonic_ZPE(freq)
+                    Z_true.append(Z)
 
                     #ZPE_harm_true.append(ZPE_harm)
                     ZPE_true.append(ZPE)
@@ -76,6 +80,9 @@ class Testing(ReadWrite,Observables):
         np.savetxt('pred_ZPEs.txt',ZPE_pred)
         np.savetxt('true_ZPEs.txt',ZPE_true)
         
+        np.savetxt('pred_Z.txt',Z_pred)
+        np.savetxt('true_Z.txt',Z_true)
+
         print('done')
 
         return

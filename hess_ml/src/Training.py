@@ -71,7 +71,7 @@ class Training(ReadWrite):
     def training_model(self,train_conf):
 
         params = self.config['training_testing'][self.mode]
-
+        print(params)
         print(f'Training {self.mode}nuclear model with a feature matrix of shape {np.shape(self.Features)}')
 
         method = train_conf.get('method', 'ETR')

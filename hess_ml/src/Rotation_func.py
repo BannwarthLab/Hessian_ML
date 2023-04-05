@@ -129,7 +129,7 @@ class Rotation_Functions:
 
                LL = np.cross(vec_z,axis[2])
 
-               if  np.sum(np.abs(np.array(coord_end.iloc[[i,j],1:3]))) < 1e-9:
+               if  np.sum(np.abs(np.array(coord_end.iloc[[i,j],1:3]))) < 1e-12:
                     beta = self.angle_two_vec(vec_z,axis[2])
                     alpha = 2*np.pi - self.angle_two_vec(vec_x,axis[0])
                     gamma = 0
@@ -189,23 +189,25 @@ class Rotation_Functions:
           #Apply the euler rotation matrix on the new x axis for verification reasons
           vec_x = matmul(R_euler,vec_x)
 
+          self.angle_two_vec(LL,vec_x)
           coord_end = self.coord_rot(coord_end.copy(),R_euler)
 
           #Check for Errors in dipole moment or the coordinates
           if vec_x[0] < 0.:
                print(f'Error in vec_x[0] in {i,j}')
 
-          if np.abs(vec_x[1]) > 1e-7 or np.abs(vec_x[2]) > 1e-8:
+          if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
                print(vec_x)
                print(f'Error in vec_x for {i,j}')
                print(coord_end.iloc[[i,j],:])
+               print(alpha,beta,gamma)
 
-          if coord_end.iloc[i,1] > 1e-7 or coord_end.iloc[i,2] > 1e-7:
-               print(f'Error in coord i:{i,j}') 
+          if coord_end.iloc[i,1] > 1e-8 or coord_end.iloc[i,2] > 1e-8:
+               print(f'Error in coord i:{i,j}')
                print(coord_end.iloc[[i,j],:])
                print(alpha,beta,gamma)
 
-          if coord_end.iloc[j,1] > 1e-7 or coord_end.iloc[j,2] > 1e-7:
+          if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
                print(f'Error in coord j:{i,j}') 
                print(coord_end.iloc[[i,j],:])
                print(alpha,beta,gamma)
@@ -426,6 +428,12 @@ class Rotation_Functions:
                     [0, np.sin(alpha), np.cos(alpha)]])
           return R 
 
+     def rot_Y(self,alpha):
+          R = np.array([ [ np.cos(alpha), 0.0,-np.sin(alpha)],
+                         [ 0.0          ,1   , 0.0],
+                         [ np.sin(alpha), 0.0, np.cos(alpha)]])
+          return R 
+     
      def eig_vec_rot(self,eig_vec):
           for i in [0,1]:
                max_abs_val = max(eig_vec[i].min(), eig_vec[i].max(), key=abs)
