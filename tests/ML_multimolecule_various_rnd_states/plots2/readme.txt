@@ -1,1 +1,0 @@
-Molecules used: H2,N2,O2,F2,CO,HF,H2O,NH3
