@@ -1,6 +1,6 @@
 import numpy as np
 from operator import matmul
-from src.Rotation_func import Rotation_Functions
+from hess_ml.src.Rotation_func import Rotation_Functions
 
 class Preparation(Rotation_Functions):
     def __init__(self):

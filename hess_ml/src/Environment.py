@@ -1,7 +1,7 @@
-from src.Parser import Parser
-from src.DataGenerationJOBLIB import DataGeneration
-from src.Training import Training
-from src.Testing import Testing
+from hess_ml.src.Parser import Parser
+from hess_ml.src.DataGenerationJOBLIB import DataGeneration
+from hess_ml.src.Training import Training
+from hess_ml.src.Testing import Testing
 
 import os 
 

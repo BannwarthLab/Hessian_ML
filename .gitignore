@@ -1,9 +1,2 @@
-num_freq.py
-h2_2/
-*.png
-xtb/
-__pycache__/
-test/
-plots/
-calc/
-venv
+hessml.egg-info/
+venv/

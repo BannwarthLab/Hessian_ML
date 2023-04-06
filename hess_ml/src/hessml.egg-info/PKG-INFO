@@ -5,3 +5,4 @@ Summary: A tool for learning and predicting Hessian matrices based on semiempric
 Home-page: https://git.rwth-aachen.de/bannwarthlab/Hessian_ML
 Author: Gereon Feldmann
 Author-email: feldmann@pc.rwth-aachen.de
+Requires-Python: >=3.6

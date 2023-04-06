@@ -3,7 +3,7 @@ from operator import matmul
 from math import log10 , floor
 
 import numpy as np
-from src.constants import Const
+from hess_ml.src.constants import Const
 
 class Rotation_Functions:
      def __init__(self):

@@ -1,2 +1,2 @@
 [console_scripts]
-hessml = main:main
+hessml = hess_ml.__main__:main

@@ -1,8 +1,8 @@
 import numpy as np
 from scipy import linalg
-from src.constants import Const
+from hess_ml.src.constants import Const
 from operator import matmul
-from src.Rotation_func import Rotation_Functions
+from hess_ml.src.Rotation_func import Rotation_Functions
 
 class Observables(Rotation_Functions,Const):
     def __init__(self) -> None:
@@ -17,10 +17,8 @@ class Observables(Rotation_Functions,Const):
             Hessian = self.gen_hess_from_vec_pred(hess_vec_aa,hess_vec_ab)
         else:
             Hessian = self.gen_hess_from_vec_true(hess_vec_aa,hess_vec_ab)
-
-        #Hessian += hess_d4
         
-        Hess_prj,lamb_len = self.project_hessian(Hessian)
+        Hess_prj,lamb_len = self.project_hessian(Hessian.copy())
         
         Hess_prj_wgt = self.weight_hessian(Hess_prj)
 
@@ -38,24 +36,24 @@ class Observables(Rotation_Functions,Const):
             else:
                 freq[i] = -np.sqrt(abs(eigv[i]))
 
-        return freq
+        return freq,Hessian
 
     def get_partition_func(self,freq):
+
         Z = 1
-        #temp_freq = sorted(freq,key=abs)[6:]
         
         for i in range(len(freq)):
             
             if freq[i] > 0.0:
                 Z *= (1 - np.exp(-freq[i]*Const.conv_Eh_to_J/(Const.boltzmann_const*298.15)))**-1
 
-        return Z 
+        return Z
     
     def get_ZPE(self,freq): 
 
         ZPE = 1/2*np.sum(freq)
 
-        return ZPE  
+        return ZPE
     
     def get_harmonic_ZPE(self,freq): # in kJ/mol
         freq = freq.copy()

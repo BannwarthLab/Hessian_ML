@@ -1,12 +1,12 @@
 from sklearn.ensemble import ExtraTreesRegressor
 from joblib import dump,load
 import pickle as pickle
-from src.ReadWrite import ReadWrite
+from hess_ml.src.ReadWrite import ReadWrite
 import numpy as np
-from src.SaveDat import PickleData
+from hess_ml.src.SaveDat import PickleData
 import glob as glob
 import os 
-from src.Observables import Observables
+from hess_ml.src.Observables import Observables
 
 
 class Testing(ReadWrite,Observables):

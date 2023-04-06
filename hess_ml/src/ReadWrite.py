@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
-from src.Rotation_func import Rotation_Functions
+from hess_ml.src.Rotation_func import Rotation_Functions
 import numpy as np
 import pickle as pickle 
 import os 
-from src.SaveDat import FTHomo,FTHetero
+from hess_ml.src.SaveDat import FTHomo,FTHetero
 import json as json 
 
 class ReadWrite():

@@ -9,7 +9,7 @@ from sklearn.svm import SVR
 from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import VarianceThreshold
-from src.ReadWrite import ReadWrite
+from hess_ml.src.ReadWrite import ReadWrite
 import os
 import numpy as np
 import glob as glob

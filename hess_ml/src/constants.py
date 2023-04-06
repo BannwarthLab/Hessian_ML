@@ -68,7 +68,8 @@ class Const:
     atomic_mass_unit = 1.6605390666e-27 # in kg
     hplanck = 6.62607015e-34 # hplank Js
     conv_J_to_eV = (1.602176634e-19)**-1 #eV/J
-
+    boltzmann_const = 1.380649e-23 #J/K
+    conv_Eh_to_J = 27.211399*1.602177e-19 #eV/Eh * J/eV = J/Eh
     def __init__(self):
         return
     

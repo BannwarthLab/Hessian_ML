@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy import linalg
-from src.Rotation_func import Rotation_Functions
+from hess_ml.src.Rotation_func import Rotation_Functions
 from operator import matmul
 
 class HessFeature(Rotation_Functions):

@@ -1,12 +1,12 @@
 import os 
-from src.ReadWrite import ReadWrite
-from src.Rotation_func import Rotation_Functions
-from src.Preparation import Preparation
-from src.HessTarget import HessTarget
-from src.HessFeature import HessFeature
-from src.Observables import Observables
-from src.SaveDat import FTHetero, FTHomo, PickleData
-from src.constants import Const 
+from hess_ml.src.ReadWrite import ReadWrite
+from hess_ml.src.Rotation_func import Rotation_Functions
+from hess_ml.src.Preparation import Preparation
+from hess_ml.src.HessTarget import HessTarget
+from hess_ml.src.HessFeature import HessFeature
+from hess_ml.src.Observables import Observables
+from hess_ml.src.SaveDat import FTHetero, FTHomo, PickleData
+from hess_ml.src.constants import Const 
 import json as json
 import numpy as np
 

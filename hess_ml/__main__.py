@@ -1,4 +1,4 @@
-from src.Environment import Environment
+from hess_ml.src.Environment import Environment
 import time as time 
 
 def main() -> None:

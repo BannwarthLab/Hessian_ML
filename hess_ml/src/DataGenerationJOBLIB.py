@@ -6,8 +6,8 @@ import time as time
 
 from sklearn.model_selection import train_test_split
 
-from src.Geometry import Geometry
-from src.SaveDat import FTHetero,FTHomo,PickleData,PickleDict
+from hess_ml.src.Geometry import Geometry
+from hess_ml.src.SaveDat import FTHetero,FTHomo,PickleData,PickleDict
 
 from joblib import Parallel, delayed
 

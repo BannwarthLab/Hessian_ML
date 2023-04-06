@@ -1,11 +1,10 @@
 setup.py
 src/DataGenerationJOBLIB.py
-src/DataGenerationMPI4PY.py
-src/DataGenerationMULTIPRO.py
 src/Environment.py
 src/Geometry.py
 src/HessFeature.py
 src/HessTarget.py
+src/LennardJonesHess.py
 src/Observables.py
 src/Parser.py
 src/Preparation.py
@@ -15,9 +14,11 @@ src/SaveDat.py
 src/Testing.py
 src/Training.py
 src/__init__.py
+src/__main__.py
 src/constants.py
 src/hessml.egg-info/PKG-INFO
 src/hessml.egg-info/SOURCES.txt
 src/hessml.egg-info/dependency_links.txt
 src/hessml.egg-info/entry_points.txt
+src/hessml.egg-info/requires.txt
 src/hessml.egg-info/top_level.txt
