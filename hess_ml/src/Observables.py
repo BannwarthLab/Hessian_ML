@@ -12,7 +12,8 @@ class Observables(Rotation_Functions,Const):
     def get_coord_state(self):
         return self.coord_state[0]
 
-    def gen_Frequencies(self,hess_vec_aa,hess_vec_ab,hess_d4=False,pred=False): 
+    def gen_Frequencies(self,hess_vec_aa,hess_vec_ab,pred=False): 
+        
         if pred == True:
             Hessian = self.gen_hess_from_vec_pred(hess_vec_aa,hess_vec_ab)
         else:

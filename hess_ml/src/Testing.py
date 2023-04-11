@@ -44,9 +44,7 @@ class Testing(ReadWrite,Observables):
                     hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
                     hess_vec_aa = None
 
-                    hessian_dftdt4 = temp_obj.get('hessian_dftd4')
-
-                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,hess_d4=hessian_dftdt4,pred=True)
+                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,pred=True)
                     
                     ZPE = self.get_ZPE(freq)
                     Z = self.get_partition_func(freq)
@@ -60,7 +58,7 @@ class Testing(ReadWrite,Observables):
                     hess_vec_aa = np.array(temp_obj.get('Target_AA'))
                     hess_vec_ab = np.array(temp_obj.get('Target_AB'))
 
-                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,hess_d4=hessian_dftdt4,pred=False)
+                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,pred=False)
                     ZPE = self.get_ZPE(freq)
                     Z = self.get_partition_func(freq)
 

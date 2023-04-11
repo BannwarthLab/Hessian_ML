@@ -32,18 +32,12 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
 
         self.hessian = self.import_hessian(os.path.join(self.geo_working_dir,self.file_target),self.xyz)
 
-        self.hessian_dftd4 = self.import_hessian_dftd4(self.geo_working_dir,self.xyz)
-
         self.ml_features = self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
-
-        #self.hessian -= self.hessian_dftd4
 
         self.init_R_MI,self.xyz = (self.calc_R(self.xyz))
 
         self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
         self.lamb_len  = None
-
-        #self.hessian, self.lamb_len = self.project_hessian(self.hessian)
 
         self.rot_init_inert()
         
