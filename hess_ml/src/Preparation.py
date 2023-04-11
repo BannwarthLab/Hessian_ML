@@ -17,7 +17,6 @@ class Preparation(Rotation_Functions):
         self.dipm = self.coord_rot(self.dipm,self.init_R_MI)
 
         self.hessian = matmul(matmul(self.init_P_MI,self.hessian),np.transpose(self.init_P_MI)) 
-        self.hessian_dftd4 = matmul(matmul(self.init_P_MI,self.hessian_dftd4),np.transpose(self.init_P_MI)) 
 
         return
 
