@@ -13,7 +13,7 @@ class Observables(Rotation_Functions,Const):
         return self.coord_state[0]
 
     def gen_Frequencies(self,hess_vec_aa,hess_vec_ab,pred=False): 
-        
+
         if pred == True:
             Hessian = self.gen_hess_from_vec_pred(hess_vec_aa,hess_vec_ab)
         else:
@@ -37,7 +37,7 @@ class Observables(Rotation_Functions,Const):
             else:
                 freq[i] = -np.sqrt(abs(eigv[i]))
 
-        return freq,Hessian
+        return freq
 
     def get_partition_func(self,freq):
 

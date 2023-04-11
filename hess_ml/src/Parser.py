@@ -48,18 +48,6 @@ class Parser:
             self.file_coord    = self.config['feature_generation'].get('coord','xtbopt.xyz')
             self.subfolder     = bool(self.config['feature_generation'].get('subfolder',False))
             self.diag          = self.config['feature_generation'].get('diag','DTR')
-            
-            if self.diag == 'GNN':
-                self.file_wbo      = self.config['feature_generation'].get('wbo','wbo')
-
-        else:
-            self.feature_gen = False
-
-            self.file_feature_aa = self.config['feature_generation'].get('feature_aa','Feature_Vector_AA')
-            self.file_feature_ab = self.config['feature_generation'].get('feature_ab','Feature_Vector_AB')
-
-            self.file_target_ab = self.config['feature_generation'].get('target_ab','Target_Vector_AB')
-            self.file_target_ab = self.config['feature_generation'].get('target_ab','Target_Vector_AB')
 
         return 
 
@@ -75,31 +63,15 @@ class Parser:
         self.train_size = self.config['training_testing'].get('train_size',0.75)
         self.test_size  = self.config['training_testing'].get('test_size',0.25)
         self.train_test  = self.config['training_testing'].get('test',True)
-        self.only_hom  = self.config['training_testing'].get('only_hom','False')
         self.method     = self.config['training_testing'].get('method','ETR')    
         self.SearchCV     = self.config['training_testing'].get('SearchCV',None)    
 
         if self.SearchCV == 'Random':
             self.n_iter_search     = self.config['training_testing'].get('n_iter',25)    
 
-        if self.only_hom == 'False':
-            self.only_hom = False
-        elif self.only_hom == 'True':
-            self.only_hom = True 
-
         self.model_name    = self.config['training_testing'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model")
 
         if self.config['runtype'] == 'hessian':
-
-            try:
-                self.config['training_testing']['homo']
-
-            except:
-                print('No parameters for the homonuclear model are specified. Default parameters are set.')
-                self.config['training_testing']['homo'] = {}
-
-
-        if self.config['runtype'] == 'hessian' and not(self.only_hom):
 
             try:
                 self.config['training_testing']['hetero']
