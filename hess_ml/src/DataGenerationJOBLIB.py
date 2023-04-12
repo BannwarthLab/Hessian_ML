@@ -44,6 +44,7 @@ class DataGeneration(Geometry):
                 total_structures += len(temp_dir)
 
             geo_idx = np.arange(0,total_structures-1)
+
             print(f'{self.train_size*100} % of the set is used for training.')
             print(f'{self.test_size*100} % of the set is used for testing.')
 
@@ -71,6 +72,7 @@ class DataGeneration(Geometry):
 
 
     def generation_procedure_dtr(self,mol=None,geom=None,dir=None):
+        
         #INIT GEOMETRY
         #GENERATE TARGET & FEATURE --> picks dependend on env the right features and target
 

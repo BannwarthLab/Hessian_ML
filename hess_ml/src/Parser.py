@@ -64,7 +64,7 @@ class Parser:
         self.test_size  = self.config['training_testing'].get('test_size',0.25)
         self.train_test  = self.config['training_testing'].get('test',True)
         self.method     = self.config['training_testing'].get('method','ETR')    
-        self.SearchCV     = self.config['training_testing'].get('SearchCV',None)    
+        self.SearchCV     = self.config['training_testing'].get('SearchCV',None)
 
         if self.SearchCV == 'Random':
             self.n_iter_search     = self.config['training_testing'].get('n_iter',25)    
