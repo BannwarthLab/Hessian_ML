@@ -10,130 +10,125 @@ class HessFeature(Rotation_Functions):
 
 
     def  get_Feature_heteronuclear(self):
-        
+
+        index =     [[2,0,0],[1,-1,0],[1,0,-1],
+                    [-1,1,0],[0,2,0],[0,1,-1],
+                    [-1,0,1],[0,-1,1],[0,0,2]]
+
+
         self.transpose_list = []
         self.check_list = []
         self.Feature_AB = []
-            
-        for i in [0,np.pi*0.05,-np.pi*0.05]:
-            
-            R1 = self.rot_X(i)
-            R2 = self.rot_Y(i)
 
-            R_sum = matmul(R1,R2)
+        for atom_A in range(self.N_atoms):
+            for atom_B in range(atom_A+1,self.N_atoms):
+
+                A = atom_A
+                B = atom_B
+
+                i0 = 3*A
+                i3 = 3*A + 3
+                j0 = 3*B 
+                j3 = 3*B + 3
+
+                R_MI_APF = self.R_MI_APF_mat[i0:i3,j0:j3]
+
+                self.check_list.append([A,B])
+
+                if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
+                    B,A = A,B
+                    self.transpose_list.append([B,A])
+                    rot_Mat = self.rot_X(np.pi)
+    
+                    R_MI_APF = matmul(rot_Mat,R_MI_APF)
+
+                R_AB = linalg.norm(self.xyz.iloc[A,1:] - self.xyz.iloc[B,1:])
+
+                Quantity_AB = [[],[]]
+
+                vector_of_ones = np.array([1,1,1])
+
+                j = 0
+
+                for atom in [A,B]:
+                    #____Rotation from initial coordinate system to atom pair focused system____
+                    dipm_atom = matmul(self.init_R_MI,self.dipm_atom[atom])
+                    dipm_delta = matmul(self.init_R_MI,self.dipm_delta[atom])
+                    dipm_only_mull = matmul(self.init_R_MI,self.dipm_only_mull[atom])
+
+                    dipm_only_Z = matmul(self.init_R_MI,self.dipm_only_Z[atom])
+                    qm_only_mull = matmul(self.init_R_MI,self.qm_delta_only_mull[atom])
+                    qm_only_Z = matmul(self.init_R_MI,self.qm_delta_only_Z[atom])
 
 
-            for atom_A in range(self.N_atoms):
-                for atom_B in range(atom_A+1,self.N_atoms):
 
-                    A = atom_A
-                    B = atom_B
+                    dipm_atom = matmul(R_MI_APF,dipm_atom)
+                    dipm_delta = matmul(R_MI_APF,dipm_delta)
+                    dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
 
-                    i0 = 3*A
-                    i3 = 3*A + 3
-                    j0 = 3*B 
-                    j3 = 3*B + 3
 
-                    R_MI_APF = self.R_MI_APF_mat[i0:i3,j0:j3]
+                    dipm_only_Z = matmul(R_MI_APF,dipm_only_Z)
+                    qm_only_mull = matmul(R_MI_APF,qm_only_mull)
+                    qm_only_Z = matmul(R_MI_APF,qm_only_Z)
 
-                    self.check_list.append([A,B])
+                    qm_atom = matmul(matmul(self.init_R_MI,self.qm_atom[atom]),np.transpose(self.init_R_MI))
+                    qm_delta = matmul(matmul(self.init_R_MI,self.qm_delta[atom]),np.transpose(self.init_R_MI))
 
-                    if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
-                        B,A = A,B
-                        self.transpose_list.append([B,A])
-                        rot_Mat = self.rot_X(np.pi)
-        
-                        R_MI_APF = matmul(rot_Mat,R_MI_APF)
+                    qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
+                    qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
 
-                    R_MI_APF = matmul(R_sum,R_MI_APF)
+                    qm_atom = qm_atom[np.triu_indices(3)]#matmul(qm_atom,vector_of_ones)
+                    qm_delta =qm_delta[np.triu_indices(3)] #matmul(qm_delta,vector_of_ones)
+
+                    #____Append Features to Feature Vector____
+                    Quantity_AB[j].extend([self.nuc_charge[atom]])
+
+                    Quantity_AB[j].extend(self.CN[atom])
+                    Quantity_AB[j].extend(self.q_atom[atom])
                     
-                    R_AB = linalg.norm(self.xyz.iloc[A,1:] - self.xyz.iloc[B,1:])
+                    Quantity_AB[j].extend(dipm_atom)
+                    Quantity_AB[j].extend(dipm_delta)
+                    Quantity_AB[j].extend(dipm_only_mull)
 
-                    Quantity_AB = [[],[]]
+                    Quantity_AB[j].extend(dipm_only_Z)
 
+                    Quantity_AB[j].extend(qm_atom)
+                    Quantity_AB[j].extend(qm_delta)
 
+                    Quantity_AB[j].extend(qm_only_mull)
+                    Quantity_AB[j].extend(qm_only_Z)
 
-                    j = 0
+                    Quantity_AB[j].extend(self.energy_based[atom])
 
-                    for atom in [A,B]:
-                        #____Rotation from initial coordinate system to atom pair focused system____
-                        dipm_atom = matmul(self.init_R_MI,self.dipm_atom[atom])
-                        dipm_delta = matmul(self.init_R_MI,self.dipm_delta[atom])
-                        dipm_only_mull = matmul(self.init_R_MI,self.dipm_only_mull[atom])
+                    j+=1
 
-                        dipm_only_Z = matmul(self.init_R_MI,self.dipm_only_Z[atom])
-                        qm_only_mull = matmul(self.init_R_MI,self.qm_delta_only_mull[atom])
-                        qm_only_Z = matmul(self.init_R_MI,self.qm_delta_only_Z[atom])
+                Quantity_AB_arr =np.array(Quantity_AB)
 
+                Feature_Arith = list((Quantity_AB_arr[0] + Quantity_AB_arr[1])/2)
+                Feature_Prod = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
+                Feature_AbsDiff = list((Quantity_AB_arr[0] - Quantity_AB_arr[1]))
 
+                Features_temp = []
+                Features_temp.extend(Quantity_AB[0])
+                Features_temp.extend(Quantity_AB[1])
+                Features_temp.extend(Feature_Arith)
+                Features_temp.extend(Feature_Prod)
+                Features_temp.extend(Feature_AbsDiff)
+                Features_temp.extend([R_AB])
+                Features_temp.extend([1/R_AB])
+                Features_temp.extend([1/R_AB**6])
 
-                        dipm_atom = matmul(R_MI_APF,dipm_atom)
-                        dipm_delta = matmul(R_MI_APF,dipm_delta)
-                        dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
-
-
-                        dipm_only_Z = matmul(R_MI_APF,dipm_only_Z)
-                        qm_only_mull = matmul(R_MI_APF,qm_only_mull)
-                        qm_only_Z = matmul(R_MI_APF,qm_only_Z)
-
-                        qm_atom = matmul(matmul(self.init_R_MI,self.qm_atom[atom]),np.transpose(self.init_R_MI))
-                        qm_delta = matmul(matmul(self.init_R_MI,self.qm_delta[atom]),np.transpose(self.init_R_MI))
-
-                        qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
-                        qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
-
-                        qm_atom = qm_atom[np.triu_indices(3)]#matmul(qm_atom,vector_of_ones)
-                        qm_delta =qm_delta[np.triu_indices(3)] #matmul(qm_delta,vector_of_ones)
-
-                        #____Append Features to Feature Vector____
-                        Quantity_AB[j].extend([self.nuc_charge[atom]])
-
-                        Quantity_AB[j].extend(self.CN[atom])
-                        Quantity_AB[j].extend(self.q_atom[atom])
-                        
-                        Quantity_AB[j].extend(dipm_atom)
-                        Quantity_AB[j].extend(dipm_delta)
-                        Quantity_AB[j].extend(dipm_only_mull)
-
-                        Quantity_AB[j].extend(dipm_only_Z)
-
-                        Quantity_AB[j].extend(qm_atom)
-                        Quantity_AB[j].extend(qm_delta)
-
-                        Quantity_AB[j].extend(qm_only_mull)
-                        Quantity_AB[j].extend(qm_only_Z)
-
-                        Quantity_AB[j].extend(self.energy_based[atom])
-
-                        j+=1
-
-                    Quantity_AB_arr =np.array(Quantity_AB)
-
-                    Feature_Arith = list((Quantity_AB_arr[0] + Quantity_AB_arr[1])/2)
-                    Feature_Prod = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
-                    Feature_AbsDiff = list((Quantity_AB_arr[0] - Quantity_AB_arr[1]))
-
-                    Features_temp = []
-                    Features_temp.extend(Quantity_AB[0])
-                    Features_temp.extend(Quantity_AB[1])
-                    Features_temp.extend(Feature_Arith)
-                    Features_temp.extend(Feature_Prod)
-                    Features_temp.extend(Feature_AbsDiff)
-                    Features_temp.extend([R_AB])
-                    Features_temp.extend([1/R_AB])
-                    Features_temp.extend([1/R_AB**6])
-
-                    self.Feature_AB.append(Features_temp)
+                self.Feature_AB.append(Features_temp)
 
 
 
-            del Quantity_AB_arr
-            del Quantity_AB
-            del Features_temp 
+        del Quantity_AB_arr
+        del Quantity_AB
+        del Features_temp 
 
-            del Feature_Arith
-            del Feature_Prod
-            del Feature_AbsDiff
+        del Feature_Arith
+        del Feature_Prod
+        del Feature_AbsDiff
         
         return
 
