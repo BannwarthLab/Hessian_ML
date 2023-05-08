@@ -120,12 +120,12 @@ class Rotation_Functions:
           coord_end = self.vec_trans(coord_end,T)
 
           vec_z = np.zeros(3)
+     
           #Rotation for i < j 
           if i < j:
                #Atom pair focussed coordinate system
                vec_z  = coord_end.iloc[i,1:].astype('float64')
                vec_x = np.cross(vec_z,vec_dipm)#axis[0]#
-
 
                LL = np.cross(vec_z,axis[2])
 
@@ -227,7 +227,9 @@ class Rotation_Functions:
 
           elif i == j:
 
+
                center_CN = np.sum(coord_end.iloc[:,1:])/len(coord_end.iloc[:,1:])
+
                
                T = 1/2 * coord_end.iloc[i,1:] + center_CN # + 1/2 * coord_end.iloc[j,1:]
                vec_dipm = dipm.iloc[i,1:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])+

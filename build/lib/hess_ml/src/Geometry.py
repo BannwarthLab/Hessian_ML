@@ -1,0 +1,70 @@
+import os 
+from hess_ml.src.ReadWrite import ReadWrite
+from hess_ml.src.Rotation_func import Rotation_Functions
+from hess_ml.src.Preparation import Preparation
+from hess_ml.src.HessTarget import HessTarget
+from hess_ml.src.HessFeature import HessFeature
+from hess_ml.src.Observables import Observables
+from hess_ml.src.SaveDat import FTHetero, FTHomo, PickleData
+from hess_ml.src.constants import Const 
+import json as json
+import numpy as np
+
+class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotation_Functions):
+    
+    def __init__(self):
+        super().__init__
+        return 
+        
+    def gen_data(self,geo_file,geo,mol):
+        self.geo = geo
+        self.mol = mol
+        self.geo_working_dir = geo_file
+        self.xyz,self.header = self.import_coord(os.path.join(self.geo_working_dir,self.file_coord))
+        self.N_atoms = len(self.xyz['atoms'])
+
+        self.nuc_charge = np.zeros(self.N_atoms)
+
+        for i in range(self.N_atoms):
+            self.nuc_charge[i] = Const.ELEMENTS2Z[self.xyz.loc[i,'atoms']]
+
+        self.dipm = self.import_dipm(os.path.join(self.geo_working_dir,self.file_dipm)).iloc[:,:-3]
+
+        self.hessian = self.import_hessian(os.path.join(self.geo_working_dir,self.file_target),self.xyz)
+
+        self.ml_features = self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
+
+        self.init_R_MI,self.xyz = (self.calc_R(self.xyz))
+
+        self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
+        self.lamb_len  = None
+
+        self.rot_init_inert()
+        
+        self.rot_inert_apf()
+
+        self.get_Feature_heteronuclear()
+
+        self.gen_Hessian_vector(self.transpose_list)
+        
+        return
+
+    def clear_quantities(self):
+
+        del self.CN
+        del self.dipm_atom
+        del self.dipm_delta
+        del self.dipm_only_mull
+        del self.qm_atom
+        del self.qm_delta
+        del self.energy_based
+        del self.hessian
+        del self.init_P_MI
+
+        return 
+
+    def get_feature(self):
+        return self.Feature_AA, self.Feature_AB
+
+    def get_target(self):
+        return self.Target_AA, self.Target_AB
