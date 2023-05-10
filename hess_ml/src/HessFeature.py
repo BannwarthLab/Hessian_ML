@@ -109,11 +109,14 @@ class HessFeature(Rotation_Functions):
                 Feature_AbsDiff = list((Quantity_AB_arr[0] - Quantity_AB_arr[1]))
 
                 Features_temp = []
+                
                 Features_temp.extend(Quantity_AB[0])
                 Features_temp.extend(Quantity_AB[1])
+
                 Features_temp.extend(Feature_Arith)
                 Features_temp.extend(Feature_Prod)
                 Features_temp.extend(Feature_AbsDiff)
+            
                 Features_temp.extend([R_AB])
                 Features_temp.extend([1/R_AB])
                 Features_temp.extend([1/R_AB**6])
