@@ -46,6 +46,7 @@ class Parser:
             self.output_file   = f"{self.config['feature_generation'].get('output_file','systems')}*.json"
             self.file_dipm     = self.config['feature_generation'].get('dipm','xyz_dipm.csv')
             self.file_coord    = self.config['feature_generation'].get('coord','xtbopt.xyz')
+            self.file_gradient = self.config['feature_generation'].get('grad','gradient')
             self.subfolder     = bool(self.config['feature_generation'].get('subfolder',False))
             self.diag          = self.config['feature_generation'].get('diag','DTR')
 

@@ -34,10 +34,12 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
 
         self.ml_features = self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
 
+        self.import_gradient(os.path.join(self.geo_working_dir,self.file_gradient))
+
         self.init_R_MI,self.xyz = (self.calc_R(self.xyz))
 
         self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
-        self.lamb_len  = None
+
 
         self.rot_init_inert()
         

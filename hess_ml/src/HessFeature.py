@@ -46,8 +46,6 @@ class HessFeature(Rotation_Functions):
 
                 Quantity_AB = [[],[]]
 
-                vector_of_ones = np.array([1,1,1])
-
                 j = 0
 
                 for atom in [A,B]:
@@ -56,16 +54,16 @@ class HessFeature(Rotation_Functions):
                     dipm_delta = matmul(self.init_R_MI,self.dipm_delta[atom])
                     dipm_only_mull = matmul(self.init_R_MI,self.dipm_only_mull[atom])
 
+
                     dipm_only_Z = matmul(self.init_R_MI,self.dipm_only_Z[atom])
                     qm_only_mull = matmul(self.init_R_MI,self.qm_delta_only_mull[atom])
                     qm_only_Z = matmul(self.init_R_MI,self.qm_delta_only_Z[atom])
 
-
+                    grad = matmul(R_MI_APF,self.gradient[atom])
 
                     dipm_atom = matmul(R_MI_APF,dipm_atom)
                     dipm_delta = matmul(R_MI_APF,dipm_delta)
                     dipm_only_mull = matmul(R_MI_APF,dipm_only_mull)
-
 
                     dipm_only_Z = matmul(R_MI_APF,dipm_only_Z)
                     qm_only_mull = matmul(R_MI_APF,qm_only_mull)
@@ -81,6 +79,9 @@ class HessFeature(Rotation_Functions):
                     qm_delta =qm_delta[np.triu_indices(3)] #matmul(qm_delta,vector_of_ones)
 
                     #____Append Features to Feature Vector____
+
+                    Quantity_AB[j].extend(grad)
+                    
                     Quantity_AB[j].extend([self.nuc_charge[atom]])
 
                     Quantity_AB[j].extend(self.CN[atom])
@@ -109,7 +110,7 @@ class HessFeature(Rotation_Functions):
                 Feature_AbsDiff = list((Quantity_AB_arr[0] - Quantity_AB_arr[1]))
 
                 Features_temp = []
-                
+
                 Features_temp.extend(Quantity_AB[0])
                 Features_temp.extend(Quantity_AB[1])
 
@@ -140,10 +141,7 @@ class HessFeature(Rotation_Functions):
 
 
     def get_Feature_homonuclear(self):
-        index = [[2,0,0],[1,1,0],[1,0,1],
-                [1,1,0],[0,2,0],[0,1,1],
-                [1,0,1],[0,1,1],[0,0,2]]
-                
+
         self.Feature_AA = []            
         rot_Mat = self.rot_X(0.0/360*2*np.pi)
 
@@ -173,7 +171,7 @@ class HessFeature(Rotation_Functions):
             
             qm_atom = matmul(matmul(R_MI_APF,qm_atom),np.transpose(R_MI_APF))
             qm_delta = matmul(matmul(R_MI_APF,qm_delta),np.transpose(R_MI_APF))
-            #gradient = matmul(R_MI_APF,self.grad[3*A:3*A+3])
+            
 
             #for i in range(3):
             #   Quantity_A.extend([np.sum(qm_atom[i,:])])

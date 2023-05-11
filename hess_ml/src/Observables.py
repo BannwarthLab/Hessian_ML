@@ -12,9 +12,9 @@ class Observables(Rotation_Functions,Const):
     def get_coord_state(self):
         return self.coord_state[0]
 
-    def gen_Frequencies(self,hess_vec_aa,hess_vec_ab,pred=False): 
+    def gen_Frequencies(self,hess_vec_ab,hess_vec_aa=False): 
 
-        if pred == True:
+        if type(hess_vec_aa) == type(False):
             Hessian = self.gen_hess_from_vec_pred(hess_vec_aa,hess_vec_ab)
         else:
             Hessian = self.gen_hess_from_vec_true(hess_vec_aa,hess_vec_ab)
@@ -176,8 +176,8 @@ class Observables(Rotation_Functions,Const):
 
 
     def gen_hess_from_vec_pred(self,hess_vec_aa,hess_vec_ab):
-        ite_homo = 0
         ite_hetero = 0
+
         Hessian = np.zeros([self.N_atoms*3,self.N_atoms*3])
 
         for atom_A in range(self.N_atoms):
@@ -197,6 +197,8 @@ class Observables(Rotation_Functions,Const):
             for atom_B in range(self.N_atoms):
                 if atom_A != atom_B:
                     Hessian[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3] -= Hessian[3*atom_A:3*atom_A+3,3*atom_B:3*atom_B+3]
+
+            Hessian[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3] = (Hessian[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3] + np.transpose(Hessian[3*atom_A:3*atom_A+3,3*atom_A:3*atom_A+3]))/2 
 
         return Hessian
     

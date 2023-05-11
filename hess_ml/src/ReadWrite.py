@@ -26,6 +26,7 @@ class ReadWrite():
 
       def import_hessian(self,file,coord_var):
             LineList = []
+            
             with open (file,'r') as fd:
                   Lines = [line.rstrip('\n') for line in fd]
                   for line in Lines[1:]:
@@ -52,12 +53,15 @@ class ReadWrite():
 
             return hess_dftd4
       
-      def import_gradient(self,file,coord_var):
+      def import_gradient(self,file):
 
-            gradient = np.genfromtxt(file,skip_header=2+len(coord_var['atoms']),skip_footer=1)
-            gradient = gradient.flatten()
+            with open(file , 'rb') as f:
+                  f.close()
 
-            return gradient
+            self.gradient = np.genfromtxt(file,skip_header=2+self.N_atoms,skip_footer=1,loose=True)
+            #gradient = gradient.flatten()
+
+            return
 
 
       def import_ml_features(self,file):
@@ -82,6 +86,7 @@ class ReadWrite():
             self.energy_based = np.array(GFN2_quantities.loc[:,['chem pot','HOAO_a (eV)','LUAO_a (eV)','HOAO_b (eV)','LUAO_b (eV)',
                                     'E_repulsion','E_EHT',' E_disp_2','E_disp_3','E_ies_ixc','E_aes','E_tot',
                                     'E_axc',' chem_pot_ext','e_gap_ext','ehoao_ext','eluao_ext']].values.tolist())
+            
             self.names = GFN2_quantities.columns.tolist()
             
             return 

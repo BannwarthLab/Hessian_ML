@@ -16,7 +16,7 @@ class Testing(ReadWrite,Observables):
 
     def test(self):
         self.predict_hess()
-        self.comp_test_observables()
+        #self.comp_test_observables()
         return
 
     def comp_test_observables(self):
@@ -38,13 +38,12 @@ class Testing(ReadWrite,Observables):
                     self.R_MI_APF_mat = temp_obj.get('R_MI_APF_mat')
                     self.xyz = temp_obj.get('xyz')
                     self.transpose_list = temp_obj.get('transpose_list')
+
                     self.N_atoms = temp_obj.get('N_atoms')
-                    self.lamb_len = temp_obj.get('lamb_len')
 
                     hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
-                    hess_vec_aa = None
 
-                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,pred=True)
+                    freq = self.gen_Frequencies(hess_vec_ab)
                     
                     ZPE = self.get_ZPE(freq)
                     Z = self.get_partition_func(freq)
@@ -58,7 +57,8 @@ class Testing(ReadWrite,Observables):
                     hess_vec_aa = np.array(temp_obj.get('Target_AA'))
                     hess_vec_ab = np.array(temp_obj.get('Target_AB'))
 
-                    freq = self.gen_Frequencies(hess_vec_aa,hess_vec_ab,pred=False)
+                    freq = self.gen_Frequencies(hess_vec_ab,hess_vec_aa)
+
                     ZPE = self.get_ZPE(freq)
                     Z = self.get_partition_func(freq)
 
@@ -106,9 +106,13 @@ class Testing(ReadWrite,Observables):
 
         test_files = glob.glob('test_structures*.json')
         for file in test_files:
+
             with open(f'{file}','rb') as f:
+
                 while True:
+
                     try:
+
                         temp_obj = pickle.load(f)
 
                         if self.normalization:
@@ -119,7 +123,9 @@ class Testing(ReadWrite,Observables):
 
                         else:
                             H_hetero = het_model.predict((np.array(temp_obj.get('Feature_AB'))))#[::9,:]
+
                         temp_obj['pred_target_AB'] = H_hetero#.reshape(len(H_hetero)*9)
+
                         with open('pred_structures_final.json','ab') as g:
                             pickle.dump(temp_obj,g)
 

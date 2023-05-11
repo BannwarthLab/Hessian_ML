@@ -18,6 +18,8 @@ class Preparation(Rotation_Functions):
 
         self.hessian = matmul(matmul(self.init_P_MI,self.hessian),np.transpose(self.init_P_MI)) 
 
+        self.rot_gradient(self.init_R_MI)
+        
         return
 
 

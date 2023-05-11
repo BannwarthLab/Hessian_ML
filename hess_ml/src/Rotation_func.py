@@ -51,6 +51,11 @@ class Rotation_Functions:
           for i in range(len(coord_var.iloc[:,1])):
                coord_var.iloc[i,1:] = matmul(rotM,coord_var.iloc[i,1:])
           return coord_var
+     
+     def rot_gradient(self,R):
+          for i in range(self.N_atoms):
+               self.gradient[i] = matmul(R,self.gradient[i])
+          return
 
      def vec_trans(self,coord_var,trans):
           coord_var_new = coord_var.copy()
@@ -577,3 +582,4 @@ class Rotation_Functions:
                qm_matrix_list.append(qm_matrix)
 
           return qm_matrix_list
+     
