@@ -7,7 +7,7 @@ import time as time
 from sklearn.model_selection import train_test_split
 
 from hess_ml.src.Geometry import Geometry
-from hess_ml.src.SaveDat import FTHetero,FTHomo,PickleData,PickleDict
+from hess_ml.src.SaveDat import PickleData
 
 from joblib import Parallel, delayed
 
@@ -23,9 +23,9 @@ class DataGeneration(Geometry):
         return
                 
     def generate_feature_target_sf_dtr(self):
-        self.feature_target_file = ['Feature_Vector_Homo','Target_Vector_Homo','Feature_Vector_Hetero','Target_Vector_Hetero']
+        self.feature_target_file = ['Feature_Vector','Target_Vector']
         
-        for file in ['Model_Homo*.json','Model_Hetero*.json','test_structures*.json',self.output_file]:
+        for file in ['Model*.json','test_structures*.json',self.output_file]:
             files = glob.glob(file)
             for f in files:
                 os.remove(f)
@@ -84,9 +84,9 @@ class DataGeneration(Geometry):
 
             if geom in self.train_idx:
 
-                het = FTHetero(self,mol,geom,dir)
+                het = PickleData(self,mol,geom,dir)
 
-                with open(f'Model_Hetero{current_process()._identity[0]}.json','ab+') as g:
+                with open(f'Model_{current_process()._identity[0]}.json','ab+') as g:
                     pickle.dump(het.dict,g)
 
             if geom in self.test_idx:

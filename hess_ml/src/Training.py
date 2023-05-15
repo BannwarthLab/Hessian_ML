@@ -37,22 +37,11 @@ class Training(ReadWrite):
         
         self.Features = []
         self.Targets = []
-        if self.mode =='homo':
-            print(f'Importing Features and Targets of homonuclear model ... ', end="")
-            self.files = glob.glob('Model_Homo*.json')
-            for f in self.files:
-                Feature_temp,Targets_temp = self.import_pickle_FT(f)
-                self.Features.extend(Feature_temp)
-                self.Targets.extend(Targets_temp)
-            self.Features = np.array(self.Features)
-            self.Targets = np.array(self.Targets)
 
-            print('done\n')
-
-        elif self.mode == 'hetero':
+        if self.mode == 'hetero':
             print(f'Importing Features and Targets of heteronuclear model... ', end="")
 
-            self.files = glob.glob('Model_Hetero*.json')
+            self.files = glob.glob('Model_*.json')
             for f in self.files:
                 Feature_temp,Targets_temp = self.import_pickle_FT(f)
                 self.Features.extend(Feature_temp)

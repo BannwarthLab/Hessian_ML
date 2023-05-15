@@ -116,13 +116,13 @@ class Testing(ReadWrite,Observables):
                         temp_obj = pickle.load(f)
 
                         if self.normalization:
-                            H_hetero = het_model.predict(transformer.transform(np.array(temp_obj.get('Feature_AB'))))#[::9,:]
+                            H_hetero = het_model.predict(transformer.transform(np.array(temp_obj.get('Feature'))))#[::9,:]
                         
                         elif self.selection:
-                            H_hetero = het_model.predict(selector.transform(np.array(temp_obj.get('Feature_AB'))))
+                            H_hetero = het_model.predict(selector.transform(np.array(temp_obj.get('Feature'))))
 
                         else:
-                            H_hetero = het_model.predict((np.array(temp_obj.get('Feature_AB'))))#[::9,:]
+                            H_hetero = het_model.predict((np.array(temp_obj.get('Feature'))))#[::9,:]
 
                         temp_obj['pred_target_AB'] = H_hetero#.reshape(len(H_hetero)*9)
 

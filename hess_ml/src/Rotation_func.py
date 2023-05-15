@@ -14,7 +14,7 @@ class Rotation_Functions:
           if linalg.norm(a) == 0. or linalg.norm(b) == 0.:
                cosangle = 0
           else:
-               cosangle = matmul(a,b)/linalg.norm(a)/linalg.norm(b)
+               cosangle = np.dot(a,b)/linalg.norm(a)/linalg.norm(b)
 
           angle = np.arccos(np.clip(cosangle,-1,1))
           

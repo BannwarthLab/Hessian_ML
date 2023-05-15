@@ -4,7 +4,6 @@ from hess_ml.src.Rotation_func import Rotation_Functions
 import numpy as np
 import pickle as pickle 
 import os 
-from hess_ml.src.SaveDat import FTHomo,FTHetero
 import json as json 
 
 class ReadWrite():
@@ -107,7 +106,7 @@ class ReadWrite():
                               i+=1
                               temp_obj = pickle.load(f)
                               feature.extend(temp_obj['Feature'])
-                              target.extend(temp_obj['Target'])
+                              target.extend(temp_obj['Target_AB'])
                         except EOFError:
                               #print(f'Features and Targets of a total of {i-1} structures are used.\n')
                               break

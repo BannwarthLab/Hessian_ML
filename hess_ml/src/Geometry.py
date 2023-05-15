@@ -5,7 +5,6 @@ from hess_ml.src.Preparation import Preparation
 from hess_ml.src.HessTarget import HessTarget
 from hess_ml.src.HessFeature import HessFeature
 from hess_ml.src.Observables import Observables
-from hess_ml.src.SaveDat import FTHetero, FTHomo, PickleData
 from hess_ml.src.constants import Const 
 import json as json
 import numpy as np
@@ -35,17 +34,10 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
         self.ml_features = self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
 
         self.import_gradient(os.path.join(self.geo_working_dir,self.file_gradient))
-
-        self.init_R_MI,self.xyz = (self.calc_R(self.xyz))
-
-        self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
-
-
-        self.rot_init_inert()
         
         self.rot_inert_apf()
 
-        self.get_Feature_heteronuclear()
+        self.get_Feature()
 
         self.gen_Hessian_vector(self.transpose_list)
         
@@ -61,7 +53,6 @@ class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotatio
         del self.qm_delta
         del self.energy_based
         del self.hessian
-        del self.init_P_MI
 
         return 
 
