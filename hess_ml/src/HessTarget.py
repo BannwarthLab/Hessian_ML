@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
 from operator import matmul
-from scipy import linalg
-import os 
+
 
 class HessTarget:
     

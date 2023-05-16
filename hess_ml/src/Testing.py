@@ -1,15 +1,15 @@
-from sklearn.ensemble import ExtraTreesRegressor
-from joblib import dump,load
+
+from joblib import load
 import pickle as pickle
-from hess_ml.src.ReadWrite import ReadWrite
+
 import numpy as np
-from hess_ml.src.SaveDat import PickleData
 import glob as glob
-import os 
+
 from hess_ml.src.Observables import Observables
+from hess_ml.src.IO import Input
 
 
-class Testing(ReadWrite,Observables):
+class Testing(Input,Observables):
     def __init__(self) -> None:
         super().__init__
         pass
@@ -116,15 +116,15 @@ class Testing(ReadWrite,Observables):
                         temp_obj = pickle.load(f)
 
                         if self.normalization:
-                            H_hetero = het_model.predict(transformer.transform(np.array(temp_obj.get('Feature'))))#[::9,:]
+                            H_hetero = het_model.predict(transformer.transform(np.array(temp_obj.get('Feature'))))
                         
                         elif self.selection:
                             H_hetero = het_model.predict(selector.transform(np.array(temp_obj.get('Feature'))))
 
                         else:
-                            H_hetero = het_model.predict((np.array(temp_obj.get('Feature'))))#[::9,:]
+                            H_hetero = het_model.predict((np.array(temp_obj.get('Feature'))))
 
-                        temp_obj['pred_target_AB'] = H_hetero#.reshape(len(H_hetero)*9)
+                        temp_obj['pred_target_AB'] = H_hetero
 
                         with open('pred_structures_final.json','ab') as g:
                             pickle.dump(temp_obj,g)

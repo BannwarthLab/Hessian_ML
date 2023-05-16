@@ -15,7 +15,7 @@ class Observables(Rotation_Functions,Const):
     def gen_Frequencies(self,hess_vec_ab,hess_vec_aa=False): 
 
         if type(hess_vec_aa) == type(False):
-            Hessian = self.gen_hess_from_vec_pred(hess_vec_aa,hess_vec_ab)
+            Hessian = self.gen_hess_from_vec_pred(hess_vec_ab)
         else:
             Hessian = self.gen_hess_from_vec_true(hess_vec_aa,hess_vec_ab)
         
@@ -75,26 +75,20 @@ class Observables(Rotation_Functions,Const):
 
         return Hessian,lamb_len
     
-
-    def weight_hessian(self,Hessian):
+    def weight_hessian(self,hessian):
         atoms = self.xyz['atoms']
+        for k in range(len(hessian[1,:])//3):
+            for l in range(len(hessian[:,1])//3):
 
-        for k in range(len(atoms)):
-            for l in range(k,len(atoms)):
-                k3 = 3*k 
-                l3 = 3*l
-                
                 mass_n = Const.elements_dict[atoms[k]]
                 mass_m = Const.elements_dict[atoms[l]]
 
-                Hessian[k3:k3+3,l3:l3+3] =  1/np.sqrt(mass_n*mass_m*Const.mass_unit_in_au**2)*Hessian[k3:k3+3,l3:l3+3]
-                if k != l:
-                    Hessian[l3:l3+3,k3:k3+3] = Hessian[k3:k3+3,l3:l3+3]
+                hessian[3*k:3*k+3,3*l:3*l+3] =  1/np.sqrt(mass_n*mass_m*Const.mass_unit_in_au**2)*hessian[3*k:3*k+3,3*l:3*l+3]
 
-        return Hessian
+        return hessian
+    
 
-
-    def fill_matrix_block_AB(self,vector,matrix,R_mat=None,A=None,B=None,ite=None,transpose=False):
+    def fill_matrix_block_AB(self,vector,matrix,R_mat=None,A=None,B=None,transpose=False):
 
         A3 = 3*A 
         B3 = 3*B
@@ -110,7 +104,7 @@ class Observables(Rotation_Functions,Const):
 
         return matrix
     
-    def fill_matrix_block_AA(self,vector,matrix,R_mat=None,A=None,ite=None):
+    def fill_matrix_block_AA(self,vector,matrix,A=None):
 
         A3 = 3*A
 
@@ -120,7 +114,6 @@ class Observables(Rotation_Functions,Const):
 
         matrix[A3:A3+3,A3:A3+3] = temp_mat
 
-        matrix[A3:A3+3,A3:A3+3] = matmul(matmul(np.transpose(R_mat[A3:A3+3,A3:A3+3]),matrix[A3:A3+3,A3:A3+3]),(R_mat[A3:A3+3,A3:A3+3]))
 
         return matrix
     
@@ -175,22 +168,19 @@ class Observables(Rotation_Functions,Const):
         return idx_list,lamb,Q
 
 
-    def gen_hess_from_vec_pred(self,hess_vec_aa,hess_vec_ab):
+    def gen_hess_from_vec_pred(self,hess_vec_ab):
         ite_hetero = 0
 
         Hessian = np.zeros([self.N_atoms*3,self.N_atoms*3])
 
         for atom_A in range(self.N_atoms):
-            #Hessian = self.fill_matrix_block_AA(hess_vec_aa[atom_A],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A)
-            #ite_homo += 1
 
             for atom_B in range(atom_A+1,self.N_atoms):
                 transpose = False
                 if [atom_A,atom_B] in self.transpose_list:
                     transpose = True
-                Hessian = self.fill_matrix_block_AB(hess_vec_ab[ite_hetero],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
+                Hessian = self.fill_matrix_block_AB(hess_vec_ab[ite_hetero],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,transpose=transpose)
                 ite_hetero +=1
-            #self.H_pred += self.H_approx ## Change Hessian
 
 
         for atom_A in range(self.N_atoms):
@@ -204,19 +194,18 @@ class Observables(Rotation_Functions,Const):
     
 
     def gen_hess_from_vec_true(self,hess_vec_aa,hess_vec_ab):
-        ite_homo = 0
+
         ite_hetero = 0
         Hessian = np.zeros([self.N_atoms*3,self.N_atoms*3])
 
         for atom_A in range(self.N_atoms):
-            Hessian = self.fill_matrix_block_AA(hess_vec_aa[atom_A],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A)
-            ite_homo += 1
+            Hessian = self.fill_matrix_block_AA(hess_vec_aa[atom_A],Hessian,A=atom_A)
 
             for atom_B in range(atom_A+1,self.N_atoms):
                 transpose = False
                 if [atom_A,atom_B] in self.transpose_list:
                     transpose = True
-                Hessian = self.fill_matrix_block_AB(hess_vec_ab[ite_hetero],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,ite=ite_hetero,transpose=transpose)
+                Hessian = self.fill_matrix_block_AB(hess_vec_ab[ite_hetero],Hessian,R_mat=self.R_MI_APF_mat,A=atom_A,B=atom_B,transpose=transpose)
                 ite_hetero +=1
             #self.H_pred += self.H_approx ## Change Hessian
         return Hessian

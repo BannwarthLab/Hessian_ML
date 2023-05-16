@@ -6,7 +6,7 @@ import pickle as pickle
 import os 
 import json as json 
 
-class ReadWrite():
+class Input():
       def __init__(self):
             pass 
 
@@ -119,16 +119,3 @@ class ReadWrite():
                         f.truncate(0)
                   f.close()
             return
-
-      def merge_JsonFiles(self,files,final_file):
-            print(files)
-            result = list()
-            for f1 in files:
-                  with open(f1, 'rb') as infile:
-                        result.extend(pickle.load(infile))
-
-            with open(final_file, 'wb') as output_file:
-                  pickle.dump(result, output_file)
-
-            for f1 in files:
-                  os.remove(f1)

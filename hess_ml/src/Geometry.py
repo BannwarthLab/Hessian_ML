@@ -1,15 +1,19 @@
 import os 
-from hess_ml.src.ReadWrite import ReadWrite
+from hess_ml.src.IO import Input
+
 from hess_ml.src.Rotation_func import Rotation_Functions
 from hess_ml.src.Preparation import Preparation
+
 from hess_ml.src.HessTarget import HessTarget
 from hess_ml.src.HessFeature import HessFeature
+
 from hess_ml.src.Observables import Observables
-from hess_ml.src.constants import Const 
+from hess_ml.src.constants import Const
+
 import json as json
 import numpy as np
 
-class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotation_Functions):
+class Geometry(HessTarget,HessFeature, Input,Preparation,Observables,Rotation_Functions):
     
     def __init__(self):
         super().__init__

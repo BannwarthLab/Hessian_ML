@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from scipy import linalg
 from hess_ml.src.Rotation_func import Rotation_Functions
 from operator import matmul
@@ -10,11 +9,6 @@ class HessFeature(Rotation_Functions):
 
 
     def  get_Feature(self):
-
-        index =     [[2,0,0],[1,-1,0],[1,0,-1],
-                    [-1,1,0],[0,2,0],[0,1,-1],
-                    [-1,0,1],[0,-1,1],[0,0,2]]
-
 
         self.transpose_list = []
         self.check_list = []
@@ -117,7 +111,7 @@ class HessFeature(Rotation_Functions):
 
         del Quantity_AB_arr
         del Quantity_AB
-        del Features_temp 
+        del Features_temp
 
         del Feature_Arith
         del Feature_Prod

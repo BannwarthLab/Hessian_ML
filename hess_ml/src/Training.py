@@ -1,20 +1,24 @@
+
 from sklearn.ensemble import ExtraTreesRegressor,RandomForestRegressor
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
-from joblib import parallel_backend
-from joblib import dump,load
+
+from joblib import dump
+
 import json as json 
+
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
+
 from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import VarianceThreshold
-from hess_ml.src.ReadWrite import ReadWrite
+from hess_ml.src.IO import Input
 import os
 import numpy as np
 import glob as glob
 
-class Training(ReadWrite):
+class Training(Input):
     def __init__(self) -> None:
         super().__init__
         pass
@@ -143,7 +147,9 @@ class Training(ReadWrite):
 
 
 
-        regr_model.set_params(n_jobs=self.threads)
+        if method != 'MLPR':
+            regr_model.set_params(n_jobs=self.threads)
+
         regr_model.fit(self.Features,self.Targets)
 
         

@@ -7,7 +7,7 @@ import os
 
 class Environment(DataGeneration,Parser,Training,Testing):
     def __init__(self):
-        super().__init__       #initializes all parent classes 
+        super().__init__      #initializes all parent classes
         Parser.__init__(self) #initializes only the toml_parser class
         
 
