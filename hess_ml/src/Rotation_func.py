@@ -113,8 +113,7 @@ class Rotation_Functions:
           #Rotation by 180 ° if dipole moment is negative in x
 
           if matmul(R_euler,vec_x)[0] < 0.:
-               vec_z_norm = matmul(R_euler,vec_z)
-               vec_z_norm = vec_z_norm/linalg.norm(vec_z_norm)
+
                R_z = self.rot_Z(np.pi)
                R_euler = matmul(R_z,R_euler)
 
@@ -178,14 +177,6 @@ class Rotation_Functions:
 
      def inert_tensor(self,coord_var): #computes the inert tensor 
           inert_t = np.zeros([3,3])
-          rot_state = None
-          
-          '''
-          if sum(coord_var['x']) < 1e-9 or sum(coord_var['y']) < 1e-9 or sum(coord_var['z']) < 1e-9:
-               rot_state = True
-               rotM = matmul(rot_X(np.pi*random.random()),rot_Z(np.pi*random.random()))
-               coord_var = coord_rot(coord_var,rotM)
-          '''
 
           m = 0
           for i in range(len(coord_var.iloc[:,1])):
