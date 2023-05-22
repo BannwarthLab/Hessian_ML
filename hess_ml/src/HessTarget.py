@@ -22,6 +22,7 @@ class HessTarget:
 
                 if [atom_A,atom_B] in transpose_list:
                     H_APF = matmul(matmul(self.rot_X(np.pi),np.transpose(H_APF)),np.transpose(self.rot_X(np.pi)))
+                    H_APF = matmul(matmul(self.rot_Z(np.pi),(H_APF)),np.transpose(self.rot_Z(np.pi)))
 
                 self.Target_AB.append(list(H_APF.flatten()))
         

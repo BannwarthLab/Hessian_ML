@@ -72,8 +72,9 @@ class Rotation_Functions:
                
           axis = np.identity(3)
 
-
+          
           T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+          
           vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])#
 
           coord_end = self.vec_trans(coord_end,T)

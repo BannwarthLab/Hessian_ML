@@ -29,19 +29,49 @@ class HessFeature(Rotation_Functions):
 
                 self.check_list.append([A,B])
 
-                if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
+
+
+
+                #Performs a rotation around the X axis by 180 ° if nuclear charge of A is smaller than B to achieve a consistent alignment
+                # If A == B rotation depends on dipole moment 
+                if self.nuc_charge[A] < self.nuc_charge[B]:
+
                     B,A = A,B
+
                     self.transpose_list.append([B,A])
+
                     rot_Mat = self.rot_X(np.pi)
-    
+
                     R_MI_APF = matmul(rot_Mat,R_MI_APF)
+
+                    rot_Mat = self.rot_Z(np.pi)
+
+                    R_MI_APF = matmul(rot_Mat,R_MI_APF)
+
+                elif self.nuc_charge[A] == self.nuc_charge[B]:
+
+                    if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
+
+                        B,A = A,B
+
+                        self.transpose_list.append([B,A])
+
+                        rot_Mat = self.rot_X(np.pi)
+
+                        R_MI_APF = matmul(rot_Mat,R_MI_APF)
+
+                        rot_Mat = self.rot_Z(np.pi)
+                        
+                        R_MI_APF = matmul(rot_Mat,R_MI_APF)
+
+
 
                 R_AB = linalg.norm(self.xyz.iloc[A,1:] - self.xyz.iloc[B,1:])
 
                 Quantity_AB = [[],[]]
 
-                j = 0
 
+                j = 0
                 for atom in [A,B]:
                     #____Rotation from initial coordinate system to atom pair focused system____
 
