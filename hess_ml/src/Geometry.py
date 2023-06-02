@@ -19,10 +19,10 @@ class Geometry(HessTarget,HessFeature, Input,Preparation,Observables,Rotation_Fu
         super().__init__
         return 
         
-    def gen_data(self,geo_file,geo,mol):
-        self.geo = geo
-        self.mol = mol
+    def gen_data(self,geo_file):
+        
         self.geo_working_dir = geo_file
+
         self.xyz,self.header = self.import_coord(os.path.join(self.geo_working_dir,self.file_coord))
         self.N_atoms = len(self.xyz['atoms'])
 
@@ -31,7 +31,6 @@ class Geometry(HessTarget,HessFeature, Input,Preparation,Observables,Rotation_Fu
         for i in range(self.N_atoms):
             self.nuc_charge[i] = Const.ELEMENTS2Z[self.xyz.loc[i,'atoms']]
 
-        self.dipm = self.import_dipm(os.path.join(self.geo_working_dir,self.file_dipm)).iloc[:,:-3]
 
         self.hessian = self.import_hessian(os.path.join(self.geo_working_dir,self.file_target),self.xyz)
 

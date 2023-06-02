@@ -20,7 +20,7 @@ class Preparation(Rotation_Functions):
 
             for atom_B in range(atom_A+1,self.N_atoms):
                 xyz_temp = self.xyz.copy()
-                R_MI_APF = self.get_R_euler(xyz_temp,self.dipm,atom_A,atom_B)
+                R_MI_APF = self.get_R_euler(xyz_temp,self.dipm_atom,atom_A,atom_B)
 
                 H_APF = np.zeros([3,3])
                 #Generate the final hessian

@@ -11,19 +11,25 @@ class Input():
             pass 
 
       def import_coord(self,file):
+
             with open(file) as myfile:
-                  head = [next(myfile) for x in range(2)]
+                  
+                  head = [next(myfile) for _ in range(2)]
 
             coord_var = pd.read_csv(file,sep = '\s+',skiprows = 2,header = None)
+            
             coord_var.columns= ['atoms','x','y','z']
+
             return coord_var,head
 
       def import_dipm(self,file):
+
             coord_var = pd.read_csv(file,sep = ',')
-            #coord_var.columns= ['atoms','x','y','z']
+
             return coord_var
 
       def import_hessian(self,file,coord_var):
+
             LineList = []
             
             with open (file,'r') as fd:
@@ -34,10 +40,12 @@ class Input():
             hess = np.zeros([len(coord_var['atoms'])*3,len(coord_var['atoms'])*3])
 
             i = 0
+
             for k in range(len(hess[0,:])):
                   for l in range(len(hess[:,0])):
                         hess[k,l] = float(LineList[i])
                         i+=1
+
             return hess
 
       def import_hessian_dftd4(self,file,coord):
@@ -64,7 +72,9 @@ class Input():
 
 
       def import_ml_features(self,file):
+
             GFN2_quantities = pd.read_csv(f'{file}')
+
             self.CN = np.array(GFN2_quantities.loc[:,['coordination number','delta coordination number']].values.tolist())
 
             self.q_atom = np.array(GFN2_quantities.loc[:,['atomic partial charges','delta partial charges']].values.tolist())
@@ -95,7 +105,7 @@ class Input():
             return wbo
 
 
-      def import_pickle_FT(self,file):
+      def import_pickle_FT_old(self,file):
             feature = []
             target = []
 
@@ -112,10 +122,80 @@ class Input():
                               break
                             
             return feature,target
+      
+      
+      def import_pickle_FT(self,file):
+
+            i = 0
+            with open(f'{file}','rb') as f:
+                  i+=1
+                  temp_obj = pickle.load(f)
+                  feature = temp_obj['Feature']
+                  target = temp_obj['Target_AB']
+                        
+            return feature,target
+      
+
+      def rd_txt_file(self,file):
+            
+            with open(f'{file}','rb') as f:
+                  filenames = f.read().splitlines()
+            f.close()
+
+            for i in range(len(filenames)):
+                  filenames[i] = filenames[i].decode('ascii')
+
+            return filenames
+      
 
       def truncate_file(self,file):
             if os.path.isfile(file):
                   with open(file,'wb+') as f:
                         f.truncate(0)
                   f.close()
+            return
+      
+
+
+class Output():
+
+      def __init__(self):
+            pass
+
+
+      def hessian_to_xtb(self,file,hessian):
+
+            """
+            Writes a hessian from a numpy array to a xtb format hessian
+            Requires file name and the array
+            """
+
+            Nat3 = len(hessian)
+
+            with open(file,'w+') as myfile:
+                  myfile.write(f'$hessian\n')
+
+                  for i in range(Nat3):
+                        str_list = [f'{x: 10.10f}' for x in hessian[i]]
+
+                        for k in range(0,Nat3,5):
+                              sep = '\t'
+
+                              sep = sep.join(str_list[k:k+5])
+                              myfile.write('\t')
+                              myfile.write(sep)
+                              myfile.write('\n')
+            myfile.close()
+            
+            return 
+      
+      def data_to_txt(self,data,file):
+
+            with open(file,'w+') as f:
+
+                  for d in data:
+                        f.write(d)
+                        f.write('\n')
+            f.close()
+            
             return

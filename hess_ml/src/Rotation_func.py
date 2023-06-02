@@ -51,6 +51,7 @@ class Rotation_Functions:
           for i in range(len(coord_var.iloc[:,1])):
                coord_var.iloc[i,1:] = matmul(rotM,coord_var.iloc[i,1:])
           return coord_var
+          
      
      def rot_gradient(self,R):
           for i in range(self.N_atoms):
@@ -74,8 +75,8 @@ class Rotation_Functions:
 
           
           T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
-          
-          vec_dipm = dipm.iloc[i,1:] + dipm.iloc[j,1:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])#
+
+          vec_dipm = dipm[i,:] + dipm[j,:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])#
 
           coord_end = self.vec_trans(coord_end,T)
 

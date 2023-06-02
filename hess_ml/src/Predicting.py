@@ -4,23 +4,42 @@ import pickle as pickle
 
 import numpy as np
 import glob as glob
+import os
 
 from hess_ml.src.Observables import Observables
 from hess_ml.src.IO import Input
+from hess_ml.src.IO import Output
 
+from joblib import Parallel, delayed
 
-class Testing(Input,Observables):
+class Predicting(Input,Output,Observables):
     def __init__(self) -> None:
         super().__init__
         pass
 
-    def test(self):
-        self.predict_hess()
-        #self.comp_test_observables()
-        return
+    def predict(self,files):
 
+        self.model = load(os.path.join(self.predict_model_folder,f'{self.predict_model}.joblib'))
+
+        if self.normalization:
+
+            pathname = f'{self.model_name}_transformer.joblib'
+
+            self.transformer = load(pathname)
+
+
+        if self.selection:
+
+            pathname = f'{self.model_name}_selector.joblib'
+
+            self.selector = load(pathname)
+
+        Parallel(n_jobs=self.threads,require='sharedmem')(delayed(self.predict_hessian)(file=files[file]) for file in range(len(files)))
+
+        return
+    
     def comp_test_observables(self):
-        print('Computing Observables ...',end="")
+
         freq_pred_list = []      
         ZPE_pred = []
         Z_pred = []
@@ -43,7 +62,7 @@ class Testing(Input,Observables):
 
                     hess_vec_ab = np.array(temp_obj.get('pred_target_AB'))
 
-                    freq = self.gen_Frequencies(hess_vec_ab)
+                    freq = self.get_Frequencies(hess_vec_ab)
                     
                     ZPE = self.get_ZPE(freq)
                     Z = self.get_partition_func(freq)
@@ -57,7 +76,7 @@ class Testing(Input,Observables):
                     hess_vec_aa = np.array(temp_obj.get('Target_AA'))
                     hess_vec_ab = np.array(temp_obj.get('Target_AB'))
 
-                    freq = self.gen_Frequencies(hess_vec_ab,hess_vec_aa)
+                    freq = self.get_Frequencies(hess_vec_ab,hess_vec_aa)
 
                     ZPE = self.get_ZPE(freq)
                     Z = self.get_partition_func(freq)
@@ -89,22 +108,20 @@ class Testing(Input,Observables):
     def predict_hess(self):
         #_____reads heteronuclear model and predicts for each structure the heteronuclear blocks____
 
-        self.truncate_file('pred_structures.json')
-        self.truncate_file('pred_structures_final.json')
+        self.truncate_file('PredData.json')
 
-
-        het_model = load(f'{self.model_name}_hetero.joblib')
+        het_model = load(f'{self.model_name}.joblib')
 
         if self.normalization:
-            pathname = f'{self.model_name}_hetero_transformer.joblib'
+            pathname = f'{self.model_name}_transformer.joblib'
             transformer = load(pathname)
 
         if self.selection:
-            pathname = f'{self.model_name}_hetero_selector.joblib'
+            pathname = f'{self.model_name}_selector.joblib'
             selector = load(pathname)
 
 
-        test_files = glob.glob('test_structures*.json')
+        test_files = glob.glob('TestData_*.json')
         for file in test_files:
 
             with open(f'{file}','rb') as f:
@@ -112,7 +129,6 @@ class Testing(Input,Observables):
                 while True:
 
                     try:
-
                         temp_obj = pickle.load(f)
 
                         if self.normalization:
@@ -126,7 +142,7 @@ class Testing(Input,Observables):
 
                         temp_obj['pred_target_AB'] = H_hetero
 
-                        with open('pred_structures_final.json','ab') as g:
+                        with open('PredData.json','ab') as g:
                             pickle.dump(temp_obj,g)
 
                     except EOFError:
@@ -137,4 +153,42 @@ class Testing(Input,Observables):
         del het_model
 
 
+        return
+
+    def predict_hessian(self,file):
+
+        with open(os.path.join(file,f'Hessian_ML_Data.json'),'rb') as f:
+
+            Dict = pickle.load(f)
+
+        f.close()
+
+        if self.normalization:
+
+            H_hetero = self.model.predict(self.transformer.transform(np.array(Dict.get('Feature'))))
+        
+        elif self.selection:
+
+            H_hetero = self.model.predict(self.selector.transform(np.array(Dict.get('Feature'))))
+
+        else:
+
+            H_hetero = self.model.predict((np.array(Dict.get('Feature'))))
+
+        transpose_list = Dict['transpose_list']
+
+        R_MI_APF_mat = Dict['R_MI_APF_mat']
+
+        N_atoms = Dict['N_atoms']
+        
+        predHess = self.gen_hess_from_vec_pred(H_hetero,N_atoms,R_MI_APF_mat,transpose_list)
+
+        self.hessian_to_xtb(os.path.join(file,f'MLhesssian'),predHess)
+
+        del H_hetero
+        del transpose_list
+        del N_atoms 
+        del R_MI_APF_mat
+        del Dict
+        
         return

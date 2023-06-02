@@ -2,37 +2,61 @@ from hess_ml.src.Environment import Environment
 import time as time 
 
 def main() -> None:
+
     env = Environment()
 
-    if env.config.get('feature_generation',False):
-        env.parse_feature_generation()
+    env.parse()
 
-    if env.config.get('training_testing',False):
-        env.parse_train_test_parameter()
-    #__________________________________________
     #____________Choosing runtype______________
+    
     if env.config['runtype'] == 'hessian':
 
+        env.get_folders()
 
-        if env.config.get('feature_generation',False):
-            env.generate_data()
-             
-        if env.config.get('training_testing',False):
+        env.gen_features()
+        
+        if env.config.get('training',False):
 
+            env.train(train_conf = env.config['training']['parameter'],runtype=env.runtype_target)
+
+            if env.testing:
+
+                temp_time_old = time.time()
+
+                env.predict(env.test_geo)
+                
+                temp_time_new = time.time()
+                
+                print(f'Testing was done in {round(temp_time_new - temp_time_old)} s')
+
+        if env.config.get('predict',False):
+
+            if env.predict_folder:
+                env.parse_folders(env.predict_folder,env.predict_subfolder)
+
+            if env.predict_files:
+                
+                files = env.rd_txt_file(env.predict_files)
+
+                try:
+                    env.geo_dir.append(files)
+                except:
+                    env.geo_dir = files
+
+            if env.predict_data_gen:
+                
+                env.generate_data()
+
+
+            print(f'Starting prediction of {len(env.geo_dir)} files')
             temp_time_old = time.time()
 
-                        
-            env.train(train_conf = env.config['training_testing'],mode='hetero')
-
-
+            env.predict(env.geo_dir)
+ 
             temp_time_new = time.time()
 
-            print(f'Training was done in {round(temp_time_new - temp_time_old)} s' )
+            print(f'Prediction was done in {round(temp_time_new - temp_time_old)} s')
 
-            temp_time_old = time.time()
-            env.test()
-            temp_time_new = time.time()
-            print(f'Testing was done in {round(temp_time_new - temp_time_old)} s')
 
 if __name__ == '__main__':
     main()

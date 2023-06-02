@@ -3,10 +3,11 @@ from scipy import linalg
 from hess_ml.src.Rotation_func import Rotation_Functions
 from operator import matmul
 
+
+
 class HessFeature(Rotation_Functions):
     def __init__(self):
         Rotation_Functions.__init__
-
 
     def  get_Feature(self):
 
@@ -22,18 +23,17 @@ class HessFeature(Rotation_Functions):
 
                 i0 = 3*A
                 i3 = 3*A + 3
-                j0 = 3*B 
+
+                j0 = 3*B
                 j3 = 3*B + 3
 
                 R_MI_APF = self.R_MI_APF_mat[i0:i3,j0:j3]
 
                 self.check_list.append([A,B])
 
-
-
-
                 #Performs a rotation around the X axis by 180 ° if nuclear charge of A is smaller than B to achieve a consistent alignment
-                # If A == B rotation depends on dipole moment 
+                # If A == B rotation depends on dipole moment
+
                 if self.nuc_charge[A] < self.nuc_charge[B]:
 
                     B,A = A,B
@@ -65,13 +65,13 @@ class HessFeature(Rotation_Functions):
                         R_MI_APF = matmul(rot_Mat,R_MI_APF)
 
 
-
                 R_AB = linalg.norm(self.xyz.iloc[A,1:] - self.xyz.iloc[B,1:])
 
                 Quantity_AB = [[],[]]
 
 
                 j = 0
+
                 for atom in [A,B]:
                     #____Rotation from initial coordinate system to atom pair focused system____
 
@@ -102,6 +102,7 @@ class HessFeature(Rotation_Functions):
                     
                     Quantity_AB[j].extend(dipm_atom)
                     Quantity_AB[j].extend(dipm_delta)
+
                     Quantity_AB[j].extend(dipm_only_mull)
 
                     Quantity_AB[j].extend(dipm_only_Z)
@@ -113,13 +114,14 @@ class HessFeature(Rotation_Functions):
                     Quantity_AB[j].extend(qm_only_Z)
 
                     Quantity_AB[j].extend(self.energy_based[atom])
+                    
 
                     j+=1
 
                 Quantity_AB_arr =np.array(Quantity_AB)
 
-                Feature_Arith = list((Quantity_AB_arr[0] + Quantity_AB_arr[1])/2)
-                Feature_Prod = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
+                Feature_Arith   = list((Quantity_AB_arr[0] + Quantity_AB_arr[1])/2)
+                Feature_Prod    = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
                 Feature_AbsDiff = list((Quantity_AB_arr[0] - Quantity_AB_arr[1]))
 
                 Features_temp = []
