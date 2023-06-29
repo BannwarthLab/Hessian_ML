@@ -34,7 +34,9 @@ class Geometry(HessTarget,HessFeature, Input,Preparation,Observables,Rotation_Fu
 
         self.hessian = self.import_hessian(os.path.join(self.geo_working_dir,self.file_target),self.xyz)
 
-        self.ml_features = self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
+        self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
+
+        self.filter_feature()
 
         self.import_gradient(os.path.join(self.geo_working_dir,self.file_gradient))
         
@@ -48,12 +50,11 @@ class Geometry(HessTarget,HessFeature, Input,Preparation,Observables,Rotation_Fu
 
     def clear_quantities(self):
 
-        del self.CN
-        del self.dipm_atom
-        del self.dipm_delta
-        del self.dipm_only_mull
-        del self.qm_atom
-        del self.qm_delta
+        del self.cn
+        del self.p
+        del self.q
+        del self.dipm
+        del self.qm
         del self.energy_based
         del self.hessian
 

@@ -60,7 +60,7 @@ class Parser:
 
         self.file_target   = self.config['general'].get('target',self.runtype_target[self.config['runtype']])
 
-        self.file_coord    = self.config['general'].get('coord','xtbopt.xyz')
+        self.file_coord    = self.config['general'].get('xyz_file','xtbopt.xyz')
 
         self.file_gradient = self.config['general'].get('grad','gradient')
 

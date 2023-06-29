@@ -50,7 +50,7 @@ class HessFeature(Rotation_Functions):
 
                 elif self.nuc_charge[A] == self.nuc_charge[B]:
 
-                    if linalg.norm(self.dipm_atom[A]) < linalg.norm(self.dipm_atom[B]):
+                    if linalg.norm(self.dipm['A'][A]) < linalg.norm(self.dipm['A'][B]):
 
                         B,A = A,B
 
@@ -75,45 +75,37 @@ class HessFeature(Rotation_Functions):
                 for atom in [A,B]:
                     #____Rotation from initial coordinate system to atom pair focused system____
 
-                    grad = matmul(R_MI_APF,self.gradient[atom])
+                    grad = np.matmul(R_MI_APF,self.gradient[atom])
 
-                    dipm_atom = matmul(R_MI_APF,self.dipm_atom[atom])
-                    dipm_delta = matmul(R_MI_APF,self.dipm_delta[atom])
-                    dipm_only_mull = matmul(R_MI_APF,self.dipm_only_mull[atom])
+                    for qm_key in self.qm.keys():
+                        temp_qm = np.zeros([3,3])
+                        temp_qm[np.tril_indices(temp_qm.shape[0],k=0)] = self.qm[qm_key][atom]
+                        temp_qm = temp_qm + temp_qm.T - np.diag(np.diag(temp_qm))
+                        temp_qm = np.matmul(np.matmul(R_MI_APF,temp_qm),np.transpose(R_MI_APF))
 
-                    dipm_only_Z = matmul(R_MI_APF,self.dipm_only_Z[atom])
-                    qm_only_mull = matmul(R_MI_APF,self.qm_delta_only_mull[atom])
-                    qm_only_Z = matmul(R_MI_APF,self.qm_delta_only_Z[atom])
+                        Quantity_AB[j].extend((temp_qm[np.triu_indices(3)]))
 
-                    qm_atom = matmul(matmul(R_MI_APF,self.qm_atom[atom]),np.transpose(R_MI_APF))
-                    qm_delta = matmul(matmul(R_MI_APF,self.qm_delta[atom]),np.transpose(R_MI_APF))
-
-                    qm_atom = qm_atom[np.triu_indices(3)]#matmul(qm_atom,vector_of_ones)
-                    qm_delta =qm_delta[np.triu_indices(3)] #matmul(qm_delta,vector_of_ones)
+                    for dipm_key in self.dipm.keys():
+                        temp_dipm =  self.dipm[dipm_key][atom]
+                        temp_dipm = np.matmul(R_MI_APF,temp_dipm)
+                        Quantity_AB[j].extend(temp_dipm)
+                    
+                    for q_key in self.q.keys():
+                        Quantity_AB[j].extend(self.q[q_key][atom])
 
                     #____Append Features to Feature Vector____
 
                     Quantity_AB[j].extend(grad)
-                    
+                    Quantity_AB[j].extend(self.energy_based[atom])
+                   
                     Quantity_AB[j].extend([self.nuc_charge[atom]])
 
-                    Quantity_AB[j].extend(self.CN[atom])
-                    Quantity_AB[j].extend(self.q_atom[atom])
-                    
-                    Quantity_AB[j].extend(dipm_atom)
-                    Quantity_AB[j].extend(dipm_delta)
+                    Quantity_AB[j].extend([self.cn['default'][atom]])
+                    Quantity_AB[j].extend([self.cn['delta'][atom]])
 
-                    Quantity_AB[j].extend(dipm_only_mull)
+                    Quantity_AB[j].extend([self.p['default'][atom]])
+                    Quantity_AB[j].extend([self.p['delta'][atom]])
 
-                    Quantity_AB[j].extend(dipm_only_Z)
-
-                    Quantity_AB[j].extend(qm_atom)
-                    Quantity_AB[j].extend(qm_delta)
-
-                    Quantity_AB[j].extend(qm_only_mull)
-                    Quantity_AB[j].extend(qm_only_Z)
-
-                    Quantity_AB[j].extend(self.energy_based[atom])
                     
 
                     j+=1
@@ -132,7 +124,8 @@ class HessFeature(Rotation_Functions):
                 Features_temp.extend(Feature_Arith)
                 Features_temp.extend(Feature_Prod)
                 Features_temp.extend(Feature_AbsDiff)
-            
+                Features_temp.extend([R_AB**12])
+                Features_temp.extend([R_AB**6])            
                 Features_temp.extend([R_AB])
                 Features_temp.extend([1/R_AB])
                 Features_temp.extend([1/R_AB**6])

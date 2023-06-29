@@ -27,9 +27,9 @@ class DataGeneration(Geometry):
 
         #________Parallelized Feature Generation___________
 
-        if idx == None:
-            idx = np.arange(0,len(self.geo_dir))
-            
+        #if idx == None:
+        #    idx = np.arange(0,len(self.geo_dir))
+        
         Parallel(n_jobs=self.threads)(delayed(self.generation_procedure)(dir=self.geo_dir[geo]) for geo in idx)
 
         print('done')

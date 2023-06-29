@@ -7,6 +7,8 @@ def main() -> None:
 
     env.parse()
 
+
+
     #____________Choosing runtype______________
     
     if env.config['runtype'] == 'hessian':
@@ -32,6 +34,7 @@ def main() -> None:
         if env.config.get('predict',False):
 
             if env.predict_folder:
+                
                 env.parse_folders(env.predict_folder,env.predict_subfolder)
 
             if env.predict_files:
@@ -39,8 +42,11 @@ def main() -> None:
                 files = env.rd_txt_file(env.predict_files)
 
                 try:
+
                     env.geo_dir.append(files)
+
                 except:
+
                     env.geo_dir = files
 
             if env.predict_data_gen:
