@@ -49,16 +49,12 @@ def main() -> None:
 
                     env.geo_dir = files
 
-            if env.predict_data_gen:
-                
-                env.generate_data()
-
-
             print(f'Starting prediction of {len(env.geo_dir)} files')
-            temp_time_old = time.time()
+
+            temp_time_old = time.time()                
 
             env.predict(env.geo_dir)
- 
+
             temp_time_new = time.time()
 
             print(f'Prediction was done in {round(temp_time_new - temp_time_old)} s')

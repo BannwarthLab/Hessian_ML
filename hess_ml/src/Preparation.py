@@ -30,7 +30,7 @@ class Preparation(Rotation_Functions):
                 j0 = 3*atom_B 
                 j3 = 3*atom_B + 3
 
-                H_APF = matmul(matmul(R_MI_APF,self.hessian[i0:i3,j0:j3].copy()),np.transpose(R_MI_APF)) ##Change Hessian
+                H_APF = np.matmul(np.matmul(R_MI_APF,self.hessian[i0:i3,j0:j3].copy()),np.transpose(R_MI_APF)) #Change Hessian
 
                 self.R_MI_APF_mat[i0:i3,j0:j3] = R_MI_APF 
                 self.H_APF_mat[i0:i3,j0:j3] = H_APF

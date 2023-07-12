@@ -9,17 +9,20 @@ import os
 from hess_ml.src.Observables import Observables
 from hess_ml.src.IO import Input
 from hess_ml.src.IO import Output
-
+from hess_ml.src.Geometry import Geometry
 from joblib import Parallel, delayed
+import time as time
 
-class Predicting(Input,Output,Observables):
+class Predicting(Geometry,Input,Output,Observables):
     def __init__(self) -> None:
         super().__init__
         pass
 
     def predict(self,files):
 
-        self.model = load(os.path.join(self.predict_model_folder,f'{self.predict_model}.joblib'))
+        print(self.predict_model_folder,self.predict_model)
+
+        self.model = load(os.path.join('',f'{self.predict_model}.joblib'))
 
         if self.normalization:
 
@@ -34,10 +37,10 @@ class Predicting(Input,Output,Observables):
 
             self.selector = load(pathname)
 
-        Parallel(n_jobs=self.threads,require='sharedmem')(delayed(self.predict_hessian)(file=files[file]) for file in range(len(files)))
 
-        return
+        Parallel(n_jobs=1)(delayed(self.predict_hessian)(file=files[file]) for file in range(len(files)))
     
+        return       
     def comp_test_observables(self):
 
         freq_pred_list = []      
@@ -49,7 +52,9 @@ class Predicting(Input,Output,Observables):
         Z_true  = []
 
         with open('pred_structures_final.json','rb') as f:
-            i = 0 
+
+            i = 0
+
             while True:
                 i +=1 
                 try:
@@ -105,7 +110,7 @@ class Predicting(Input,Output,Observables):
         return
     #obj = self.import_pickle_obj(file)
 
-    def predict_hess(self):
+    def predict_hess_depracted(self):
         #_____reads heteronuclear model and predicts for each structure the heteronuclear blocks____
 
         self.truncate_file('PredData.json')
@@ -156,39 +161,43 @@ class Predicting(Input,Output,Observables):
         return
 
     def predict_hessian(self,file):
+        print(file)
+        self.gen_data(file,1)
 
-        with open(os.path.join(file,f'Hessian_ML_Data.json'),'rb') as f:
+        #with open(os.path.join(file,f'Hessian_ML_Data.json'),'rb') as f:
 
-            Dict = pickle.load(f)
+        #    Dict = pickle.load(f)
 
-        f.close()
+        #f.close()
+        cur_time = time.time()
 
         if self.normalization:
 
-            H_hetero = self.model.predict(self.transformer.transform(np.array(Dict.get('Feature'))))
+            H_hetero = self.model.predict(self.transformer.transform(np.array(self.Feature_AB)))
         
         elif self.selection:
 
-            H_hetero = self.model.predict(self.selector.transform(np.array(Dict.get('Feature'))))
+            H_hetero = self.model.predict(self.selector.transform(np.array(self.Feature_AB)))
 
         else:
 
-            H_hetero = self.model.predict((np.array(Dict.get('Feature'))))
+            H_hetero = self.model.predict((np.array(self.Feature_AB)))
 
-        transpose_list = Dict['transpose_list']
+        transpose_list = self.transpose_list
 
-        R_MI_APF_mat = Dict['R_MI_APF_mat']
+        R_MI_APF_mat = self.R_MI_APF_mat
 
-        N_atoms = Dict['N_atoms']
+        N_atoms = self.N_atoms
         
         predHess = self.gen_hess_from_vec_pred(H_hetero,N_atoms,R_MI_APF_mat,transpose_list)
 
         self.hessian_to_xtb(os.path.join(file,f'MLhesssian'),predHess)
+        
+        print('Prediction:',round(time.time()- cur_time,5),'s')
 
         del H_hetero
         del transpose_list
-        del N_atoms 
+        del N_atoms
         del R_MI_APF_mat
-        del Dict
-        
+
         return

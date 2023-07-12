@@ -1,7 +1,7 @@
 
 from sklearn.ensemble import ExtraTreesRegressor,RandomForestRegressor
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
-
+from sklearn.decomposition import TruncatedSVD
 from joblib import dump
 
 import json as json 
@@ -30,6 +30,8 @@ class Training(Input):
 
         self.mode = runtype
 
+        print(self.train_size)
+
         if type(self.train_size) == list:
 
             for i in range(len(self.train_size)):
@@ -38,7 +40,7 @@ class Training(Input):
 
                 self.do_train_test_split(i)
 
-                self.import_FT()
+                #self.import_FT()
 
                 self.training_model(train_conf,i=i)
 
@@ -52,7 +54,7 @@ class Training(Input):
 
             self.files = self.train_geo
 
-            self.import_FT()
+            #self.import_FT()
 
             self.training_model(train_conf)
 
@@ -113,15 +115,33 @@ class Training(Input):
         return 
 
 
-    def training_model(self,train_conf,i = None):
+    def training_model(self,train_conf,i_split = None):
 
         params = self.config['training']['parameter']
-        
+
+        self.Features = list()
+        self.Targets = list()
+
+        for i in range(len(self.FT)):
+            self.Features.extend(self.FT[i][0])
+            self.Targets.extend(self.FT[i][1])
+
+        self.Targets = np.array(self.Targets).astype(np.float32)
+
+        self.Features = np.array(self.Features).astype(np.float32)
+
+        print(f'Feature matrix shape {self.Features.shape}')
+        print(f'Target matrix shape {self.Targets.shape}')
+
+
         if type(params) == list:
 
             params = params[0]
 
-        print(params)
+        print('Parameters for the Model:')  
+
+        for param in params.keys():
+            print(f'{param}: {params[param]}')
 
         print(f'Training hessian ML model with a feature matrix of shape {np.shape(self.Features)}')
 
@@ -176,7 +196,6 @@ class Training(Input):
             self.normalization = True
 
 
-
         if SearchCV == 'Random':
 
             search = True
@@ -193,14 +212,11 @@ class Training(Input):
 
 
 
-        self.Targets = self.Targets.astype(np.float32)
-
-        self.Features = self.Features.astype(np.float32)
-        
-        print(f'Feature vector shape {self.Features.shape}')
-
         if self.selection:
-            selector = VarianceThreshold(threshold=0.05*(1-0.05))
+            #selector = VarianceThreshold(threshold=0.05*(1-0.05))
+            
+            selector = TruncatedSVD(n_components=200,algorithm='arpack')
+
             self.Features = selector.fit_transform(self.Features)
 
             with open(f'{self.model_name}_selector.joblib','w') as g:
@@ -226,6 +242,7 @@ class Training(Input):
             pathname = f'{self.model_name}_transformer.joblib'
 
             dump(transformer,pathname)
+            
             print(f'Transformer is saved in {pathname}.\n')
 
 
@@ -234,7 +251,8 @@ class Training(Input):
 
         regr_model.fit(self.Features,self.Targets)
 
-        
+        print(f'Score on training data: {regr_model.score(self.Features,self.Targets)}')
+
         if search:
             print(f'Used Parameters:\n {regr_model.best_params_}')
 
@@ -245,8 +263,8 @@ class Training(Input):
             g.truncate(0)
         g.close()
 
-        if not(i == None):
-            pathname = f'Model{i}/{self.model_name}.joblib'
+        if not(i_split == None):
+            pathname = f'Model{i_split}/{self.model_name}.joblib'
         else:
             pathname = f'{self.model_name}.joblib'
 

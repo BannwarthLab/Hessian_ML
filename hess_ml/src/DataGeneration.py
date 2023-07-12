@@ -30,28 +30,28 @@ class DataGeneration(Geometry):
         #if idx == None:
         #    idx = np.arange(0,len(self.geo_dir))
         
-        Parallel(n_jobs=self.threads)(delayed(self.generation_procedure)(dir=self.geo_dir[geo]) for geo in idx)
+        self.FT = Parallel(n_jobs=1)(delayed(self.generation_procedure)(dir=self.geo_dir[geo]) for geo in idx)
 
         print('done')
 
         print(f'Features and Targets of {len(idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
 
-        return
+        return 
 
 
     def generation_procedure(self,dir=None):
         
-        self.gen_data(dir)
+        self.gen_data(dir,self.threads)
 
         self.clear_quantities()
 
-        data = PickleData(self,dir)
+        #data = PickleData(self,dir)
 
-        with open(os.path.join(dir,f'Hessian_ML_Data.json'),'ab+') as h:
+        #with open(os.path.join(dir,f'Hessian_ML_Data.json'),'ab+') as h:
 
-            pickle.dump(data.dict,h)
+        #    pickle.dump(data.dict,h)
 
-        return
+        return [self.Feature_AB,self.Target_AB]
 
 
     def truncate_file(self,file):

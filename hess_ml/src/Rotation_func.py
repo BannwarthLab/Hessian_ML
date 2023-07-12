@@ -49,19 +49,18 @@ class Rotation_Functions:
 
      def coord_rot(self,coord_var,rotM):
           for i in range(len(coord_var.iloc[:,1])):
-               coord_var.iloc[i,1:] = matmul(rotM,coord_var.iloc[i,1:])
+               coord_var.iloc[i,1:] = np.matmul(rotM,coord_var.iloc[i,1:])
           return coord_var
           
      
      def rot_gradient(self,R):
           for i in range(self.N_atoms):
-               self.gradient[i] = matmul(R,self.gradient[i])
+               self.gradient[i] = np.matmul(R,self.gradient[i])
           return
 
      def vec_trans(self,coord_var,trans):
           coord_var_new = coord_var.copy()
-          for i in range(len(coord_var.iloc[:,1])): 
-               coord_var_new.iloc[i,1:] = np.array(coord_var.iloc[i,1:]) - np.array(trans)
+          coord_var_new.iloc[:,1:] = np.array(coord_var.iloc[:,1:]) - np.array(trans)
           return coord_var_new
 
 
@@ -74,23 +73,23 @@ class Rotation_Functions:
           axis = np.identity(3)
 
           
-          T = 1/2 * coord_end.iloc[i,1:] + 1/2 * coord_end.iloc[j,1:]
+          T = 1/2 * coord_end[i,:] + 1/2 * coord_end[j,:]
 
           vec_dipm = dipm[i,:] + dipm[j,:]#np.sum(dipm.iloc[:,1:])/len(dipm.iloc[:,1:])#
 
-          coord_end = self.vec_trans(coord_end,T)
+          coord_end -= T
 
           vec_z = np.zeros(3)
      
           #Rotation for i < j 
 
           #Atom pair focussed coordinate system
-          vec_z  = coord_end.iloc[i,1:].astype('float64')
+          vec_z  = coord_end[i,:]
           vec_x = np.cross(vec_z,vec_dipm)
 
           LL = np.cross(vec_z,axis[2])
 
-          if  np.sum(np.abs(np.array(coord_end.iloc[[i,j],1:3]))) < 1e-12:
+          if  np.sum(np.abs(np.array(coord_end[[i,j],:2]))) < 1e-12:
                beta = self.angle_two_vec(vec_z,axis[2])
                alpha = 2*np.pi - self.angle_two_vec(vec_x,axis[0])
                gamma = 0
@@ -110,21 +109,22 @@ class Rotation_Functions:
                if linalg.det(np.array([LL,vec_x,vec_z])) > 0.:
                     gamma = 2*np.pi - gamma
           
-          R_euler = matmul(matmul(self.rot_Z(gamma),self.rot_X(beta)),self.rot_Z(alpha))
+          R_euler = np.matmul(np.matmul(self.rot_Z(gamma),self.rot_X(beta)),self.rot_Z(alpha))
 
           #Rotation by 180 ° if dipole moment is negative in x
 
-          if matmul(R_euler,vec_x)[0] < 0.:
+          if np.matmul(R_euler,vec_x)[0] < 0.:
 
                R_z = self.rot_Z(np.pi)
                R_euler = matmul(R_z,R_euler)
 
 
           #Apply the euler rotation matrix on the new x axis for verification reasons
-          vec_x = matmul(R_euler,vec_x)
+          vec_x = np.matmul(R_euler,vec_x)
 
           self.angle_two_vec(LL,vec_x)
-          coord_end = self.coord_rot(coord_end.copy(),R_euler)
+
+   
 
           #Check for Errors in dipole moment or the coordinates
           if vec_x[0] < 0.:
@@ -133,17 +133,21 @@ class Rotation_Functions:
           if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
                print(vec_x)
                print(f'Error in vec_x for {i,j}')
-               print(coord_end.iloc[[i,j],:])
+               print(coord_end[[i,j],:])
                print(alpha,beta,gamma)
 
-          if coord_end.iloc[i,1] > 1e-8 or coord_end.iloc[i,2] > 1e-8:
+
+          coord_end[i,:] = np.matmul(R_euler,coord_end[i,:])
+          coord_end[j,:] = np.matmul(R_euler,coord_end[j,:])
+
+          if coord_end[i,0] > 1e-8 or coord_end[i,1] > 1e-8:
                print(f'Error in coord i:{i,j}')
-               print(coord_end.iloc[[i,j],:])
+               print(coord_end[[i,j],:])
                print(alpha,beta,gamma)
 
-          if coord_end.iloc[j,1] > 1e-8 or coord_end.iloc[j,2] > 1e-8:
+          if coord_end[j,0] > 1e-8 or coord_end[j,1] > 1e-8:
                print(f'Error in coord j:{i,j}') 
-               print(coord_end.iloc[[i,j],:])
+               print(coord_end[[i,j],:])
                print(alpha,beta,gamma)
 
           return R_euler

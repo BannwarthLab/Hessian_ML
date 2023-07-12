@@ -31,7 +31,7 @@ class Input():
 
             return coord_var
 
-      def import_hessian(self,file,coord_var):
+      def import_hessian(self,file,nat):
 
             LineList = []
             
@@ -40,7 +40,7 @@ class Input():
                   for line in Lines[1:]:
                         LineList += line.split()
 
-            hess = np.zeros([len(coord_var['atoms'])*3,len(coord_var['atoms'])*3])
+            hess = np.zeros([nat*3,nat*3])
 
             i = 0
 
@@ -113,7 +113,7 @@ class Input():
             return 
 
 
-      def import_ml_features(self,file):
+      def import_ml_features(self):
             
             if self.config['general'].get('tblite',False):
 
@@ -121,8 +121,8 @@ class Input():
 
                   faulthandler.enable()
                   #Use ase to read in coordinates
-
-                  mol = ase_read(filename=self.config['general'].get('xyz_file'))
+            
+                  mol = ase_read(filename=os.path.join(self.geo_working_dir,self.file_coord))
                   # create a ase calculator instance
                   # xtbml value is used to compute the features
                   # 0 = compute no xtbml features
@@ -145,7 +145,7 @@ class Input():
                   self.ml_feat["weights"] = w
 
             else:
-                  self.ml_feat = pd.read_csv(f'{file}')
+                  self.ml_feat = pd.read_csv(os.path.join(self.geo_working_dir,self.file_feature))
 
             return
       
