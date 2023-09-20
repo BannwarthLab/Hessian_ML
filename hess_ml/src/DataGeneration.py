@@ -29,21 +29,30 @@ class DataGeneration(Geometry):
 
         #if idx == None:
         #    idx = np.arange(0,len(self.geo_dir))
-        
+        self.not_considered = []
+
         self.FT = Parallel(n_jobs=1)(delayed(self.generation_procedure)(dir=self.geo_dir[geo]) for geo in idx)
 
         print('done')
 
         print(f'Features and Targets of {len(idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
 
+        with open('not_considered', 'w') as outfile:
+            outfile.write('\n'.join(str(i) for i in self.not_considered))
+        outfile.close
+        
         return 
 
 
     def generation_procedure(self,dir=None):
         
+
+        self.do_calc = True 
+
         self.gen_data(dir,self.threads)
 
-        self.clear_quantities()
+        if self.do_calc:
+            self.clear_quantities()
 
         #data = PickleData(self,dir)
 
@@ -78,7 +87,7 @@ class DataGeneration(Geometry):
         else:
             
             self.gather_folders(folder)
-
+        
         return 
     
     def gather_subfolders(self,folder):
@@ -127,11 +136,16 @@ class DataGeneration(Geometry):
             self.train_size_temp = self.train_size
         
 
-        self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size_temp,random_state=self.rnd_seed)
+        if self.train_size_temp == 1.0:
+            self.train_idx = geo_idx
+            self.test_idx = []
 
-        self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
+        else:
+            self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size_temp,random_state=self.rnd_seed)
 
-        geo_idx = geo_idx[self.comp_idx]
+            self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
+
+            geo_idx = geo_idx[self.comp_idx]
 
         self.test_geo = []
 

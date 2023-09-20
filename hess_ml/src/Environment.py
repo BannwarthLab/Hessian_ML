@@ -4,6 +4,7 @@ from hess_ml.src.Training import Training
 from hess_ml.src.Predicting import Predicting
 from hess_ml.src.IO import Input
 import os 
+import numpy as np
 
 class Environment(DataGeneration,Parser,Training,Predicting,Input):
     def __init__(self):
@@ -46,7 +47,7 @@ class Environment(DataGeneration,Parser,Training,Predicting,Input):
 
         elif self.config.get('predict',False):
             
-            self.parse
+            self.parse()
 
         return
     
@@ -59,6 +60,25 @@ class Environment(DataGeneration,Parser,Training,Predicting,Input):
 
                 self.generate_data(idx=self.train_idx)
 
+                self.Features = list()
+                self.Targets = list()
+
+                for i in range(len(self.FT)):
+                    self.Features.extend(self.FT[i][0])
+                    self.Targets.extend(self.FT[i][1])
+
+                self.Targets = np.array(self.Targets).astype(np.float32)
+                self.Features = np.array(self.Features).astype(np.float32)
+
+                np.savetxt('Features.txt',self.Features)
+                np.savetxt('Targets.txt',self.Targets )
+
+            else:
+
+                if self.feature_import.lower() == 'numpy':
+
+                    self.Features = np.loadtxt('Features.txt')
+                    self.Targets  = np.loadtxt('Targets.txt')
         
         #one could add different features that will be imported
         

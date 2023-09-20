@@ -42,6 +42,7 @@ class Observables(Rotation_Functions,Const):
         for i in range(len(freq)):
             
             if freq[i] > 0.0:
+                
                 Z *= (1 - np.exp(-freq[i]*Const.conv_Eh_to_J/(Const.boltzmann_const*298.15)))**-1
 
         return Z
@@ -72,7 +73,9 @@ class Observables(Rotation_Functions,Const):
         return Hessian,lamb_len
     
     def weight_hessian(self,hessian):
+
         atoms = self.xyz['atoms']
+        
         for k in range(len(hessian[1,:])//3):
             for l in range(len(hessian[:,1])//3):
 
@@ -112,8 +115,7 @@ class Observables(Rotation_Functions,Const):
         temp_mat = temp_mat + temp_mat.T - np.diag(np.diag(temp_mat))
 
         matrix[A3:A3+3,A3:A3+3] = temp_mat
-
-
+        
         return matrix
     
     def find_trans_rot(self,hess,coord):
@@ -168,6 +170,7 @@ class Observables(Rotation_Functions,Const):
 
 
     def gen_hess_from_vec_pred(self,hess_vec_ab,N_atoms,R_MI_APF_mat,transpose_list):
+        
         ite_hetero = 0
 
         Hessian = np.zeros([N_atoms*3,N_atoms*3])
@@ -175,9 +178,12 @@ class Observables(Rotation_Functions,Const):
         for atom_A in range(N_atoms):
 
             for atom_B in range(atom_A+1,N_atoms):
+
                 transpose = False
+
                 if [atom_A,atom_B] in transpose_list:
                     transpose = True
+
                 Hessian = self.fill_matrix_block_AB(hess_vec_ab[ite_hetero],Hessian,R_mat=R_MI_APF_mat,A=atom_A,B=atom_B,transpose=transpose)
                 ite_hetero +=1
 

@@ -8,18 +8,18 @@ def main() -> None:
     env.parse()
 
 
-
     #____________Choosing runtype______________
     
     if env.config['runtype'] == 'hessian':
 
-        env.get_folders()
+        if env.folder:
+            env.get_folders()
 
         env.gen_features()
         
         if env.config.get('training',False):
 
-            env.train(train_conf = env.config['training']['parameter'],runtype=env.runtype_target)
+            env.train(runtype=env.runtype_target)
 
             if env.testing:
 

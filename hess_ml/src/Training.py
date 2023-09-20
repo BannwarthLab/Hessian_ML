@@ -3,6 +3,7 @@ from sklearn.ensemble import ExtraTreesRegressor,RandomForestRegressor
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.decomposition import TruncatedSVD
 from joblib import dump
+from joblib import parallel_backend
 
 import json as json 
 
@@ -26,7 +27,7 @@ class Training(Input):
         super().__init__
         pass
 
-    def train(self,train_conf,runtype):
+    def train(self,runtype):
 
         self.mode = runtype
 
@@ -42,7 +43,7 @@ class Training(Input):
 
                 #self.import_FT()
 
-                self.training_model(train_conf,i=i)
+                self.training_model(i=i)
 
                 temp_time_new = time.time()
 
@@ -52,11 +53,12 @@ class Training(Input):
 
             temp_time_old = time.time()
 
-            self.files = self.train_geo
+
+            #self.files = self.train_geo
 
             #self.import_FT()
 
-            self.training_model(train_conf)
+            self.training_model()
 
             temp_time_new = time.time()
 
@@ -115,45 +117,32 @@ class Training(Input):
         return 
 
 
-    def training_model(self,train_conf,i_split = None):
+    def training_model(self,i_split = None):
 
         params = self.config['training']['parameter']
 
-        self.Features = list()
-        self.Targets = list()
-
-        for i in range(len(self.FT)):
-            self.Features.extend(self.FT[i][0])
-            self.Targets.extend(self.FT[i][1])
 
         self.Targets = np.array(self.Targets).astype(np.float32)
 
         self.Features = np.array(self.Features).astype(np.float32)
 
         print(f'Feature matrix shape {self.Features.shape}')
+        
         print(f'Target matrix shape {self.Targets.shape}')
-
 
         if type(params) == list:
 
             params = params[0]
 
-        print('Parameters for the Model:')  
+        method = self.method.lower()
+        print(f'Chosen method: {self.method}')
 
-        for param in params.keys():
-            print(f'{param}: {params[param]}')
-
-        print(f'Training hessian ML model with a feature matrix of shape {np.shape(self.Features)}')
-
-        method = train_conf.get('method', 'ETR')
-
-        SearchCV = train_conf.get('SearchCV',None)
-
-        self.selection = False
-    
+        SearchCV = self.SearchCV
+        
         search = False
 
-        if method == 'ETR':
+
+        if method == 'etr':
 
             regr_model = ExtraTreesRegressor(random_state=self.rnd_seed)
 
@@ -164,8 +153,7 @@ class Training(Input):
             self.selection = False
 
 
-
-        if method == 'RFR':
+        if method == 'rfr':
 
             regr_model = RandomForestRegressor(random_state=self.rnd_seed)
 
@@ -174,8 +162,7 @@ class Training(Input):
             self.normalization = False
 
 
-
-        if method == 'SVR':
+        if method == 'svr':
 
             single_regr_model = SVR()
 
@@ -186,49 +173,40 @@ class Training(Input):
             self.normalization = True
 
 
-
-        if method == 'MLPR':
+        if method == 'mlpr':
 
             regr_model = MLPRegressor()
 
             regr_model.set_params(**params)
 
+            #regr_model.set_params(hidden_layer_sizes=(210,210,210,210,210,210,210,210,210,210,210,210,210,210,120,30,21))
+
             self.normalization = True
 
 
-        if SearchCV == 'Random':
+        if SearchCV.lower() == 'random':
 
             search = True
 
             regr_model = RandomizedSearchCV(regr_model,param_distributions=params,n_iter=self.n_iter_search,random_state=self.rnd_seed)
 
 
-
-        if SearchCV == 'Grid':
+        if SearchCV.lower() == 'grid':
 
             search = True
 
             regr_model = GridSearchCV(regr_model,param_grid=params)
 
 
+        print('Parameters for the Model:')  
+        param_temp = regr_model.get_params()
+        for param in param_temp.keys():
+            print(f'{param}: {param_temp[param]}')
 
-        if self.selection:
-            #selector = VarianceThreshold(threshold=0.05*(1-0.05))
-            
-            selector = TruncatedSVD(n_components=200,algorithm='arpack')
 
-            self.Features = selector.fit_transform(self.Features)
+        del param_temp
 
-            with open(f'{self.model_name}_selector.joblib','w') as g:
-                g.truncate(0)
-            g.close()
-
-            pathname = f'{self.model_name}_selector.joblib'
-
-            dump(selector,pathname)
-            print(f'Selector is saved in {pathname}.\n')
-
-            print(f'Feature vector reduced to shape {self.Features.shape}')
+       
 
 
         if self.normalization == True:
@@ -243,13 +221,50 @@ class Training(Input):
 
             dump(transformer,pathname)
             
-            print(f'Transformer is saved in {pathname}.\n')
+            print(f'Transformer for Features is saved in {pathname}.\n')
 
+            target_transformer = StandardScaler().fit(self.Targets)
 
-        if method != 'MLPR':
+            self.Targets = target_transformer.transform(self.Targets)
+
+            with open(f'{self.model_name}_transformer_target.joblib','w') as g:
+                g.truncate(0)
+            g.close()
+
+            pathname = f'{self.model_name}_transformer_target.joblib'
+
+            dump(target_transformer,pathname)
+            
+            print(f'Transformer for Targets is saved in {pathname}.\n')
+
+        if self.selection:
+
+            #selector = VarianceThreshold(threshold=0.05*(1-0.05))
+            
+            selector = TruncatedSVD(n_components=200,algorithm='arpack')
+
+            self.Features = selector.fit_transform(self.Features)
+
+            with open(f'{self.model_name}_selector.joblib','w') as g:
+                g.truncate(0)
+            g.close()
+
+            pathname = f'{self.model_name}_selector.joblib'
+
+            dump(selector,pathname)
+
+            print(f'Selector is saved in {pathname}.\n')
+
+            print(f'Feature vector reduced to shape {self.Features.shape}')
+            
+
+        if method != 'mlpr':
             regr_model.set_params(n_jobs=self.threads)
+            regr_model.fit(self.Features,self.Targets)
 
-        regr_model.fit(self.Features,self.Targets)
+        else:
+            with parallel_backend('threading', n_jobs=self.threads):
+                regr_model.fit(self.Features,self.Targets)
 
         print(f'Score on training data: {regr_model.score(self.Features,self.Targets)}')
 
@@ -280,6 +295,7 @@ class Training(Input):
 
         if self.normalization:
             del transformer
+            del target_transformer
 
         if self.selection:
             del selector

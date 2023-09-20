@@ -19,7 +19,7 @@ class Input():
                   
                   head = [next(myfile) for _ in range(2)]
 
-            coord_var = pd.read_csv(file,sep = '\s+',skiprows = 2,header = None)
+            coord_var = pd.read_csv(file,sep = '\s+',skiprows = 2,header = None,keep_default_na =False,na_values= ['_'])
             
             coord_var.columns= ['atoms','x','y','z']
 
@@ -117,32 +117,41 @@ class Input():
             
             if self.config['general'].get('tblite',False):
 
-                  from tblite.ase import TBLite
+                  try: 
+                        from tblite.ase import TBLite
+                  except:
 
-                  faulthandler.enable()
-                  #Use ase to read in coordinates
-            
-                  mol = ase_read(filename=os.path.join(self.geo_working_dir,self.file_coord))
-                  # create a ase calculator instance
-                  # xtbml value is used to compute the features
-                  # 0 = compute no xtbml features
-                  # 1 = all multipoles are given as norms
-                  # 2 = multipoles are exported as vectors
+                        print('TBLite is not available.')
 
-                  #final single point with xtbml features
-                  mol.calc = TBLite(method='GFN2-xTB',xtbml=2)
-                  mol.calc.calculate(mol)
+                  try:
+                        
+                        faulthandler.enable()
+                        #Use ase to read in coordinates
+                  
+                        mol = ase_read(filename=os.path.join(self.geo_working_dir,self.file_coord))
+                        # create a ase calculator instance
+                        # xtbml value is used to compute the features
+                        # 0 = compute no xtbml features
+                        # 1 = all multipoles are given as norms
+                        # 2 = multipoles are exported as vectors
 
-                  # from the results type various properties can be retrived
-                  # "xtbml" = xtbml fetaures as a numpy array (natoms, nfeatures)
-                  # "xtbml weights" = get Mulliken-based partitioning weights
-                  # "xtbml labels" = get the labels corresponding to the features
-                  X = mol.calc.results["xtbml"]
-                  w = mol.calc.results["xtbml weights"]
-                  labels = mol.calc.results["xtbml labels"]
+                        #final single point with xtbml features
+                        mol.calc = TBLite(method='GFN2-xTB',xtbml=2)
+                        mol.calc.calculate(mol)
 
-                  self.ml_feat = pd.DataFrame(X,columns=labels)
-                  self.ml_feat["weights"] = w
+                        # from the results type various properties can be retrived
+                        # "xtbml" = xtbml fetaures as a numpy array (natoms, nfeatures)
+                        # "xtbml weights" = get Mulliken-based partitioning weights
+                        # "xtbml labels" = get the labels corresponding to the features
+                        X = mol.calc.results["xtbml"]
+                        w = mol.calc.results["xtbml weights"]
+                        labels = mol.calc.results["xtbml labels"]
+
+                        self.ml_feat = pd.DataFrame(X,columns=labels)
+                        self.ml_feat["weights"] = w
+                  except:
+                        print('SCF did not converge, no prediction will be done.')
+                        self.do_calc = False
 
             else:
                   self.ml_feat = pd.read_csv(os.path.join(self.geo_working_dir,self.file_feature))
@@ -177,7 +186,8 @@ class Input():
             
             self.names = GFN2_quantities.columns.tolist()
             
-            return 
+            return
+      
       
       def import_wbo(self,file):
             wbo = pd.read_csv(file,names=['at1','at2','wbo'],sep='\s+')
@@ -185,10 +195,12 @@ class Input():
 
 
       def import_pickle_FT_old(self,file):
+            
             feature = []
             target = []
 
             i = 0
+
             with open(f'{file}','rb') as f:
                   while True:
                         try:

@@ -19,16 +19,23 @@ class Predicting(Geometry,Input,Output,Observables):
         pass
 
     def predict(self,files):
-
-        print(self.predict_model_folder,self.predict_model)
-
-        self.model = load(os.path.join('',f'{self.predict_model}.joblib'))
+        
+        try:
+            self.predict_model
+            self.model = load(os.path.join('',f'{self.predict_model}.joblib'))
+        except:
+            self.model = load(f'{self.model_name}.joblib')
+            pass
 
         if self.normalization:
 
             pathname = f'{self.model_name}_transformer.joblib'
 
             self.transformer = load(pathname)
+
+            pathname = f'{self.model_name}_transformer_target.joblib'
+            
+            self.target_transformer = load(pathname)
 
 
         if self.selection:
@@ -37,9 +44,14 @@ class Predicting(Geometry,Input,Output,Observables):
 
             self.selector = load(pathname)
 
+        self.not_considered = []
 
         Parallel(n_jobs=1)(delayed(self.predict_hessian)(file=files[file]) for file in range(len(files)))
     
+        with open('not_considered_pred', 'w') as outfile:
+            outfile.write('\n'.join(str(i) for i in self.not_considered))
+        outfile.close
+        
         return       
     def comp_test_observables(self):
 
@@ -70,10 +82,15 @@ class Predicting(Geometry,Input,Output,Observables):
                     freq = self.get_Frequencies(hess_vec_ab)
                     
                     ZPE = self.get_ZPE(freq)
+
                     Z = self.get_partition_func(freq)
+
                     #ZPE_harm = self.get_harmonic_ZPE(freq)
+
                     Z_pred.append(Z)
+
                     #ZPE_harm_pred.append(ZPE_harm)
+                    
                     ZPE_pred.append(ZPE)
 
                     freq_pred_list.extend(freq)
@@ -161,7 +178,9 @@ class Predicting(Geometry,Input,Output,Observables):
         return
 
     def predict_hessian(self,file):
-        print(file)
+
+        self.do_calc = True 
+
         self.gen_data(file,1)
 
         #with open(os.path.join(file,f'Hessian_ML_Data.json'),'rb') as f:
@@ -169,35 +188,38 @@ class Predicting(Geometry,Input,Output,Observables):
         #    Dict = pickle.load(f)
 
         #f.close()
-        cur_time = time.time()
+        if self.do_calc:
+            cur_time = time.time()
+            
+            if self.selection:
 
-        if self.normalization:
+                H_hetero = self.model.predict(self.selector.transform(np.array(self.Feature_AB)))
 
-            H_hetero = self.model.predict(self.transformer.transform(np.array(self.Feature_AB)))
-        
-        elif self.selection:
+            if self.normalization:
 
-            H_hetero = self.model.predict(self.selector.transform(np.array(self.Feature_AB)))
+                H_hetero = self.model.predict(self.transformer.transform(np.array(self.Feature_AB)))
 
-        else:
+                H_hetero = self.target_transformer.inverse_transform(H_hetero)
+            
+            else:
 
-            H_hetero = self.model.predict((np.array(self.Feature_AB)))
+                H_hetero = self.model.predict((np.array(self.Feature_AB)))
 
-        transpose_list = self.transpose_list
+            transpose_list = self.transpose_list
 
-        R_MI_APF_mat = self.R_MI_APF_mat
+            R_MI_APF_mat = self.R_MI_APF_mat
 
-        N_atoms = self.N_atoms
-        
-        predHess = self.gen_hess_from_vec_pred(H_hetero,N_atoms,R_MI_APF_mat,transpose_list)
+            N_atoms = self.N_atoms
+            
+            predHess = self.gen_hess_from_vec_pred(H_hetero,N_atoms,R_MI_APF_mat,transpose_list)
 
-        self.hessian_to_xtb(os.path.join(file,f'MLhesssian'),predHess)
-        
-        print('Prediction:',round(time.time()- cur_time,5),'s')
+            self.hessian_to_xtb(os.path.join(file,f'MLhesssian'),predHess)
+            
+            print('Prediction:',round(time.time()- cur_time,5),'s')
 
-        del H_hetero
-        del transpose_list
-        del N_atoms
-        del R_MI_APF_mat
+            del H_hetero
+            del transpose_list
+            del N_atoms
+            del R_MI_APF_mat
 
         return

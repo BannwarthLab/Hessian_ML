@@ -82,37 +82,44 @@ class Parser:
 
         self.feature_gen = self.config['feature'].get('generate',True)
 
+        if not(self.feature_gen):
+
+            self.feature_import = self.config['feature'].get('import','numpy')
+
         #Implement tblite api for generation of the basic features 
         #self.tblite = self.config['feature'].get('tblite',False)
-        #If true they are generated with tbltie in advance 
-
+        #If true they are generated with tbltie in advance
 
         return 
 
     def parse_training(self):
 
-
         """
         Sets the parameter needed for the training of the ML Model
         """
 
-
         self.train_size = self.config['training'].get('train_size',0.75)
 
         if type(self.train_size) == list:
+
             train_max = max(self.train_size)
+
         else:
+
             train_max = self.train_size
 
-        self.test_size  = self.config['training'].get('test_size',1-train_max)
 
-        self.method     = self.config['training'].get('method','ETR')
+        self.test_size = self.config['training'].get('test_size',1-train_max)
 
-        self.SearchCV     = self.config['training'].get('SearchCV',None)
+        self.method = self.config['training'].get('method','ETR')
 
-        self.testing        = self.config['training'].get('test',False)
+        self.SearchCV = self.config['training'].get('SearchCV','None')
 
-        if self.SearchCV == 'Random':
+        self.testing = self.config['training'].get('test',False)
+
+        self.selection = self.config['training'].get('selection',False)
+
+        if self.SearchCV.lower() == 'random':
 
             self.n_iter_search     = self.config['training'].get('n_iter',25)    
 
@@ -120,11 +127,13 @@ class Parser:
 
         try:
 
-            self.config['training']['parameter']
+            if 'hidden_layer_sizes' in self.config['training']['parameter'].keys():
+                self.config['training']['parameter']['hidden_layer_sizes'] = tuple(self.config['training']['parameter']['hidden_layer_sizes'])
+
 
         except:
 
-            print('No parameters for the heteronuclear model are specified. Default parameters are set')
+            print('No parameters for the model are specified. Default parameters are set')
 
             self.config['training']['parameter'] = {}
 
@@ -141,9 +150,9 @@ class Parser:
 
 
         if self.config.get('training',False):
-            self.predict_model = self.config['predict'].get('model',self.config['training'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model"))
+            self.model_name = self.config['predict'].get('model',self.config['training'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model"))
         else:
-            self.predict_model = self.config['predict'].get('model',f"{self.runtype_target[self.config['runtype']]}_model")
+            self.model_name = self.config['predict'].get('model',f"{self.runtype_target[self.config['runtype']]}_model")
 
 
         self.predict_model_folder = self.config['predict'].get('model_folder',False)
@@ -154,24 +163,9 @@ class Parser:
 
         self.predict_data_gen  = self.config['predict'].get('generate',True)
 
-        self.normalizer_name = self.config['predict'].get('normalizer',None)
+        self.selection = self.config['predict'].get('selection',False)
 
-        self.selector_name = self.config['predict'].get('selector',None)
-
-
-        if self.selector_name == None:
-
-            self.selection = False 
-        else:
-            self.selection = True 
-
-
-        if self.normalizer_name == None:
-
-            self.normalization = False
-        else:
-            self.normalization = True
-
+        self.normalization = self.config['predict'].get('normalization',False)
 
         if self.predict_folder == self.folder:
 
