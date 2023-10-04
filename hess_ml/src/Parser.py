@@ -2,51 +2,123 @@ from argparse import ArgumentParser
 import numpy as np
 import tomli 
 import os
+import sys 
+from pathlib import Path
 
 class Parser:
     def __init__(self) -> None:
-
-        self.runtype_target = {'hessian' : 'hessian'}
-
-        self.parse_toml()
-
         self.cwd = os.getcwd()
 
-    def parse_toml(self):
 
-        """
-        Parser for the .toml to generate a dictionoary for the input information
-        """
+    def parse(self) -> None:
 
-        parser = ArgumentParser()
+        self.arg_parser = ArgumentParser()
 
-        parser.add_argument("-i", "--input", type=str, default='input.toml',
+        self.arg_parser.add_argument("-i", "--input", type=str, default='default',
                                 help="INPUT must be a .toml file")
 
-        parser.add_argument("-to", "--toml", action='store_true',
+        self.arg_parser.add_argument("-to", "--toml", action='store_true',
                                 help="generates a basic example .toml file")
 
-        parser.add_argument("-dto", "--dtoml", action='store_true',
+        self.arg_parser.add_argument("-dto", "--dtoml", action='store_true',
                                 help="generates a detailed example .toml file")
-
-        with open(parser.parse_args().input, mode="rb") as fp:
-            self.config = tomli.load(fp)
-
-        try:
-
-            self.config['runtype']
-
-        except LookupError as exc:
-
-            print("got exception", repr(exc))
-    
-            print(r"A 'runtype' must be set in order to run this program.")
-            print(r"For more information use the flag '--help'.")
-
-        self.threads  = self.config.get('threads',1)
+        
         return 
     
 
+    def parse_toml(self) -> None:
+
+        """
+
+        Parser for the .toml to generate a dictionoary for the input information
+
+        """
+
+        inp_file = self.arg_parser.parse_args().input
+
+        if os.path.isfile(inp_file):
+                
+            with open(self.arg_parser.parse_args().input, mode="rb") as fp:
+
+                self.config = tomli.load(fp)
+                print(f'Input file: {inp_file} is used.')
+
+        elif inp_file == 'default':
+
+            if os.path.isfile('input.toml'):
+
+                with open('input.toml', mode="rb") as fp:
+
+                    self.config = tomli.load(fp)
+
+                    print(f'Input file: input.toml is used.')
+            else:
+
+                print('Default setup is used.')
+
+                abs_path =  Path(__file__).parent / 'default_input/input.toml'
+
+                with open( abs_path, mode="rb") as fp:
+
+                    self.config = tomli.load(fp)
+
+        else:
+            
+            print(f'Input file: {inp_file} not found.')
+            print('')
+
+            sys.exit()
+            
+        return 
+    
+
+    def print_config(self):
+
+
+        print('Used config is:')
+        print('')
+        for dicts in self.config.keys():
+            if type(self.config[dicts]) == dict:
+                print('')
+                print(dicts)
+                for dict_ in self.config[dicts].keys():
+                    print(dict_,':',self.config[dicts][dict_])
+
+            else:
+                print(dicts,':',self.config[dicts])
+
+        print('')
+        return
+
+    def get_config(self) -> dict:
+
+        return self.config
+
+
+    def parse_data_set(self,main_folder) -> None:
+
+
+        print(f'Parsing data set in {main_folder}...', end='')
+        xyz_file = self.config.get('geometry',{'xyz_file':'xtbopt.xyz'}).get('xyz_file')
+
+        target_file = self.config.get('geometry',{'target_file':'hessian'}).get('target_file')
+        walker = os.walk(main_folder)
+
+        self.folders = list()
+
+        for folder in walker:
+            if xyz_file in folder[-1] and target_file in folder[-1]:
+                self.folders.append(folder[0])
+
+        self.folders  = sorted(self.folders)
+        
+        print('done')
+
+        print(f'Total of {len(self.folders)} folders found.')
+        print('')
+
+        return 
+    
     def parse_general(self): 
 
         """
@@ -56,20 +128,17 @@ class Parser:
             - the prediction
         """
 
-        self.file_feature  = self.config['general'].get('feature','ml_feature.csv')
+        self.feature_file  = self.config['general'].get('feature','ml_feature.csv')
 
-        self.file_target   = self.config['general'].get('target',self.runtype_target[self.config['runtype']])
+        self.target_file   = self.config['general'].get('target_file',self.runtype_target[self.config['runtype']])
 
-        self.file_coord    = self.config['general'].get('xyz_file','xtbopt.xyz')
+        self.xyz_file    = self.config['general'].get('xyz_file','xtbopt.xyz')
 
-        self.file_gradient = self.config['general'].get('grad','gradient')
+        self.gradient_file = self.config['general'].get('gradient_file','gradient')
 
         self.folder = self.config['general'].get('folder',None)
 
-        self.subfolder = self.config['general'].get('subfolder',False)
-
         self.rnd_seed    = self.config['general'].get('random_seed',np.random.randint(0,1000))
-
 
         return 
     

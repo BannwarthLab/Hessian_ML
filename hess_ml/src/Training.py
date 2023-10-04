@@ -23,15 +23,17 @@ import glob as glob
 import time as time 
 
 class Training(Input):
+    
     def __init__(self) -> None:
         super().__init__
         pass
 
     def train(self,runtype):
 
+        print('Runtype for training:',runtype)
+
         self.mode = runtype
 
-        print(self.train_size)
 
         if type(self.train_size) == list:
 
@@ -39,11 +41,11 @@ class Training(Input):
 
                 temp_time_old = time.time()
 
-                self.do_train_test_split(i)
+                self.do_train_split(i)
 
                 #self.import_FT()
 
-                self.training_model(i=i)
+                self.training_model(i_split=i)
 
                 temp_time_new = time.time()
 
@@ -51,8 +53,9 @@ class Training(Input):
 
         else:
 
-            temp_time_old = time.time()
+            print(f'Percentage of data set used for training: {self.train_size*100} %')
 
+            temp_time_old = time.time()
 
             #self.files = self.train_geo
 
@@ -88,8 +91,8 @@ class Training(Input):
             print('done\n')
 
         else:
+            
             print('no feature or target imported')
-
 
         return 
 
@@ -119,28 +122,27 @@ class Training(Input):
 
     def training_model(self,i_split = None):
 
-        params = self.config['training']['parameter']
-
+        params = self.config['train'].get('parameter',{})
+        self.method = self.config['train'].get('method','ETR')
+        self.SearchCV = self.config['train'].get('SearchCV',False)
 
         self.Targets = np.array(self.Targets).astype(np.float32)
 
         self.Features = np.array(self.Features).astype(np.float32)
 
-        print(f'Feature matrix shape {self.Features.shape}')
+        search = False
+
+        print(f'Feature matrix shape {self.Features[self.shuffle_idx].shape}')
         
-        print(f'Target matrix shape {self.Targets.shape}')
+        print(f'Target matrix shape {self.Targets[self.shuffle_idx].shape}')
 
         if type(params) == list:
 
             params = params[0]
 
         method = self.method.lower()
+
         print(f'Chosen method: {self.method}')
-
-        SearchCV = self.SearchCV
-        
-        search = False
-
 
         if method == 'etr':
 
@@ -183,19 +185,20 @@ class Training(Input):
 
             self.normalization = True
 
+        if  type(self.SearchCV) == str:
 
-        if SearchCV.lower() == 'random':
+            if self.SearchCV.lower() == 'random':
 
-            search = True
+                search = True
 
-            regr_model = RandomizedSearchCV(regr_model,param_distributions=params,n_iter=self.n_iter_search,random_state=self.rnd_seed)
+                regr_model = RandomizedSearchCV(regr_model,param_distributions=params,n_iter=self.n_iter_search,random_state=self.rnd_seed)
 
 
-        if SearchCV.lower() == 'grid':
+            if self.SearchCV.lower() == 'grid':
 
-            search = True
+                search = True
 
-            regr_model = GridSearchCV(regr_model,param_grid=params)
+                regr_model = GridSearchCV(regr_model,param_grid=params)
 
 
         print('Parameters for the Model:')  
@@ -206,12 +209,9 @@ class Training(Input):
 
         del param_temp
 
-       
-
-
         if self.normalization == True:
-            transformer = StandardScaler().fit(self.Features)
-            self.Features = transformer.transform(self.Features)
+            transformer = StandardScaler().fit(self.Features[self.shuffle_idx])
+            self.Features = transformer.transform(self.Features[self.shuffle_idx])
 
             with open(f'{self.model_name}_transformer.joblib','w') as g:
                 g.truncate(0)
@@ -223,9 +223,9 @@ class Training(Input):
             
             print(f'Transformer for Features is saved in {pathname}.\n')
 
-            target_transformer = StandardScaler().fit(self.Targets)
+            target_transformer = StandardScaler().fit(self.Targets[self.shuffle_idx])
 
-            self.Targets = target_transformer.transform(self.Targets)
+            self.Targets = target_transformer.transform(self.Targets[self.shuffle_idx])
 
             with open(f'{self.model_name}_transformer_target.joblib','w') as g:
                 g.truncate(0)
@@ -243,7 +243,7 @@ class Training(Input):
             
             selector = TruncatedSVD(n_components=200,algorithm='arpack')
 
-            self.Features = selector.fit_transform(self.Features)
+            self.Features = selector.fit_transform(self.Features[self.shuffle_idx])
 
             with open(f'{self.model_name}_selector.joblib','w') as g:
                 g.truncate(0)
@@ -255,24 +255,22 @@ class Training(Input):
 
             print(f'Selector is saved in {pathname}.\n')
 
-            print(f'Feature vector reduced to shape {self.Features.shape}')
+            print(f'Feature vector reduced to shape {self.Features[self.shuffle_idx].shape}')
             
 
         if method != 'mlpr':
             regr_model.set_params(n_jobs=self.threads)
-            regr_model.fit(self.Features,self.Targets)
+            regr_model.fit(self.Features[self.shuffle_idx],self.Targets[self.shuffle_idx])
 
         else:
             with parallel_backend('threading', n_jobs=self.threads):
-                regr_model.fit(self.Features,self.Targets)
+                regr_model.fit(self.Features[self.shuffle_idx],self.Targets[self.shuffle_idx])
 
-        print(f'Score on training data: {regr_model.score(self.Features,self.Targets)}')
+        print(f'Score on training data: {regr_model.score(self.Features[self.shuffle_idx],self.Targets[self.shuffle_idx])}')
 
         if search:
             print(f'Used Parameters:\n {regr_model.best_params_}')
 
-        else:
-            print(f'Used Parameters:\n {regr_model.get_params()}')
 
         with open(f'{self.model_name}.joblib','w') as g:
             g.truncate(0)
@@ -284,14 +282,15 @@ class Training(Input):
             pathname = f'{self.model_name}.joblib'
 
         dump(regr_model,pathname)
-        print(f'Model is saved in {pathname}.\n')
 
+        print(f'Model is saved in {pathname}.\n')
 
         del g
         del regr_model
         
-        del self.Features
-        del self.Targets
+        if i_split==None:
+            del self.Features
+            del self.Targets
 
         if self.normalization:
             del transformer
@@ -303,7 +302,7 @@ class Training(Input):
         return
     
 
-    def do_train_test_split(self,i):
+    def do_train_split(self,i):
 
         """
         Does a split of the geometry file directories into train and test sets.
@@ -316,12 +315,16 @@ class Training(Input):
 
         self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
 
+        del temp
+
         mypath = f'Model{i}'
 
         if not os.path.isdir(mypath):
 
             os.makedirs(mypath)
 
+
         self.data_to_txt(self.train_geo,os.path.join(f'Model{i}/','train_files.txt'))
 
+        
         return

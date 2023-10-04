@@ -12,7 +12,7 @@ class Observables(Rotation_Functions,Const):
     def get_coord_state(self):
         return self.coord_state[0]
 
-
+    
     def get_Frequencies(self,Hessian): 
         
         Hess_prj,lamb_len = self.project_hessian(Hessian.copy())

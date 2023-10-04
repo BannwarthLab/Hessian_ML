@@ -64,6 +64,23 @@ class Rotation_Functions:
           return coord_var_new
 
 
+     def get_R_kabsch(self,xyz,dipm,i,j):
+
+          T = 0.5*(xyz[i,:] + xyz[j,:])
+
+          vec_dipm = dipm[i,:] + dipm[j,:]
+
+          xyz -=T
+
+          dist_r = np.dot(xyz[i,:],xyz[j,:])
+
+          align_vec = np.zeros([2,3])
+          align_vec[:,2] = np.array([dist_r*0.5,dist_r*0.5]) 
+          
+
+          return
+
+
      #____Uses for i=j the mean of the xyz's atoms as an artifical atom____
      def get_R_euler(self,coord_end,dipm,i,j):
 

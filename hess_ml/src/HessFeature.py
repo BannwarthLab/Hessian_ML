@@ -20,7 +20,7 @@ class HessFeature(Rotation_Functions):
         parallel = Parallel(n_jobs=1,backend='loky')
 
         self.Feature_AB = parallel(delayed(self.gen_Feature)(k_soll=k) for k in range(N))
-
+        
         return
 
 
@@ -162,4 +162,4 @@ class HessFeature(Rotation_Functions):
         del Feature_Prod
         del Feature_AbsDiff
             
-        return Features_temp
+        return np.array(Features_temp)

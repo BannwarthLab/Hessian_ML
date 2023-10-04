@@ -13,17 +13,16 @@ import pickle as pickle
 import glob as glob
 
 
-class DataGeneration(Geometry):
+class DataGeneration():
     
     def __init__(self) -> None:
-        Geometry.__init__
         return
                 
     def generate_data(self,idx=None):
         
         self.wall_time0 = time.time()
 
-        print(f'Starting Data Generation for Features...', end="")
+        print(f'Starting Data Generation for Features...')
 
         #________Parallelized Feature Generation___________
 
@@ -31,10 +30,9 @@ class DataGeneration(Geometry):
         #    idx = np.arange(0,len(self.geo_dir))
         self.not_considered = []
 
-        self.FT = Parallel(n_jobs=1)(delayed(self.generation_procedure)(dir=self.geo_dir[geo]) for geo in idx)
+        Parallel(n_jobs=1)(delayed(self.generation_procedure)(dir=self.folders[geo]) for geo in idx)
 
-        print('done')
-
+        print('')
         print(f'Features and Targets of {len(idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n')
 
         with open('not_considered', 'w') as outfile:
@@ -46,21 +44,22 @@ class DataGeneration(Geometry):
 
     def generation_procedure(self,dir=None):
         
+        mol = Geometry(dir,self.config['geometry'])
 
-        self.do_calc = True 
+        mol.gen_data(self.config['threads'])
 
-        self.gen_data(dir,self.threads)
+        if mol.do_calc:
+            
+            self.Features.extend(mol.Feature_AB)
+            self.Targets.extend(mol.Target_AB)
 
-        if self.do_calc:
-            self.clear_quantities()
+            mol.clear_quantities()
+        else: 
+            self.not_considered.append(os.path.join(self.config['geometry']['folder'],self.config['geometry'].get('xyz_file')))
 
-        #data = PickleData(self,dir)
 
-        #with open(os.path.join(dir,f'Hessian_ML_Data.json'),'ab+') as h:
 
-        #    pickle.dump(data.dict,h)
-
-        return [self.Feature_AB,self.Target_AB]
+        return #[mol.Feature_AB,mol.Target_AB]
 
 
     def truncate_file(self,file):
@@ -74,74 +73,29 @@ class DataGeneration(Geometry):
             f1.close()
 
         return
-
-
-    def parse_folders(self,folder,subfolder):
-
-        print(f'Gathering Folders from {folder}.')
-
-        if subfolder:
-
-            self.gather_subfolders(folder)
-
-        else:
-            
-            self.gather_folders(folder)
-        
-        return 
     
-    def gather_subfolders(self,folder):
-
-        self.total_structures = 0
-
-        self.geo_dir = []
-
-        molecule_dir = sorted([mol for mol in os.listdir(f'{folder}') if os.path.isdir(os.path.join(f'{folder}',mol))])
-
-        for mol in range(len(molecule_dir)):
-            
-            data_dir = os.path.join(f'{folder}',molecule_dir[mol])
-
-            temp_dir = sorted([os.path.join(data_dir,geo) for geo in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir,geo))])
-
-            self.geo_dir.extend(temp_dir)
-            
-            self.total_structures += len(temp_dir)
-
-        return
-    
-
-    def gather_folders(self,folder):
-
-        molecule_dir = sorted([mol for mol in os.listdir(f'{folder}') if os.path.isdir(os.path.join(f'{folder}',mol))])
-
-        self.geo_dir = (molecule_dir)
-
-        self.total_structures = len(self.geo_dir)
-
-        return 
-    
-    def do_preparation_split(self):
+    def do_preparation_split(self,folders,total_structures,train_size,test_size,rnd_seed):
 
         """
         Does a split of the geometry file directories into train and test sets.
         Saves the information in txt files
         """
+        self.folders = folders
         
-        geo_idx = np.arange(0,self.total_structures-1)
+        geo_idx = np.arange(0,total_structures-1)
 
-        if type(self.train_size) == list:
-            self.train_size_temp = max(self.train_size)
+        if type(train_size) == list:
+            train_size_temp = max(train_size)
         else:
-            self.train_size_temp = self.train_size
+            train_size_temp = train_size
         
 
-        if self.train_size_temp == 1.0:
+        if train_size_temp == 1.0:
             self.train_idx = geo_idx
             self.test_idx = []
 
         else:
-            self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=self.test_size,train_size=self.train_size_temp,random_state=self.rnd_seed)
+            self.train_idx, self.test_idx  = train_test_split(geo_idx,test_size=test_size,train_size=train_size_temp,random_state=rnd_seed)
 
             self.comp_idx = np.concatenate((self.train_idx,self.test_idx),axis=None)
 
@@ -151,14 +105,13 @@ class DataGeneration(Geometry):
 
         for i in self.test_idx:
 
-            self.test_geo.append(self.geo_dir[i])
+            self.test_geo.append(self.folders[i])
         
         self.train_geo = []
 
         for i in self.train_idx:
 
-            self.train_geo.append(self.geo_dir[i])
-
+            self.train_geo.append(self.folders[i])
 
         self.data_to_txt(self.test_geo,os.path.join('','test_files.txt'))
 

@@ -115,7 +115,7 @@ class Input():
 
       def import_ml_features(self):
             
-            if self.config['general'].get('tblite',False):
+            if self.config.get('feature',False) == 'tblite':
 
                   try: 
                         from tblite.ase import TBLite
@@ -128,7 +128,7 @@ class Input():
                         faulthandler.enable()
                         #Use ase to read in coordinates
                   
-                        mol = ase_read(filename=os.path.join(self.geo_working_dir,self.file_coord))
+                        mol = ase_read(filename=os.path.join(self.folder,self.xyz_file))
                         # create a ase calculator instance
                         # xtbml value is used to compute the features
                         # 0 = compute no xtbml features
@@ -136,8 +136,30 @@ class Input():
                         # 2 = multipoles are exported as vectors
 
                         #final single point with xtbml features
-                        mol.calc = TBLite(method='GFN2-xTB',xtbml=2)
+                        charge = 0
+                        uhf = 0
+                        ChargePath = os.path.join(self.folder,'.CHRG')
+                        if os.path.isfile(ChargePath):
+
+                              with open(ChargePath,'r') as chrg:
+
+                                    charge = int(chrg.readline())
+
+
+
+                        
+                        uhfFilePath= os.path.join(self.folder,'.UHF')
+
+                        if os.path.isfile(uhfFilePath):
+
+                              with open(uhfFilePath,'r') as uhfFile:
+
+                                    uhf = int(uhfFile.readline())
+
+                        mol.calc = TBLite(method='GFN2-xTB',xtbml=2,charge=charge,uhf=uhf)
+                        
                         mol.calc.calculate(mol)
+
 
                         # from the results type various properties can be retrived
                         # "xtbml" = xtbml fetaures as a numpy array (natoms, nfeatures)
@@ -148,13 +170,16 @@ class Input():
                         labels = mol.calc.results["xtbml labels"]
 
                         self.ml_feat = pd.DataFrame(X,columns=labels)
+                        self.ml_feat.to_csv(f'test{uhf}')
                         self.ml_feat["weights"] = w
+
+                        
                   except:
                         print('SCF did not converge, no prediction will be done.')
                         self.do_calc = False
 
             else:
-                  self.ml_feat = pd.read_csv(os.path.join(self.geo_working_dir,self.file_feature))
+                  self.ml_feat = pd.read_csv(os.path.join(self.folder,self.file_feature))
 
             return
       
