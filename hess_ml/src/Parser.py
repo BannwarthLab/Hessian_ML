@@ -1,107 +1,93 @@
 from argparse import ArgumentParser
 import numpy as np
-import tomli 
+import tomli
 import os
-import sys 
+import sys
 from pathlib import Path
+
 
 class Parser:
     def __init__(self) -> None:
         self.cwd = os.getcwd()
-
+        self.LoadDefaultConfig()
 
     def parse(self) -> None:
-
         self.arg_parser = ArgumentParser()
 
-        self.arg_parser.add_argument("-i", "--input", type=str, default='default',
-                                help="INPUT must be a .toml file")
+        self.arg_parser.add_argument(
+            "-i",
+            "--input",
+            type=str,
+            default="default",
+            help="INPUT must be a .toml file",
+        )
 
-        self.arg_parser.add_argument("-to", "--toml", action='store_true',
-                                help="generates a basic example .toml file")
+        self.arg_parser.add_argument(
+            "-to",
+            "--toml",
+            action="store_true",
+            help="generates a basic example .toml file",
+        )
 
-        self.arg_parser.add_argument("-dto", "--dtoml", action='store_true',
-                                help="generates a detailed example .toml file")
-        
-        return 
-    
+        return
+
+    def LoadDefaultConfig(self) -> None:
+        abs_path = Path(__file__).parent / "default_input/input.toml"
+
+        with open(abs_path, mode="rb") as fp:
+            self.default_config = tomli.load(fp)
+
+        return
 
     def parse_toml(self) -> None:
-
         """
 
-        Parser for the .toml to generate a dictionoary for the input information
+        Parser for the .toml to generate a dictionoary for the input information.
 
         """
 
         inp_file = self.arg_parser.parse_args().input
 
         if os.path.isfile(inp_file):
-                
             with open(self.arg_parser.parse_args().input, mode="rb") as fp:
-
                 self.config = tomli.load(fp)
-                print(f'Input file: {inp_file} is used.')
+                print(f"Input file: {inp_file} is used.")
 
-        elif inp_file == 'default':
-
-            if os.path.isfile('input.toml'):
-
-                with open('input.toml', mode="rb") as fp:
-
+        elif inp_file == "default":
+            if os.path.isfile("input.toml"):
+                with open("input.toml", mode="rb") as fp:
                     self.config = tomli.load(fp)
 
-                    print(f'Input file: input.toml is used.')
+                    print(f"Input file: input.toml is used.")
             else:
+                print("Default setup is used.")
 
-                print('Default setup is used.')
+                abs_path = Path(__file__).parent / "default_input/input.toml"
 
-                abs_path =  Path(__file__).parent / 'default_input/input.toml'
-
-                with open( abs_path, mode="rb") as fp:
-
+                with open(abs_path, mode="rb") as fp:
                     self.config = tomli.load(fp)
 
         else:
-            
-            print(f'Input file: {inp_file} not found.')
-            print('')
+            print(f"Input file: {inp_file} not found.")
+            print("")
 
             sys.exit()
-            
-        return 
-    
 
-    def print_config(self):
-
-
-        print('Used config is:')
-        print('')
-        for dicts in self.config.keys():
-            if type(self.config[dicts]) == dict:
-                print('')
-                print(dicts)
-                for dict_ in self.config[dicts].keys():
-                    print(dict_,':',self.config[dicts][dict_])
-
-            else:
-                print(dicts,':',self.config[dicts])
-
-        print('')
         return
 
-    def get_config(self) -> dict:
 
+    def get_config(self) -> dict:
         return self.config
 
+    def parse_data_set(self, main_folder) -> None:
+        print(f"Parsing data set in {main_folder}...", end="")
+        xyz_file = self.config.get("molecule", {"xyz_file": "xtbopt.xyz"}).get(
+            "xyz_file"
+        )
 
-    def parse_data_set(self,main_folder) -> None:
-
-
-        print(f'Parsing data set in {main_folder}...', end='')
-        xyz_file = self.config.get('geometry',{'xyz_file':'xtbopt.xyz'}).get('xyz_file')
-
-        target_file = self.config.get('geometry',{'target_file':'hessian'}).get('target_file')
+        target_file = self.config.get("molecule", {"target_file": "hessian"}).get(
+            "target_file"
+        )
         walker = os.walk(main_folder)
 
         self.folders = list()
@@ -110,134 +96,136 @@ class Parser:
             if xyz_file in folder[-1] and target_file in folder[-1]:
                 self.folders.append(folder[0])
 
-        self.folders  = sorted(self.folders)
-        
-        print('done')
+        self.folders = sorted(self.folders)
 
-        print(f'Total of {len(self.folders)} folders found.')
-        print('')
+        print("done")
 
-        return 
-    
-    def parse_general(self): 
+        print(f"Total of {len(self.folders)} folders found.")
+        print("")
 
-        """
-        Sets the general parameter needed for:
-            - the generation of features
-            - the training 
-            - the prediction
-        """
+        return
 
-        self.feature_file  = self.config['general'].get('feature','ml_feature.csv')
+    # def parse_general(self):
+    #     """
+    #     Sets the general parameter needed for:
+    #         - the generation of features
+    #         - the training
+    #         - the prediction
+    #     """
 
-        self.target_file   = self.config['general'].get('target_file',self.runtype_target[self.config['runtype']])
+    #     self.feature_file = self.config["general"].get("feature", "ml_feature.csv")
 
-        self.xyz_file    = self.config['general'].get('xyz_file','xtbopt.xyz')
+    #     self.target_file = self.config["general"].get(
+    #         "target_file", self.runtype_target[self.config["runtype"]]
+    #     )
 
-        self.gradient_file = self.config['general'].get('gradient_file','gradient')
+    #     self.xyz_file = self.config["general"].get("xyz_file", "xtbopt.xyz")
 
-        self.folder = self.config['general'].get('folder',None)
+    #     self.gradient_file = self.config["general"].get("gradient_file", "gradient")
 
-        self.rnd_seed    = self.config['general'].get('random_seed',np.random.randint(0,1000))
+    #     self.folder = self.config["general"].get("folder", None)
 
-        return 
-    
+    #     self.rnd_seed = self.config["general"].get(
+    #         "random_seed", np.random.randint(0, 1000)
+    #     )
 
-    def parse_feature(self): 
+    #     return
 
-        """
-        Sets the parameter needed for the generation of features
-        """
+    # def parse_feature(self):
+    #     """
+    #     Sets the parameter needed for the generation of features
+    #     """
 
-        self.feature_gen = self.config['feature'].get('generate',True)
+    #     self.feature_gen = self.config["feature"].get("generate", True)
 
-        if not(self.feature_gen):
+    #     if not (self.feature_gen):
+    #         self.feature_import = self.config["feature"].get("import", "numpy")
 
-            self.feature_import = self.config['feature'].get('import','numpy')
+    #     # Implement tblite api for generation of the basic features
+    #     # self.tblite = self.config['feature'].get('tblite',False)
+    #     # If true they are generated with tbltie in advance
 
-        #Implement tblite api for generation of the basic features 
-        #self.tblite = self.config['feature'].get('tblite',False)
-        #If true they are generated with tbltie in advance
+    #     return
 
-        return 
+    # def parse_training(self):
+    #     """
+    #     Sets the parameter needed for the training of the ML Model
+    #     """
 
-    def parse_training(self):
+    #     self.train_size = self.config["training"].get("train_size", 0.75)
 
-        """
-        Sets the parameter needed for the training of the ML Model
-        """
+    #     if type(self.train_size) == list:
+    #         train_max = max(self.train_size)
 
-        self.train_size = self.config['training'].get('train_size',0.75)
+    #     else:
+    #         train_max = self.train_size
 
-        if type(self.train_size) == list:
+    #     self.test_size = self.config["training"].get("test_size", 1 - train_max)
 
-            train_max = max(self.train_size)
+    #     self.method = self.config["training"].get("method", "ETR")
 
-        else:
+    #     self.SearchCV = self.config["training"].get("SearchCV", "None")
 
-            train_max = self.train_size
+    #     self.testing = self.config["training"].get("test", False)
 
+    #     self.selection = self.config["training"].get("selection", False)
 
-        self.test_size = self.config['training'].get('test_size',1-train_max)
+    #     if self.SearchCV.lower() == "random":
+    #         self.n_iter_search = self.config["training"].get("n_iter", 25)
 
-        self.method = self.config['training'].get('method','ETR')
+    #     self.model_name = self.config["training"].get(
+    #         "model_name", f"{self.runtype_target[self.config['runtype']]}_model"
+    #     )
 
-        self.SearchCV = self.config['training'].get('SearchCV','None')
+    #     try:
+    #         if "hidden_layer_sizes" in self.config["training"]["parameter"].keys():
+    #             self.config["training"]["parameter"]["hidden_layer_sizes"] = tuple(
+    #                 self.config["training"]["parameter"]["hidden_layer_sizes"]
+    #             )
 
-        self.testing = self.config['training'].get('test',False)
+    #     except:
+    #         print(
+    #             "No parameters for the model are specified. Default parameters are set"
+    #         )
 
-        self.selection = self.config['training'].get('selection',False)
+    #         self.config["training"]["parameter"] = {}
 
-        if self.SearchCV.lower() == 'random':
+    #     return
 
-            self.n_iter_search     = self.config['training'].get('n_iter',25)    
+    # def parse_predict(self):  # Set parameters for prediction
+    #     """
+    #     Sets the parameter needed for the prediction of a set of systems
+    #     """
 
-        self.model_name    = self.config['training'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model")
+    #     self.predict_folder = self.config["predict"].get("folder", False)
 
-        try:
+    #     if self.config.get("training", False):
+    #         self.model_name = self.config["predict"].get(
+    #             "model",
+    #             self.config["training"].get(
+    #                 "model_name", f"{self.runtype_target[self.config['runtype']]}_model"
+    #             ),
+    #         )
+    #     else:
+    #         self.model_name = self.config["predict"].get(
+    #             "model", f"{self.runtype_target[self.config['runtype']]}_model"
+    #         )
 
-            if 'hidden_layer_sizes' in self.config['training']['parameter'].keys():
-                self.config['training']['parameter']['hidden_layer_sizes'] = tuple(self.config['training']['parameter']['hidden_layer_sizes'])
+    #     self.predict_model_folder = self.config["predict"].get("model_folder", False)
 
+    #     self.predict_subfolder = self.config["general"].get("subfolder", False)
 
-        except:
+    #     self.predict_files = self.config["predict"].get("files", None)
 
-            print('No parameters for the model are specified. Default parameters are set')
+    #     self.predict_data_gen = self.config["predict"].get("generate", True)
 
-            self.config['training']['parameter'] = {}
+    #     self.selection = self.config["predict"].get("selection", False)
 
-        return 
-    
+    #     self.normalization = self.config["predict"].get("normalization", False)
 
-    def parse_predict(self): #Set parameters for prediction
+    #     if self.predict_folder == self.folder:
+    #         print(
+    #             "You chose the same folder for prediction as you chose for training and testing. This is not recommended."
+    #         )
 
-        """
-        Sets the parameter needed for the prediction of a set of systems
-        """
-
-        self.predict_folder = self.config['predict'].get('folder',False)
-
-
-        if self.config.get('training',False):
-            self.model_name = self.config['predict'].get('model',self.config['training'].get('model_name',f"{self.runtype_target[self.config['runtype']]}_model"))
-        else:
-            self.model_name = self.config['predict'].get('model',f"{self.runtype_target[self.config['runtype']]}_model")
-
-
-        self.predict_model_folder = self.config['predict'].get('model_folder',False)
-
-        self.predict_subfolder = self.config['general'].get('subfolder',False)
-
-        self.predict_files = self.config['predict'].get('files', None)
-
-        self.predict_data_gen  = self.config['predict'].get('generate',True)
-
-        self.selection = self.config['predict'].get('selection',False)
-
-        self.normalization = self.config['predict'].get('normalization',False)
-
-        if self.predict_folder == self.folder:
-
-            print('You chose the same folder for prediction as you chose for training and testing. This is not recommended.')
-
-        return 
+    #     return

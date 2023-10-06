@@ -1,13 +1,13 @@
-threads = 8
-runtype = 'hessian'
 
 [general]
+threads = 8
+runtype = 'hessian'
 feature = true
 train = true
-predict = true
+predict = false
 random_state = 79
 
-[geometry]
+[molecule]
 folder = 'data_set'
 feature = 'tblite'
 target_file = 'hessian'
