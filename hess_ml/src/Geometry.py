@@ -1,70 +1,104 @@
-import os 
-from hess_ml.src.ReadWrite import ReadWrite
-from hess_ml.src.Rotation_func import Rotation_Functions
-from hess_ml.src.Preparation import Preparation
-from hess_ml.src.HessTarget import HessTarget
-from hess_ml.src.HessFeature import HessFeature
-from hess_ml.src.Observables import Observables
-from hess_ml.src.SaveDat import FTHetero, FTHomo, PickleData
-from hess_ml.src.constants import Const 
+import os
+import pandas as pd
+
+from hess_ml.src.constants import Const
+
 import json as json
 import numpy as np
+import numpy.typing as npt
+import time as time
 
-class Geometry(HessTarget,HessFeature, ReadWrite,Preparation,Observables,Rotation_Functions):
-    
-    def __init__(self):
-        super().__init__
-        return 
-        
-    def gen_data(self,geo_file,geo,mol):
-        self.geo = geo
-        self.mol = mol
-        self.geo_working_dir = geo_file
-        self.xyz,self.header = self.import_coord(os.path.join(self.geo_working_dir,self.file_coord))
-        self.N_atoms = len(self.xyz['atoms'])
 
-        self.nuc_charge = np.zeros(self.N_atoms)
-
-        for i in range(self.N_atoms):
-            self.nuc_charge[i] = Const.ELEMENTS2Z[self.xyz.loc[i,'atoms']]
-
-        self.dipm = self.import_dipm(os.path.join(self.geo_working_dir,self.file_dipm)).iloc[:,:-3]
-
-        self.hessian = self.import_hessian(os.path.join(self.geo_working_dir,self.file_target),self.xyz)
-
-        self.ml_features = self.import_ml_features(os.path.join(self.geo_working_dir,self.file_feature))
-
-        self.init_R_MI,self.xyz = (self.calc_R(self.xyz))
-
-        self.init_P_MI = self.rotM_hess(self.init_R_MI,self.xyz)
-        self.lamb_len  = None
-
-        self.rot_init_inert()
-        
-        self.rot_inert_apf()
-
-        self.get_Feature_heteronuclear()
-
-        self.gen_Hessian_vector(self.transpose_list)
-        
+class Geometry:
+    def __init__(self) -> None:
         return
 
-    def clear_quantities(self):
+    def setConfiguration(self, folder, config):
+        self.config = config
+        self.folder = folder
+        self.threads = config.get("threads", 1)
+        self.hessian_type = config.get("hessian_type", "vanilla")
 
-        del self.CN
-        del self.dipm_atom
-        del self.dipm_delta
-        del self.dipm_only_mull
-        del self.qm_atom
-        del self.qm_delta
-        del self.energy_based
-        del self.hessian
-        del self.init_P_MI
+        self.xyz_file = config.get("xyz_file", "xtbopt.xyz")
+        self.gradient_file = config.get("gradient_file", "gradient")
+        self.feature_file = config.get("feature_file", "ml_feature.csv")
+        self.target_file = config.get("target_file", "hessian")
+        self.hessian_name = config.get("hessian_file", "hessian")
+        self.do_calc = True
 
-        return 
+        return
 
-    def get_feature(self):
-        return self.Feature_AA, self.Feature_AB
+    def setFeature(self, feature: npt.ArrayLike):
+        self.feature = feature
+        return
 
-    def get_target(self):
-        return self.Target_AA, self.Target_AB
+    def setTarget(self, target: npt.ArrayLike):
+        self.target = target
+        return
+
+    def importXYZ(self, file: str):
+        with open(file) as myfile:
+            head = [next(myfile) for _ in range(2)]
+
+        xyz_pd = pd.read_csv(
+            file,
+            sep="\s+",
+            skiprows=2,
+            header=None,
+            keep_default_na=False,
+            na_values=["_"],
+        )
+
+        xyz_pd.columns = ["atoms", "x", "y", "z"]
+
+        self.elements = xyz_pd["atoms"]
+
+        self.N_atoms = len(self.elements)
+
+        self.xyz = np.array(xyz_pd.iloc[:, 1:])
+
+        self.NuclearCharge = np.zeros(self.N_atoms)
+
+        for i in range(self.N_atoms):
+            self.NuclearCharge[i] = Const.ELEMENTS2Z[self.elements[i].lower()]
+
+        if self.N_atoms == 1:
+            self.do_calc = False
+            print("At least two atoms must be considered.")
+
+        return
+
+    def importTarget(self, file: str):
+        if os.path.isfile(file):
+            LineList = []
+
+            with open(file, "r") as fd:
+                Lines = [line.rstrip("\n") for line in fd]
+                for line in Lines[1:]:
+                    LineList += line.split()
+
+            self.target = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
+
+            i = 0
+
+            for k in range(self.N_atoms * 3):
+                for l in range(self.N_atoms * 3):
+                    self.target[k, l] = float(LineList[i])
+                    i += 1
+        else:
+            self.do_calc = False
+
+        return
+
+    def hessians_difference(self, hess1, hess2):
+        self.importXYZ(os.path.join(self.folder, self.xyz_file))
+
+        self.importTarget(os.path.join(self.folder, hess1))
+
+        self.hessian1 = self.target
+
+        self.importTarget(os.path.join(self.folder, hess2))
+
+        self.hess_diff = self.hessian1 - self.target
+
+        return

@@ -1,38 +1,25 @@
 from hess_ml.src.Environment import Environment
-import time as time 
+from hess_ml.src.Parser import Parser
+import time as time
+
 
 def main() -> None:
     env = Environment()
 
-    if env.config.get('feature_generation',False):
-        env.parse_feature_generation()
+    env.parse()
 
-    if env.config.get('training_testing',False):
-        env.parse_train_test_parameter()
-    #__________________________________________
-    #____________Choosing runtype______________
-    if env.config['runtype'] == 'hessian':
+    env.parse_toml()
 
+    env.set_general_config()
 
-        if env.config.get('feature_generation',False):
-            env.generate_data()
-             
-        if env.config.get('training_testing',False):
+    env.print_config()
 
-            temp_time_old = time.time()
+    env.import_data()
 
-                        
-            env.train(train_conf = env.config['training_testing'],mode='hetero')
+    env.do_train()
+
+    env.do_prediction()
 
 
-            temp_time_new = time.time()
-
-            print(f'Training was done in {round(temp_time_new - temp_time_old)} s' )
-
-            temp_time_old = time.time()
-            env.test()
-            temp_time_new = time.time()
-            print(f'Testing was done in {round(temp_time_new - temp_time_old)} s')
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

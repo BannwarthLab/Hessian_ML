@@ -1,2 +1,5 @@
 hessml.egg-info/
 venv/
+examples/
+hess_ml/tests/test_files/
+hess_ml/tests/
