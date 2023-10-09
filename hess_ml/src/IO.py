@@ -35,25 +35,6 @@ class Input:
 
         return coord_var
 
-    def import_hessian(self, file, nat):
-        LineList = []
-
-        with open(file, "r") as fd:
-            Lines = [line.rstrip("\n") for line in fd]
-            for line in Lines[1:]:
-                LineList += line.split()
-
-        hess = np.zeros([nat * 3, nat * 3])
-
-        i = 0
-
-        for k in range(len(hess[0, :])):
-            for l in range(len(hess[:, 0])):
-                hess[k, l] = float(LineList[i])
-                i += 1
-
-        return hess
-
     def import_hessian_dftd4(self, file, coord):
         nat3 = len(coord["atoms"]) * 3
 
@@ -76,7 +57,26 @@ class Input:
         # gradient = gradient.flatten()
 
         return
+    
+    def import_hessian(self, file: str, nat: int):
+        LineList = []
 
+        with open(file, "r") as fd:
+            Lines = [line.rstrip("\n") for line in fd]
+            for line in Lines[1:]:
+                LineList += line.split()
+
+        hess = np.zeros([nat * 3, nat * 3])
+
+        i = 0
+
+        for k in range(nat*3):
+            for l in range(nat*3):
+                hess[k, l] = float(LineList[i])
+                i += 1
+
+        return hess
+    
     def filter_feature(self):
         self.dipm = {}
         self.qm = {}
@@ -155,6 +155,7 @@ class Input:
                 # final single point with xtbml features
                 charge = 0
                 uhf = 0
+
                 ChargePath = os.path.join(self.folder, ".CHRG")
                 if os.path.isfile(ChargePath):
                     with open(ChargePath, "r") as chrg:

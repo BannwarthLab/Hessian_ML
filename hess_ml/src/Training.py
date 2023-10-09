@@ -37,9 +37,7 @@ class Training(Input):
                 temp_time_old = time.time()
 
                 self.do_train_split(i)
-
-                # self.import_FT()
-
+                
                 self.training_model(i_split=i)
 
                 temp_time_new = time.time()
@@ -50,10 +48,6 @@ class Training(Input):
             print(f"Percentage of data set used for training: {self.train_size*100} %")
 
             temp_time_old = time.time()
-
-            # self.files = self.train_geo
-
-            # self.import_FT()
 
             self.training_model()
 
@@ -115,7 +109,6 @@ class Training(Input):
         self.SearchCV = self.config["train"].get("SearchCV", False)
 
         self.Targets = np.array(self.Targets).astype(np.float32)
-
         self.Features = np.array(self.Features).astype(np.float32)
 
         search = False

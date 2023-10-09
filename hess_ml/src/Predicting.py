@@ -8,7 +8,7 @@ import os
 from hess_ml.src.Observables import Observables
 from hess_ml.src.IO import Input
 from hess_ml.src.IO import Output
-from hess_ml.src.Geometry import Geometry
+from hess_ml.src.Processing import PredictProcess
 from joblib import Parallel, delayed
 import time as time
 
@@ -47,7 +47,7 @@ class Predicting(Input, Output, Observables):
         self.not_considered = []
 
         Parallel(n_jobs=1)(
-            delayed(self.predict_hessian)(file=files[file])
+            delayed(self.predict_hessian)(folder=files[file])
             for file in range(len(files))
         )
 
@@ -63,8 +63,9 @@ class Predicting(Input, Output, Observables):
         size = 0
         error = 0
         for folder in folders:
-            mol = Geometry(folder, self.config["geometry"])
-            mol.hessians_difference(self.config["geometry"]["target_file"], "MLhessian")
+            mol = PredictProcess()
+            mol.setConfiguration(folder, self.config["molecule"])
+            mol.hessians_difference(self.config["molecule"]["target_file"], "MLhessian")
             shape = np.shape(mol.hess_diff)
             size += shape[0] * shape[1]
             error += np.sum(mol.hess_diff**2)
@@ -75,6 +76,57 @@ class Predicting(Input, Output, Observables):
         print(f"{rnd_seed}\t{train_size*100: 3.0f}\t{error : 0.5f}")
 
         return
+
+    def predict_hessian(self, folder):
+
+        mol = PredictProcess()
+        mol.setConfiguration(folder, self.config["molecule"])
+        mol.importXYZ(os.path.join(mol.folder, mol.xyz_file))
+        mol.importFeature(os.path.join(mol.folder, mol.xyz_file))
+        mol.importTarget(os.path.join(mol.folder, mol.target_file))
+        mol.transformFeature()
+
+        if mol.do_calc:
+            cur_time = time.time()
+
+            if self.config.get("predict", {"selection": False}).get("selection", False):  # self.selection
+                H_hetero = self.model.predict(
+                    self.selector.transform(np.array(mol.Feature_AB))
+                )
+
+            if self.config.get("predict", {"selection": False}).get("normalization", False):
+                H_hetero = self.model.predict(
+                    self.transformer.transform(np.array(mol.Feature_AB))
+                )
+
+                H_hetero = self.target_transformer.inverse_transform(H_hetero)
+
+            else:
+                H_hetero = self.model.predict((np.array(mol.Feature_AB)))
+
+            transpose_list = mol.transpose_list
+
+            R_MI_APF_mat = mol.R_MI_APF_mat
+
+            N_atoms = mol.N_atoms
+
+            predHess = self.gen_hess_from_vec_pred(
+                H_hetero, N_atoms, R_MI_APF_mat, transpose_list
+            )
+
+            self.hessian_to_xtb(os.path.join(folder, f"MLhessian"), predHess)
+
+            print(f"Prediction: {time.time()- cur_time: 0.2f} s")
+
+            del H_hetero
+            del transpose_list
+            del N_atoms
+            del R_MI_APF_mat
+
+        return
+
+
+
 
     def comp_test_observables(self):
         freq_pred_list = []
@@ -144,49 +196,5 @@ class Predicting(Input, Output, Observables):
         np.savetxt("true_Z.txt", Z_true)
 
         print("done")
-
-        return
-
-    def predict_hessian(self, file):
-        mol = Geometry(file, self.config["molecule"])
-
-        mol.gen_data(1)
-
-        if mol.do_calc:
-            cur_time = time.time()
-
-            if self.config["predict"].get("selection", False):  # self.selection
-                H_hetero = self.model.predict(
-                    self.selector.transform(np.array(mol.Feature_AB))
-                )
-
-            if self.config["predict"].get("normalization", False):
-                H_hetero = self.model.predict(
-                    self.transformer.transform(np.array(mol.Feature_AB))
-                )
-
-                H_hetero = self.target_transformer.inverse_transform(H_hetero)
-
-            else:
-                H_hetero = self.model.predict((np.array(mol.Feature_AB)))
-
-            transpose_list = mol.transpose_list
-
-            R_MI_APF_mat = mol.R_MI_APF_mat
-
-            N_atoms = mol.N_atoms
-
-            predHess = self.gen_hess_from_vec_pred(
-                H_hetero, N_atoms, R_MI_APF_mat, transpose_list
-            )
-
-            self.hessian_to_xtb(os.path.join(file, f"MLhessian"), predHess)
-
-            print(f"Prediction: {time.time()- cur_time: 0.2f} s")
-
-            del H_hetero
-            del transpose_list
-            del N_atoms
-            del R_MI_APF_mat
 
         return

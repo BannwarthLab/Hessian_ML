@@ -2,7 +2,6 @@ from hess_ml.src.Parser import Parser
 from hess_ml.src.DataGeneration import DataGeneration
 from hess_ml.src.Training import Training
 from hess_ml.src.Predicting import Predicting
-from hess_ml.src.Geometry import Geometry
 from hess_ml.src.IO import Input
 
 from sklearn.model_selection import train_test_split
@@ -14,9 +13,11 @@ import time as time
 
 class Environment(DataGeneration, Parser, Training, Predicting, Input):
     def __init__(self):
-        super().__init__  # initializes all parent classes
+        Training.__init__ (self) # initializes all parent classes
+        Predicting.__init__ (self)
         DataGeneration.__init__(self)
         Parser.__init__(self)
+        Input.__init__ (self)
         return
 
     def set_general_config(self):
@@ -35,7 +36,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
         self.rnd_seed = self.config["general"]["random_state"]
         self.threads= self.config["general"]["threads"]
-
+        np.random.seed(self.rnd_seed)
         return
 
     def print_config(self):
@@ -157,6 +158,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
     def do_prediction(self):
         if self.config.get("predict", False):
+            
             if self.config["predict"].get("folder", False):
                 self.parse_data_set(self.config["predict"].get("folder"))
 

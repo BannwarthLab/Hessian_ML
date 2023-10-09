@@ -1,65 +1,24 @@
 import numpy as np
+import sys
 from hess_ml.src.Rotation_func import Rotation_Functions
-from operator import matmul
-from joblib import Parallel, delayed
+from hess_ml.src.Geometry import Geometry
+from hess_ml.src.Features.Features import ImportFeatureTBlite
 
 
-class HessFeature(Rotation_Functions):
-    def __init__(self):
-        Rotation_Functions.__init__
+class FeatureGen(Geometry):
 
-    def get_Feature(self, threads):
-        self.transpose_list = []
-        self.check_list = []
-        self.Feature_AB = []
-
-        N = int((self.N_atoms * (self.N_atoms - 1)) / 2)
-
-        parallel = Parallel(n_jobs=1, backend="loky")
-
-        self.Feature_AB = parallel(
-            delayed(self.gen_Feature)(k_soll=k) for k in range(N)
-        )
-
-        return
-
-        # for atom_A in range(self.N_atoms):
-        #    for atom_B in range(atom_A+1,self.N_atoms):
-
-    def gen_Feature(self, k_soll):
-        
-        k = -1
-
-        k_reached = False
-
-        for atom_A in range(self.N_atoms):
-            for atom_B in range(atom_A + 1, self.N_atoms):
-                k += 1
-                if k_soll == k:
-                    k_reached = True
-                    break
-            if k_reached:
-                break
-
+    def gen_Feature(self, R_MI_APF, atom_A: int, atom_B: int):
         Features_temp = []
 
         A = atom_A
         B = atom_B
-
-        i0 = 3 * A
-        i3 = 3 * A + 3
-
-        j0 = 3 * B
-        j3 = 3 * B + 3
-
-        R_MI_APF = self.R_MI_APF_mat[i0:i3, j0:j3]
 
         self.check_list.append([A, B])
 
         # Performs a rotation around the X axis by 180 ° if nuclear charge of A is smaller than B to achieve a consistent alignment
         # If A == B rotation depends on dipole moment
 
-        if self.nuc_charge[A] < self.nuc_charge[B]:
+        if self.NuclearCharge[A] < self.NuclearCharge[B]:
             B, A = A, B
 
             self.transpose_list.append([B, A])
@@ -72,7 +31,7 @@ class HessFeature(Rotation_Functions):
 
             R_MI_APF = np.matmul(rot_Mat, R_MI_APF)
 
-        elif self.nuc_charge[A] == self.nuc_charge[B]:
+        elif self.NuclearCharge[A] == self.NuclearCharge[B]:
             if np.linalg.norm(self.dipm["A"][A]) < np.linalg.norm(self.dipm["A"][B]):
                 B, A = A, B
 
@@ -120,7 +79,7 @@ class HessFeature(Rotation_Functions):
             Quantity_AB[j].extend(grad)
             Quantity_AB[j].extend(self.energy_based[atom])
 
-            Quantity_AB[j].extend([self.nuc_charge[atom]])
+            Quantity_AB[j].extend([self.NuclearCharge[atom]])
 
             Quantity_AB[j].extend([self.cn["default"][atom]])
             Quantity_AB[j].extend([self.cn["delta"][atom]])
@@ -150,10 +109,88 @@ class HessFeature(Rotation_Functions):
 
         del Quantity_AB_arr
         del Quantity_AB
-        # del Features_temp
 
         del Feature_Arith
         del Feature_Prod
         del Feature_AbsDiff
 
         return np.array(Features_temp)
+
+
+class PredictProcess(FeatureGen, ImportFeatureTBlite, Geometry, Rotation_Functions):
+    def __init__(self):
+        super().__init__()
+        pass
+
+    def transformFeature(self):
+
+        self.R_MI_APF_mat = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
+
+        if self.do_calc:
+            self.Feature_AB = []
+            self.check_list = []
+            self.transpose_list = []
+
+            for atom_A in range(self.N_atoms):
+                for atom_B in range(atom_A + 1, self.N_atoms):
+                    xyz_temp = self.xyz.copy()
+
+                    i0 = 3 * atom_A
+                    i3 = 3 * atom_A + 3
+                    j0 = 3 * atom_B
+                    j3 = 3 * atom_B + 3
+
+                    R_MI_APF = self.get_R_euler(
+                        xyz_temp, self.dipm["A"], atom_A, atom_B
+                    )
+                    self.R_MI_APF_mat[i0:i3, j0:j3] = R_MI_APF
+                    
+                    self.Feature_AB.append(self.gen_Feature(R_MI_APF, atom_A, atom_B))
+
+        return
+
+
+class TrainProcess(FeatureGen, ImportFeatureTBlite, Geometry, Rotation_Functions):
+    def __init__(self):
+        super().__init__()
+        pass
+
+    def transformFeatureTarget(self):
+        self.Feature_AB = []
+        self.Target_AB = []
+        self.check_list = []
+        self.transpose_list = []
+        if self.do_calc:
+            for atom_A in range(self.N_atoms):
+                for atom_B in range(atom_A + 1, self.N_atoms):
+                    xyz_temp = self.xyz.copy()
+
+                    R_MI_APF = self.get_R_euler(
+                        xyz_temp, self.dipm["A"], atom_A, atom_B
+                    )
+
+                    self.Feature_AB.append(self.gen_Feature(R_MI_APF, atom_A, atom_B))
+
+                    i0 = 3 * atom_A
+                    i3 = 3 * atom_A + 3
+                    j0 = 3 * atom_B
+                    j3 = 3 * atom_B + 3
+
+                    H_APF = np.matmul(
+                        np.matmul(R_MI_APF, self.target[i0:i3, j0:j3].copy()),
+                        np.transpose(R_MI_APF),
+                    )  # Change Hessian
+
+                    if [atom_A, atom_B] in self.transpose_list:
+                        H_APF = np.matmul(
+                            np.matmul(self.rot_X(np.pi), np.transpose(H_APF)),
+                            np.transpose(self.rot_X(np.pi)),
+                        )
+                        H_APF = np.matmul(
+                            np.matmul(self.rot_Z(np.pi), (H_APF)),
+                            np.transpose(self.rot_Z(np.pi)),
+                        )
+
+                    self.Target_AB.append(list(H_APF.flatten()))
+
+        return

@@ -6,14 +6,13 @@ import time as time
 
 from sklearn.model_selection import train_test_split
 
-from hess_ml.src.Geometry import Geometry
-from hess_ml.src.SaveDat import PickleData
-from joblib import Parallel, delayed
+from hess_ml.src.Processing import TrainProcess
+
 import pickle as pickle
 import glob as glob
 
-
 class DataGeneration:
+
     def __init__(self) -> None:
         return
 
@@ -28,9 +27,8 @@ class DataGeneration:
         #    idx = np.arange(0,len(self.geo_dir))
         self.not_considered = []
 
-        Parallel(n_jobs=1)(
-            delayed(self.generation_procedure)(dir=self.folders[geo]) for geo in idx
-        )
+        for geo in idx:
+            self.GenerateData(dir=self.folders[geo])
 
         print("")
         print(
@@ -42,26 +40,49 @@ class DataGeneration:
         outfile.close
 
         return
+    
+    def GenerateData(self,dir):
 
-    def generation_procedure(self, dir=None):
-        mol = Geometry(dir, self.config["geometry"])
+        cur_time = time.time()
+        mol = TrainProcess()
+        mol.setConfiguration(dir, self.config["molecule"])
+        mol.importXYZ(os.path.join(mol.folder, mol.xyz_file))
+        mol.importFeature(os.path.join(mol.folder, mol.xyz_file))
+        mol.importTarget(os.path.join(mol.folder, mol.target_file))
 
-        mol.gen_data(self.config["threads"])
+        print(f"Import: {time.time()- cur_time: 4.5f} s")
+        cur_time = time.time()
+
+        mol.transformFeatureTarget()
+
+        print(f"Processing: {time.time()- cur_time: 4.5f} s")
+
+        print(
+            np.array(mol.Feature_AB).shape, np.array(mol.Target_AB).shape
+        )
+        np.savetxt(
+            fname=os.path.join(mol.folder, "features"), X=mol.Feature_AB
+        )
+        np.savetxt(
+            fname=os.path.join(mol.folder, "targets"), X=mol.Target_AB
+        )
 
         if mol.do_calc:
+
             self.Features.extend(mol.Feature_AB)
             self.Targets.extend(mol.Target_AB)
-
-            mol.clear_quantities()
+            del mol
         else:
             self.not_considered.append(
                 os.path.join(
-                    self.config["geometry"]["folder"],
-                    self.config["geometry"].get("xyz_file"),
+                    self.config["molecule"]["folder"],
+                    self.config["molecule"].get("xyz_file"),
                 )
             )
+            del mol 
 
-        return  # [mol.Feature_AB,mol.Target_AB]
+
+        return 
 
     def truncate_file(self, file):
         if os.path.isfile(file):
