@@ -1,4 +1,5 @@
 import os 
+import numpy as np
 
 def parse_folders(self,folder,subfolder):
 
@@ -92,5 +93,79 @@ def predict_hess_depracted(self):
             f.close()
 
         del het_model
+
+        return
+
+
+
+
+    def comp_test_observables(self):
+        freq_pred_list = []
+        ZPE_pred = []
+        Z_pred = []
+
+        freq_true_list = []
+        ZPE_true = []
+        Z_true = []
+
+        with open("pred_structures_final.json", "rb") as f:
+            i = 0
+
+            while True:
+                i += 1
+                try:
+                    temp_obj = pickle.load(f)
+                    self.R_MI_APF_mat = temp_obj.get("R_MI_APF_mat")
+                    self.xyz = temp_obj.get("xyz")
+                    self.transpose_list = temp_obj.get("transpose_list")
+
+                    self.N_atoms = temp_obj.get("N_atoms")
+
+                    hess_vec_ab = np.array(temp_obj.get("pred_target_AB"))
+
+                    freq = self.get_Frequencies(hess_vec_ab)
+
+                    ZPE = self.get_ZPE(freq)
+
+                    Z = self.get_partition_func(freq)
+
+                    # ZPE_harm = self.get_harmonic_ZPE(freq)
+
+                    Z_pred.append(Z)
+
+                    # ZPE_harm_pred.append(ZPE_harm)
+
+                    ZPE_pred.append(ZPE)
+
+                    freq_pred_list.extend(freq)
+
+                    hess_vec_aa = np.array(temp_obj.get("Target_AA"))
+                    hess_vec_ab = np.array(temp_obj.get("Target_AB"))
+
+                    freq = self.get_Frequencies(hess_vec_ab, hess_vec_aa)
+
+                    ZPE = self.get_ZPE(freq)
+                    Z = self.get_partition_func(freq)
+
+                    # ZPE_harm = self.get_harmonic_ZPE(freq)
+                    Z_true.append(Z)
+
+                    # ZPE_harm_true.append(ZPE_harm)
+                    ZPE_true.append(ZPE)
+                    freq_true_list.extend(freq)
+
+                except EOFError:
+                    break
+
+        np.savetxt("pred_frequencies.txt", freq_pred_list)
+        np.savetxt("true_frequencies.txt", freq_true_list)
+
+        np.savetxt("pred_ZPEs.txt", ZPE_pred)
+        np.savetxt("true_ZPEs.txt", ZPE_true)
+
+        np.savetxt("pred_Z.txt", Z_pred)
+        np.savetxt("true_Z.txt", Z_true)
+
+        print("done")
 
         return

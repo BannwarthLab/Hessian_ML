@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from hess_ml.src.constants import Const
+import hess_ml.src.constants.constants as const
 
 import json as json
 import numpy as np
@@ -60,7 +60,7 @@ class Geometry:
         self.NuclearCharge = np.zeros(self.N_atoms)
 
         for i in range(self.N_atoms):
-            self.NuclearCharge[i] = Const.ELEMENTS2Z[self.elements[i].lower()]
+            self.NuclearCharge[i] = const.ELEMENTS2Z[self.elements[i].lower()]
 
         if self.N_atoms == 1:
             self.do_calc = False

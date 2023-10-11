@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import linalg
-from hess_ml.src.constants import Const
+from hess_ml.src.constants.constants import Const
 from operator import matmul
 from hess_ml.src.Rotation_func import Rotation_Functions
 
@@ -198,47 +198,7 @@ class Observables(Rotation_Functions, Const):
 
         return idx_list, lamb, Q
 
-    def gen_hess_from_vec_pred(
-        self, hess_vec_ab, N_atoms, R_MI_APF_mat, transpose_list
-    ):
-        ite_hetero = 0
 
-        Hessian = np.zeros([N_atoms * 3, N_atoms * 3])
-
-        for atom_A in range(N_atoms):
-            for atom_B in range(atom_A + 1, N_atoms):
-                transpose = False
-
-                if [atom_A, atom_B] in transpose_list:
-                    transpose = True
-
-                Hessian = self.fill_matrix_block_AB(
-                    hess_vec_ab[ite_hetero],
-                    Hessian,
-                    R_mat=R_MI_APF_mat,
-                    A=atom_A,
-                    B=atom_B,
-                    transpose=transpose,
-                )
-                ite_hetero += 1
-
-        for atom_A in range(N_atoms):
-            for atom_B in range(N_atoms):
-                if atom_A != atom_B:
-                    Hessian[
-                        3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3
-                    ] -= Hessian[
-                        3 * atom_A : 3 * atom_A + 3, 3 * atom_B : 3 * atom_B + 3
-                    ]
-
-            Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3] = (
-                Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
-                + np.transpose(
-                    Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
-                )
-            ) / 2
-
-        return Hessian
 
     def gen_hess_from_vec_true(self, hess_vec_aa, hess_vec_ab):
         ite_hetero = 0

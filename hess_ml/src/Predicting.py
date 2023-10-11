@@ -5,26 +5,28 @@ import numpy as np
 import glob as glob
 import os
 
-from hess_ml.src.Observables import Observables
 from hess_ml.src.IO import Input
 from hess_ml.src.IO import Output
 from hess_ml.src.Processing import PredictProcess
+from hess_ml.src.Template import TestMLHessianGFN2xTB
+from hess_ml.src.Observables import Observables
 from joblib import Parallel, delayed
 import time as time
+from hess_ml.src.decorator.decorator import checkTiming
 
-
-class Predicting(Input, Output, Observables):
+class Predicting(Input, Output,Observables):
     def __init__(self) -> None:
         super().__init__
         pass
 
     def predict(self, files, folder=""):
-        try:
-            self.predict_model
-            self.model = load(os.path.join(folder, f"{self.predict_model}.joblib"))
-        except:
-            self.model = load(os.path.join(folder, f"{self.model_name}.joblib"))
-            pass
+
+        #try:
+        #    self.predict_model
+        #    self.model = load(os.path.join(folder, f"{self.predict_model}.joblib"))
+        #except:
+        self.model = load(os.path.join(folder, f"{self.model_name}.joblib"))
+            
 
         if self.config.get("predict", {"normalization": False}).get(
             "normalization"
@@ -46,10 +48,8 @@ class Predicting(Input, Output, Observables):
 
         self.not_considered = []
 
-        Parallel(n_jobs=1)(
-            delayed(self.predict_hessian)(folder=files[file])
-            for file in range(len(files))
-        )
+        for file in range(len(files)):
+            self.predict_hessian(folder=files[file])
 
         with open("not_considered_pred", "w") as outfile:
             outfile.write("\n".join(str(i) for i in self.not_considered))
@@ -63,8 +63,9 @@ class Predicting(Input, Output, Observables):
         size = 0
         error = 0
         for folder in folders:
-            mol = PredictProcess()
+            mol = TestMLHessianGFN2xTB()
             mol.setConfiguration(folder, self.config["molecule"])
+            mol.ProcessData()
             mol.hessians_difference(self.config["molecule"]["target_file"], "MLhessian")
             shape = np.shape(mol.hess_diff)
             size += shape[0] * shape[1]
@@ -76,15 +77,55 @@ class Predicting(Input, Output, Observables):
         print(f"{rnd_seed}\t{train_size*100: 3.0f}\t{error : 0.5f}")
 
         return
+    
+    def gen_hess_from_vec_pred(
+        self, hess_vec_ab, N_atoms, R_MI_APF_mat, transpose_list
+    ):
+        ite_hetero = 0
 
+        Hessian = np.zeros([N_atoms * 3, N_atoms * 3])
+
+        for atom_A in range(N_atoms):
+            for atom_B in range(atom_A + 1, N_atoms):
+                transpose = False
+
+                if [atom_A, atom_B] in transpose_list:
+                    transpose = True
+
+                Hessian = self.fill_matrix_block_AB(
+                    hess_vec_ab[ite_hetero],
+                    Hessian,
+                    R_mat=R_MI_APF_mat,
+                    A=atom_A,
+                    B=atom_B,
+                    transpose=transpose,
+                )
+                ite_hetero += 1
+
+        for atom_A in range(N_atoms):
+            for atom_B in range(N_atoms):
+                if atom_A != atom_B:
+                    Hessian[
+                        3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3
+                    ] -= Hessian[
+                        3 * atom_A : 3 * atom_A + 3, 3 * atom_B : 3 * atom_B + 3
+                    ]
+
+            Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3] = (
+                Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
+                + np.transpose(
+                    Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
+                )
+            ) / 2
+
+        return Hessian
+    
+    @checkTiming
     def predict_hessian(self, folder):
 
-        mol = PredictProcess()
+        mol = TestMLHessianGFN2xTB()
         mol.setConfiguration(folder, self.config["molecule"])
-        mol.importXYZ(os.path.join(mol.folder, mol.xyz_file))
-        mol.importFeature(os.path.join(mol.folder, mol.xyz_file))
-        mol.importTarget(os.path.join(mol.folder, mol.target_file))
-        mol.transformFeature()
+        mol.ProcessData()
 
         if mol.do_calc:
             cur_time = time.time()
@@ -126,75 +167,3 @@ class Predicting(Input, Output, Observables):
         return
 
 
-
-
-    def comp_test_observables(self):
-        freq_pred_list = []
-        ZPE_pred = []
-        Z_pred = []
-
-        freq_true_list = []
-        ZPE_true = []
-        Z_true = []
-
-        with open("pred_structures_final.json", "rb") as f:
-            i = 0
-
-            while True:
-                i += 1
-                try:
-                    temp_obj = pickle.load(f)
-                    self.R_MI_APF_mat = temp_obj.get("R_MI_APF_mat")
-                    self.xyz = temp_obj.get("xyz")
-                    self.transpose_list = temp_obj.get("transpose_list")
-
-                    self.N_atoms = temp_obj.get("N_atoms")
-
-                    hess_vec_ab = np.array(temp_obj.get("pred_target_AB"))
-
-                    freq = self.get_Frequencies(hess_vec_ab)
-
-                    ZPE = self.get_ZPE(freq)
-
-                    Z = self.get_partition_func(freq)
-
-                    # ZPE_harm = self.get_harmonic_ZPE(freq)
-
-                    Z_pred.append(Z)
-
-                    # ZPE_harm_pred.append(ZPE_harm)
-
-                    ZPE_pred.append(ZPE)
-
-                    freq_pred_list.extend(freq)
-
-                    hess_vec_aa = np.array(temp_obj.get("Target_AA"))
-                    hess_vec_ab = np.array(temp_obj.get("Target_AB"))
-
-                    freq = self.get_Frequencies(hess_vec_ab, hess_vec_aa)
-
-                    ZPE = self.get_ZPE(freq)
-                    Z = self.get_partition_func(freq)
-
-                    # ZPE_harm = self.get_harmonic_ZPE(freq)
-                    Z_true.append(Z)
-
-                    # ZPE_harm_true.append(ZPE_harm)
-                    ZPE_true.append(ZPE)
-                    freq_true_list.extend(freq)
-
-                except EOFError:
-                    break
-
-        np.savetxt("pred_frequencies.txt", freq_pred_list)
-        np.savetxt("true_frequencies.txt", freq_true_list)
-
-        np.savetxt("pred_ZPEs.txt", ZPE_pred)
-        np.savetxt("true_ZPEs.txt", ZPE_true)
-
-        np.savetxt("pred_Z.txt", Z_pred)
-        np.savetxt("true_Z.txt", Z_true)
-
-        print("done")
-
-        return
