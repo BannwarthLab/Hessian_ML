@@ -6,8 +6,7 @@ import time as time
 
 from sklearn.model_selection import train_test_split
 
-from hess_ml.src.Processing import TrainProcess
-
+from hess_ml.src.Template import TrainMLHessianGFN2xTB
 import pickle as pickle
 import glob as glob
 
@@ -42,21 +41,15 @@ class DataGeneration:
         return
     
     def GenerateData(self,dir):
-
         cur_time = time.time()
-        mol = TrainProcess()
+        mol = TrainMLHessianGFN2xTB()
         mol.setConfiguration(dir, self.config["molecule"])
-        mol.importXYZ(os.path.join(mol.folder, mol.xyz_file))
-        mol.importFeature(os.path.join(mol.folder, mol.xyz_file))
-        mol.importTarget(os.path.join(mol.folder, mol.target_file))
+        mol.ProcessData()
+        print(f"ProcessData: {time.time()- cur_time: 4.5f} s")
 
-        print(f"Import: {time.time()- cur_time: 4.5f} s")
         cur_time = time.time()
-
-        mol.transformFeatureTarget()
 
         print(f"Processing: {time.time()- cur_time: 4.5f} s")
-
         print(
             np.array(mol.Feature_AB).shape, np.array(mol.Target_AB).shape
         )

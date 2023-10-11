@@ -57,29 +57,6 @@ class Training(Input):
 
         return
 
-    def import_FT_old(self):
-        self.Features = []
-        self.Targets = []
-
-        if self.mode == "hetero":
-            print(f"Importing Features and Targets of heteronuclear model... ", end="")
-
-            self.files = glob.glob("TrainData_*.json")
-
-            for f in self.files:
-                Feature_temp, Targets_temp = self.import_pickle_FT(f)
-                self.Features.extend(Feature_temp)
-                self.Targets.extend(Targets_temp)
-            self.Features = np.array(self.Features)
-            self.Targets = np.array(self.Targets)
-
-            print("done\n")
-
-        else:
-            print("no feature or target imported")
-
-        return
-
     def import_FT(self):
         self.Features = []
         self.Targets = []

@@ -12,7 +12,7 @@ import time as time
 class Geometry:
     def __init__(self) -> None:
         return
-
+    
     def setConfiguration(self, folder, config):
         self.config = config
         self.folder = folder
@@ -26,14 +26,6 @@ class Geometry:
         self.hessian_name = config.get("hessian_file", "hessian")
         self.do_calc = True
 
-        return
-
-    def setFeature(self, feature: npt.ArrayLike):
-        self.feature = feature
-        return
-
-    def setTarget(self, target: npt.ArrayLike):
-        self.target = target
         return
 
     def importXYZ(self, file: str):
@@ -90,15 +82,3 @@ class Geometry:
 
         return
 
-    def hessians_difference(self, hess1, hess2):
-        self.importXYZ(os.path.join(self.folder, self.xyz_file))
-
-        self.importTarget(os.path.join(self.folder, hess1))
-
-        self.hessian1 = self.target
-
-        self.importTarget(os.path.join(self.folder, hess2))
-
-        self.hess_diff = self.hessian1 - self.target
-
-        return

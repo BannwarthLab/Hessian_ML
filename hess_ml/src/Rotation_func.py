@@ -3,7 +3,7 @@ from operator import matmul
 from math import log10 , floor
 
 import numpy as np
-from hess_ml.src.constants.constants import Const
+import hess_ml.src.constants.constants as const
 
 class Rotation_Functions:
      def __init__(self):
@@ -24,7 +24,7 @@ class Rotation_Functions:
           d = np.zeros(3)
           charge_sum = 0
           for i in range(len(coord_var['atoms'])):
-               charge = Const.ELEMENTS2Z[coord_var.loc[i,'atoms']]
+               charge = const.ELEMENTS2Z[coord_var.loc[i,'atoms']]
                d += charge*coord_var.iloc[i,1:]
                charge_sum += charge
           C = d/charge_sum
@@ -34,7 +34,7 @@ class Rotation_Functions:
           d = np.zeros(3)
           mass_sum = 0
           for i in range(len(coord_var['atoms'])):
-               mass = Const.elements_dict[coord_var.loc[i,'atoms']]
+               mass = const.elements_dict[coord_var.loc[i,'atoms']]
                d+= mass*coord_var.iloc[i,1:]
                mass_sum += mass
           M = d/mass_sum
@@ -169,7 +169,6 @@ class Rotation_Functions:
 
           return R_euler
      
-
      def rot_Z(self,alpha): #Givens rotation around the z-axis
           R = np.array([[np.cos(alpha), -np.sin(alpha), 0],
                     [np.sin(alpha),  np.cos(alpha), 0],
@@ -187,7 +186,7 @@ class Rotation_Functions:
                          [ 0.0          ,1   , 0.0],
                          [ np.sin(alpha), 0.0, np.cos(alpha)]])
           return R 
-     
+      
      def eig_vec_rot(self,eig_vec): #Checks for the highest value of the eigenvector matrix exchanges if the highest is not in first place
           for i in [0,1]:
                max_abs_val = max(eig_vec[i].min(), eig_vec[i].max(), key=abs)
@@ -203,7 +202,7 @@ class Rotation_Functions:
 
           m = 0
           for i in range(len(coord_var.iloc[:,1])):
-               mi = Const.elements_dict[coord_var.iloc[i,0]]
+               mi = const.elements_dict[coord_var.iloc[i,0]]
                xi = coord_var.iloc[i,1]
                yi = coord_var.iloc[i,2]
                zi = coord_var.iloc[i,3]
@@ -221,11 +220,8 @@ class Rotation_Functions:
                                    [ txy ,tyy , tyz ],
                                    [ txz , tyz , tzz ]])
 
-          return inert_t/m/Const.bohr2angs**2
+          return inert_t/m/const.bohr2angs**2
 
-     def H_Delta(H_approx,H_exact):
-          return H_exact - H_approx
-          
      def qm_matrix(qm_atom,name):
 
           xx = qm_atom.loc[f'{name}xx']
@@ -240,9 +236,6 @@ class Rotation_Functions:
                               [xz,yz,zz]])
 
           return qm_matrix
-
-     def round_it(x, sig):
-          return round(x, sig-int(floor(log10(abs(x))))-1)
 
      def rotM_hess(self,R,coord_var):
           P = np.zeros([3*len(coord_var['atoms']),3*len(coord_var['atoms'])])

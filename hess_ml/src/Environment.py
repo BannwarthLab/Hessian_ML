@@ -10,6 +10,8 @@ import os
 import numpy as np
 import time as time
 
+#0.09769007921573508
+#0.05527
 
 class Environment(DataGeneration, Parser, Training, Predicting, Input):
     def __init__(self):

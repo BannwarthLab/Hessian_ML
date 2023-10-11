@@ -5,7 +5,7 @@ import pandas as pd
 from ase.io import read as ase_read
 
 
-class ImportFeatureTBlite:
+class FeatureTBlite:
 
     def __init__(self) -> None:
 
@@ -19,12 +19,12 @@ class ImportFeatureTBlite:
 
         return
     
-    def importFeature(self,file:str):
+    def ImportFeature(self):
         # Use ase to read in coordinates
         from tblite.ase import TBLite
 
         try: 
-            ase_mol = ase_read(filename=file)
+            ase_mol = ase_read(filename=self.xyz_file)
             # create a ase calculator instance
             # xtbml value is used to compute the features
             # 0 = compute no xtbml features
@@ -61,12 +61,13 @@ class ImportFeatureTBlite:
             self.ml_feat = pd.DataFrame(X, columns=labels)
             self.ml_feat["weights"] = w
 
-            self.ReadGradient(os.path.join(self.folder, self.gradient_file))
+            self.ReadGradient(self.gradient_file)
             self.FilterFeatures()
 
         except:
 
             self.do_calc = False
+
             print('No convergenve structure will not be considered.')
 
         return

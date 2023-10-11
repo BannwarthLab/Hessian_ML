@@ -2,7 +2,8 @@ import numpy as np
 import sys
 from hess_ml.src.Rotation_func import Rotation_Functions
 from hess_ml.src.Geometry import Geometry
-from hess_ml.src.Features.Features import ImportFeatureTBlite
+from hess_ml.src.decorator.decorator import checkTiming
+import time as time 
 
 
 class FeatureGen(Geometry):
@@ -23,15 +24,16 @@ class FeatureGen(Geometry):
 
             self.transpose_list.append([B, A])
 
-            rot_Mat = self.rot_X(np.pi)
+            rot_Mat_X = self.rot_X(np.pi)
 
-            R_MI_APF = np.matmul(rot_Mat, R_MI_APF)
+            R_MI_APF = np.matmul(rot_Mat_X, R_MI_APF)
 
-            rot_Mat = self.rot_Z(np.pi)
+            rot_Mat_Z = self.rot_Z(np.pi)
 
-            R_MI_APF = np.matmul(rot_Mat, R_MI_APF)
+            R_MI_APF = np.matmul(rot_Mat_Z, R_MI_APF)
 
         elif self.NuclearCharge[A] == self.NuclearCharge[B]:
+
             if np.linalg.norm(self.dipm["A"][A]) < np.linalg.norm(self.dipm["A"][B]):
                 B, A = A, B
 
@@ -44,6 +46,13 @@ class FeatureGen(Geometry):
                 rot_Mat = self.rot_Z(np.pi)
 
                 R_MI_APF = np.matmul(rot_Mat, R_MI_APF)
+
+            elif np.linalg.norm(self.dipm["A"][A]) == np.linalg.norm(self.dipm["A"][B]):
+
+                print('Nucelar Charge and Dipole moment are the same.')
+
+        #else:
+        #    print('Charge and Dipole are the same.')
 
         R_AB = np.linalg.norm(self.xyz[A, :] - self.xyz[B, :])
 
@@ -63,21 +72,18 @@ class FeatureGen(Geometry):
                 temp_qm = np.matmul(
                     np.matmul(R_MI_APF, temp_qm), np.transpose(R_MI_APF)
                 )
-
-                Quantity_AB[j].extend((temp_qm[np.triu_indices(3)]))
+                Quantity_AB[j].extend((temp_qm[np.triu_indices(3)]).tolist())
 
             for dipm_key in self.dipm.keys():
-                temp_dipm = self.dipm[dipm_key][atom]
-                temp_dipm = np.matmul(R_MI_APF, temp_dipm)
-                Quantity_AB[j].extend(temp_dipm)
+                Quantity_AB[j].extend(np.matmul(R_MI_APF, self.dipm[dipm_key][atom]).tolist())
 
             for q_key in self.q.keys():
-                Quantity_AB[j].extend(self.q[q_key][atom])
+                Quantity_AB[j].extend(self.q[q_key][atom].tolist())
 
             # ____Append Features to Feature Vector____
 
-            Quantity_AB[j].extend(grad)
-            Quantity_AB[j].extend(self.energy_based[atom])
+            Quantity_AB[j].extend(grad.tolist())
+            Quantity_AB[j].extend(self.energy_based[atom].tolist())
 
             Quantity_AB[j].extend([self.NuclearCharge[atom]])
 
@@ -91,9 +97,9 @@ class FeatureGen(Geometry):
 
         Quantity_AB_arr = np.array(Quantity_AB)
 
-        Feature_Arith = list((Quantity_AB_arr[0] + Quantity_AB_arr[1]) / 2)
-        Feature_Prod = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
-        Feature_AbsDiff = list((Quantity_AB_arr[0] - Quantity_AB_arr[1]))
+        Feature_Arith = ((Quantity_AB_arr[0] + Quantity_AB_arr[1]) / 2).tolist()
+        Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1]).tolist()
+        Feature_AbsDiff = ((Quantity_AB_arr[0] - Quantity_AB_arr[1])).tolist()
 
         Features_temp.extend(Quantity_AB[0])
         Features_temp.extend(Quantity_AB[1])
@@ -113,19 +119,20 @@ class FeatureGen(Geometry):
         del Feature_Arith
         del Feature_Prod
         del Feature_AbsDiff
-
         return np.array(Features_temp)
 
 
-class PredictProcess(FeatureGen, ImportFeatureTBlite, Geometry, Rotation_Functions):
-    def __init__(self):
-        super().__init__()
+class PredictProcess:
+    def __init__(self) -> None:
         pass
 
-    def transformFeature(self):
+class TransformPredict(Rotation_Functions,FeatureGen):
+
+    
+    @checkTiming
+    def Transform(self):
 
         self.R_MI_APF_mat = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
-
         if self.do_calc:
             self.Feature_AB = []
             self.check_list = []
@@ -150,21 +157,21 @@ class PredictProcess(FeatureGen, ImportFeatureTBlite, Geometry, Rotation_Functio
         return
 
 
-class TrainProcess(FeatureGen, ImportFeatureTBlite, Geometry, Rotation_Functions):
-    def __init__(self):
-        super().__init__()
-        pass
+class TransformTrain(Rotation_Functions,FeatureGen):
 
-    def transformFeatureTarget(self):
+    @checkTiming
+    def Transform(self):
+        
         self.Feature_AB = []
         self.Target_AB = []
         self.check_list = []
         self.transpose_list = []
+
         if self.do_calc:
+
             for atom_A in range(self.N_atoms):
                 for atom_B in range(atom_A + 1, self.N_atoms):
                     xyz_temp = self.xyz.copy()
-
                     R_MI_APF = self.get_R_euler(
                         xyz_temp, self.dipm["A"], atom_A, atom_B
                     )
@@ -177,11 +184,12 @@ class TrainProcess(FeatureGen, ImportFeatureTBlite, Geometry, Rotation_Functions
                     j3 = 3 * atom_B + 3
 
                     H_APF = np.matmul(
-                        np.matmul(R_MI_APF, self.target[i0:i3, j0:j3].copy()),
+                        np.matmul(R_MI_APF, self.target[i0:i3, j0:j3]),
                         np.transpose(R_MI_APF),
                     )  # Change Hessian
 
                     if [atom_A, atom_B] in self.transpose_list:
+                        
                         H_APF = np.matmul(
                             np.matmul(self.rot_X(np.pi), np.transpose(H_APF)),
                             np.transpose(self.rot_X(np.pi)),
@@ -192,5 +200,4 @@ class TrainProcess(FeatureGen, ImportFeatureTBlite, Geometry, Rotation_Functions
                         )
 
                     self.Target_AB.append(list(H_APF.flatten()))
-
         return
