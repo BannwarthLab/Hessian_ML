@@ -8,15 +8,6 @@ from ase.io import read as ase_read
 class FeatureTBlite:
 
     def __init__(self) -> None:
-
-        try:
-
-            from tblite.ase import TBLite
-
-        except:
-            print("TBLite is not available.")
-            sys.exit()
-
         return
     
     def ImportFeature(self):

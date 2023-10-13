@@ -63,6 +63,8 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
         return
 
+
+
     def do_train(self):
         if self.config["general"]["train"]:
             self.train_size = self.config["train"]["train_size"]
@@ -94,12 +96,12 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                     )
 
                     del temp
-                    print(self.shuffle_idx)
+
                     print(f"Total training strucutres:{len(self.shuffle_idx)}")
 
                     # self.import_FT()
 
-                    self.training_model(i_split=i)
+                    self.TrainModel(i_split=i)
 
                     temp_time_new = time.time()
 
@@ -133,7 +135,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
                 temp_time_old = time.time()
 
-                self.training_model()
+                self.TrainModel()
 
                 temp_time_new = time.time()
 
@@ -143,7 +145,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                     temp_time_old = time.time()
 
                     self.predict(self.test_geo)
-
+                    
                     self.error_estimation(
                         self.test_geo,
                         self.config["general"]["random_state"],

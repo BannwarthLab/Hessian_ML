@@ -16,6 +16,7 @@ from sklearn.feature_selection import VarianceThreshold
 from sklearn.model_selection import train_test_split
 
 from hess_ml.src.IO import Input
+from hess_ml.src.decorator.decorator import checkTiming,initProcess
 import os
 import numpy as np
 import glob as glob
@@ -80,7 +81,8 @@ class Training(Input):
 
         return
 
-    def training_model(self, i_split=None):
+    @initProcess
+    def TrainModel(self, i_split=None):
         params = self.config["train"].get("parameter", {})
         self.method = self.config["train"].get("method", "ETR")
         self.SearchCV = self.config["train"].get("SearchCV", False)
@@ -117,6 +119,8 @@ class Training(Input):
 
             self.normalization = False
 
+            self.selection = False
+        
         if method == "svr":
             single_regr_model = SVR()
 
@@ -231,6 +235,7 @@ class Training(Input):
         g.close()
 
         if not (i_split == None):
+            os.mkdir(f"Model{i_split}")
             pathname = f"Model{i_split}/{self.model_name}.joblib"
         else:
             pathname = f"{self.model_name}.joblib"

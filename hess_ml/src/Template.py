@@ -2,8 +2,9 @@ import os
 import sys
 from hess_ml.src.ReadIn.readin import ReadXYZ
 from hess_ml.src.Features.Features import FeatureTBlite
-from hess_ml.src.Targets.Hessian import xTBHessTarget
+from hess_ml.src.Targets.Hessian import xTBHessTarget,PredictHessian
 from hess_ml.src.Processing import TransformTrain, TransformPredict
+from hess_ml.src.decorator.decorator import checkTiming
 import time as time 
 
 
@@ -21,21 +22,25 @@ class TrainMLHessianGFN2xTB(ReadXYZ,FeatureTBlite,xTBHessTarget,TransformTrain):
         self.do_calc = True
         return
 
-    def ProcessData(self):
+    def ProcessData(self,model=False,normalizer=False,selection=False):
         self.ImportStructure()
+        self.PrintInfo()
         self.ImportFeature()
         self.ImportTarget()
         self.Transform()
-        self.Predict()
+        self.Predict(model=model,normalizer=normalizer,selection=selection)
 
-    #@checkTiming
+    def PrintInfo(self):
+        print(f'Import from {self.folder}')
+        print(f'Number of Atoms: {self.N_atoms}')
+        return
 
-    #@checkTiming
-    def Predict(self,model=None):
+    @checkTiming(enabled=False)
+    def Predict(self,model=False,normalizer=False,selection=False):
         pass 
 
 
-class TestMLHessianGFN2xTB(TransformPredict,TrainMLHessianGFN2xTB):
+class TestMLHessianGFN2xTB(TransformPredict,PredictHessian,TrainMLHessianGFN2xTB):
 
     def __init__(self) -> None:
         super().__init__()
@@ -53,9 +58,6 @@ class TestMLHessianGFN2xTB(TransformPredict,TrainMLHessianGFN2xTB):
         self.hess_diff = self.hessian1 - self.target
 
         return
-    
-    def Predict(self):
-        pass 
 
 class PredictMLHessian(TestMLHessianGFN2xTB):
 

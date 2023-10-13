@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from hess_ml.src.Template import TrainMLHessianGFN2xTB
 import pickle as pickle
 import glob as glob
-
+import copy
 class DataGeneration:
 
     def __init__(self) -> None:
@@ -25,7 +25,7 @@ class DataGeneration:
         # if idx == None:
         #    idx = np.arange(0,len(self.geo_dir))
         self.not_considered = []
-
+        self.molgen = TrainMLHessianGFN2xTB()
         for geo in idx:
             self.GenerateData(dir=self.folders[geo])
 
@@ -41,18 +41,13 @@ class DataGeneration:
         return
     
     def GenerateData(self,dir):
-        cur_time = time.time()
-        mol = TrainMLHessianGFN2xTB()
+
+        mol = copy.deepcopy(self.molgen)
         mol.setConfiguration(dir, self.config["molecule"])
         mol.ProcessData()
-        print(f"ProcessData: {time.time()- cur_time: 4.5f} s")
 
-        cur_time = time.time()
-
-        print(f"Processing: {time.time()- cur_time: 4.5f} s")
-        print(
-            np.array(mol.Feature_AB).shape, np.array(mol.Target_AB).shape
-        )
+        print(np.array(mol.Feature_AB).shape)
+        
         np.savetxt(
             fname=os.path.join(mol.folder, "features"), X=mol.Feature_AB
         )

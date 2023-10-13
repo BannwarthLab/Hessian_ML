@@ -4,7 +4,7 @@ from math import log10 , floor
 
 import numpy as np
 import hess_ml.src.constants.constants as const
-
+from hess_ml.src.decorator.decorator import checkTiming
 class Rotation_Functions:
      def __init__(self):
           pass
@@ -82,6 +82,7 @@ class Rotation_Functions:
 
 
      #____Uses for i=j the mean of the xyz's atoms as an artifical atom____
+     @checkTiming(enabled=False)
      def get_R_euler(self,coord_end,dipm,i,j):
 
           if i==j:
@@ -140,8 +141,6 @@ class Rotation_Functions:
           vec_x = np.matmul(R_euler,vec_x)
 
           self.angle_two_vec(LL,vec_x)
-
-   
 
           #Check for Errors in dipole moment or the coordinates
           if vec_x[0] < 0.:

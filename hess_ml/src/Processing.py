@@ -8,6 +8,7 @@ import time as time
 
 class FeatureGen(Geometry):
 
+    @checkTiming(enabled=False)
     def gen_Feature(self, R_MI_APF, atom_A: int, atom_B: int):
         Features_temp = []
 
@@ -51,16 +52,13 @@ class FeatureGen(Geometry):
 
                 print('Nucelar Charge and Dipole moment are the same.')
 
-        #else:
-        #    print('Charge and Dipole are the same.')
 
         R_AB = np.linalg.norm(self.xyz[A, :] - self.xyz[B, :])
 
         Quantity_AB = [[], []]
 
-        j = 0
 
-        for atom in [A, B]:
+        for j,atom in enumerate([A, B]):
             # ____Rotation from initial coordinate system to atom pair focused system____
 
             grad = np.matmul(R_MI_APF, self.gradient[atom])
@@ -73,7 +71,7 @@ class FeatureGen(Geometry):
                     np.matmul(R_MI_APF, temp_qm), np.transpose(R_MI_APF)
                 )
                 Quantity_AB[j].extend((temp_qm[np.triu_indices(3)]).tolist())
-
+                
             for dipm_key in self.dipm.keys():
                 Quantity_AB[j].extend(np.matmul(R_MI_APF, self.dipm[dipm_key][atom]).tolist())
 
@@ -93,8 +91,6 @@ class FeatureGen(Geometry):
             Quantity_AB[j].extend([self.p["default"][atom]])
             Quantity_AB[j].extend([self.p["delta"][atom]])
 
-            j += 1
-
         Quantity_AB_arr = np.array(Quantity_AB)
 
         Feature_Arith = ((Quantity_AB_arr[0] + Quantity_AB_arr[1]) / 2).tolist()
@@ -113,12 +109,7 @@ class FeatureGen(Geometry):
         Features_temp.extend([1 / R_AB])
         Features_temp.extend([1 / R_AB**6])
 
-        del Quantity_AB_arr
-        del Quantity_AB
 
-        del Feature_Arith
-        del Feature_Prod
-        del Feature_AbsDiff
         return np.array(Features_temp)
 
 
@@ -128,8 +119,7 @@ class PredictProcess:
 
 class TransformPredict(Rotation_Functions,FeatureGen):
 
-    
-    @checkTiming
+    @checkTiming(enabled=True)
     def Transform(self):
 
         self.R_MI_APF_mat = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
@@ -159,7 +149,7 @@ class TransformPredict(Rotation_Functions,FeatureGen):
 
 class TransformTrain(Rotation_Functions,FeatureGen):
 
-    @checkTiming
+    @checkTiming(enabled=True)
     def Transform(self):
         
         self.Feature_AB = []
