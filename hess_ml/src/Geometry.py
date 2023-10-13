@@ -1,17 +1,17 @@
+import json
 import os
+import time
+
+import numpy as np
 import pandas as pd
 
 import hess_ml.src.constants.constants as const
-
-import json as json
-import numpy as np
-import time as time
 
 
 class Geometry:
     def __init__(self) -> None:
         return
-    
+
     def setConfiguration(self, folder, config):
         self.config = config
         self.folder = folder
@@ -25,7 +25,6 @@ class Geometry:
         self.hessian_name = config.get("hessian_file", "hessian")
         self.do_calc = True
 
-        return
 
     def importXYZ(self, file: str):
         with open(file) as myfile:
@@ -33,7 +32,7 @@ class Geometry:
 
         xyz_pd = pd.read_csv(
             file,
-            sep="\s+",
+            sep=r"\s+",
             skiprows=2,
             header=None,
             keep_default_na=False,
@@ -57,13 +56,12 @@ class Geometry:
             self.do_calc = False
             print("At least two atoms must be considered.")
 
-        return
 
     def importTarget(self, file: str):
         if os.path.isfile(file):
             LineList = []
 
-            with open(file, "r") as fd:
+            with open(file) as fd:
                 Lines = [line.rstrip("\n") for line in fd]
                 for line in Lines[1:]:
                     LineList += line.split()
@@ -78,6 +76,4 @@ class Geometry:
                     i += 1
         else:
             self.do_calc = False
-
-        return
 

@@ -1,19 +1,19 @@
+import os
+
 import numpy as np
-import os 
-import pandas as pd 
+import pandas as pd
 from ase.io import read as ase_read
 
 
 class FeatureTBlite:
-
     def __init__(self) -> None:
         return
-    
+
     def ImportFeature(self):
         # Use ase to read in coordinates
         from tblite.ase import TBLite
 
-        try: 
+        try:
             ase_mol = ase_read(filename=self.xyz_file)
             # create a ase calculator instance
             # xtbml value is used to compute the features
@@ -27,13 +27,13 @@ class FeatureTBlite:
 
             ChargePath = os.path.join(self.folder, ".CHRG")
             if os.path.isfile(ChargePath):
-                with open(ChargePath, "r") as chrg:
+                with open(ChargePath) as chrg:
                     charge = int(chrg.readline())
 
             uhfFilePath = os.path.join(self.folder, ".UHF")
 
             if os.path.isfile(uhfFilePath):
-                with open(uhfFilePath, "r") as uhfFile:
+                with open(uhfFilePath) as uhfFile:
                     uhf = int(uhfFile.readline())
 
             ase_mol.calc = TBLite(method="GFN2-xTB", xtbml=2, charge=charge, uhf=uhf)
@@ -55,24 +55,19 @@ class FeatureTBlite:
             self.FilterFeatures()
 
         except:
-
             self.do_calc = False
 
-            print('No convergenve structure will not be considered.')
+            print("No convergenve structure will not be considered.")
 
-        return
-    
 
     def ReadGradient(self, file):
-
         with open(file, "rb") as f:
             f.close()
 
         self.gradient = np.genfromtxt(
-            file, skip_header=2 + self.N_atoms, skip_footer=1, loose=True
+            file, skip_header=2 + self.N_atoms, skip_footer=1, loose=True,
         )
 
-        return 
 
     def FilterFeatures(self):
         self.dipm = {}
@@ -84,15 +79,15 @@ class FeatureTBlite:
         for orb in ["s", "p", "d", "A", "e", "Z"]:
             if orb not in {"s", "p", "d"}:
                 self.dipm[f"delta_{orb}"] = self.ml_feat.filter(
-                    regex=f"delta_dipm_{orb}_"
+                    regex=f"delta_dipm_{orb}_",
                 ).to_numpy()
                 self.qm[f"delta_{orb}"] = self.ml_feat.filter(
-                    regex=f"delta_qm_{orb}_"
+                    regex=f"delta_qm_{orb}_",
                 ).to_numpy()
 
             if orb not in {"e", "Z"}:
                 self.dipm[f"{orb}"] = self.ml_feat.filter(
-                    regex=f"^dipm_{orb}_"
+                    regex=f"^dipm_{orb}_",
                 ).to_numpy()
                 self.qm[f"{orb}"] = self.ml_feat.filter(regex=f"^qm_{orb}_").to_numpy()
 
@@ -129,4 +124,3 @@ class FeatureTBlite:
         self.p["default"] = self.ml_feat.loc[:, "p_A"].to_numpy()
         self.p["delta"] = self.ml_feat.loc[:, "delta_p_A"].to_numpy()
 
-        return

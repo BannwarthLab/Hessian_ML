@@ -1,46 +1,47 @@
 import os
-from hess_ml.src.ReadIn.readin import ReadXYZ
-from hess_ml.src.Features.Features import FeatureTBlite
-from hess_ml.src.Targets.Hessian import xTBHessTarget,PredictHessian
-from hess_ml.src.Processing import TransformTrain, TransformPredict
+import time
+
 from hess_ml.src.decorator.decorator import checkTiming
-import time as time 
+from hess_ml.src.Features.Features import FeatureTBlite
+from hess_ml.src.Processing import TransformPredict, TransformTrain
+from hess_ml.src.ReadIn.readin import ReadXYZ
+from hess_ml.src.Targets.Hessian import PredictHessian, xTBHessTarget
 
 
-class TrainMLHessianGFN2xTB(ReadXYZ,FeatureTBlite,xTBHessTarget,TransformTrain):
-
+class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrain):
     def __init__(self) -> None:
         super().__init__()
 
-    def setConfiguration(self, folder:str, config:dict):
+    def setConfiguration(self, folder: str, config: dict):
         self.config = config
         self.folder = folder
-        self.xyz_file = os.path.join(self.folder,config.get("xyz_file", "xtbopt.xyz"))
-        self.gradient_file = os.path.join(self.folder,config.get("gradient_file", "gradient"))
-        self.target_file = os.path.join(self.folder,config.get("hessian_file", "hessian"))
+        self.xyz_file = os.path.join(self.folder, config.get("xyz_file", "xtbopt.xyz"))
+        self.gradient_file = os.path.join(
+            self.folder, config.get("gradient_file", "gradient"),
+        )
+        self.target_file = os.path.join(
+            self.folder, config.get("hessian_file", "hessian"),
+        )
         self.do_calc = True
-        return
 
-    def ProcessData(self,model=False,normalizer=False,selection=False):
+    def ProcessData(self, model=False, normalizer=False, selection=False):
         self.ImportStructure()
         self.PrintInfo()
         self.ImportFeature()
         self.ImportTarget()
         self.Transform()
-        self.Predict(model=model,normalizer=normalizer,selection=selection)
+        self.Predict(model=model, normalizer=normalizer, selection=selection)
 
     def PrintInfo(self):
-        print(f'Import from {self.folder}')
-        print(f'Number of Atoms: {self.N_atoms}')
-        return
+        print(f"Import from {self.folder}")
+        print(f"Number of Atoms: {self.N_atoms}")
 
     @checkTiming(enabled=False)
-    def Predict(self,model=False,normalizer=False,selection=False):
-        pass 
+    def Predict(self, model=False, normalizer=False, selection=False):
+        pass
 
 
-class TestMLHessianGFN2xTB(TransformPredict,PredictHessian,TrainMLHessianGFN2xTB):
-
+class TestMLHessianGFN2xTB(TransformPredict, PredictHessian, TrainMLHessianGFN2xTB):
     def __init__(self) -> None:
         super().__init__()
 
@@ -56,32 +57,27 @@ class TestMLHessianGFN2xTB(TransformPredict,PredictHessian,TrainMLHessianGFN2xTB
 
         self.hess_diff = self.hessian1 - self.target
 
-        return
+
 
 class PredictMLHessian(TestMLHessianGFN2xTB):
-
     def __init__(self) -> None:
         super().__init__()
 
     def ImportTarget(self):
-        pass 
-    
+        pass
+
 
 class TrainMLHessianDFT(TrainMLHessianGFN2xTB):
-
     def __init__(self) -> None:
         super().__init__()
 
     def ImportTarget(self):
-        pass 
+        pass
 
 
 class PredictMLHessian(TrainMLHessianDFT):
-
     def __init__(self) -> None:
         super().__init__()
 
     def ImportTarget(self):
-        pass 
-    
-
+        pass

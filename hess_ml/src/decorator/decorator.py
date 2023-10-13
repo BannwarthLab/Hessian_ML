@@ -1,28 +1,32 @@
-import time as time 
+import time
+
 
 def checkTiming(enabled=True):
     def Timing(func):
-        def wrapper(self,*args, **kwargs):
+        def wrapper(self, *args, **kwargs):
             if enabled:
                 cur_time = time.time()
-                result = func(self,*args, **kwargs)
-                print(f'{func.__name__} performed in {time.time()- cur_time: 4.5f} s ')
+                result = func(self, *args, **kwargs)
+                print(f"{func.__name__} performed in {time.time()- cur_time: 4.5f} s ")
                 return result
             else:
-                return func(self,*args, **kwargs)
+                return func(self, *args, **kwargs)
+
         return wrapper
+
     return Timing
 
 
 def initProcess(func):
-    def wrapper(self,*args, **kwargs):
-            print("\n")
-            print(f"Starting {func.__name__}")
-            print('*'*14)
-            print("\n")
-            result = func(self,*args, **kwargs)
-            print("\n")
-            print('*'*14)
-            print("\n")
-            return result
+    def wrapper(self, *args, **kwargs):
+        print("\n")
+        print(f"Starting {func.__name__}")
+        print("*" * 14)
+        print("\n")
+        result = func(self, *args, **kwargs)
+        print("\n")
+        print("*" * 14)
+        print("\n")
+        return result
+
     return wrapper

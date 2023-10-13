@@ -1,8 +1,9 @@
+import json
 import os
+import pickle
+
 import numpy as np
 import pandas as pd
-import pickle as pickle
-import json as json
 
 
 class Input:
@@ -15,7 +16,7 @@ class Input:
 
         coord_var = pd.read_csv(
             file,
-            sep="\s+",
+            sep=r"\s+",
             skiprows=2,
             header=None,
             keep_default_na=False,
@@ -27,9 +28,8 @@ class Input:
         return coord_var, head
 
     def import_dipm(self, file):
-        coord_var = pd.read_csv(file, sep=",")
+        return pd.read_csv(file, sep=",")
 
-        return coord_var
 
     def import_hessian_dftd4(self, file, coord):
         nat3 = len(coord["atoms"]) * 3
@@ -39,24 +39,21 @@ class Input:
         with open(file_path) as f:
             egh = json.load(f)
 
-        hess_dftd4 = np.array(egh.get("hessian")).reshape(nat3, nat3)
+        return np.array(egh.get("hessian")).reshape(nat3, nat3)
 
-        return hess_dftd4
 
     def import_gradient(self, file):
         with open(file, "rb") as f:
             f.close()
 
         self.gradient = np.genfromtxt(
-            file, skip_header=2 + self.N_atoms, skip_footer=1, loose=True
+            file, skip_header=2 + self.N_atoms, skip_footer=1, loose=True,
         )
         # gradient = gradient.flatten()
 
-        return
 
     def import_wbo(self, file):
-        wbo = pd.read_csv(file, names=["at1", "at2", "wbo"], sep="\s+")
-        return wbo
+        return pd.read_csv(file, names=["at1", "at2", "wbo"], sep=r"\s+")
 
     def import_pickle_FT_old(self, file):
         feature = []
@@ -92,7 +89,6 @@ class Input:
             with open(file, "wb+") as f:
                 f.truncate(0)
             f.close()
-        return
 
 
 class Output:
@@ -122,7 +118,6 @@ class Output:
                     myfile.write("\n")
         myfile.close()
 
-        return
 
     def data_to_txt(self, data, file):
         with open(file, "w+") as f:
@@ -131,4 +126,3 @@ class Output:
                 f.write("\n")
         f.close()
 
-        return

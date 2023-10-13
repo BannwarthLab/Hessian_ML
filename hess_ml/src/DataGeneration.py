@@ -1,17 +1,16 @@
+import copy
+import glob
 import os
+import pickle
+import time
 
 import numpy as np
-
-import time as time
-
 from sklearn.model_selection import train_test_split
 
 from hess_ml.src.Template import TrainMLHessianGFN2xTB
-import pickle as pickle
-import glob as glob
-import copy
-class DataGeneration:
 
+
+class DataGeneration:
     def __init__(self) -> None:
         return
 
@@ -31,32 +30,25 @@ class DataGeneration:
 
         print("")
         print(
-            f"Features and Targets of {len(idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n"
+            f"Features and Targets of {len(idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n",
         )
 
         with open("not_considered", "w") as outfile:
             outfile.write("\n".join(str(i) for i in self.not_considered))
         outfile.close
 
-        return
-    
-    def GenerateData(self,dir):
 
+    def GenerateData(self, dir):
         mol = copy.deepcopy(self.molgen)
         mol.setConfiguration(dir, self.config["molecule"])
         mol.ProcessData()
 
         print(np.array(mol.Feature_AB).shape)
-        
-        np.savetxt(
-            fname=os.path.join(mol.folder, "features"), X=mol.Feature_AB
-        )
-        np.savetxt(
-            fname=os.path.join(mol.folder, "targets"), X=mol.Target_AB
-        )
+
+        np.savetxt(fname=os.path.join(mol.folder, "features"), X=mol.Feature_AB)
+        np.savetxt(fname=os.path.join(mol.folder, "targets"), X=mol.Target_AB)
 
         if mol.do_calc:
-
             self.Features.extend(mol.Feature_AB)
             self.Targets.extend(mol.Target_AB)
             del mol
@@ -65,12 +57,10 @@ class DataGeneration:
                 os.path.join(
                     self.config["molecule"]["folder"],
                     self.config["molecule"].get("xyz_file"),
-                )
+                ),
             )
-            del mol 
+            del mol
 
-
-        return 
 
     def truncate_file(self, file):
         if os.path.isfile(file):
@@ -79,10 +69,9 @@ class DataGeneration:
 
             f1.close()
 
-        return
 
     def do_preparation_split(
-        self, folders, total_structures, train_size, test_size, rnd_seed
+        self, folders, total_structures, train_size, test_size, rnd_seed,
     ):
         """
         Does a split of the geometry file directories into train and test sets.
@@ -92,10 +81,7 @@ class DataGeneration:
 
         geo_idx = np.arange(0, total_structures - 1)
 
-        if type(train_size) == list:
-            train_size_temp = max(train_size)
-        else:
-            train_size_temp = train_size
+        train_size_temp = max(train_size) if type(train_size) == list else train_size
 
         if train_size_temp == 1.0:
             self.train_idx = geo_idx
@@ -127,4 +113,3 @@ class DataGeneration:
 
         self.data_to_txt(self.train_geo, os.path.join("", "train_files.txt"))
 
-        return

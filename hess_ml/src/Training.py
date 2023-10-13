@@ -1,30 +1,25 @@
-from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+import glob
+import json
+import os
+import time
+
+import numpy as np
+from joblib import dump, parallel_backend
 from sklearn.decomposition import TruncatedSVD
-from joblib import dump
-from joblib import parallel_backend
-
-import json as json
-
+from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
 
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-
-from hess_ml.src.IO import Input
 from hess_ml.src.decorator.decorator import initProcess
-import os
-import numpy as np
-import glob as glob
-import time as time
+from hess_ml.src.IO import Input
 
 
 class Training(Input):
     def __init__(self) -> None:
         super().__init__
-        pass
 
     def train(self, runtype):
         print("Runtype for training:", runtype)
@@ -36,7 +31,7 @@ class Training(Input):
                 temp_time_old = time.time()
 
                 self.do_train_split(i)
-                
+
                 self.training_model(i_split=i)
 
                 temp_time_new = time.time()
@@ -54,7 +49,6 @@ class Training(Input):
 
             print(f"Training was done in {round(temp_time_new - temp_time_old)} s")
 
-        return
 
     def import_FT(self):
         self.Features = []
@@ -64,7 +58,7 @@ class Training(Input):
 
         for f in self.files:
             Feature_temp, Targets_temp = self.import_pickle_FT(
-                os.path.join(f, "Hessian_ML_Data.json")
+                os.path.join(f, "Hessian_ML_Data.json"),
             )
 
             self.Features.extend(Feature_temp)
@@ -77,7 +71,6 @@ class Training(Input):
 
         print("done\n")
 
-        return
 
     @initProcess
     def TrainModel(self, i_split=None):
@@ -118,7 +111,7 @@ class Training(Input):
             self.normalization = False
 
             self.selection = False
-        
+
         if method == "svr":
             single_regr_model = SVR()
 
@@ -155,7 +148,7 @@ class Training(Input):
 
         print("Parameters for the Model:")
         param_temp = regr_model.get_params()
-        for param in param_temp.keys():
+        for param in param_temp:
             print(f"{param}: {param_temp[param]}")
 
         del param_temp
@@ -206,23 +199,23 @@ class Training(Input):
             print(f"Selector is saved in {pathname}.\n")
 
             print(
-                f"Feature vector reduced to shape {self.Features[self.shuffle_idx].shape}"
+                f"Feature vector reduced to shape {self.Features[self.shuffle_idx].shape}",
             )
 
         if method != "mlpr":
             regr_model.set_params(n_jobs=self.threads)
             regr_model.fit(
-                self.Features[self.shuffle_idx], self.Targets[self.shuffle_idx]
+                self.Features[self.shuffle_idx], self.Targets[self.shuffle_idx],
             )
 
         else:
             with parallel_backend("threading", n_jobs=self.threads):
                 regr_model.fit(
-                    self.Features[self.shuffle_idx], self.Targets[self.shuffle_idx]
+                    self.Features[self.shuffle_idx], self.Targets[self.shuffle_idx],
                 )
 
         print(
-            f"Score on training data: {regr_model.score(self.Features[self.shuffle_idx],self.Targets[self.shuffle_idx])}"
+            f"Score on training data: {regr_model.score(self.Features[self.shuffle_idx],self.Targets[self.shuffle_idx])}",
         )
 
         if search:
@@ -256,7 +249,6 @@ class Training(Input):
         if self.selection:
             del selector
 
-        return
 
     def do_train_split(self, i):
         """
@@ -284,4 +276,3 @@ class Training(Input):
 
         self.data_to_txt(self.train_geo, os.path.join(f"Model{i}/", "train_files.txt"))
 
-        return

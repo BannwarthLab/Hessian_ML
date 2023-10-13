@@ -1,25 +1,25 @@
-from hess_ml.src.Parser import Parser
-from hess_ml.src.DataGeneration import DataGeneration
-from hess_ml.src.Training import Training
-from hess_ml.src.Predicting import Predicting
-from hess_ml.src.IO import Input
-
-from sklearn.model_selection import train_test_split
+import time
 
 import numpy as np
-import time as time
+from sklearn.model_selection import train_test_split
 
-#0.09769007921573508
-#0.05527
+from hess_ml.src.DataGeneration import DataGeneration
+from hess_ml.src.IO import Input
+from hess_ml.src.Parser import Parser
+from hess_ml.src.Predicting import Predicting
+from hess_ml.src.Training import Training
+
+# 0.09769007921573508
+# 0.05527
+
 
 class Environment(DataGeneration, Parser, Training, Predicting, Input):
     def __init__(self):
-        Training.__init__ (self) # initializes all parent classes
-        Predicting.__init__ (self)
+        Training.__init__(self)  # initializes all parent classes
+        Predicting.__init__(self)
         DataGeneration.__init__(self)
         Parser.__init__(self)
-        Input.__init__ (self)
-        return
+        Input.__init__(self)
 
     def set_general_config(self):
         """
@@ -27,41 +27,36 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
         """
 
         for MainKey in ["general", "molecule", "train", "predict"]:
-            if MainKey in self.config.keys():
-                for key in self.default_config[MainKey].keys():
-                    if key not in self.config[MainKey].keys():
+            if MainKey in self.config:
+                for key in self.default_config[MainKey]:
+                    if key not in self.config[MainKey]:
                         self.config[MainKey][key] = self.default_config[MainKey][key]
 
             elif MainKey == "general":
                 self.config[MainKey] = self.default_config[MainKey]
 
         self.rnd_seed = self.config["general"]["random_state"]
-        self.threads= self.config["general"]["threads"]
+        self.threads = self.config["general"]["threads"]
         np.random.seed(self.rnd_seed)
-        return
 
     def print_config(self):
         print("Used config is:")
         print("")
-        for dicts in self.config.keys():
+        for dicts in self.config:
             if type(self.config[dicts]) == dict:
                 print("")
                 print(dicts)
-                for dict_ in self.config[dicts].keys():
+                for dict_ in self.config[dicts]:
                     print(dict_, ":", self.config[dicts][dict_])
 
             else:
                 print(dicts, ":", self.config[dicts])
 
         print("")
-        return
 
     def import_data(self):
         if self.config["general"].get("feature"):
             self.gen_features()
-
-        return
-
 
 
     def do_train(self):
@@ -81,7 +76,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                     self.shuffle_idx = np.arange(len(self.Features))
 
                     print(
-                        f"Percentage of data set used for training: {self.train_size[i]*100} %"
+                        f"Percentage of data set used for training: {self.train_size[i]*100} %",
                     )
 
                     temp_time_old = time.time()
@@ -105,7 +100,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                     temp_time_new = time.time()
 
                     print(
-                        f"Training was done in {round(temp_time_new - temp_time_old)} s"
+                        f"Training was done in {round(temp_time_new - temp_time_old)} s",
                     )
 
                     if self.config["train"]["test_size"] > 0.0:
@@ -122,12 +117,12 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                         temp_time_new = time.time()
 
                         print(
-                            f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s"
+                            f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s",
                         )
 
             else:
                 print(
-                    f"Percentage of data set used for training: {self.train_size*100} %"
+                    f"Percentage of data set used for training: {self.train_size*100} %",
                 )
 
                 self.shuffle_idx = np.arange(len(self.Features))
@@ -144,7 +139,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                     temp_time_old = time.time()
 
                     self.predict(self.test_geo)
-                    
+
                     self.error_estimation(
                         self.test_geo,
                         self.config["general"]["random_state"],
@@ -154,14 +149,12 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                     temp_time_new = time.time()
 
                     print(
-                        f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s"
+                        f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s",
                     )
 
-        return
 
     def do_prediction(self):
         if self.config.get("predict", False):
-            
             if self.config["predict"].get("folder", False):
                 self.parse_data_set(self.config["predict"].get("folder"))
 
@@ -186,7 +179,6 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
             print(f"Prediction was done in {round(temp_time_new - temp_time_old)} s")
 
-        return
 
     def gen_features(self):
         if self.config["molecule"]["feature"].lower() == "tblite":
@@ -201,8 +193,8 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                 rnd_seed=self.config["general"]["random_state"],
             )
 
-            self.Targets = list()
-            self.Features = list()
+            self.Targets = []
+            self.Features = []
 
             self.generate_data(self.train_idx)
 
@@ -222,4 +214,3 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
             print("Feature generation must be specified.")
         # one could add different features that will be imported
 
-        return

@@ -1,6 +1,7 @@
 import numpy as np
-from hess_ml.src.Rotation_func import Rotation_Functions
 from joblib import Parallel, delayed
+
+from hess_ml.src.Rotation_func import Rotation_Functions
 
 
 class HessFeature(Rotation_Functions):
@@ -20,13 +21,11 @@ class HessFeature(Rotation_Functions):
             delayed(self.gen_Feature)(k_soll=k) for k in range(N)
         )
 
-        return
 
         # for atom_A in range(self.N_atoms):
         #    for atom_B in range(atom_A+1,self.N_atoms):
 
     def gen_Feature(self, k_soll):
-        
         k = -1
 
         k_reached = False
@@ -96,22 +95,22 @@ class HessFeature(Rotation_Functions):
 
             grad = np.matmul(R_MI_APF, self.gradient[atom])
 
-            for qm_key in self.qm.keys():
+            for qm_key in self.qm:
                 temp_qm = np.zeros([3, 3])
                 temp_qm[np.tril_indices(temp_qm.shape[0], k=0)] = self.qm[qm_key][atom]
                 temp_qm = temp_qm + temp_qm.T - np.diag(np.diag(temp_qm))
                 temp_qm = np.matmul(
-                    np.matmul(R_MI_APF, temp_qm), np.transpose(R_MI_APF)
+                    np.matmul(R_MI_APF, temp_qm), np.transpose(R_MI_APF),
                 )
 
-                Quantity_AB[j].extend((temp_qm[np.triu_indices(3)]))
+                Quantity_AB[j].extend(temp_qm[np.triu_indices(3)])
 
-            for dipm_key in self.dipm.keys():
+            for dipm_key in self.dipm:
                 temp_dipm = self.dipm[dipm_key][atom]
                 temp_dipm = np.matmul(R_MI_APF, temp_dipm)
                 Quantity_AB[j].extend(temp_dipm)
 
-            for q_key in self.q.keys():
+            for q_key in self.q:
                 Quantity_AB[j].extend(self.q[q_key][atom])
 
             # ____Append Features to Feature Vector____
@@ -133,7 +132,7 @@ class HessFeature(Rotation_Functions):
 
         Feature_Arith = list((Quantity_AB_arr[0] + Quantity_AB_arr[1]) / 2)
         Feature_Prod = list(Quantity_AB_arr[0] * Quantity_AB_arr[1])
-        Feature_AbsDiff = list((Quantity_AB_arr[0] - Quantity_AB_arr[1]))
+        Feature_AbsDiff = list(Quantity_AB_arr[0] - Quantity_AB_arr[1])
 
         Features_temp.extend(Quantity_AB[0])
         Features_temp.extend(Quantity_AB[1])
