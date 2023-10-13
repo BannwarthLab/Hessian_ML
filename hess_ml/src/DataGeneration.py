@@ -18,7 +18,7 @@ class DataGeneration:
     def generate_data(self, idx=None):
         self.wall_time0 = time.time()
 
-        print(f"Starting Data Generation for Features...")
+        print("Starting Data Generation for Features...")
 
         # ________Parallelized Feature Generation___________
 

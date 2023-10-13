@@ -108,7 +108,7 @@ class Output:
         Nat3 = len(hessian)
 
         with open(file, "w+") as myfile:
-            myfile.write(f"$hessian\n")
+            myfile.write("$hessian\n")
 
             for i in range(Nat3):
                 str_list = [f"{x: 10.10f}" for x in hessian[i]]

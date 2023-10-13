@@ -1,6 +1,5 @@
 import numpy as np
 import os 
-import sys 
 import pandas as pd 
 from ase.io import read as ase_read
 
@@ -83,7 +82,7 @@ class FeatureTBlite:
         self.p = {}
 
         for orb in ["s", "p", "d", "A", "e", "Z"]:
-            if not (orb in {"s", "p", "d"}):
+            if orb not in {"s", "p", "d"}:
                 self.dipm[f"delta_{orb}"] = self.ml_feat.filter(
                     regex=f"delta_dipm_{orb}_"
                 ).to_numpy()
@@ -91,7 +90,7 @@ class FeatureTBlite:
                     regex=f"delta_qm_{orb}_"
                 ).to_numpy()
 
-            if not (orb in {"e", "Z"}):
+            if orb not in {"e", "Z"}:
                 self.dipm[f"{orb}"] = self.ml_feat.filter(
                     regex=f"^dipm_{orb}_"
                 ).to_numpy()

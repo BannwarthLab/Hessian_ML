@@ -95,7 +95,7 @@ class Observables(Rotation_Functions):
 
         matrix[A3 : A3 + 3, B3 : B3 + 3] = vector.reshape(3, 3)
 
-        if transpose == True:
+        if transpose is True:
             matrix[A3 : A3 + 3, B3 : B3 + 3] = np.matmul(
                 np.matmul(
                     np.transpose(self.rot_Z(np.pi)), (matrix[A3 : A3 + 3, B3 : B3 + 3])

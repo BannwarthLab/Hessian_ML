@@ -1,5 +1,4 @@
 import numpy as np
-import sys
 from hess_ml.src.Rotation_func import Rotation_Functions
 from hess_ml.src.Geometry import Geometry
 from hess_ml.src.decorator.decorator import checkTiming

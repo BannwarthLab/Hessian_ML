@@ -1,5 +1,4 @@
 import os
-import sys
 from hess_ml.src.ReadIn.readin import ReadXYZ
 from hess_ml.src.Features.Features import FeatureTBlite
 from hess_ml.src.Targets.Hessian import xTBHessTarget,PredictHessian

@@ -10,13 +10,11 @@ from sklearn.multioutput import MultiOutputRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 
-from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection import VarianceThreshold
 from sklearn.model_selection import train_test_split
 
 from hess_ml.src.IO import Input
-from hess_ml.src.decorator.decorator import checkTiming,initProcess
+from hess_ml.src.decorator.decorator import initProcess
 import os
 import numpy as np
 import glob as glob
@@ -62,11 +60,11 @@ class Training(Input):
         self.Features = []
         self.Targets = []
 
-        print(f"Importing Features and Targets of hessian model... ", end="")
+        print("Importing Features and Targets of hessian model... ", end="")
 
         for f in self.files:
             Feature_temp, Targets_temp = self.import_pickle_FT(
-                os.path.join(f, f"Hessian_ML_Data.json")
+                os.path.join(f, "Hessian_ML_Data.json")
             )
 
             self.Features.extend(Feature_temp)
@@ -162,7 +160,7 @@ class Training(Input):
 
         del param_temp
 
-        if self.normalization == True:
+        if self.normalization is True:
             transformer = StandardScaler().fit(self.Features[self.shuffle_idx])
             self.Features = transformer.transform(self.Features[self.shuffle_idx])
 
@@ -234,7 +232,7 @@ class Training(Input):
             g.truncate(0)
         g.close()
 
-        if not (i_split == None):
+        if i_split is not None:
             os.mkdir(f"Model{i_split}")
             pathname = f"Model{i_split}/{self.model_name}.joblib"
         else:
@@ -247,7 +245,7 @@ class Training(Input):
         del g
         del regr_model
 
-        if i_split == None:
+        if i_split is None:
             del self.Features
             del self.Targets
 

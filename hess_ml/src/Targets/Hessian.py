@@ -100,7 +100,7 @@ class PredictHessian(Output,Observables):
                 H_hetero,  self.N_atoms,  self.R_MI_APF_mat, self.transpose_list
             )
 
-            self.hessian_to_xtb(os.path.join(self.folder, f"MLhessian"), predHess)
+            self.hessian_to_xtb(os.path.join(self.folder, "MLhessian"), predHess)
 
             del H_hetero
 
@@ -115,7 +115,7 @@ class ORCAHessTarget:
 
 class DeltaHessTarget:
     def __init__(self) -> None:
-        Hessian_xTB = xTBHessTarget()
-        Hessian_ORCA = ORCAHessTarget()
+        xTBHessTarget()
+        ORCAHessTarget()
 
         pass

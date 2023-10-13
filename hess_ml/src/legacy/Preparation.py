@@ -1,5 +1,4 @@
 import numpy as np
-from operator import matmul
 from hess_ml.src.Rotation_func import Rotation_Functions
 
 

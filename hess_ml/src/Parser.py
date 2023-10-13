@@ -1,5 +1,4 @@
 from argparse import ArgumentParser
-import numpy as np
 import tomli
 import os
 import sys
@@ -58,7 +57,7 @@ class Parser:
                 with open("input.toml", mode="rb") as fp:
                     self.config = tomli.load(fp)
 
-                    print(f"Input file: input.toml is used.")
+                    print("Input file: input.toml is used.")
             else:
                 print("Default setup is used.")
 

@@ -5,7 +5,6 @@ import hess_ml.src.constants.constants as const
 
 import json as json
 import numpy as np
-import numpy.typing as npt
 import time as time
 
 
@@ -30,7 +29,7 @@ class Geometry:
 
     def importXYZ(self, file: str):
         with open(file) as myfile:
-            head = [next(myfile) for _ in range(2)]
+            [next(myfile) for _ in range(2)]
 
         xyz_pd = pd.read_csv(
             file,

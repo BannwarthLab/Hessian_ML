@@ -6,7 +6,6 @@ from hess_ml.src.IO import Input
 
 from sklearn.model_selection import train_test_split
 
-import os
 import numpy as np
 import time as time
 
@@ -30,7 +29,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
         for MainKey in ["general", "molecule", "train", "predict"]:
             if MainKey in self.config.keys():
                 for key in self.default_config[MainKey].keys():
-                    if not (key in self.config[MainKey].keys()):
+                    if key not in self.config[MainKey].keys():
                         self.config[MainKey][key] = self.default_config[MainKey][key]
 
             elif MainKey == "general":

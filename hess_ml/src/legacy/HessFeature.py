@@ -1,6 +1,5 @@
 import numpy as np
 from hess_ml.src.Rotation_func import Rotation_Functions
-from operator import matmul
 from joblib import Parallel, delayed
 
 

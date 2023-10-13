@@ -1,6 +1,5 @@
 from scipy import linalg
 from operator import matmul
-from math import log10 , floor
 
 import numpy as np
 import hess_ml.src.constants.constants as const
@@ -68,7 +67,7 @@ class Rotation_Functions:
 
           T = 0.5*(xyz[i,:] + xyz[j,:])
 
-          vec_dipm = dipm[i,:] + dipm[j,:]
+          dipm[i,:] + dipm[j,:]
 
           xyz -=T
 

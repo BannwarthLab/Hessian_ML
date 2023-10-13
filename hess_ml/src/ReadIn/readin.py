@@ -5,7 +5,7 @@ class ReadXYZ:
 
     def ImportStructure(self):
         with open(self.xyz_file) as myfile:
-            head = [next(myfile) for _ in range(2)]
+            [next(myfile) for _ in range(2)]
 
         xyz_pd = pd.read_csv(
             self.xyz_file,
