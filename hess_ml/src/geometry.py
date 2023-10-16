@@ -25,7 +25,6 @@ class Geometry:
         self.hessian_name = config.get("hessian_file", "hessian")
         self.do_calc = True
 
-
     def importXYZ(self, file: str):
         with open(file) as myfile:
             [next(myfile) for _ in range(2)]
@@ -56,7 +55,6 @@ class Geometry:
             self.do_calc = False
             print("At least two atoms must be considered.")
 
-
     def importTarget(self, file: str):
         if os.path.isfile(file):
             LineList = []
@@ -70,10 +68,9 @@ class Geometry:
 
             i = 0
 
-            for k in range(self.N_atoms * 3):
-                for l in range(self.N_atoms * 3):
-                    self.target[k, l] = float(LineList[i])
+            for j in range(self.N_atoms * 3):
+                for k in range(self.N_atoms * 3):
+                    self.target[j, k] = float(LineList[i])
                     i += 1
         else:
             self.do_calc = False
-

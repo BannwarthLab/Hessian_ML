@@ -59,15 +59,16 @@ class FeatureTBlite:
 
             print("No convergenve structure will not be considered.")
 
-
     def ReadGradient(self, file):
         with open(file, "rb") as f:
             f.close()
 
         self.gradient = np.genfromtxt(
-            file, skip_header=2 + self.N_atoms, skip_footer=1, loose=True,
+            file,
+            skip_header=2 + self.N_atoms,
+            skip_footer=1,
+            loose=True,
         )
-
 
     def FilterFeatures(self):
         self.dipm = {}
@@ -123,4 +124,3 @@ class FeatureTBlite:
 
         self.p["default"] = self.ml_feat.loc[:, "p_A"].to_numpy()
         self.p["delta"] = self.ml_feat.loc[:, "delta_p_A"].to_numpy()
-

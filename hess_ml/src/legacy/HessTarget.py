@@ -10,12 +10,14 @@ class HessTarget:
 
         for atom_A in range(self.N_atoms):
             H_APF = self.H_APF_mat[
-                3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3,
+                3 * atom_A : 3 * atom_A + 3,
+                3 * atom_A : 3 * atom_A + 3,
             ]
 
             for atom_B in range(atom_A + 1, self.N_atoms):
                 H_APF = self.H_APF_mat[
-                    3 * atom_A : 3 * atom_A + 3, 3 * atom_B : 3 * atom_B + 3,
+                    3 * atom_A : 3 * atom_A + 3,
+                    3 * atom_B : 3 * atom_B + 3,
                 ].copy()
 
                 if [atom_A, atom_B] in transpose_list:
@@ -29,4 +31,3 @@ class HessTarget:
                     )
 
                 self.Target_AB.append(list(H_APF.flatten()))
-

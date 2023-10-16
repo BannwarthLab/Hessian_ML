@@ -15,7 +15,6 @@ def parse_folders(self, folder, subfolder):
         self.gather_folders(folder)
 
 
-
 def gather_subfolders(self, folder):
     self.total_structures = 0
 
@@ -45,7 +44,6 @@ def gather_subfolders(self, folder):
         self.total_structures += len(temp_dir)
 
 
-
 def gather_folders(self, folder):
     molecule_dir = sorted(
         [
@@ -58,7 +56,6 @@ def gather_folders(self, folder):
     self.geo_dir = molecule_dir
 
     self.total_structures = len(self.geo_dir)
-
 
 
 def predict_hess_depracted(self):
@@ -109,7 +106,6 @@ def predict_hess_depracted(self):
         f.close()
 
     del het_model
-
 
 
 def comp_test_observables(self):
@@ -180,4 +176,3 @@ def comp_test_observables(self):
     np.savetxt("true_Z.txt", Z_true)
 
     print("done")
-

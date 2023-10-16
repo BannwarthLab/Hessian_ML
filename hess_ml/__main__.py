@@ -1,5 +1,5 @@
-from hess_ml.src.Environment import Environment
-from hess_ml.src.Parser import Parser
+from hess_ml.src.environment import Environment
+from hess_ml.src.parser import Parser
 import time as time
 
 

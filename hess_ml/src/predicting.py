@@ -7,14 +7,14 @@ import time
 import numpy as np
 from joblib import load
 
-from hess_ml.src.IO import Input, Output
-from hess_ml.src.Observables import Observables
-from hess_ml.src.Template import TestMLHessianGFN2xTB
+from hess_ml.src.io import Input, Output
+from hess_ml.src.observables import Observables
+from hess_ml.src.template import TestMLHessianGFN2xTB
 
 
 class Predicting(Input, Output, Observables):
     def __init__(self) -> None:
-        super().__init__
+        super().__init__()
 
     def predict(self, files, folder=""):
         # try:
@@ -31,7 +31,8 @@ class Predicting(Input, Output, Observables):
             self.transformer = load(pathname)
 
             pathname = os.path.join(
-                folder, f"{self.model_name}_transformer_target.joblib",
+                folder,
+                f"{self.model_name}_transformer_target.joblib",
             )
 
             self.target_transformer = load(pathname)
@@ -50,8 +51,7 @@ class Predicting(Input, Output, Observables):
 
         with open("not_considered_pred", "w") as outfile:
             outfile.write("\n".join(str(i) for i in self.not_considered))
-        outfile.close
-
+        outfile.close()
 
     def error_estimation(self, folders, rnd_seed, train_size):
         print("Computing error on test set")
@@ -73,9 +73,7 @@ class Predicting(Input, Output, Observables):
         print("Seed\tTrain Size\tRMSD")
         print(f"{rnd_seed}\t{train_size*100: 3.0f}\t{error : 0.5f}")
 
-
     def predict_hessian(self, folder):
         mol = copy.deepcopy(self.molgen)
         mol.setConfiguration(folder, self.config["molecule"])
         mol.ProcessData(model=self.model)
-

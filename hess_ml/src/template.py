@@ -2,10 +2,10 @@ import os
 import time
 
 from hess_ml.src.decorator.decorator import checkTiming
-from hess_ml.src.Features.Features import FeatureTBlite
-from hess_ml.src.Processing import TransformPredict, TransformTrain
+from hess_ml.src.Features.features import FeatureTBlite
+from hess_ml.src.processing import TransformPredict, TransformTrain
 from hess_ml.src.ReadIn.readin import ReadXYZ
-from hess_ml.src.Targets.Hessian import PredictHessian, xTBHessTarget
+from hess_ml.src.Targets.hessian import PredictHessian, xTBHessTarget
 
 
 class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrain):
@@ -17,10 +17,12 @@ class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrai
         self.folder = folder
         self.xyz_file = os.path.join(self.folder, config.get("xyz_file", "xtbopt.xyz"))
         self.gradient_file = os.path.join(
-            self.folder, config.get("gradient_file", "gradient"),
+            self.folder,
+            config.get("gradient_file", "gradient"),
         )
         self.target_file = os.path.join(
-            self.folder, config.get("hessian_file", "hessian"),
+            self.folder,
+            config.get("hessian_file", "hessian"),
         )
         self.do_calc = True
 
@@ -58,8 +60,7 @@ class TestMLHessianGFN2xTB(TransformPredict, PredictHessian, TrainMLHessianGFN2x
         self.hess_diff = self.hessian1 - self.target
 
 
-
-class PredictMLHessian(TestMLHessianGFN2xTB):
+class PredictMLHessianxTB(TestMLHessianGFN2xTB):
     def __init__(self) -> None:
         super().__init__()
 
@@ -75,7 +76,7 @@ class TrainMLHessianDFT(TrainMLHessianGFN2xTB):
         pass
 
 
-class PredictMLHessian(TrainMLHessianDFT):
+class PredictMLHessianDFT(TrainMLHessianDFT):
     def __init__(self) -> None:
         super().__init__()
 

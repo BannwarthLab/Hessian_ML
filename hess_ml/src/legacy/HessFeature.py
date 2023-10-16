@@ -1,7 +1,7 @@
 import numpy as np
 from joblib import Parallel, delayed
 
-from hess_ml.src.Rotation_func import Rotation_Functions
+from hess_ml.src.rotation_func import Rotation_Functions
 
 
 class HessFeature(Rotation_Functions):
@@ -20,7 +20,6 @@ class HessFeature(Rotation_Functions):
         self.Feature_AB = parallel(
             delayed(self.gen_Feature)(k_soll=k) for k in range(N)
         )
-
 
         # for atom_A in range(self.N_atoms):
         #    for atom_B in range(atom_A+1,self.N_atoms):
@@ -100,7 +99,8 @@ class HessFeature(Rotation_Functions):
                 temp_qm[np.tril_indices(temp_qm.shape[0], k=0)] = self.qm[qm_key][atom]
                 temp_qm = temp_qm + temp_qm.T - np.diag(np.diag(temp_qm))
                 temp_qm = np.matmul(
-                    np.matmul(R_MI_APF, temp_qm), np.transpose(R_MI_APF),
+                    np.matmul(R_MI_APF, temp_qm),
+                    np.transpose(R_MI_APF),
                 )
 
                 Quantity_AB[j].extend(temp_qm[np.triu_indices(3)])

@@ -3,10 +3,10 @@ import time
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from hess_ml.src.DataGeneration import DataGeneration
-from hess_ml.src.IO import Input
-from hess_ml.src.Parser import Parser
-from hess_ml.src.Predicting import Predicting
+from hess_ml.src.data_generation import DataGeneration
+from hess_ml.src.io import Input
+from hess_ml.src.parser import Parser
+from hess_ml.src.predicting import Predicting
 from hess_ml.src.Training import Training
 
 # 0.09769007921573508
@@ -37,13 +37,13 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
         self.rnd_seed = self.config["general"]["random_state"]
         self.threads = self.config["general"]["threads"]
-        np.random.seed(self.rnd_seed)
+        np.random.default_rng(self.rnd_seed)
 
     def print_config(self):
         print("Used config is:")
         print("")
         for dicts in self.config:
-            if type(self.config[dicts]) == dict:
+            if isinstance(self.config[dicts], dict):
                 print("")
                 print(dicts)
                 for dict_ in self.config[dicts]:
@@ -58,8 +58,9 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
         if self.config["general"].get("feature"):
             self.gen_features()
 
-
     def do_train(self):
+        test_size_threshold = 0.0
+
         if self.config["general"]["train"]:
             self.train_size = self.config["train"]["train_size"]
 
@@ -67,7 +68,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
             self.runtype = self.config["general"]["runtype"]
 
-            if type(self.train_size) == list:
+            if isinstance(self.train_size, list):
                 self.train_size = sorted(self.train_size)[::]
 
                 print(self.train_size)
@@ -103,7 +104,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                         f"Training was done in {round(temp_time_new - temp_time_old)} s",
                     )
 
-                    if self.config["train"]["test_size"] > 0.0:
+                    if self.config["train"]["test_size"] > test_size_threshold:
                         temp_time_old = time.time()
 
                         self.predict(self.test_geo, folder=f"Model{i}/")
@@ -135,7 +136,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
                 print(f"Training was done in {round(temp_time_new - temp_time_old)} s")
 
-                if self.config["train"]["test_size"] > 0.0:
+                if self.config["train"]["test_size"] > test_size_threshold:
                     temp_time_old = time.time()
 
                     self.predict(self.test_geo)
@@ -152,20 +153,19 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                         f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s",
                     )
 
-
     def do_prediction(self):
+
         if self.config.get("predict", False):
+
+            self.folders = []
+
             if self.config["predict"].get("folder", False):
                 self.parse_data_set(self.config["predict"].get("folder"))
 
             if self.config["predict"].get("predict_list", False):
                 files = self.rd_txt_file(self.config["predict"].get("predict_list"))
 
-                try:
-                    self.folders.append(files)
-
-                except:
-                    self.folders = files
+                self.folders.extend(files)
 
             self.model_name = self.config["predict"]["model_name"]
 
@@ -178,7 +178,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
             temp_time_new = time.time()
 
             print(f"Prediction was done in {round(temp_time_new - temp_time_old)} s")
-
+            
 
     def gen_features(self):
         if self.config["molecule"]["feature"].lower() == "tblite":
@@ -213,4 +213,3 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
         else:
             print("Feature generation must be specified.")
         # one could add different features that will be imported
-

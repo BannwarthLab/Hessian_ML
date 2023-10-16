@@ -7,7 +7,7 @@ import time
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from hess_ml.src.Template import TrainMLHessianGFN2xTB
+from hess_ml.src.template import TrainMLHessianGFN2xTB
 
 
 class DataGeneration:
@@ -33,10 +33,10 @@ class DataGeneration:
             f"Features and Targets of {len(idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n",
         )
 
-        with open("not_considered", "w") as outfile:
+        outputfile_name = "not_considered"
+        with open(outputfile_name, "w") as outfile:
             outfile.write("\n".join(str(i) for i in self.not_considered))
-        outfile.close
-
+        outfile.close()
 
     def GenerateData(self, dir):
         mol = copy.deepcopy(self.molgen)
@@ -61,7 +61,6 @@ class DataGeneration:
             )
             del mol
 
-
     def truncate_file(self, file):
         if os.path.isfile(file):
             with open(file, "wb") as f1:
@@ -69,21 +68,26 @@ class DataGeneration:
 
             f1.close()
 
-
     def do_preparation_split(
-        self, folders, total_structures, train_size, test_size, rnd_seed,
+        self,
+        folders,
+        total_structures,
+        train_size,
+        test_size,
+        rnd_seed,
     ):
         """
         Does a split of the geometry file directories into train and test sets.
         Saves the information in txt files
         """
+        max_train_size = 1.0
         self.folders = folders
 
         geo_idx = np.arange(0, total_structures - 1)
 
-        train_size_temp = max(train_size) if type(train_size) == list else train_size
+        train_size_temp = max(train_size) if type(train_size) is list else train_size
 
-        if train_size_temp == 1.0:
+        if train_size_temp == max_train_size:
             self.train_idx = geo_idx
             self.test_idx = []
 
@@ -112,4 +116,3 @@ class DataGeneration:
         self.data_to_txt(self.test_geo, os.path.join("", "test_files.txt"))
 
         self.data_to_txt(self.train_geo, os.path.join("", "train_files.txt"))
-

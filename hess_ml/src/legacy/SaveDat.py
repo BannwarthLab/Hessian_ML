@@ -18,7 +18,6 @@ class PickleData:
 
         self.dict["R_MI_APF_mat"] = some_class.R_MI_APF_mat
 
-
     def add_idx(self, idx):
         self.idx = idx
 

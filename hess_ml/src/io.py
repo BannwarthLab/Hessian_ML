@@ -30,7 +30,6 @@ class Input:
     def import_dipm(self, file):
         return pd.read_csv(file, sep=",")
 
-
     def import_hessian_dftd4(self, file, coord):
         nat3 = len(coord["atoms"]) * 3
 
@@ -41,38 +40,20 @@ class Input:
 
         return np.array(egh.get("hessian")).reshape(nat3, nat3)
 
-
     def import_gradient(self, file):
         with open(file, "rb") as f:
             f.close()
 
         self.gradient = np.genfromtxt(
-            file, skip_header=2 + self.N_atoms, skip_footer=1, loose=True,
+            file,
+            skip_header=2 + self.N_atoms,
+            skip_footer=1,
+            loose=True,
         )
         # gradient = gradient.flatten()
 
-
     def import_wbo(self, file):
         return pd.read_csv(file, names=["at1", "at2", "wbo"], sep=r"\s+")
-
-    def import_pickle_FT_old(self, file):
-        feature = []
-        target = []
-
-        i = 0
-
-        with open(f"{file}", "rb") as f:
-            while True:
-                try:
-                    i += 1
-                    temp_obj = pickle.load(f)
-                    feature.extend(temp_obj["Feature"])
-                    target.extend(temp_obj["Target_AB"])
-                except EOFError:
-                    # print(f'Features and Targets of a total of {i-1} structures are used.\n')
-                    break
-
-        return feature, target
 
     def rd_txt_file(self, file):
         with open(f"{file}", "rb") as f:
@@ -118,11 +99,9 @@ class Output:
                     myfile.write("\n")
         myfile.close()
 
-
     def data_to_txt(self, data, file):
         with open(file, "w+") as f:
             for d in data:
                 f.write(d)
                 f.write("\n")
         f.close()
-

@@ -12,13 +12,12 @@ class Rotation_Functions:
         pass
 
     def angle_two_vec(self, a, b):
-        if linalg.norm(a) == 0.0 or linalg.norm(b) == 0.0:
+        if linalg.norm(a) == 0 or linalg.norm(b) == 0:
             cosangle = 0
         else:
             cosangle = np.dot(a, b) / linalg.norm(a) / linalg.norm(b)
 
         return np.arccos(np.clip(cosangle, -1, 1))
-
 
     def center_charge(self, coord_var):
         d = np.zeros(3)
@@ -39,7 +38,7 @@ class Rotation_Functions:
         return d / mass_sum
 
     def check_eig_vec(self, eig_vec):
-        if linalg.det(eig_vec) < 0.0:
+        if linalg.det(eig_vec) < 0:
             for i in range(3):
                 eig_vec[2, i] = -eig_vec[2, i]
         return eig_vec
@@ -70,10 +69,12 @@ class Rotation_Functions:
         align_vec = np.zeros([2, 3])
         align_vec[:, 2] = np.array([dist_r * 0.5, dist_r * 0.5])
 
-
     # ____Uses for i=j the mean of the xyz's atoms as an artifical atom____
     @checkTiming(enabled=False)
     def get_R_euler(self, coord_end, dipm, i, j):
+        zero_th = 0.0
+        coord_th = 1e-8
+        sum_th = 1e-12
         if i == j:
             print("error")
 
@@ -97,12 +98,12 @@ class Rotation_Functions:
 
         LL = np.cross(vec_z, axis[2])
 
-        if np.sum(np.abs(np.array(coord_end[[i, j], :2]))) < 1e-12:
+        if np.sum(np.abs(np.array(coord_end[[i, j], :2]))) < sum_th:
             beta = self.angle_two_vec(vec_z, axis[2])
             alpha = 2 * np.pi - self.angle_two_vec(vec_x, axis[0])
             gamma = 0
 
-            if linalg.det(np.array([axis[0], axis[2], vec_x])) > 0.0:
+            if linalg.det(np.array([axis[0], axis[2], vec_x])) > zero_th:
                 alpha = 2 * np.pi - alpha
 
         else:
@@ -111,19 +112,20 @@ class Rotation_Functions:
             gamma = self.angle_two_vec(LL, vec_x)
 
             # Find right rotation angle
-            if linalg.det(np.array([axis[0], axis[2], LL])) < 0.0:
+            if linalg.det(np.array([axis[0], axis[2], LL])) < zero_th:
                 alpha = 2 * np.pi - alpha
 
-            if linalg.det(np.array([LL, vec_x, vec_z])) > 0.0:
+            if linalg.det(np.array([LL, vec_x, vec_z])) > zero_th:
                 gamma = 2 * np.pi - gamma
 
         R_euler = np.matmul(
-            np.matmul(self.rot_Z(gamma), self.rot_X(beta)), self.rot_Z(alpha),
+            np.matmul(self.rot_Z(gamma), self.rot_X(beta)),
+            self.rot_Z(alpha),
         )
 
         # Rotation by 180 ° if dipole moment is negative in x
 
-        if np.matmul(R_euler, vec_x)[0] < 0.0:
+        if np.matmul(R_euler, vec_x)[0] < zero_th:
             R_z = self.rot_Z(np.pi)
             R_euler = matmul(R_z, R_euler)
 
@@ -133,10 +135,10 @@ class Rotation_Functions:
         self.angle_two_vec(LL, vec_x)
 
         # Check for Errors in dipole moment or the coordinates
-        if vec_x[0] < 0.0:
+        if vec_x[0] < zero_th:
             print(f"Error in vec_x[0] in {i,j}")
 
-        if np.abs(vec_x[1]) > 1e-8 or np.abs(vec_x[2]) > 1e-8:
+        if np.abs(vec_x[1]) > coord_th or np.abs(vec_x[2]) > coord_th:
             print(vec_x)
             print(f"Error in vec_x for {i,j}")
             print(coord_end[[i, j], :])
@@ -145,12 +147,12 @@ class Rotation_Functions:
         coord_end[i, :] = np.matmul(R_euler, coord_end[i, :])
         coord_end[j, :] = np.matmul(R_euler, coord_end[j, :])
 
-        if coord_end[i, 0] > 1e-8 or coord_end[i, 1] > 1e-8:
+        if coord_end[i, 0] > coord_th or coord_end[i, 1] > coord_th:
             print(f"Error in coord i:{i,j}")
             print(coord_end[[i, j], :])
             print(alpha, beta, gamma)
 
-        if coord_end[j, 0] > 1e-8 or coord_end[j, 1] > 1e-8:
+        if coord_end[j, 0] > coord_th or coord_end[j, 1] > coord_th:
             print(f"Error in coord j:{i,j}")
             print(coord_end[[i, j], :])
             print(alpha, beta, gamma)
@@ -185,7 +187,8 @@ class Rotation_Functions:
         )
 
     def eig_vec_rot(
-        self, eig_vec,
+        self,
+        eig_vec,
     ):  # Checks for the highest value of the eigenvector matrix exchanges if the highest is not in first place
         for i in [0, 1]:
             max_abs_val = max(eig_vec[i].min(), eig_vec[i].max(), key=abs)
@@ -218,17 +221,6 @@ class Rotation_Functions:
 
         return inert_t / m / const.bohr2angs**2
 
-    def qm_matrix(qm_atom, name):
-        xx = qm_atom.loc[f"{name}xx"]
-        xy = qm_atom.loc[f"{name}xy"]
-        yy = qm_atom.loc[f"{name}yy"]
-        xz = qm_atom.loc[f"{name}xz"]
-        zz = qm_atom.loc[f"{name}zz"]
-        yz = qm_atom.loc[f"{name}yz"]
-
-        return np.array([[xx, xy, xz], [xy, yy, yz], [xz, yz, zz]])
-
-
     def rotM_hess(self, R, coord_var):
         P = np.zeros([3 * len(coord_var["atoms"]), 3 * len(coord_var["atoms"])])
         for i in range(len(coord_var["atoms"])):
@@ -258,9 +250,9 @@ class Rotation_Functions:
         # vec_trans(dipm,s)
 
         # Calculating moment of inertia
-        I = self.inert_tensor(coord)
+        inert_tens = self.inert_tensor(coord)
         # Calculating eigenvalues and eigenvectors
-        eig_val, eig_vec = linalg.eigh(I)
+        eig_val, eig_vec = linalg.eigh(inert_tens)
 
         # Check if the coordinate system is right-handed --> important for chirality
         eig_vec = self.check_eig_vec(eig_vec)

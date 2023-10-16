@@ -14,19 +14,19 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
 
 from hess_ml.src.decorator.decorator import initProcess
-from hess_ml.src.IO import Input
+from hess_ml.src.io import Input
 
 
 class Training(Input):
     def __init__(self) -> None:
-        super().__init__
+        pass
 
     def train(self, runtype):
         print("Runtype for training:", runtype)
 
         self.mode = runtype
 
-        if type(self.train_size) == list:
+        if isinstance(self.train_size,list):
             for i in range(len(self.train_size)):
                 temp_time_old = time.time()
 
@@ -49,7 +49,6 @@ class Training(Input):
 
             print(f"Training was done in {round(temp_time_new - temp_time_old)} s")
 
-
     def import_FT(self):
         self.Features = []
         self.Targets = []
@@ -70,7 +69,6 @@ class Training(Input):
         self.Targets = np.array(self.Targets)
 
         print("done\n")
-
 
     @initProcess
     def TrainModel(self, i_split=None):
@@ -130,7 +128,7 @@ class Training(Input):
 
             self.normalization = True
 
-        if type(self.SearchCV) == str:
+        if isinstance(self.SearchCV, str):
             if self.SearchCV.lower() == "random":
                 search = True
 
@@ -205,13 +203,15 @@ class Training(Input):
         if method != "mlpr":
             regr_model.set_params(n_jobs=self.threads)
             regr_model.fit(
-                self.Features[self.shuffle_idx], self.Targets[self.shuffle_idx],
+                self.Features[self.shuffle_idx],
+                self.Targets[self.shuffle_idx],
             )
 
         else:
             with parallel_backend("threading", n_jobs=self.threads):
                 regr_model.fit(
-                    self.Features[self.shuffle_idx], self.Targets[self.shuffle_idx],
+                    self.Features[self.shuffle_idx],
+                    self.Targets[self.shuffle_idx],
                 )
 
         print(
@@ -249,7 +249,6 @@ class Training(Input):
         if self.selection:
             del selector
 
-
     def do_train_split(self, i):
         """
         Does a split of the geometry file directories into train and test sets.
@@ -275,4 +274,3 @@ class Training(Input):
             os.makedirs(mypath)
 
         self.data_to_txt(self.train_geo, os.path.join(f"Model{i}/", "train_files.txt"))
-

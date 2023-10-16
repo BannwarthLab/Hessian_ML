@@ -3,8 +3,8 @@ import time
 import numpy as np
 
 from hess_ml.src.decorator.decorator import checkTiming
-from hess_ml.src.Geometry import Geometry
-from hess_ml.src.Rotation_func import Rotation_Functions
+from hess_ml.src.geometry import Geometry
+from hess_ml.src.rotation_func import Rotation_Functions
 
 
 class FeatureGen(Geometry):
@@ -64,7 +64,8 @@ class FeatureGen(Geometry):
                 temp_qm[np.tril_indices(temp_qm.shape[0], k=0)] = self.qm[qm_key][atom]
                 temp_qm = temp_qm + temp_qm.T - np.diag(np.diag(temp_qm))
                 temp_qm = np.matmul(
-                    np.matmul(R_MI_APF, temp_qm), np.transpose(R_MI_APF),
+                    np.matmul(R_MI_APF, temp_qm),
+                    np.transpose(R_MI_APF),
                 )
                 Quantity_AB[j].extend((temp_qm[np.triu_indices(3)]).tolist())
 
@@ -134,12 +135,14 @@ class TransformPredict(Rotation_Functions, FeatureGen):
                     j3 = 3 * atom_B + 3
 
                     R_MI_APF = self.get_R_euler(
-                        xyz_temp, self.dipm["A"], atom_A, atom_B,
+                        xyz_temp,
+                        self.dipm["A"],
+                        atom_A,
+                        atom_B,
                     )
                     self.R_MI_APF_mat[i0:i3, j0:j3] = R_MI_APF
 
                     self.Feature_AB.append(self.gen_Feature(R_MI_APF, atom_A, atom_B))
-
 
 
 class TransformTrain(Rotation_Functions, FeatureGen):
@@ -155,7 +158,10 @@ class TransformTrain(Rotation_Functions, FeatureGen):
                 for atom_B in range(atom_A + 1, self.N_atoms):
                     xyz_temp = self.xyz.copy()
                     R_MI_APF = self.get_R_euler(
-                        xyz_temp, self.dipm["A"], atom_A, atom_B,
+                        xyz_temp,
+                        self.dipm["A"],
+                        atom_A,
+                        atom_B,
                     )
 
                     self.Feature_AB.append(self.gen_Feature(R_MI_APF, atom_A, atom_B))

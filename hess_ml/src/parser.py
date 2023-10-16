@@ -29,13 +29,11 @@ class Parser:
             help="generates a basic example .toml file",
         )
 
-
     def LoadDefaultConfig(self) -> None:
         abs_path = Path(__file__).parent / "default_input/input.toml"
 
         with open(abs_path, mode="rb") as fp:
             self.default_config = tomli.load(fp)
-
 
     def parse_toml(self) -> None:
         """
@@ -71,7 +69,6 @@ class Parser:
 
             sys.exit()
 
-
     def get_config(self) -> dict:
         return self.config
 
@@ -98,7 +95,6 @@ class Parser:
 
         print(f"Total of {len(self.folders)} folders found.")
         print("")
-
 
     # def parse_general(self):
     #     """

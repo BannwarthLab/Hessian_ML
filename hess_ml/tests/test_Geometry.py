@@ -1,6 +1,6 @@
 import unittest as ut
-from hess_ml.src.Geometry import Geometry
-from hess_ml.src.IO import Input
+from hess_ml.src.geometry import Geometry
+from hess_ml.src.io import Input
 from pathlib import Path
 import os 
 import numpy as np

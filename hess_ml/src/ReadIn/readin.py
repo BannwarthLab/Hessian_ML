@@ -34,4 +34,3 @@ class ReadXYZ:
         if self.N_atoms == 1:
             self.do_calc = False
             print("At least two atoms must be considered.")
-

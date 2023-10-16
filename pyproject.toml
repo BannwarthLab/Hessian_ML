@@ -36,7 +36,6 @@ select = [
 #  "INP",  # flake8-no-pep420
   "INT",  # flake8-gettext
   "ISC",  # flake8-implicit-str-concat
-  "N",    # pep8-naming
   "NPY",  # numpy
   "PERF", # perflint
   "PGH",  # pygrep-hooks
@@ -54,7 +53,6 @@ select = [
   "SLF",  # flake8-self
   "SLOT", # flake8-slots
   "T10",  # flake8-debugger
-  "T20",  # flake8-print
   "TCH",  # flake8-type-checking
   "TD",   # flake8-todos
   "TID",  # flake8-tidy-imports

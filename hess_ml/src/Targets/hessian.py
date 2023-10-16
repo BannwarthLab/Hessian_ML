@@ -3,8 +3,8 @@ import os
 import numpy as np
 
 from hess_ml.src.decorator.decorator import checkTiming
-from hess_ml.src.IO import Output
-from hess_ml.src.Observables import Observables
+from hess_ml.src.io import Output
+from hess_ml.src.observables import Observables
 
 
 class xTBHessTarget:
@@ -25,18 +25,21 @@ class xTBHessTarget:
 
             i = 0
 
-            for k in range(self.N_atoms * 3):
-                for l in range(self.N_atoms * 3):
-                    self.target[k, l] = float(LineList[i])
+            for j in range(self.N_atoms * 3):
+                for k in range(self.N_atoms * 3):
+                    self.target[j, k] = float(LineList[i])
                     i += 1
         else:
             self.do_calc = False
 
 
-
 class PredictHessian(Output, Observables):
     def gen_hess_from_vec_pred(
-        self, hess_vec_ab, N_atoms, R_MI_APF_mat, transpose_list,
+        self,
+        hess_vec_ab,
+        N_atoms,
+        R_MI_APF_mat,
+        transpose_list,
     ):
         ite_hetero = 0
 
@@ -63,9 +66,11 @@ class PredictHessian(Output, Observables):
             for atom_B in range(N_atoms):
                 if atom_A != atom_B:
                     Hessian[
-                        3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3,
+                        3 * atom_A : 3 * atom_A + 3,
+                        3 * atom_A : 3 * atom_A + 3,
                     ] -= Hessian[
-                        3 * atom_A : 3 * atom_A + 3, 3 * atom_B : 3 * atom_B + 3,
+                        3 * atom_A : 3 * atom_A + 3,
+                        3 * atom_B : 3 * atom_B + 3,
                     ]
 
             Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3] = (
@@ -94,13 +99,15 @@ class PredictHessian(Output, Observables):
                 H_hetero = model.predict(np.array(self.Feature_AB))
 
             predHess = self.gen_hess_from_vec_pred(
-                H_hetero, self.N_atoms, self.R_MI_APF_mat, self.transpose_list,
+                H_hetero,
+                self.N_atoms,
+                self.R_MI_APF_mat,
+                self.transpose_list,
             )
 
             self.hessian_to_xtb(os.path.join(self.folder, "MLhessian"), predHess)
 
             del H_hetero
-
 
 
 class ORCAHessTarget:
@@ -115,4 +122,3 @@ class DeltaHessTarget:
     def __init__(self) -> None:
         xTBHessTarget()
         ORCAHessTarget()
-
