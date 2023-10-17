@@ -62,6 +62,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
         test_size_threshold = 0.0
 
         if self.config["general"]["train"]:
+            
             self.train_size = self.config["train"]["train_size"]
 
             self.model_name = self.config["train"]["model_name"]
