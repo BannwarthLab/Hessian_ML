@@ -90,7 +90,7 @@ class DataGeneration:
         """
         self.folders = folders
 
-        geo_idx = np.arange(0, total_structures - 1)
+        geo_idx = np.arange(0, total_structures)
 
         if type(train_size) == list:
             train_size_temp = max(train_size)
