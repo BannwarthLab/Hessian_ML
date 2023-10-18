@@ -83,7 +83,7 @@ class DataGeneration:
         max_train_size = 1.0
         self.folders = folders
 
-        geo_idx = np.arange(0, total_structures - 1)
+        geo_idx = np.arange(0, total_structures)
 
         train_size_temp = max(train_size) if type(train_size) is list else train_size
 

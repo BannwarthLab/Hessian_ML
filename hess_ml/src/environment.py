@@ -156,10 +156,8 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
     def do_prediction(self):
 
-        if self.config.get("predict", False):
-
-            self.folders = []
-
+        if self.config['general'].get("predict", False) and self.config.get("predict", False):
+            
             if self.config["predict"].get("folder", False):
                 self.parse_data_set(self.config["predict"].get("folder"))
 
