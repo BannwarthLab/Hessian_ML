@@ -109,8 +109,28 @@ class PredictHessian(Output,Observables):
 class ORCAHessTarget:
     def __init__(self) -> None:
         pass
+    @checkTiming(enabled=True)
+    def ImportTarget(self , file: str) -> None:
+        if os.path.isfile(self.target_file):
+            LineList = []
 
-    def ReadTarget(self, file: str) -> None:
+            with open(self.target_file, "r") as fd:
+                Lines = [line.rstrip("\n") for line in fd]
+                for line in Lines[16:(self.N_atoms)]: # first entry at line 16
+                    
+                    LineList += line.split()
+
+            self.target = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
+
+            i = 0
+
+            for k in range(self.N_atoms * 3):
+                for l in range(self.N_atoms * 3):
+                    self.target[k, l] = float(LineList[i])
+                    i += 1
+        else:
+            self.do_calc = False
+
         return
 
 class DeltaHessTarget:
