@@ -7,15 +7,14 @@ from hess_ml.src.data_generation import DataGeneration
 from hess_ml.src.io import Input
 from hess_ml.src.parser import Parser
 from hess_ml.src.predicting import Predicting
-from hess_ml.src.Training import Training
-
+from hess_ml.src.model_template import Training
+from hess_ml.src.decorator.decorator import initProcess
 # 0.09769007921573508
 # 0.05527
 
 
-class Environment(DataGeneration, Parser, Training, Predicting, Input):
+class Environment(DataGeneration, Parser, Predicting, Input):
     def __init__(self):
-        Training.__init__(self)  # initializes all parent classes
         Predicting.__init__(self)
         DataGeneration.__init__(self)
         Parser.__init__(self)
@@ -58,11 +57,14 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
         if self.config["general"].get("feature"):
             self.gen_features()
 
-    def do_train(self):
+
+
+    @initProcess
+    def train_procedure(self):
         test_size_threshold = 0.0
 
         if self.config["general"]["train"]:
-            
+
             self.train_size = self.config["train"]["train_size"]
 
             self.model_name = self.config["train"]["model_name"]
@@ -97,16 +99,17 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
                     # self.import_FT()
 
-                    self.TrainModel(i_split=i)
 
-                    temp_time_new = time.time()
-
-                    print(
-                        f"Training was done in {round(temp_time_new - temp_time_old)} s",
-                    )
+                    model_trainer = Training(self.config['train'],self.rnd_seed,self.threads)
+                    model_trainer.build_model()
+                    model_trainer.training(features=self.Features,
+                                              targets=self.Targets,
+                                              shuffle_idx=self.shuffle_idx,
+                                              i_split=i,
+                                              )
+                    del model_trainer 
 
                     if self.config["train"]["test_size"] > test_size_threshold:
-                        temp_time_old = time.time()
 
                         self.predict(self.test_geo, folder=f"Model{i}/")
 
@@ -114,12 +117,6 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                             self.test_geo,
                             self.config["general"]["random_state"],
                             self.train_size[i],
-                        )
-
-                        temp_time_new = time.time()
-
-                        print(
-                            f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s",
                         )
 
             else:
@@ -131,8 +128,11 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
 
                 temp_time_old = time.time()
 
-                self.TrainModel()
-
+                model_trainer = Training(self.config['train'],self.rnd_seed,self.threads)
+                model_trainer.build_model()
+                model_trainer.training(features=self.Features,
+                                            targets=self.Targets,
+                                            shuffle_idx=self.shuffle_idx)
                 temp_time_new = time.time()
 
                 print(f"Training was done in {round(temp_time_new - temp_time_old)} s")
@@ -154,10 +154,11 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
                         f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s",
                     )
 
-    def do_prediction(self):
+    @initProcess
+    def prediction_procedure(self):
 
-        if self.config['general'].get("predict", False) and self.config.get("predict", False):
-            
+        if self.config["general"].get("predict", False) and self.config.get("predict", False):
+
             if self.config["predict"].get("folder", False):
                 self.parse_data_set(self.config["predict"].get("folder"))
 
@@ -177,7 +178,7 @@ class Environment(DataGeneration, Parser, Training, Predicting, Input):
             temp_time_new = time.time()
 
             print(f"Prediction was done in {round(temp_time_new - temp_time_old)} s")
-            
+
 
     def gen_features(self):
         if self.config["molecule"]["feature"].lower() == "tblite":

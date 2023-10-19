@@ -1,6 +1,8 @@
 import os
-
+import sys 
 import numpy as np
+
+from sklearn.dummy import DummyRegressor
 
 from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src.io import Output
@@ -83,21 +85,26 @@ class PredictHessian(Output, Observables):
         return Hessian
 
     @checkTiming(enabled=True)
-    def Predict(self, model=False, normalizer=False, selection=False):
+    def Predict(self, model:DummyRegressor=False):
+        
+        """
+        Prediction environement. Checks first whether the prediciton shall 
+        be done and converts the target afterwards into a complet Hessian matrix.
+        In addtion writes the hessian into the folder of the predicted species.
+        params:
+        model:Regressor:
+        """
+
+
+        if not model:
+            self.do_calc = False
+            print("No model available for the prediction.")
+            sys.exit()
+
         if self.do_calc:
-            if selection:  # self.selection
-                H_hetero = model.predict(selection.transform(np.array(self.Feature_AB)))
 
-            if normalizer:
-                H_hetero = model.predict(
-                    normalizer.transform(np.array(self.Feature_AB)),
-                )
-
-                H_hetero = normalizer.inverse_transform(H_hetero)
-
-            else:
-                H_hetero = model.predict(np.array(self.Feature_AB))
-
+            H_hetero = model.predict(np.array(self.Feature_AB))
+            
             predHess = self.gen_hess_from_vec_pred(
                 H_hetero,
                 self.N_atoms,
@@ -109,6 +116,8 @@ class PredictHessian(Output, Observables):
 
             del H_hetero
 
+        return 
+    
 
 class ORCAHessTarget:
     def __init__(self) -> None:

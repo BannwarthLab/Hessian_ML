@@ -17,7 +17,7 @@ from hess_ml.src.decorator.decorator import initProcess
 from hess_ml.src.io import Input
 
 
-class Training(Input):
+class oldTraining(Input):
     def __init__(self) -> None:
         pass
 

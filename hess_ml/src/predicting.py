@@ -16,34 +16,16 @@ class Predicting(Input, Output, Observables):
     def __init__(self) -> None:
         super().__init__()
 
-    def predict(self, files, folder=""):
-        # try:
-        #    self.predict_model
-        #    self.model = load(os.path.join(folder, f"{self.predict_model}.joblib"))
-        # except:
-        self.model = load(os.path.join(folder, f"{self.model_name}.joblib"))
+    def predict(self, files, folder="",model=None):
 
-        if self.config.get("predict", {"normalization": False}).get(
-            "normalization",
-        ):  # self.normalization
-            pathname = os.path.join(folder, f"{self.model_name}_transformer.joblib")
+        if model is None:
+            self.model = load(os.path.join(folder, f"{self.model_name}.joblib"))
 
-            self.transformer = load(pathname)
-
-            pathname = os.path.join(
-                folder,
-                f"{self.model_name}_transformer_target.joblib",
-            )
-
-            self.target_transformer = load(pathname)
-
-        if self.config.get("predict", {"selection": False}).get("selection"):
-            pathname = os.path.join(folder, f"{self.model_name}_selector.joblib")
-
-            self.selector = load(pathname)
+        else:
+            self.model = model
 
         self.not_considered = []
-
+        
         self.molgen = TestMLHessianGFN2xTB()
 
         for file in range(len(files)):
@@ -72,6 +54,9 @@ class Predicting(Input, Output, Observables):
 
         print("Seed\tTrain Size\tRMSD")
         print(f"{rnd_seed}\t{train_size*100: 3.0f}\t{error : 0.5f}")
+        
+        with open('results','a+') as file:
+            file.write(f"{rnd_seed}\t{train_size*100: 3.0f}\t{error : 0.5f}\n")
 
     def predict_hessian(self, folder):
         mol = copy.deepcopy(self.molgen)

@@ -26,20 +26,20 @@ class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrai
         )
         self.do_calc = True
 
-    def ProcessData(self, model=False, normalizer=False, selection=False):
+    def ProcessData(self, model=False):
         self.ImportStructure()
         self.PrintInfo()
         self.ImportFeature()
         self.ImportTarget()
         self.Transform()
-        self.Predict(model=model, normalizer=normalizer, selection=selection)
+        self.Predict(model=model)
 
     def PrintInfo(self):
         print(f"Import from {self.folder}")
         print(f"Number of Atoms: {self.N_atoms}")
 
     @checkTiming(enabled=False)
-    def Predict(self, model=False, normalizer=False, selection=False):
+    def Predict(self, model=False):
         pass
 
 

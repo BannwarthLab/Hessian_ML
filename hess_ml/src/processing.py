@@ -140,6 +140,7 @@ class TransformPredict(Rotation_Functions, FeatureGen):
                         atom_A,
                         atom_B,
                     )
+
                     self.R_MI_APF_mat[i0:i3, j0:j3] = R_MI_APF
 
                     self.Feature_AB.append(self.gen_Feature(R_MI_APF, atom_A, atom_B))

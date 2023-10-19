@@ -12,10 +12,7 @@ class Rotation_Functions:
         pass
 
     def angle_two_vec(self, a, b):
-        if linalg.norm(a) == 0 or linalg.norm(b) == 0:
-            cosangle = 0
-        else:
-            cosangle = np.dot(a, b) / linalg.norm(a) / linalg.norm(b)
+        cosangle = 0 if linalg.norm(a) == 0 or linalg.norm(b) == 0 else np.dot(a, b) / linalg.norm(a) / linalg.norm(b)
 
         return np.arccos(np.clip(cosangle, -1, 1))
 

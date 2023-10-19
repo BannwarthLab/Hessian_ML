@@ -1,7 +1,5 @@
 import copy
-import glob
 import os
-import pickle
 import time
 
 import numpy as np
@@ -45,8 +43,8 @@ class DataGeneration:
 
         print(np.array(mol.Feature_AB).shape)
 
-        np.savetxt(fname=os.path.join(mol.folder, "features"), X=mol.Feature_AB)
-        np.savetxt(fname=os.path.join(mol.folder, "targets"), X=mol.Target_AB)
+        #np.savetxt(fname=os.path.join(mol.folder, "features"), X=mol.Feature_AB)
+        #np.savetxt(fname=os.path.join(mol.folder, "targets"), X=mol.Target_AB)
 
         if mol.do_calc:
             self.Features.extend(mol.Feature_AB)

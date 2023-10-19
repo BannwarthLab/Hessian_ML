@@ -9,9 +9,9 @@ def checkTiming(enabled=True):
                 result = func(self, *args, **kwargs)
                 print(f"{func.__name__} performed in {time.time()- cur_time: 4.5f} s ")
                 return result
-            
+
             return func(self, *args, **kwargs)
-            
+
         return wrapper
 
     return Timing
