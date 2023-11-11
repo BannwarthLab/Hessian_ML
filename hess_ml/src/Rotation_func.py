@@ -185,7 +185,7 @@ class Rotation_Functions:
                          [ 0.0          ,1   , 0.0],
                          [ np.sin(alpha), 0.0, np.cos(alpha)]])
           return R 
-      
+     
      def eig_vec_rot(self,eig_vec): #Checks for the highest value of the eigenvector matrix exchanges if the highest is not in first place
           for i in [0,1]:
                max_abs_val = max(eig_vec[i].min(), eig_vec[i].max(), key=abs)

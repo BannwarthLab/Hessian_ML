@@ -10,6 +10,7 @@ from hess_ml.src.Template import TrainMLHessianGFN2xTB
 import pickle as pickle
 import glob as glob
 import copy
+from hess_ml.src.Template import TrainMLHessianORCA
 class DataGeneration:
 
     def __init__(self) -> None:
@@ -25,7 +26,15 @@ class DataGeneration:
         # if idx == None:
         #    idx = np.arange(0,len(self.geo_dir))
         self.not_considered = []
-        self.molgen = TrainMLHessianGFN2xTB()
+        for program in self.config['general'].get('program', ['xTB']):
+            if len(self.config['general'].get('program', ['xTB'])) == 1:
+                if program.lower()  == 'orca':
+                    self.molgen = TrainMLHessianORCA()
+                elif program.lower()  == 'xtb':    
+                    self.molgen = TrainMLHessianGFN2xTB()
+            else:
+                print('More than one program not implemented yet!')
+                
         for geo in idx:
             self.GenerateData(dir=self.folders[geo])
 

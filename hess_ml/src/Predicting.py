@@ -9,6 +9,7 @@ from hess_ml.src.IO import Input
 from hess_ml.src.IO import Output
 from hess_ml.src.Template import TestMLHessianGFN2xTB
 from hess_ml.src.Observables import Observables
+from hess_ml.src.Template import TestMLHessianORCA
 import time as time
 import copy
 
@@ -45,8 +46,15 @@ class Predicting(Input, Output,Observables):
             self.selector = load(pathname)
 
         self.not_considered = []
-
-        self.molgen = TestMLHessianGFN2xTB()
+        
+        for program in self.config['general'].get('program', ['xTB']):
+            if len(self.config['general'].get('program', ['xTB'])) == 1:
+                if program.lower()  == 'orca':
+                    self.molgen = TestMLHessianORCA()
+                elif program.lower()  == 'xtb':    
+                    self.molgen = TestMLHessianGFN2xTB()
+            else:
+                print('More than one program not implemented yet!')
         
         for file in range(len(files)):
             self.predict_hessian(folder=files[file])
@@ -62,15 +70,24 @@ class Predicting(Input, Output,Observables):
 
         size = 0
         error = 0
-        self.molgen = TestMLHessianGFN2xTB()
+        
+        for program in self.config['general'].get('program', ['xTB']):
+            if len(self.config['general'].get('program', ['xTB'])) == 1:
+                if program.lower()  == 'orca':
+                    self.molgen = TestMLHessianORCA()
+                elif program.lower()  == 'xtb':    
+                    self.molgen = TestMLHessianGFN2xTB()
+            else:
+                print('More than one program not implemented yet!')
     
         for folder in folders:
-            mol = copy.deepcopy(self.molgen) 
-            mol.setConfiguration(folder, self.config["molecule"])
-            mol.hessians_difference(self.config["molecule"]["target_file"], "MLhessian")
-            shape = np.shape(mol.hess_diff)
-            size += shape[0] * shape[1]
-            error += np.sum(mol.hess_diff**2)
+            if folder not in self.not_considered:
+                mol = copy.deepcopy(self.molgen) 
+                mol.setConfiguration(folder, self.config["molecule"])
+                mol.hessians_difference(self.config["molecule"]["target_file"], "MLhessian")
+                shape = np.shape(mol.hess_diff)
+                size += shape[0] * shape[1]
+                error += np.sum(mol.hess_diff**2)
 
         error = np.sqrt(error / size)
 

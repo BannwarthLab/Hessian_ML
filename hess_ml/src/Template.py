@@ -2,7 +2,7 @@ import os
 import sys
 from hess_ml.src.ReadIn.readin import ReadXYZ
 from hess_ml.src.Features.Features import FeatureTBlite
-from hess_ml.src.Targets.Hessian import xTBHessTarget,PredictHessian
+from hess_ml.src.Targets.Hessian import xTBHessTarget,PredictHessian,ORCAHessTarget
 from hess_ml.src.Processing import TransformTrain, TransformPredict
 from hess_ml.src.decorator.decorator import checkTiming
 import time as time 
@@ -18,7 +18,7 @@ class TrainMLHessianGFN2xTB(ReadXYZ,FeatureTBlite,xTBHessTarget,TransformTrain):
         self.folder = folder
         self.xyz_file = os.path.join(self.folder,config.get("xyz_file", "xtbopt.xyz"))
         self.gradient_file = os.path.join(self.folder,config.get("gradient_file", "gradient"))
-        self.target_file = os.path.join(self.folder,config.get("hessian_file", "hessian"))
+        self.target_file = os.path.join(self.folder,config.get("target_file", "hessian"))
         self.do_calc = True
         return
 
@@ -50,12 +50,12 @@ class TestMLHessianGFN2xTB(TransformPredict,PredictHessian,TrainMLHessianGFN2xTB
 
         self.target_file = os.path.join(self.folder, hess1)
         self.ImportTarget()
-        self.hessian1 = self.target
 
         self.target_file = os.path.join(self.folder, hess2)
-        self.ImportTarget()
+        read = xTBHessTarget(self.target_file, self.N_atoms)
+        read.ImportTarget()
 
-        self.hess_diff = self.hessian1 - self.target
+        self.hess_diff = self.target - read.target
 
         return
 
@@ -68,16 +68,18 @@ class PredictMLHessian(TestMLHessianGFN2xTB):
         pass 
     
 
-class TrainMLHessianDFT(TrainMLHessianGFN2xTB):
+class TrainMLHessianORCA(ORCAHessTarget, TrainMLHessianGFN2xTB):
 
     def __init__(self) -> None:
         super().__init__()
 
-    def ImportTarget(self):
-        pass 
 
+class TestMLHessianORCA(ORCAHessTarget, TestMLHessianGFN2xTB):
 
-class PredictMLHessian(TrainMLHessianDFT):
+    def __init__(self) -> None:
+        super().__init__()
+
+class PredictMLHessian(TrainMLHessianORCA):
 
     def __init__(self) -> None:
         super().__init__()
@@ -85,4 +87,3 @@ class PredictMLHessian(TrainMLHessianDFT):
     def ImportTarget(self):
         pass 
     
-
