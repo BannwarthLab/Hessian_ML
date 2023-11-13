@@ -1,9 +1,9 @@
-from argparse import ArgumentParser
-import numpy as np
-import tomli
 import os
 import sys
+from argparse import ArgumentParser
 from pathlib import Path
+
+import tomli
 
 
 class Parser:
@@ -29,15 +29,11 @@ class Parser:
             help="generates a basic example .toml file",
         )
 
-        return
-
     def LoadDefaultConfig(self) -> None:
         abs_path = Path(__file__).parent / "default_input/input.toml"
 
         with open(abs_path, mode="rb") as fp:
             self.default_config = tomli.load(fp)
-
-        return
 
     def parse_toml(self) -> None:
         """
@@ -58,7 +54,7 @@ class Parser:
                 with open("input.toml", mode="rb") as fp:
                     self.config = tomli.load(fp)
 
-                    print(f"Input file: input.toml is used.")
+                    print("Input file: input.toml is used.")
             else:
                 print("Default setup is used.")
 
@@ -73,24 +69,21 @@ class Parser:
 
             sys.exit()
 
-        return
-
-
     def get_config(self) -> dict:
         return self.config
 
     def parse_data_set(self, main_folder) -> None:
         print(f"Parsing data set in {main_folder}...", end="")
         xyz_file = self.config.get("molecule", {"xyz_file": "xtbopt.xyz"}).get(
-            "xyz_file"
+            "xyz_file",
         )
 
         target_file = self.config.get("molecule", {"target_file": "hessian"}).get(
-            "target_file"
+            "target_file",
         )
         walker = os.walk(main_folder)
 
-        self.folders = list()
+        self.folders = []
 
         for folder in walker:
             if xyz_file in folder[-1] and target_file in folder[-1]:
@@ -102,8 +95,6 @@ class Parser:
 
         print(f"Total of {len(self.folders)} folders found.")
         print("")
-
-        return
 
     # def parse_general(self):
     #     """

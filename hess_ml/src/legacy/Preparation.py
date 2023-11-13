@@ -1,12 +1,11 @@
 import numpy as np
-from operator import matmul
-from hess_ml.src.Rotation_func import Rotation_Functions
+
+from hess_ml.src.rotation_func import Rotation_Functions
 
 
 class Preparation(Rotation_Functions):
     def __init__(self):
         super().__init__
-        pass
 
     def rot_inert_apf(self):
         self.R_MI_APF_mat = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
@@ -17,7 +16,8 @@ class Preparation(Rotation_Functions):
             i3 = 3 * atom_A + 3
 
             self.H_APF_mat[i0:i3, i0:i3] = self.hessian[
-                i0:i3, i0:i3
+                i0:i3,
+                i0:i3,
             ].copy()  ##Change Hessian
 
             for atom_B in range(atom_A + 1, self.N_atoms):
@@ -39,7 +39,3 @@ class Preparation(Rotation_Functions):
 
                 self.R_MI_APF_mat[i0:i3, j0:j3] = R_MI_APF
                 self.H_APF_mat[i0:i3, j0:j3] = H_APF
-
-                
-
-        return

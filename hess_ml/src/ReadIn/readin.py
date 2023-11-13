@@ -1,15 +1,17 @@
-import pandas as pd
 import numpy as np
-import hess_ml.src.constants.constants as const
-class ReadXYZ:
+import pandas as pd
 
+import hess_ml.src.constants.constants as const
+
+
+class ReadXYZ:
     def ImportStructure(self):
         with open(self.xyz_file) as myfile:
-            head = [next(myfile) for _ in range(2)]
+            [next(myfile) for _ in range(2)]
 
         xyz_pd = pd.read_csv(
             self.xyz_file,
-            sep="\s+",
+            sep=r"\s+",
             skiprows=2,
             header=None,
             keep_default_na=False,
@@ -32,5 +34,3 @@ class ReadXYZ:
         if self.N_atoms == 1:
             self.do_calc = False
             print("At least two atoms must be considered.")
-        
-        return 

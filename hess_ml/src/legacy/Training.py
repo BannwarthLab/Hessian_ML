@@ -1,31 +1,24 @@
-from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+import glob
+import json
+import os
+import time
+
+import numpy as np
+from joblib import dump, parallel_backend
 from sklearn.decomposition import TruncatedSVD
-from joblib import dump
-from joblib import parallel_backend
-
-import json as json
-
+from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
 
-from sklearn.preprocessing import Normalizer
-from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.model_selection import train_test_split
-
-from hess_ml.src.IO import Input
-from hess_ml.src.decorator.decorator import checkTiming,initProcess
-import os
-import numpy as np
-import glob as glob
-import time as time
+from hess_ml.src.decorator.decorator import initProcess
+from hess_ml.src.io import Input
 
 
-class Training(Input):
+class oldTraining(Input):
     def __init__(self) -> None:
-        super().__init__
         pass
 
     def train(self, runtype):
@@ -33,12 +26,12 @@ class Training(Input):
 
         self.mode = runtype
 
-        if type(self.train_size) == list:
+        if isinstance(self.train_size,list):
             for i in range(len(self.train_size)):
                 temp_time_old = time.time()
 
                 self.do_train_split(i)
-                
+
                 self.training_model(i_split=i)
 
                 temp_time_new = time.time()
@@ -56,17 +49,15 @@ class Training(Input):
 
             print(f"Training was done in {round(temp_time_new - temp_time_old)} s")
 
-        return
-
     def import_FT(self):
         self.Features = []
         self.Targets = []
 
-        print(f"Importing Features and Targets of hessian model... ", end="")
+        print("Importing Features and Targets of hessian model... ", end="")
 
         for f in self.files:
             Feature_temp, Targets_temp = self.import_pickle_FT(
-                os.path.join(f, f"Hessian_ML_Data.json")
+                os.path.join(f, "Hessian_ML_Data.json"),
             )
 
             self.Features.extend(Feature_temp)
@@ -78,8 +69,6 @@ class Training(Input):
         self.Targets = np.array(self.Targets)
 
         print("done\n")
-
-        return
 
     @initProcess
     def TrainModel(self, i_split=None):
@@ -120,7 +109,7 @@ class Training(Input):
             self.normalization = False
 
             self.selection = False
-        
+
         if method == "svr":
             single_regr_model = SVR()
 
@@ -139,7 +128,7 @@ class Training(Input):
 
             self.normalization = True
 
-        if type(self.SearchCV) == str:
+        if isinstance(self.SearchCV, str):
             if self.SearchCV.lower() == "random":
                 search = True
 
@@ -157,12 +146,12 @@ class Training(Input):
 
         print("Parameters for the Model:")
         param_temp = regr_model.get_params()
-        for param in param_temp.keys():
+        for param in param_temp:
             print(f"{param}: {param_temp[param]}")
 
         del param_temp
 
-        if self.normalization == True:
+        if self.normalization is True:
             transformer = StandardScaler().fit(self.Features[self.shuffle_idx])
             self.Features = transformer.transform(self.Features[self.shuffle_idx])
 
@@ -208,23 +197,25 @@ class Training(Input):
             print(f"Selector is saved in {pathname}.\n")
 
             print(
-                f"Feature vector reduced to shape {self.Features[self.shuffle_idx].shape}"
+                f"Feature vector reduced to shape {self.Features[self.shuffle_idx].shape}",
             )
 
         if method != "mlpr":
             regr_model.set_params(n_jobs=self.threads)
             regr_model.fit(
-                self.Features[self.shuffle_idx], self.Targets[self.shuffle_idx]
+                self.Features[self.shuffle_idx],
+                self.Targets[self.shuffle_idx],
             )
 
         else:
             with parallel_backend("threading", n_jobs=self.threads):
                 regr_model.fit(
-                    self.Features[self.shuffle_idx], self.Targets[self.shuffle_idx]
+                    self.Features[self.shuffle_idx],
+                    self.Targets[self.shuffle_idx],
                 )
 
         print(
-            f"Score on training data: {regr_model.score(self.Features[self.shuffle_idx],self.Targets[self.shuffle_idx])}"
+            f"Score on training data: {regr_model.score(self.Features[self.shuffle_idx],self.Targets[self.shuffle_idx])}",
         )
 
         if search:
@@ -234,7 +225,7 @@ class Training(Input):
             g.truncate(0)
         g.close()
 
-        if not (i_split == None):
+        if i_split is not None:
             os.mkdir(f"Model{i_split}")
             pathname = f"Model{i_split}/{self.model_name}.joblib"
         else:
@@ -247,7 +238,7 @@ class Training(Input):
         del g
         del regr_model
 
-        if i_split == None:
+        if i_split is None:
             del self.Features
             del self.Targets
 
@@ -257,8 +248,6 @@ class Training(Input):
 
         if self.selection:
             del selector
-
-        return
 
     def do_train_split(self, i):
         """
@@ -285,5 +274,3 @@ class Training(Input):
             os.makedirs(mypath)
 
         self.data_to_txt(self.train_geo, os.path.join(f"Model{i}/", "train_files.txt"))
-
-        return

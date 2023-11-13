@@ -1,8 +1,9 @@
+import json
 import os
+import pickle
+
 import numpy as np
 import pandas as pd
-import pickle as pickle
-import json as json
 
 
 class Input:
@@ -15,7 +16,7 @@ class Input:
 
         coord_var = pd.read_csv(
             file,
-            sep="\s+",
+            sep=r"\s+",
             skiprows=2,
             header=None,
             keep_default_na=False,
@@ -27,9 +28,7 @@ class Input:
         return coord_var, head
 
     def import_dipm(self, file):
-        coord_var = pd.read_csv(file, sep=",")
-
-        return coord_var
+        return pd.read_csv(file, sep=",")
 
     def import_hessian_dftd4(self, file, coord):
         nat3 = len(coord["atoms"]) * 3
@@ -39,43 +38,22 @@ class Input:
         with open(file_path) as f:
             egh = json.load(f)
 
-        hess_dftd4 = np.array(egh.get("hessian")).reshape(nat3, nat3)
-
-        return hess_dftd4
+        return np.array(egh.get("hessian")).reshape(nat3, nat3)
 
     def import_gradient(self, file):
         with open(file, "rb") as f:
             f.close()
 
         self.gradient = np.genfromtxt(
-            file, skip_header=2 + self.N_atoms, skip_footer=1, loose=True
+            file,
+            skip_header=2 + self.N_atoms,
+            skip_footer=1,
+            loose=True,
         )
         # gradient = gradient.flatten()
 
-        return
-
     def import_wbo(self, file):
-        wbo = pd.read_csv(file, names=["at1", "at2", "wbo"], sep="\s+")
-        return wbo
-
-    def import_pickle_FT_old(self, file):
-        feature = []
-        target = []
-
-        i = 0
-
-        with open(f"{file}", "rb") as f:
-            while True:
-                try:
-                    i += 1
-                    temp_obj = pickle.load(f)
-                    feature.extend(temp_obj["Feature"])
-                    target.extend(temp_obj["Target_AB"])
-                except EOFError:
-                    # print(f'Features and Targets of a total of {i-1} structures are used.\n')
-                    break
-
-        return feature, target
+        return pd.read_csv(file, names=["at1", "at2", "wbo"], sep=r"\s+")
 
     def rd_txt_file(self, file):
         with open(f"{file}", "rb") as f:
@@ -92,7 +70,6 @@ class Input:
             with open(file, "wb+") as f:
                 f.truncate(0)
             f.close()
-        return
 
 
 class Output:
@@ -108,7 +85,7 @@ class Output:
         Nat3 = len(hessian)
 
         with open(file, "w+") as myfile:
-            myfile.write(f"$hessian\n")
+            myfile.write("$hessian\n")
 
             for i in range(Nat3):
                 str_list = [f"{x: 10.10f}" for x in hessian[i]]
@@ -122,13 +99,9 @@ class Output:
                     myfile.write("\n")
         myfile.close()
 
-        return
-
     def data_to_txt(self, data, file):
         with open(file, "w+") as f:
             for d in data:
                 f.write(d)
                 f.write("\n")
         f.close()
-
-        return

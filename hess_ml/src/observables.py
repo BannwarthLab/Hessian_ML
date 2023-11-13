@@ -1,19 +1,21 @@
+from operator import matmul
+
 import numpy as np
 from scipy import linalg
+
 import hess_ml.src.constants.constants as const
-from operator import matmul
-from hess_ml.src.Rotation_func import Rotation_Functions
+from hess_ml.src.rotation_func import Rotation_Functions
 
 
 class Observables(Rotation_Functions):
     def __init__(self) -> None:
         super().__init__
-        pass
 
     def get_coord_state(self):
         return self.coord_state[0]
 
     def get_Frequencies(self, Hessian):
+
         Hess_prj, lamb_len = self.project_hessian(Hessian.copy())
 
         Hess_prj_wgt = self.weight_hessian(Hess_prj)
@@ -25,7 +27,7 @@ class Observables(Rotation_Functions):
         freq = np.zeros(len(eigv))
 
         for i in range(len(eigv)):
-            if eigv[i] >= 0.0:
+            if eigv[i] >= 0:
                 freq[i] = np.sqrt(eigv[i])
 
             else:
@@ -37,36 +39,34 @@ class Observables(Rotation_Functions):
         Z = 1
 
         for i in range(len(freq)):
-            if freq[i] > 0.0:
+            if freq[i] > 0:
                 Z *= (
                     1
                     - np.exp(
-                        -freq[i] * const.conv_Eh_to_J / (const.boltzmann_const * 298.15)
+                        -freq[i]
+                        * const.conv_Eh_to_J
+                        / (const.boltzmann_const * 298.15),
                     )
                 ) ** -1
 
         return Z
 
     def get_ZPE(self, freq):
-        ZPE = 1 / 2 * np.sum(freq)
-
-        return ZPE
+        return 1 / 2 * np.sum(freq)
 
     def get_harmonic_ZPE(self, freq):  # in kJ/mol
         freq = freq.copy()
         for i in range(len(freq)):
-            if freq[-i] == 0.0:
+            if freq[-i] == 0:
                 freq.pop(-i)
 
-        ZPE = 1 / 2 * np.sum(1 / np.array(freq)) ** -1 * 0.01196265919
-
-        return ZPE
+        return 1 / 2 * np.sum(1 / np.array(freq)) ** -1 * 0.01196265919
 
     def project_hessian(self, Hessian):
         idx_list, lamb, Q = self.find_trans_rot(Hessian, self.xyz)
         lamb_len = len(idx_list)
+        idx_list = list(map(int,idx_list))
         for i in idx_list:
-            i = int(i)
             Hessian -= lamb[i] * np.outer(Q.T[i], Q.T[i].T)
 
         return Hessian, lamb_len
@@ -75,43 +75,48 @@ class Observables(Rotation_Functions):
         atoms = self.xyz["atoms"]
 
         for k in range(len(hessian[1, :]) // 3):
-            for l in range(len(hessian[:, 1]) // 3):
+            for m in range(len(hessian[:, 1]) // 3):
                 mass_n = const.elements_dict[atoms[k]]
-                mass_m = const.elements_dict[atoms[l]]
+                mass_m = const.elements_dict[atoms[m]]
 
-                hessian[3 * k : 3 * k + 3, 3 * l : 3 * l + 3] = (
+                hessian[3 * k : 3 * k + 3, 3 * m : 3 * m + 3] = (
                     1
                     / np.sqrt(mass_n * mass_m * const.mass_unit_in_au**2)
-                    * hessian[3 * k : 3 * k + 3, 3 * l : 3 * l + 3]
+                    * hessian[3 * k : 3 * k + 3, 3 * m : 3 * m + 3]
                 )
 
         return hessian
 
     def fill_matrix_block_AB(
-        self, vector, matrix, R_mat=None, A=None, B=None, transpose=False
+        self,
+        vector,
+        matrix,
+        R_mat=None,
+        A=None,
+        B=None,
+        transpose=False,
     ):
         A3 = 3 * A
         B3 = 3 * B
 
         matrix[A3 : A3 + 3, B3 : B3 + 3] = vector.reshape(3, 3)
 
-        if transpose == True:
+        if transpose is True:
             matrix[A3 : A3 + 3, B3 : B3 + 3] = np.matmul(
                 np.matmul(
-                    np.transpose(self.rot_Z(np.pi)), (matrix[A3 : A3 + 3, B3 : B3 + 3])
+                    np.transpose(self.rot_Z(np.pi)),
+                    (matrix[A3 : A3 + 3, B3 : B3 + 3]),
                 ),
                 (self.rot_Z(np.pi)),
             )
 
-            matrix[A3 : A3 + 3, B3 : B3 + 3] = np.transpose(
-                np.matmul(
+            matrix[A3 : A3 + 3, B3 : B3 + 3] = np.matmul(
                     np.matmul(
                         np.transpose(self.rot_X(np.pi)),
                         (matrix[A3 : A3 + 3, B3 : B3 + 3]),
                     ),
                     (self.rot_X(np.pi)),
                 )
-            )
 
         matrix[A3 : A3 + 3, B3 : B3 + 3] = np.matmul(
             np.matmul(
@@ -122,7 +127,7 @@ class Observables(Rotation_Functions):
         )
 
         matrix[B3 : B3 + 3, A3 : A3 + 3] = np.transpose(
-            matrix[A3 : A3 + 3, B3 : B3 + 3]
+            matrix[A3 : A3 + 3, B3 : B3 + 3],
         )
 
         return matrix
@@ -137,8 +142,9 @@ class Observables(Rotation_Functions):
         matrix[A3 : A3 + 3, A3 : A3 + 3] = temp_mat
 
         return matrix
-    
+
     def find_trans_rot(self, hess, coord):
+        norm_th = 1e-6
         Nat = len(coord)
 
         overlap_mat = np.zeros([6, 3 * Nat])
@@ -154,13 +160,13 @@ class Observables(Rotation_Functions):
             overlap_mat[2, i3 : i3 + 3] = trans_z
 
             overlap_mat[3, i3 : i3 + 3] = np.array(
-                [0.0, coord.loc[i, "z"], -coord.loc[i, "y"]]
+                [0.0, coord.loc[i, "z"], -coord.loc[i, "y"]],
             )
             overlap_mat[4, i3 : i3 + 3] = np.array(
-                [-coord.loc[i, "z"], 0.0, coord.loc[i, "x"]]
+                [-coord.loc[i, "z"], 0.0, coord.loc[i, "x"]],
             )
             overlap_mat[5, i3 : i3 + 3] = np.array(
-                [coord.loc[i, "y"], -coord.loc[i, "x"], 0.0]
+                [coord.loc[i, "y"], -coord.loc[i, "x"], 0.0],
             )
 
         overlap_mat = overlap_mat / Nat
@@ -179,9 +185,9 @@ class Observables(Rotation_Functions):
         idx_len = 6
 
         if (
-            (norm_x + norm_y) < 1e-6
-            or (norm_y + norm_z) < 1e-6
-            or (norm_z + norm_x) < 1e-6
+            (norm_x + norm_y) < norm_th
+            or (norm_y + norm_z) < norm_th
+            or (norm_z + norm_x) < norm_th
         ):
             idx_len = 5
 
@@ -197,8 +203,6 @@ class Observables(Rotation_Functions):
             M_sum[idx] -= M_sum[idx]
 
         return idx_list, lamb, Q
-
-
 
     def gen_hess_from_vec_true(self, hess_vec_aa, hess_vec_ab):
         ite_hetero = 0
@@ -224,43 +228,49 @@ class Observables(Rotation_Functions):
         return Hessian
 
     def gen_hess_from_vec_pred(
-            self, hess_vec_ab, N_atoms, R_MI_APF_mat, transpose_list
-        ):
-            ite_hetero = 0
+        self,
+        hess_vec_ab,
+        N_atoms,
+        R_MI_APF_mat,
+        transpose_list,
+    ):
+        ite_hetero = 0
 
-            Hessian = np.zeros([N_atoms * 3, N_atoms * 3])
+        Hessian = np.zeros([N_atoms * 3, N_atoms * 3])
 
-            for atom_A in range(N_atoms):
-                for atom_B in range(atom_A + 1, N_atoms):
-                    transpose = False
+        for atom_A in range(N_atoms):
+            for atom_B in range(atom_A + 1, N_atoms):
+                transpose = False
 
-                    if [atom_A, atom_B] in transpose_list:
-                        transpose = True
+                if [atom_A, atom_B] in transpose_list:
+                    transpose = True
 
-                    Hessian = self.fill_matrix_block_AB(
-                        hess_vec_ab[ite_hetero],
-                        Hessian,
-                        R_mat=R_MI_APF_mat,
-                        A=atom_A,
-                        B=atom_B,
-                        transpose=transpose,
-                    )
-                    ite_hetero += 1
+                Hessian = self.fill_matrix_block_AB(
+                    hess_vec_ab[ite_hetero],
+                    Hessian,
+                    R_mat=R_MI_APF_mat,
+                    A=atom_A,
+                    B=atom_B,
+                    transpose=transpose,
+                )
+                ite_hetero += 1
 
-            for atom_A in range(N_atoms):
-                for atom_B in range(N_atoms):
-                    if atom_A != atom_B:
-                        Hessian[
-                            3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3
-                        ] -= Hessian[
-                            3 * atom_A : 3 * atom_A + 3, 3 * atom_B : 3 * atom_B + 3
-                        ]
+        for atom_A in range(N_atoms):
+            for atom_B in range(N_atoms):
+                if atom_A != atom_B:
+                    Hessian[
+                        3 * atom_A : 3 * atom_A + 3,
+                        3 * atom_A : 3 * atom_A + 3,
+                    ] -= Hessian[
+                        3 * atom_A : 3 * atom_A + 3,
+                        3 * atom_B : 3 * atom_B + 3,
+                    ]
 
-                Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3] = (
-                    Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
-                    + np.transpose(
-                        Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
-                    )
-                ) / 2
+            Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3] = (
+                Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
+                + np.transpose(
+                    Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3],
+                )
+            ) / 2
 
-            return Hessian
+        return Hessian

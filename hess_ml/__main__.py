@@ -1,6 +1,7 @@
-from hess_ml.src.Environment import Environment
-from hess_ml.src.Parser import Parser
-import time as time
+import time
+
+from hess_ml.src.environment import Environment
+from hess_ml.src.parser import Parser
 
 
 def main() -> None:
@@ -14,11 +15,14 @@ def main() -> None:
 
     env.print_config()
 
-    env.import_data()
+    if env.config["general"].get("feature"):
+        env.import_data()
 
-    env.do_train()
+    if env.config["general"].get("train"):
+        env.train_procedure()
 
-    env.do_prediction()
+    if env.config["general"].get("predict", False) and env.config.get("predict", False):
+        env.prediction_procedure()
 
 
 if __name__ == "__main__":

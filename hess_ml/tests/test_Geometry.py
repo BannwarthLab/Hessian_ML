@@ -1,41 +1,43 @@
+import os
 import unittest as ut
-from hess_ml.src.Geometry import Geometry
-from hess_ml.src.IO import Input
 from pathlib import Path
-import os 
+
 import numpy as np
+
+from hess_ml.src.geometry import Geometry
+from hess_ml.src.io import Input
 
 
 class TestGeometry(ut.TestCase):
 
     def test_Geometry_data_generation(self) -> None:
 
-        config = dict()
+        config = {}
 
-        config['xyz_file'] =   'struc.xyz'
-        config['feature'] = 'tblite'
+        config["xyz_file"] =   "struc.xyz"
+        config["feature"] = "tblite"
 
-        folder = Path(__file__).parent / 'test_files/ethane/'
+        folder = Path(__file__).parent / "test_files/ethane/"
 
         molecule = Geometry(folder = folder,config=config)
 
         input = Input()
 
-        file = Path(__file__).parent / 'test_files/ethane/struc.xyz'
+        file = Path(__file__).parent / "test_files/ethane/struc.xyz"
 
         xyz, header = input.import_coord(file)
-        
+
         molecule.gen_data(threads=1)
 
-        elements = ['c','c','h','h','h','h','h','h']
+        elements = ["c","c","h","h","h","h","h","h"]
         nuc_charge = [6.0,6.0,1.0,1.0,1.0,1.0,1.0,1.0]
 
         for i in range(len(elements)):
-            self.assertEqual(molecule.elements[i].lower(),elements[i])
-            self.assertEqual(molecule.nuc_charge[i],nuc_charge[i])
+            assert molecule.elements[i].lower() == elements[i]
+            assert molecule.nuc_charge[i] == nuc_charge[i]
 
-        self.assertEqual(molecule.N_atoms,8)
-        self.assertEqual(np.sum(np.array(xyz.iloc[:,1:])),np.sum(molecule.xyz))
+        assert molecule.N_atoms == 8
+        assert np.sum(np.array(xyz.iloc[:, 1:])) == np.sum(molecule.xyz)
 
 
         R = molecule.R_MI_APF_mat[:3,3:6]
@@ -46,5 +48,5 @@ class TestGeometry(ut.TestCase):
 
 
 
-if __name__ == '__main___':
+if __name__ == "__main___":
     ut.main()
