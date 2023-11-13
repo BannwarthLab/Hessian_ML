@@ -1,14 +1,18 @@
 import os
 import time
-
 import numpy as np
+import sys
+
 
 from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src.Features.features import FeatureTBlite
 from hess_ml.src.processing import TransformPredict, TransformTrain
 from hess_ml.src.ReadIn.readin import ReadXYZ
-from hess_ml.src.Targets.hessian import PredictHessian, xTBHessTarget
-
+from hess_ml.src.Features.features import FeatureTBlite
+from hess_ml.src.Targets.hessian import xTBHessTarget,PredictHessian,ORCAHessTarget
+from hess_ml.src.processing import TransformTrain, TransformPredict
+from hess_ml.src.decorator.decorator import checkTiming
+import time as time 
 
 class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrain):
     def __init__(self) -> None:
@@ -17,15 +21,9 @@ class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrai
     def setConfiguration(self, folder: str, config: dict):
         self.config = config
         self.folder = folder
-        self.xyz_file = os.path.join(self.folder, config.get("xyz_file", "xtbopt.xyz"))
-        self.gradient_file = os.path.join(
-            self.folder,
-            config.get("gradient_file", "gradient"),
-        )
-        self.target_file = os.path.join(
-            self.folder,
-            config.get("hessian_file", "hessian"),
-        )
+        self.xyz_file = os.path.join(self.folder,config.get("xyz_file", "xtbopt.xyz"))
+        self.gradient_file = os.path.join(self.folder,config.get("gradient_file", "gradient"))
+        self.target_file = os.path.join(self.folder,config.get("target_file", "hessian"))
         self.do_calc = True
         self.solvent = self.config.get("solvent",None)
 
@@ -55,12 +53,12 @@ class TestMLHessianGFN2xTB(TransformPredict, PredictHessian, TrainMLHessianGFN2x
 
         self.target_file = os.path.join(self.folder, hess1)
         self.ImportTarget()
-        self.hessian1 = self.target
 
         self.target_file = os.path.join(self.folder, hess2)
-        self.ImportTarget()
+        read = xTBHessTarget(self.target_file, self.N_atoms)
+        read.ImportTarget()
 
-        self.hess_diff = self.hessian1 - self.target
+        self.hess_diff = self.target - read.target
 
 
 class PredictMLHessianxTB(TestMLHessianGFN2xTB):
@@ -70,18 +68,25 @@ class PredictMLHessianxTB(TestMLHessianGFN2xTB):
     def ImportTarget(self):
         pass
 
-
+class TrainMLHessianORCA(ORCAHessTarget, TrainMLHessianGFN2xTB):
+    def __init__(self) -> None:
+        super().__init__()
+        
 class TrainMLHessianDFT(TrainMLHessianGFN2xTB):
     def __init__(self) -> None:
         super().__init__()
 
-    def ImportTarget(self):
-        pass
 
+class TestMLHessianORCA(ORCAHessTarget, TestMLHessianGFN2xTB):
 
-class PredictMLHessianDFT(TrainMLHessianDFT):
+    def __init__(self) -> None:
+        super().__init__()
+
+class PredictMLHessian(TrainMLHessianORCA):
+
     def __init__(self) -> None:
         super().__init__()
 
     def ImportTarget(self):
-        pass
+        pass 
+    
