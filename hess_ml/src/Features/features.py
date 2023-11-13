@@ -1,12 +1,11 @@
+import faulthandler
 import os
 
 import numpy as np
 import pandas as pd
-from ase.io import read as ase_read
-
 from ase.io import read
+from ase.io import read as ase_read
 from ase.units import Bohr
-import faulthandler
 from tblite.interface import Calculator
 
 strings = [
@@ -71,7 +70,7 @@ class FeatureTBlite:
 
 
             calc= Calculator(
-            method='GFN2-xTB',
+            method="GFN2-xTB",
             uhf=uhf,
             charge=charge,
             numbers=ase_mol.get_atomic_numbers(),
@@ -138,7 +137,7 @@ class FeatureTBlite:
                     self.p[f"{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(f"p_{orb}")].to_numpy()
 
         self.energy_based = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(pattern)].to_numpy()
-        
+
         self.cn["default"] = self.ml_feat.loc[:, "CN"].to_numpy()
         self.cn["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.contains("delta_CN")].to_numpy()
 

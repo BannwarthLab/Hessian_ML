@@ -1,22 +1,25 @@
 import os
+import sys
 import time
-import sys 
+from typing import Optional
 
 import numpy as np
 from joblib import dump, parallel_backend
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.compose import TransformedTargetRegressor
 from sklearn.decomposition import TruncatedSVD
-from sklearn.feature_selection import VarianceThreshold
 from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
+from sklearn.feature_selection import VarianceThreshold
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.neural_network import MLPRegressor
-from sklearn.preprocessing import StandardScaler,Normalizer
-from sklearn.svm import SVR
 from sklearn.pipeline import Pipeline
-from sklearn.compose import TransformedTargetRegressor
-from sklearn.base import TransformerMixin,BaseEstimator
-from hess_ml.src.decorator.decorator import initProcess,checkTiming
-from hess_ml.src.io import Input,Output
+from sklearn.preprocessing import Normalizer, StandardScaler
+from sklearn.svm import SVR
+
+from hess_ml.src.decorator.decorator import checkTiming, initProcess
+from hess_ml.src.io import Input, Output
+
 
 class MyTransform(BaseEstimator,TransformerMixin):
     def fit(self, *_, **__):
@@ -27,7 +30,7 @@ class MyTransform(BaseEstimator,TransformerMixin):
 
     def inverse_transform(self, X):
         return X*3-2#-np.sign(X)*10**(-np.sign(X)*X+1)
-    
+
 
 class Training(Input,Output):
 
@@ -36,18 +39,16 @@ class Training(Input,Output):
         self.model_info = []
         self.rnd_seed = seed
         self.threads = threads
-        pass
 
 
     def build_model(self):
-        self.set_selection(self.config.get('select',None))
-        self.set_scaler(self.config.get('scale',None))
-        self.set_model(self.config.get('method','etr'))
+        self.set_selection(self.config.get("select",None))
+        self.set_scaler(self.config.get("scale",None))
+        self.set_model(self.config.get("method","etr"))
         self.set_pipeline()
-        self.set_target_transform(self.config.get('transform',None))
+        self.set_target_transform(self.config.get("transform",None))
 
-        return 
-    
+
     @checkTiming(enabled=True)
     def training(self,features,targets,shuffle_idx,i_split=None):
         self.print_params()
@@ -73,29 +74,27 @@ class Training(Input,Output):
 
         self.dump_model(i_split=i_split)
 
-        return 
 
-    def set_target_transform(self,transformation:str=None):
+    def set_target_transform(self,transformation:Optional[str]=None):
         """
         Currently does not work. First test with this transformation were no promising.
-        RMSD > 2 for 10% train set in gdb7 
+        RMSD > 2 for 10% train set in gdb7
 
         """
-        
+
         if transformation is None:
-            pass 
+            pass
 
         elif transformation:
             temp = TransformedTargetRegressor(regressor=self.complete_model,
                                                 transformer=MyTransform(),
                                                 check_inverse=False)
-            
+
             self.complete_model = temp
 
 
-        return
 
-    def set_selection(self,selection:str=None) -> list:
+    def set_selection(self,selection:Optional[str]=None) -> list:
         """
         Define the feature selector for the ML model.
         param:
@@ -105,27 +104,27 @@ class Training(Input,Output):
 
         if selection is None:
             return
-        
-        if selection.lower() in ['svd','truncatedsvd']:
+
+        if selection.lower() in ["svd","truncatedsvd"]:
             feature_selector =  TruncatedSVD(n_components=50, algorithm="arpack")
             self.model_info.append(("feature_selector", feature_selector))
-        
+
         if selection.lower() in ["variancethreshold"]:
             feature_selector = VarianceThreshold()
             self.model_info.append(("feature_selector", feature_selector))
 
-        return 
+        return
 
-    def set_scaler(self,scaling:str=None)-> list:
-            
+    def set_scaler(self,scaling:Optional[str]=None)-> list:
+
         """
         Define the standard scaler for the ML model.
         """
-        
+
         if scaling is None:
             return
-        
-        if scaling.lower() =='standardscaler':
+
+        if scaling.lower() =="standardscaler":
             scaler = StandardScaler()
             self.model_info.append(("scaler",scaler))
 
@@ -137,10 +136,10 @@ class Training(Input,Output):
 
     def set_model(self,method:str) -> list:
         """
-        Define the ML model. 
+        Define the ML model.
         """
         self.method = method
-        params= self.config.get('parameter',[{}])[0]
+        params= self.config.get("parameter",[{}])[0]
 
         method = method.lower()
 
@@ -167,13 +166,13 @@ class Training(Input,Output):
             regr_model.set_params(**params)
 
         else:
-            print('Model does not match to the existing models.')
+            print("Model does not match to the existing models.")
             sys.exit()
 
-        self.model_info.append(('regressor',regr_model))
+        self.model_info.append(("regressor",regr_model))
 
         return self.model_info
-    
+
 
     def set_pipeline(self):
         """
@@ -181,13 +180,12 @@ class Training(Input,Output):
         """
 
         self.complete_model = Pipeline(steps=self.model_info)
-            
-        return
+
 
 
     def dump_model(self,i_split=None):
 
-        model_name = self.config.get('model_name')
+        model_name = self.config.get("model_name")
 
         if i_split is not None:
             os.mkdir(f"Model{i_split}")
@@ -199,7 +197,6 @@ class Training(Input,Output):
 
         print(f"Model is saved in {pathname}.\n")
 
-        return
 
 
     def do_train_split(self, i):
@@ -227,7 +224,6 @@ class Training(Input,Output):
 
         self.data_to_txt(self.train_geo, os.path.join(f"Model{i}/", "train_files.txt"))
 
-        return 
 
 
     def print_params(self):
@@ -237,4 +233,3 @@ class Training(Input,Output):
         for param in param_temp:
             print(f"{param}: {param_temp[param]}")
 
-        return

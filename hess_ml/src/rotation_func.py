@@ -1,10 +1,9 @@
 import numpy as np
 from numpy import linalg
+from scipy.spatial.distance import pdist
 
 import hess_ml.src.constants.constants as const
 from hess_ml.src.decorator.decorator import checkTiming
-from scipy.spatial.distance import pdist
-
 
 
 class Rotation_Functions:
@@ -14,7 +13,7 @@ class Rotation_Functions:
     def angle_two_vec(self, a, b):
         cosangle = 0 if linalg.norm(a) == 0 or linalg.norm(b) == 0 else np.dot(a, b) / linalg.norm(a) / linalg.norm(b)
         return np.arccos(np.clip(cosangle, -1, 1))
-    
+
 
     def center_charge(self, coord_var):
         d = np.zeros(3)
@@ -128,7 +127,7 @@ class Rotation_Functions:
         vec_x = np.matmul(R_euler, vec_x)
 
         self.angle_two_vec(LL, vec_x)
-        
+
         # Check for Errors in dipole moment or the coordinates
 
         if vec_x[0] < zero_th:

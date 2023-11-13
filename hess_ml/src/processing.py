@@ -50,7 +50,7 @@ class FeatureGen(Geometry):
             elif np.linalg.norm(self.dipm["A"][A]) == np.linalg.norm(self.dipm["A"][B]):
                 print("Nucelar Charge and Dipole moment are the same.")
 
-    
+
 
         R_AB = np.linalg.norm(self.xyz[A, :] - self.xyz[B, :])
 

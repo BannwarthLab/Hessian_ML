@@ -4,11 +4,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 from hess_ml.src.data_generation import DataGeneration
+from hess_ml.src.decorator.decorator import initProcess
 from hess_ml.src.io import Input
+from hess_ml.src.model_template import Training
 from hess_ml.src.parser import Parser
 from hess_ml.src.predicting import Predicting
-from hess_ml.src.model_template import Training
-from hess_ml.src.decorator.decorator import initProcess
+
 # 0.09769007921573508
 # 0.05527
 
@@ -95,14 +96,14 @@ class Environment(DataGeneration, Parser, Predicting, Input):
 
                 # self.import_FT()
 
-                model_trainer = Training(self.config['train'],self.rnd_seed,self.threads)
+                model_trainer = Training(self.config["train"],self.rnd_seed,self.threads)
                 model_trainer.build_model()
                 model_trainer.training(features=self.Features,
                                             targets=self.Targets,
                                             shuffle_idx=self.shuffle_idx,
                                             i_split=i,
                                             )
-                del model_trainer 
+                del model_trainer
 
                 if self.config["train"]["test_size"] > test_size_threshold:
 
@@ -123,7 +124,7 @@ class Environment(DataGeneration, Parser, Predicting, Input):
 
             temp_time_old = time.time()
 
-            model_trainer = Training(self.config['train'],self.rnd_seed,self.threads)
+            model_trainer = Training(self.config["train"],self.rnd_seed,self.threads)
             model_trainer.build_model()
             model_trainer.training(features=self.Features,
                                         targets=self.Targets,

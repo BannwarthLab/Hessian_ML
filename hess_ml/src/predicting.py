@@ -25,7 +25,7 @@ class Predicting(Input, Output, Observables):
             self.model = model
 
         self.not_considered = []
-        
+
         self.molgen = TestMLHessianGFN2xTB()
 
         for file in range(len(files)):
@@ -54,8 +54,8 @@ class Predicting(Input, Output, Observables):
 
         print("Seed\tTrain Size\tRMSD")
         print(f"{rnd_seed}\t{train_size*100: 3.0f}\t{error : 0.5f}")
-        
-        with open('results','a+') as file:
+
+        with open("results","a+") as file:
             file.write(f"{rnd_seed}\t{train_size*100: 3.0f}\t{error : 0.5f}\n")
 
     def predict_hessian(self, folder):
