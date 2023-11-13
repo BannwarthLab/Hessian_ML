@@ -1,10 +1,10 @@
-from operator import matmul
-
 import numpy as np
-from scipy import linalg
+from numpy import linalg
 
 import hess_ml.src.constants.constants as const
 from hess_ml.src.decorator.decorator import checkTiming
+from scipy.spatial.distance import pdist
+
 
 
 class Rotation_Functions:
@@ -13,8 +13,8 @@ class Rotation_Functions:
 
     def angle_two_vec(self, a, b):
         cosangle = 0 if linalg.norm(a) == 0 or linalg.norm(b) == 0 else np.dot(a, b) / linalg.norm(a) / linalg.norm(b)
-
         return np.arccos(np.clip(cosangle, -1, 1))
+    
 
     def center_charge(self, coord_var):
         d = np.zeros(3)
@@ -85,8 +85,6 @@ class Rotation_Functions:
 
         coord_end -= T
 
-        vec_z = np.zeros(3)
-
         # Rotation for i < j
 
         # Atom pair focussed coordinate system
@@ -96,8 +94,8 @@ class Rotation_Functions:
         LL = np.cross(vec_z, axis[2])
 
         if np.sum(np.abs(np.array(coord_end[[i, j], :2]))) < sum_th:
-            beta = self.angle_two_vec(vec_z, axis[2])
             alpha = 2 * np.pi - self.angle_two_vec(vec_x, axis[0])
+            beta = self.angle_two_vec(vec_z, axis[2])
             gamma = 0
 
             if linalg.det(np.array([axis[0], axis[2], vec_x])) > zero_th:
@@ -124,14 +122,15 @@ class Rotation_Functions:
 
         if np.matmul(R_euler, vec_x)[0] < zero_th:
             R_z = self.rot_Z(np.pi)
-            R_euler = matmul(R_z, R_euler)
+            R_euler = np.matmul(R_z, R_euler)
 
         # Apply the euler rotation matrix on the new x axis for verification reasons
         vec_x = np.matmul(R_euler, vec_x)
 
         self.angle_two_vec(LL, vec_x)
-
+        
         # Check for Errors in dipole moment or the coordinates
+
         if vec_x[0] < zero_th:
             print(f"Error in vec_x[0] in {i,j}")
 
@@ -233,7 +232,7 @@ class Rotation_Functions:
     def vector_rot(coord_var, rotM):
         coord_var_new = coord_var.copy()
         for i in range(len(coord_var.iloc[:, 1])):
-            coord_var_new.iloc[i, :] = matmul(rotM, coord_var.iloc[i, :])
+            coord_var_new.iloc[i, :] = np.matmul(rotM, coord_var.iloc[i, :])
         return coord_var_new
 
     def calc_R(self, coord):

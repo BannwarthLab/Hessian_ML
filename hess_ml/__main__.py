@@ -15,11 +15,14 @@ def main() -> None:
 
     env.print_config()
 
-    env.import_data()
+    if env.config["general"].get("feature"):
+        env.import_data()
 
-    env.train_procedure()
+    if env.config["general"].get("train"):
+        env.train_procedure()
 
-    env.prediction_procedure()
+    if env.config["general"].get("predict", False) and env.config.get("predict", False):
+        env.prediction_procedure()
 
 
 if __name__ == "__main__":

@@ -4,14 +4,47 @@ import numpy as np
 import pandas as pd
 from ase.io import read as ase_read
 
+from ase.io import read
+from ase.units import Bohr
+import faulthandler
+from tblite.interface import Calculator
+
+strings = [
+        "response",
+        "gap",
+        "chem_pot",
+        "HOAO_a",
+        "LUAO_a",
+        "HOAO_b",
+        "LUAO_b",
+        "delta_gap",
+        "delta_chem_pot",
+        "delta_HOAO",
+        "delta_LUAO",
+        "E_rep",
+        "E_EHT",
+        "E_disp2",
+        "E_disp3",
+        "E_ies_ixc",
+        "E_AES",
+        "E_AXC",
+    ]
+
+pattern = ""
+
+for string in strings:
+    pattern += string + "|"
+pattern = pattern[:-1]
 
 class FeatureTBlite:
     def __init__(self) -> None:
         return
 
     def ImportFeature(self):
+
         # Use ase to read in coordinates
-        from tblite.ase import TBLite
+
+        faulthandler.enable()
 
         try:
             ase_mol = ase_read(filename=self.xyz_file)
@@ -36,25 +69,32 @@ class FeatureTBlite:
                 with open(uhfFilePath) as uhfFile:
                     uhf = int(uhfFile.readline())
 
-            ase_mol.calc = TBLite(method="GFN2-xTB", xtbml=2, charge=charge, uhf=uhf)
 
-            ase_mol.calc.calculate(ase_mol)
+            calc= Calculator(
+            method='GFN2-xTB',
+            uhf=uhf,
+            charge=charge,
+            numbers=ase_mol.get_atomic_numbers(),
+            positions=ase_mol.get_positions()*1/Bohr,
+            )
 
-            # from the results type various properties can be retrived
-            # "xtbml" = xtbml fetaures as a numpy array (natoms, nfeatures)
-            # "xtbml weights" = get Mulliken-based partitioning weights
-            # "xtbml labels" = get the labels corresponding to the features
-            X = ase_mol.calc.results["xtbml"]
-            w = ase_mol.calc.results["xtbml weights"]
-            labels = ase_mol.calc.results["xtbml labels"]
+            if self.solvent is not None:
+                calc.add("alpb-solvation",self.solvent)
 
-            self.ml_feat = pd.DataFrame(X, columns=labels)
-            self.ml_feat["weights"] = w
+            calc.add("xtbml_xyz")
 
-            self.ReadGradient(self.gradient_file)
+            res = calc.singlepoint()
+
+            self.gradient = res.get("gradient")
+
+            X = res.get("post-processing-dict")
+
+            self.ml_feat = pd.DataFrame(X, columns=X.keys())
+
             self.FilterFeatures()
 
         except:
+
             self.do_calc = False
 
             print("No convergenve structure will not be considered.")
@@ -71,6 +111,7 @@ class FeatureTBlite:
         )
 
     def FilterFeatures(self):
+
         self.dipm = {}
         self.qm = {}
         self.q = {}
@@ -78,49 +119,28 @@ class FeatureTBlite:
         self.p = {}
 
         for orb in ["s", "p", "d", "A", "e", "Z"]:
+
             if orb not in {"s", "p", "d"}:
-                self.dipm[f"delta_{orb}"] = self.ml_feat.filter(
-                    regex=f"delta_dipm_{orb}_",
-                ).to_numpy()
-                self.qm[f"delta_{orb}"] = self.ml_feat.filter(
-                    regex=f"delta_qm_{orb}_",
-                ).to_numpy()
+
+                self.dipm[f"delta_{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(f"delta_dipm_{orb}_._")].to_numpy()
+
+                self.qm[f"delta_{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(f"delta_qm_{orb}_.._")].to_numpy()
+
+                if orb == "Z":
+                    self.dipm[f"delta_{orb}"] -= self.dipm[f"delta_{orb}"]
+                    self.qm[f"delta_{orb}"] -= self.qm[f"delta_{orb}"]
 
             if orb not in {"e", "Z"}:
-                self.dipm[f"{orb}"] = self.ml_feat.filter(
-                    regex=f"^dipm_{orb}_",
-                ).to_numpy()
-                self.qm[f"{orb}"] = self.ml_feat.filter(regex=f"^qm_{orb}_").to_numpy()
+                self.dipm[f"{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.startswith(f"dipm_{orb}_")].to_numpy()
+                self.qm[f"{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.startswith(f"qm_{orb}_")].to_numpy()
 
                 if orb != "A":
-                    self.q[f"{orb}"] = self.ml_feat.filter(regex=f"q_{orb}").to_numpy()
+                    self.p[f"{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(f"p_{orb}")].to_numpy()
 
-        self.energy_based = self.ml_feat.loc[
-            :,
-            [
-                "response",
-                "gap",
-                "chem.pot",
-                "HOAO_a",
-                "LUAO_a",
-                "HOAO_b",
-                "LUAO_b",
-                "delta_gap",
-                "delta_chem_pot",
-                "delta_HOAO",
-                "delta_LUAO",
-                "E_repulsion",
-                "E_EHT",
-                "E_disp_2",
-                "E_disp_3",
-                "E_ies_ixc",
-                "E_aes",
-                "E_axc",
-            ],
-        ].to_numpy()
-
+        self.energy_based = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(pattern)].to_numpy()
+        
         self.cn["default"] = self.ml_feat.loc[:, "CN"].to_numpy()
-        self.cn["delta"] = self.ml_feat.loc[:, "delta_CN"].to_numpy()
+        self.cn["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.contains("delta_CN")].to_numpy()
 
-        self.p["default"] = self.ml_feat.loc[:, "p_A"].to_numpy()
-        self.p["delta"] = self.ml_feat.loc[:, "delta_p_A"].to_numpy()
+        self.q["default"] = self.ml_feat.loc[:, "q_A"].to_numpy()
+        self.q["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.contains("delta_q_A")].to_numpy()

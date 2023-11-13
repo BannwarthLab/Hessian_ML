@@ -36,7 +36,6 @@ class Environment(DataGeneration, Parser, Predicting, Input):
 
         self.rnd_seed = self.config["general"]["random_state"]
         self.threads = self.config["general"]["threads"]
-        np.random.default_rng(self.rnd_seed)
 
     def print_config(self):
         print("Used config is:")
@@ -54,7 +53,6 @@ class Environment(DataGeneration, Parser, Predicting, Input):
         print("")
 
     def import_data(self):
-        if self.config["general"].get("feature"):
             self.gen_features()
 
 
@@ -63,121 +61,116 @@ class Environment(DataGeneration, Parser, Predicting, Input):
     def train_procedure(self):
         test_size_threshold = 0.0
 
-        if self.config["general"]["train"]:
+        self.train_size = self.config["train"]["train_size"]
 
-            self.train_size = self.config["train"]["train_size"]
+        self.model_name = self.config["train"]["model_name"]
 
-            self.model_name = self.config["train"]["model_name"]
+        self.runtype = self.config["general"]["runtype"]
 
-            self.runtype = self.config["general"]["runtype"]
+        if isinstance(self.train_size, list):
+            self.train_size = sorted(self.train_size)[::]
 
-            if isinstance(self.train_size, list):
-                self.train_size = sorted(self.train_size)[::]
+            for i in range(len(self.train_size)):
+                self.shuffle_idx = np.arange(len(self.Features))
 
-                print(self.train_size)
+                print(
+                    f"Percentage of data set used for training: {self.train_size[i]*100} %",
+                )
 
-                for i in range(len(self.train_size)):
-                    self.shuffle_idx = np.arange(len(self.Features))
+                temp_time_old = time.time()
 
-                    print(
-                        f"Percentage of data set used for training: {self.train_size[i]*100} %",
-                    )
+                # self.do_train_split(i)
+                train_size = self.train_size[i] / self.train_size[-1]
 
-                    temp_time_old = time.time()
-
-                    # self.do_train_split(i)
-                    train_size = self.train_size[i] / self.train_size[-1]
+                if not(train_size > 1.0 - 1e-8):
                     self.shuffle_idx, temp = train_test_split(
                         self.shuffle_idx,
-                        train_size=np.clip(train_size, 0.0, 1.0 - 1e-8),
+                        train_size=train_size,
                         random_state=self.config["general"]["random_state"],
                     )
 
                     del temp
 
-                    print(f"Total training strucutres:{len(self.shuffle_idx)}")
+                print(f"Total training strucutres:{len(self.shuffle_idx)}")
 
-                    # self.import_FT()
-
-
-                    model_trainer = Training(self.config['train'],self.rnd_seed,self.threads)
-                    model_trainer.build_model()
-                    model_trainer.training(features=self.Features,
-                                              targets=self.Targets,
-                                              shuffle_idx=self.shuffle_idx,
-                                              i_split=i,
-                                              )
-                    del model_trainer 
-
-                    if self.config["train"]["test_size"] > test_size_threshold:
-
-                        self.predict(self.test_geo, folder=f"Model{i}/")
-
-                        self.error_estimation(
-                            self.test_geo,
-                            self.config["general"]["random_state"],
-                            self.train_size[i],
-                        )
-
-            else:
-                print(
-                    f"Percentage of data set used for training: {self.train_size*100} %",
-                )
-
-                self.shuffle_idx = np.arange(len(self.Features))
-
-                temp_time_old = time.time()
+                # self.import_FT()
 
                 model_trainer = Training(self.config['train'],self.rnd_seed,self.threads)
                 model_trainer.build_model()
                 model_trainer.training(features=self.Features,
                                             targets=self.Targets,
-                                            shuffle_idx=self.shuffle_idx)
-                temp_time_new = time.time()
-
-                print(f"Training was done in {round(temp_time_new - temp_time_old)} s")
+                                            shuffle_idx=self.shuffle_idx,
+                                            i_split=i,
+                                            )
+                del model_trainer 
 
                 if self.config["train"]["test_size"] > test_size_threshold:
-                    temp_time_old = time.time()
 
-                    self.predict(self.test_geo)
+                    self.predict(self.test_geo, folder=f"Model{i}/")
 
                     self.error_estimation(
                         self.test_geo,
                         self.config["general"]["random_state"],
-                        self.train_size,
+                        self.train_size[i],
                     )
 
-                    temp_time_new = time.time()
+        else:
+            print(
+                f"Percentage of data set used for training: {self.train_size*100} %",
+            )
 
-                    print(
-                        f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s",
-                    )
+            self.shuffle_idx = np.arange(len(self.Features))
+
+            temp_time_old = time.time()
+
+            model_trainer = Training(self.config['train'],self.rnd_seed,self.threads)
+            model_trainer.build_model()
+            model_trainer.training(features=self.Features,
+                                        targets=self.Targets,
+                                        shuffle_idx=self.shuffle_idx)
+            temp_time_new = time.time()
+
+            print(f"Training was done in {round(temp_time_new - temp_time_old)} s")
+
+            if self.config["train"]["test_size"] > test_size_threshold:
+                temp_time_old = time.time()
+
+                self.predict(self.test_geo)
+
+                self.error_estimation(
+                    self.test_geo,
+                    self.config["general"]["random_state"],
+                    self.train_size,
+                )
+
+                temp_time_new = time.time()
+
+                print(
+                    f"Testing was done in {temp_time_new - temp_time_old: 0.2f} s",
+                )
 
     @initProcess
     def prediction_procedure(self):
 
-        if self.config["general"].get("predict", False) and self.config.get("predict", False):
+        if self.config["predict"].get("folder", False):
+            self.parse_data_set(self.config["predict"].get("folder"))
 
-            if self.config["predict"].get("folder", False):
-                self.parse_data_set(self.config["predict"].get("folder"))
+        if self.config["predict"].get("predict_list", False):
+            files = self.rd_txt_file(self.config["predict"].get("predict_list"))
 
-            if self.config["predict"].get("predict_list", False):
-                files = self.rd_txt_file(self.config["predict"].get("predict_list"))
+            self.folders.extend(files)
 
-                self.folders.extend(files)
+        self.model_name = self.config["predict"]["model_name"]
 
-            self.model_name = self.config["predict"]["model_name"]
+        print(f"Starting prediction of {len(self.folders)} files")
 
-            print(f"Starting prediction of {len(self.folders)} files")
+        temp_time_old = time.time()
 
-            temp_time_old = time.time()
+        self.predict(self.folders)
 
-            self.predict(self.folders)
+        temp_time_new = time.time()
 
-            temp_time_new = time.time()
-
-            print(f"Prediction was done in {round(temp_time_new - temp_time_old)} s")
+        print(f"Prediction was done in {round(temp_time_new - temp_time_old)} s")
 
 
     def gen_features(self):
@@ -198,7 +191,7 @@ class Environment(DataGeneration, Parser, Predicting, Input):
 
             self.generate_data(self.train_idx)
 
-            self.Targets = np.array(self.Targets).astype(np.float32)
+            self.Targets = np.array(self.Targets)#.astype(np.float32)
             self.Features = np.array(self.Features).astype(np.float32)
 
             np.savetxt("Features.txt", self.Features)
@@ -207,8 +200,8 @@ class Environment(DataGeneration, Parser, Predicting, Input):
         elif self.config["molecule"]["feature"].lower() == "numpy":
             print("Features and Targets are import from txt files.")
 
-            self.Features = np.loadtxt("Features.txt")
-            self.Targets = np.loadtxt("Targets.txt")
+            self.Features = np.loadtxt("Features.txt",dtype=np.float32)
+            self.Targets = np.loadtxt("Targets.txt",dtype=np.float32)
 
         else:
             print("Feature generation must be specified.")

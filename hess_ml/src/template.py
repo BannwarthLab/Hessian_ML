@@ -1,5 +1,6 @@
 import os
 import time
+import numpy as np 
 
 from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src.Features.features import FeatureTBlite
@@ -25,6 +26,7 @@ class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrai
             config.get("hessian_file", "hessian"),
         )
         self.do_calc = True
+        self.solvent = self.config.get('solvent',None)
 
     def ProcessData(self, model=False):
         self.ImportStructure()

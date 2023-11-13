@@ -11,7 +11,6 @@ def checkTiming(enabled=True):
                 return result
 
             return func(self, *args, **kwargs)
-
         return wrapper
 
     return Timing

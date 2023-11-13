@@ -14,9 +14,20 @@ from sklearn.preprocessing import StandardScaler,Normalizer
 from sklearn.svm import SVR
 from sklearn.pipeline import Pipeline
 from sklearn.compose import TransformedTargetRegressor
-
+from sklearn.base import TransformerMixin,BaseEstimator
 from hess_ml.src.decorator.decorator import initProcess,checkTiming
 from hess_ml.src.io import Input,Output
+
+class MyTransform(BaseEstimator,TransformerMixin):
+    def fit(self, *_, **__):
+        return self
+
+    def transform(self, X):
+        return (X+2)/3#np.sign(X)*np.log10(np.abs(X))-np.sign(X)#
+
+    def inverse_transform(self, X):
+        return X*3-2#-np.sign(X)*10**(-np.sign(X)*X+1)
+    
 
 class Training(Input,Output):
 
@@ -29,15 +40,16 @@ class Training(Input,Output):
 
 
     def build_model(self):
-        self.set_selection(self.config.get('selection',None))
-        self.set_scaler(self.config.get('scaling',None))
+        self.set_selection(self.config.get('select',None))
+        self.set_scaler(self.config.get('scale',None))
         self.set_model(self.config.get('method','etr'))
         self.set_pipeline()
+        self.set_target_transform(self.config.get('transform',None))
+
         return 
     
     @checkTiming(enabled=True)
     def training(self,features,targets,shuffle_idx,i_split=None):
-        
         self.print_params()
 
         if self.method != "mlpr":
@@ -48,7 +60,8 @@ class Training(Input,Output):
             )
 
         else:
-            with parallel_backend("regression", n_jobs=self.threads):
+
+            with parallel_backend("multiprocessing", n_jobs=self.threads):
                 self.complete_model.fit(
                     features[shuffle_idx],
                     targets[shuffle_idx],
@@ -66,20 +79,16 @@ class Training(Input,Output):
         """
         Currently does not work. First test with this transformation were no promising.
         RMSD > 2 for 10% train set in gdb7 
-        """
-        def invert_log_abs(y):
-            return -np.sign(y)*10**(-np.sign(y)*y+1)
 
-        def log_abs(x):
-            return np.sign(x)*np.log10(np.abs(x))-np.sign(x)
+        """
+        
         if transformation is None:
             pass 
 
         elif transformation:
             temp = TransformedTargetRegressor(regressor=self.complete_model,
-                                                             func=log_abs, 
-                                                             inverse_func=invert_log_abs,
-                                                             check_inverse=False)
+                                                transformer=MyTransform(),
+                                                check_inverse=False)
             
             self.complete_model = temp
 
@@ -98,7 +107,7 @@ class Training(Input,Output):
             return
         
         if selection.lower() in ['svd','truncatedsvd']:
-            feature_selector =  TruncatedSVD(n_components=200, algorithm="arpack")
+            feature_selector =  TruncatedSVD(n_components=50, algorithm="arpack")
             self.model_info.append(("feature_selector", feature_selector))
         
         if selection.lower() in ["variancethreshold"]:

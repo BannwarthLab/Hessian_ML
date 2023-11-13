@@ -59,6 +59,7 @@ class DataGeneration:
             )
             del mol
 
+
     def truncate_file(self, file):
         if os.path.isfile(file):
             with open(file, "wb") as f1:

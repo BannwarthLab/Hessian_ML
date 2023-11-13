@@ -50,6 +50,8 @@ class FeatureGen(Geometry):
             elif np.linalg.norm(self.dipm["A"][A]) == np.linalg.norm(self.dipm["A"][B]):
                 print("Nucelar Charge and Dipole moment are the same.")
 
+    
+
         R_AB = np.linalg.norm(self.xyz[A, :] - self.xyz[B, :])
 
         Quantity_AB = [[], []]
@@ -74,8 +76,8 @@ class FeatureGen(Geometry):
                     np.matmul(R_MI_APF, self.dipm[dipm_key][atom]).tolist(),
                 )
 
-            for q_key in self.q:
-                Quantity_AB[j].extend(self.q[q_key][atom].tolist())
+            for p_key in self.p:
+                Quantity_AB[j].extend(self.p[p_key][atom].tolist())
 
             # ____Append Features to Feature Vector____
 
@@ -85,10 +87,10 @@ class FeatureGen(Geometry):
             Quantity_AB[j].extend([self.NuclearCharge[atom]])
 
             Quantity_AB[j].extend([self.cn["default"][atom]])
-            Quantity_AB[j].extend([self.cn["delta"][atom]])
+            Quantity_AB[j].extend([self.cn["delta"][atom][0]])
 
-            Quantity_AB[j].extend([self.p["default"][atom]])
-            Quantity_AB[j].extend([self.p["delta"][atom]])
+            Quantity_AB[j].extend([self.q["default"][atom]])
+            Quantity_AB[j].extend([self.q["delta"][atom][0]])
 
         Quantity_AB_arr = np.array(Quantity_AB)
 
