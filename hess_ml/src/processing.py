@@ -66,6 +66,7 @@ class FeatureGen(Geometry):
                 temp_qm = np.zeros([3, 3])
                 temp_qm[np.tril_indices(temp_qm.shape[0], k=0)] = self.qm[qm_key][atom]
                 temp_qm = temp_qm + temp_qm.T - np.diag(np.diag(temp_qm))
+
                 temp_qm = np.matmul(
                     np.matmul(R_MI_APF, temp_qm),
                     np.transpose(R_MI_APF),
@@ -88,10 +89,10 @@ class FeatureGen(Geometry):
             Quantity_AB[j].extend([self.NuclearCharge[atom]])
 
             Quantity_AB[j].extend([self.cn["default"][atom]])
-            Quantity_AB[j].extend([self.cn["delta"][atom][0]])
+            Quantity_AB[j].extend(self.cn["delta"][atom])
 
             Quantity_AB[j].extend([self.q["default"][atom]])
-            Quantity_AB[j].extend([self.q["delta"][atom][0]])
+            Quantity_AB[j].extend(self.q["delta"][atom])
 
         Quantity_AB_arr = np.array(Quantity_AB)
 

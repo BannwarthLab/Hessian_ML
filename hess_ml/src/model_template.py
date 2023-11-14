@@ -79,7 +79,7 @@ class Training(Input,Output):
 
     def set_target_transform(self,transformation:str | None=None):
         """
-        Currently does not work. First test with this transformation were no promising.
+        Currently does not work. First test with this transformation were not promising.
         RMSD > 2 for 10% train set in gdb7
 
         """

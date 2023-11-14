@@ -98,10 +98,6 @@ class PredictHessian(Output, Observables):
         model:Regressor:
         """
 
-        def damping(x):
-            return  1-1/(1+np.exp(-3*(x-6)))
-
-
         if not model:
             self.do_calc = False
             print("No model available for the prediction.")
@@ -110,10 +106,6 @@ class PredictHessian(Output, Observables):
         if self.do_calc:
 
             H_hetero = model.predict(np.array(self.Feature_AB))
-
-            #for i in range(len(H_hetero)):
-                #if self.Feature_AB[i][-3] > 4.0:
-            #    H_hetero[i] *= damping(self.Feature_AB[i][-3])
 
             predHess = self.gen_hess_from_vec_pred(
                 H_hetero,

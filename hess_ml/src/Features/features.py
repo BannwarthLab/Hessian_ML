@@ -43,9 +43,10 @@ class FeatureTBlite:
 
         # Use ase to read in coordinates
 
-        faulthandler.enable()
 
         try:
+            faulthandler.enable()
+
             ase_mol = ase_read(filename=self.xyz_file)
             # create a ase calculator instance
             # xtbml value is used to compute the features
@@ -57,9 +58,9 @@ class FeatureTBlite:
             charge = 0
             uhf = 0
 
-            ChargePath = os.path.join(self.folder, ".CHRG")
-            if os.path.isfile(ChargePath):
-                with open(ChargePath) as chrg:
+            chargeFilePath = os.path.join(self.folder, ".CHRG")
+            if os.path.isfile(chargeFilePath):
+                with open(chargeFilePath) as chrg:
                     charge = int(chrg.readline())
 
             uhfFilePath = os.path.join(self.folder, ".UHF")
@@ -67,7 +68,6 @@ class FeatureTBlite:
             if os.path.isfile(uhfFilePath):
                 with open(uhfFilePath) as uhfFile:
                     uhf = int(uhfFile.readline())
-
 
             calc= Calculator(
             method="GFN2-xTB",
@@ -87,16 +87,16 @@ class FeatureTBlite:
             self.gradient = res.get("gradient")
 
             X = res.get("post-processing-dict")
-
             self.ml_feat = pd.DataFrame(X, columns=X.keys())
-
-            self.FilterFeatures()
+            
 
         except:
 
             self.do_calc = False
 
             print("No convergenve structure will not be considered.")
+
+        self.FilterFeatures()
 
     def ReadGradient(self, file):
         with open(file, "rb") as f:
@@ -127,12 +127,9 @@ class FeatureTBlite:
                 self.qm[f"delta_{orb}"] = self.ml_feat.loc[:,
                     self.ml_feat.columns.str.contains(f"delta_qm_{orb}_.._")].to_numpy()
 
-                if orb == "Z":
-                    self.dipm[f"delta_{orb}"] -= self.dipm[f"delta_{orb}"]
-                    self.qm[f"delta_{orb}"] -= self.qm[f"delta_{orb}"]
-
             if orb not in {"e", "Z"}:
                 self.dipm[f"{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.startswith(f"dipm_{orb}_")].to_numpy()
+                
                 self.qm[f"{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.startswith(f"qm_{orb}_")].to_numpy()
 
                 if orb != "A":
