@@ -1,17 +1,14 @@
 import copy
+import glob
 import os
+import pickle
 import time
 
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from hess_ml.src.template import TrainMLHessianGFN2xTB
+from hess_ml.src.template import TrainMLHessianGFN2xTB, TrainMLHessianORCA
 
-
-from hess_ml.src.template import TrainMLHessianGFN2xTB,TrainMLHessianORCA
-import pickle as pickle
-import glob as glob
-import copy
 
 class DataGeneration:
     def __init__(self) -> None:
@@ -27,21 +24,22 @@ class DataGeneration:
         # if idx == None:
         #    idx = np.arange(0,len(self.geo_dir))
         self.not_considered = []
-        for program in self.config['general'].get('program', ['xTB']):
-            if len(self.config['general'].get('program', ['xTB'])) == 1:
-                if program.lower()  == 'orca':
+        for program in self.config["general"].get("program", ["xTB"]):
+            if len(self.config["general"].get("program", ["xTB"])) == 1:
+                if program.lower()  == "orca":
                     self.molgen = TrainMLHessianORCA()
-                elif program.lower()  == 'xtb':    
+                elif program.lower()  == "xtb":
                     self.molgen = TrainMLHessianGFN2xTB()
             else:
-                print('More than one program not implemented yet!')
-                
+                print("More than one program not implemented yet!")
+
         for geo in idx:
             self.GenerateData(dir=self.folders[geo])
 
         print("")
         print(
-            f"Features and Targets of {len(idx)} structures were generated in {round(time.time() - self.wall_time0)} s\n",
+            f"Features and Targets of {len(idx)} structures "
+            f"were generated in {round(time.time() - self.wall_time0)} s\n",
         )
 
         outputfile_name = "not_considered"
@@ -97,7 +95,7 @@ class DataGeneration:
 
         geo_idx = np.arange(0, total_structures)
 
-        train_size_temp = max(train_size) if type(train_size) is list else train_size
+        train_size_temp = max(train_size) if isinstance(train_size,list) else train_size
 
         if train_size_temp == max_train_size:
             self.train_idx = geo_idx

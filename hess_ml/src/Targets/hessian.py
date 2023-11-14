@@ -1,15 +1,15 @@
-import os
-import sys 
-import numpy as np
-import pandas as pd
 import math
+import os
+import sys
 
 import numpy as np
+import pandas as pd
 from sklearn.dummy import DummyRegressor
 
 from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src.io import Output
 from hess_ml.src.observables import Observables
+
 
 class xTBHessTarget:
     def __init__(self, file, N_atoms) -> None:
@@ -91,7 +91,7 @@ class PredictHessian(Output, Observables):
     def Predict(self, model:DummyRegressor=False):
 
         """
-        Prediction environment. Checks first whether the prediciton shall 
+        Prediction environment. Checks first whether the prediciton shall
         be done and converts the target afterwards into a complet Hessian matrix.
         In addtion writes the hessian into the folder of the predicted species.
         params:
@@ -138,22 +138,27 @@ class ORCAHessTarget:
             N_coords = int(self.N_atoms * 3)
             start_hessian = 16 # always first entry
             end_hessian = int(15 + (N_coords + 1) * (math.ceil(N_coords / 5)))
-            lines_to_skip = list(i-1 for i in range((start_hessian+N_coords), end_hessian, (N_coords+1)))
+            lines_to_skip = [i-1 for i in range((start_hessian+N_coords), end_hessian, (N_coords+1))]
             rows = end_hessian - start_hessian - len(lines_to_skip)
-            hessian = pd.read_csv(self.target_file, sep='\s+', header=9, nrows=rows+1, skiprows=lines_to_skip, engine='python')
+            hessian = pd.read_csv(self.target_file,
+                                  sep=r"\s+",
+                                  header=9,
+                                  nrows=rows+1,
+                                  skiprows=lines_to_skip,
+                                  engine="python")
+
             hessian = hessian.to_numpy()
             self.target = np.zeros([N_coords, N_coords])
             N_block = rows//N_coords
             if N_coords%5 != 0:
                 N_block -= 1
-            for i in range(0, N_block):
+            for i in range(N_block):
                 self.target[:, i*5:5*i+5] = hessian[i*N_coords:i*N_coords+N_coords, :]
             if i*5+5 != N_coords:
                 self.target[:, i*5+5:] = hessian[N_block * N_coords : , :-(5-N_coords%5)]
         else:
             self.do_calc = False
 
-        return
 
 
 class DeltaHessTarget:

@@ -121,9 +121,11 @@ class FeatureTBlite:
 
             if orb not in {"s", "p", "d"}:
 
-                self.dipm[f"delta_{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(f"delta_dipm_{orb}_._")].to_numpy()
+                self.dipm[f"delta_{orb}"] = self.ml_feat.loc[:,
+                    self.ml_feat.columns.str.contains(f"delta_dipm_{orb}_._")].to_numpy()
 
-                self.qm[f"delta_{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(f"delta_qm_{orb}_.._")].to_numpy()
+                self.qm[f"delta_{orb}"] = self.ml_feat.loc[:,
+                    self.ml_feat.columns.str.contains(f"delta_qm_{orb}_.._")].to_numpy()
 
                 if orb == "Z":
                     self.dipm[f"delta_{orb}"] -= self.dipm[f"delta_{orb}"]

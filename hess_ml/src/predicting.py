@@ -1,4 +1,3 @@
-import time as time
 import copy
 import glob
 import os
@@ -8,16 +7,9 @@ import time
 import numpy as np
 from joblib import load
 
-from joblib import load
-import pickle as pickle
-
-import numpy as np
-import glob as glob
-import os
-
-from hess_ml.src.io import Input,Output
-from hess_ml.src.template import TestMLHessianGFN2xTB,TestMLHessianORCA
+from hess_ml.src.io import Input, Output
 from hess_ml.src.observables import Observables
+from hess_ml.src.template import TestMLHessianGFN2xTB, TestMLHessianORCA
 
 
 class Predicting(Input, Output, Observables):
@@ -33,16 +25,16 @@ class Predicting(Input, Output, Observables):
             self.model = model
 
         self.not_considered = []
-        
-        for program in self.config['general'].get('program', ['xTB']):
-            if len(self.config['general'].get('program', ['xTB'])) == 1:
-                if program.lower()  == 'orca':
+
+        for program in self.config["general"].get("program", ["xTB"]):
+            if len(self.config["general"].get("program", ["xTB"])) == 1:
+                if program.lower()  == "orca":
                     self.molgen = TestMLHessianORCA()
-                elif program.lower()  == 'xtb':    
+                elif program.lower()  == "xtb":
                     self.molgen = TestMLHessianGFN2xTB()
             else:
-                print('More than one program not implemented yet!')
-        
+                print("More than one program not implemented yet!")
+
         self.molgen = TestMLHessianGFN2xTB()
 
         for file in range(len(files)):
@@ -57,19 +49,19 @@ class Predicting(Input, Output, Observables):
 
         size = 0
         error = 0
-        
-        for program in self.config['general'].get('program', ['xTB']):
-            if len(self.config['general'].get('program', ['xTB'])) == 1:
-                if program.lower()  == 'orca':
+
+        for program in self.config["general"].get("program", ["xTB"]):
+            if len(self.config["general"].get("program", ["xTB"])) == 1:
+                if program.lower()  == "orca":
                     self.molgen = TestMLHessianORCA()
-                elif program.lower()  == 'xtb':    
+                elif program.lower()  == "xtb":
                     self.molgen = TestMLHessianGFN2xTB()
             else:
-                print('More than one program not implemented yet!')
-    
+                print("More than one program not implemented yet!")
+
         for folder in folders:
             if folder not in self.not_considered:
-                mol = copy.deepcopy(self.molgen) 
+                mol = copy.deepcopy(self.molgen)
                 mol.setConfiguration(folder, self.config["molecule"])
                 mol.hessians_difference(self.config["molecule"]["target_file"], "MLhessian")
                 shape = np.shape(mol.hess_diff)

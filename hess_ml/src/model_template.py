@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import sys
 import time
@@ -75,7 +77,7 @@ class Training(Input,Output):
         self.dump_model(i_split=i_split)
 
 
-    def set_target_transform(self,transformation:Optional[str]=None):
+    def set_target_transform(self,transformation:str | None=None):
         """
         Currently does not work. First test with this transformation were no promising.
         RMSD > 2 for 10% train set in gdb7
@@ -94,7 +96,7 @@ class Training(Input,Output):
 
 
 
-    def set_selection(self,selection:Optional[str]=None) -> list:
+    def set_selection(self,selection:str | None=None) -> list:
         """
         Define the feature selector for the ML model.
         param:
@@ -115,7 +117,7 @@ class Training(Input,Output):
 
         return
 
-    def set_scaler(self,scaling:Optional[str]=None)-> list:
+    def set_scaler(self,scaling:str | None=None)-> list:
 
         """
         Define the standard scaler for the ML model.

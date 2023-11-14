@@ -9,7 +9,7 @@ from hess_ml.src.rotation_func import Rotation_Functions
 
 class Observables(Rotation_Functions):
     def __init__(self) -> None:
-        super().__init__
+        pass
 
     def get_coord_state(self):
         return self.coord_state[0]

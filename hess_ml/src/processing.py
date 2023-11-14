@@ -17,7 +17,8 @@ class FeatureGen(Geometry):
 
         self.check_list.append([A, B])
 
-        # Performs a rotation around the X axis by 180 ° if nuclear charge of A is smaller than B to achieve a consistent alignment
+        # Performs a rotation around the X axis by 180 ° if nuclear charge of A
+        # is smaller than B to achieve a consistent alignment
         # If A == B rotation depends on dipole moment
 
         if self.NuclearCharge[A] < self.NuclearCharge[B]:
