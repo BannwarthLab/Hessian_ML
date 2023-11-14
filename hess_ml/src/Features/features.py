@@ -3,8 +3,6 @@ import os
 
 import numpy as np
 import pandas as pd
-from ase.io import read
-from ase.io import read as ase_read
 from ase.units import Bohr
 from tblite.interface import Calculator
 
@@ -42,19 +40,10 @@ class FeatureTBlite:
     def ImportFeature(self):
 
         # Use ase to read in coordinates
-
+        faulthandler.enable()
 
         try:
-            faulthandler.enable()
 
-            ase_mol = ase_read(filename=self.xyz_file)
-            # create a ase calculator instance
-            # xtbml value is used to compute the features
-            # 0 = compute no xtbml features
-            # 1 = all multipoles are given as norms
-            # 2 = multipoles are exported as vectors
-
-            # final single point with xtbml features
             charge = 0
             uhf = 0
 
@@ -73,8 +62,8 @@ class FeatureTBlite:
             method="GFN2-xTB",
             uhf=uhf,
             charge=charge,
-            numbers=ase_mol.get_atomic_numbers(),
-            positions=ase_mol.get_positions()*1/Bohr,
+            numbers=self.NuclearCharge,
+            positions=self.xyz*1/Bohr,
             )
 
             if self.solvent is not None:
@@ -84,7 +73,9 @@ class FeatureTBlite:
 
             res = calc.singlepoint()
 
-            self.gradient = res.get("gradient")
+            self.gradient1 = res.get("gradient")
+
+            self.ReadGradient(self.gradient_file)
 
             X = res.get("post-processing-dict")
             self.ml_feat = pd.DataFrame(X, columns=X.keys())
@@ -142,3 +133,4 @@ class FeatureTBlite:
 
         self.q["default"] = self.ml_feat.loc[:, "q_A"].to_numpy()
         self.q["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.contains("delta_q_A")].to_numpy()
+
