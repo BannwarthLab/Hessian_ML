@@ -112,7 +112,9 @@ class FeatureGen(Geometry):
         Features_temp.extend([1 / R_AB])
         Features_temp.extend([1 / R_AB**6])
 
-        return np.array(Features_temp)
+        Features_temp=np.array(Features_temp)
+
+        return Features_temp
 
 
 class PredictProcess:

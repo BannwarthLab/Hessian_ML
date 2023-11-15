@@ -12,6 +12,7 @@ folder = 'data_set'
 feature = 'tblite'
 target_file = 'hessian'
 xyz_file = 'xtbopt.xyz'
+program = 'xTB'
 
 [train]
 train_size = 0.75

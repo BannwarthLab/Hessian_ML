@@ -73,11 +73,10 @@ class FeatureTBlite:
 
             res = calc.singlepoint()
 
-            self.gradient1 = res.get("gradient")
-
-            self.ReadGradient(self.gradient_file)
+            self.gradient = res.get("gradient")
 
             X = res.get("post-processing-dict")
+
             self.ml_feat = pd.DataFrame(X, columns=X.keys())
             
 

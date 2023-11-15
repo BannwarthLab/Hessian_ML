@@ -152,7 +152,6 @@ class ORCAHessTarget:
             self.do_calc = False
 
 
-
 class DeltaHessTarget:
     def __init__(self) -> None:
         xTBHessTarget()

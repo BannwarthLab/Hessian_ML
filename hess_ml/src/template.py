@@ -19,7 +19,6 @@ class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrai
         self.config = config
         self.folder = folder
         self.xyz_file = os.path.join(self.folder,config.get("xyz_file", "xtbopt.xyz"))
-        self.gradient_file = os.path.join(self.folder,config.get("gradient_file", "gradient"))
         self.target_file = os.path.join(self.folder,config.get("target_file", "hessian"))
         self.do_calc = True
         self.solvent = self.config.get("solvent",None)
@@ -51,8 +50,8 @@ class TestMLHessianGFN2xTB(TransformPredict, PredictHessian, TrainMLHessianGFN2x
         self.target_file = os.path.join(self.folder, hess1)
         self.ImportTarget()
 
-        self.target_file = os.path.join(self.folder, hess2)
-        read = xTBHessTarget(self.target_file, self.N_atoms)
+        target_file = os.path.join(self.folder, hess2)
+        read = xTBHessTarget(target_file, self.N_atoms)
         read.ImportTarget()
 
         self.hess_diff = self.target - read.target

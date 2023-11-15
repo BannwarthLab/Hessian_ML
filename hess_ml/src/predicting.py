@@ -35,8 +35,6 @@ class Predicting(Input, Output, Observables):
             else:
                 print("More than one program not implemented yet!")
 
-        self.molgen = TestMLHessianGFN2xTB()
-
         for file in range(len(files)):
             self.predict_hessian(folder=files[file])
 
