@@ -90,6 +90,7 @@ class DataGeneration:
         Does a split of the geometry file directories into train and test sets.
         Saves the information in txt files
         """
+        
         max_train_size = 1.0
         self.folders = folders
 

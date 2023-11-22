@@ -62,7 +62,7 @@ class FeatureGen(Geometry):
 
             grad = np.matmul(R_MI_APF, self.gradient[atom])
 
-            for qm_key in self.qm:
+            for qm_key in self.qm.keys():
                 temp_qm = np.zeros([3, 3])
                 temp_qm[np.tril_indices(temp_qm.shape[0], k=0)] = self.qm[qm_key][atom]
                 temp_qm = temp_qm + temp_qm.T - np.diag(np.diag(temp_qm))
@@ -73,13 +73,14 @@ class FeatureGen(Geometry):
                 )
                 Quantity_AB[j].extend((temp_qm[np.triu_indices(3)]).tolist())
 
-            for dipm_key in self.dipm:
+            for dipm_key in self.dipm.keys():
                 Quantity_AB[j].extend(
                     np.matmul(R_MI_APF, self.dipm[dipm_key][atom]).tolist(),
                 )
-
-            for p_key in self.p:
+            
+            for p_key in self.p.keys():
                 Quantity_AB[j].extend(self.p[p_key][atom].tolist())
+                
 
             # ____Append Features to Feature Vector____
 
@@ -93,6 +94,8 @@ class FeatureGen(Geometry):
 
             Quantity_AB[j].extend([self.q["default"][atom]])
             Quantity_AB[j].extend(self.q["delta"][atom])
+
+
 
         Quantity_AB_arr = np.array(Quantity_AB)
 

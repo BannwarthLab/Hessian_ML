@@ -81,7 +81,6 @@ class Environment(DataGeneration, Parser, Predicting, Input):
 
                 temp_time_old = time.time()
 
-                # self.do_train_split(i)
                 train_size = self.train_size[i] / self.train_size[-1]
 
                 if not(train_size > 1.0 - 1e-8):
@@ -93,9 +92,7 @@ class Environment(DataGeneration, Parser, Predicting, Input):
 
                     del temp
 
-                print(f"Total training strucutres:{len(self.shuffle_idx)}")
-
-                # self.import_FT()
+                print(f"Total training points:{len(self.shuffle_idx)}")
 
                 model_trainer = Training(self.config["train"],self.rnd_seed,self.threads)
                 model_trainer.build_model()
@@ -205,7 +202,7 @@ class Environment(DataGeneration, Parser, Predicting, Input):
             print("Features and Targets are import from txt files.")
 
             self.Features = np.loadtxt("Features.txt",dtype=np.float32)
-            self.Targets = np.loadtxt("Targets.txt",dtype=np.float32)
+            self.Targets = np.loadtxt("Targets.txt")
             self.test_geo =  Input().rd_txt_file('test_files.txt')
             
 

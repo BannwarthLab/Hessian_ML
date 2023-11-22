@@ -24,6 +24,7 @@ class Geometry:
         self.target_file = config.get("target_file", "hessian")
         self.hessian_name = config.get("hessian_file", "hessian")
         self.do_calc = True
+        
 
     def importXYZ(self, file: str):
         with open(file) as myfile:
@@ -54,6 +55,8 @@ class Geometry:
         if self.N_atoms == 1:
             self.do_calc = False
             print("At least two atoms must be considered.")
+
+        print(file)
 
     def importTarget(self, file: str):
         if os.path.isfile(file):
