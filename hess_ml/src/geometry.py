@@ -16,13 +16,12 @@ class Geometry:
         self.config = config
         self.folder = folder
         self.threads = config.get("threads", 1)
-        self.hessian_type = config.get("hessian_type", "vanilla")
+        self.hessian_type = config.get("hessian_type", "xtb")
 
         self.xyz_file = config.get("xyz_file", "xtbopt.xyz")
         self.gradient_file = config.get("gradient_file", "gradient")
         self.feature_file = config.get("feature_file", "ml_feature.csv")
         self.target_file = config.get("target_file", "hessian")
-        self.hessian_name = config.get("hessian_file", "hessian")
         self.do_calc = True
         
 

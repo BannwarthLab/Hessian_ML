@@ -24,7 +24,6 @@ def main() -> None:
     if env.config["general"].get("predict", False) and env.config.get("predict", False):
         env.prediction_procedure()
 
-
 if __name__ == "__main__":
     main()
 

@@ -115,15 +115,13 @@ class FeatureGen(Geometry):
         Features_temp.extend([1 / R_AB])
         Features_temp.extend([1 / R_AB**6])
 
-        Features_temp=np.array(Features_temp)
+        return np.array(Features_temp)
 
-        return Features_temp
 
 
 class PredictProcess:
     def __init__(self) -> None:
         pass
-
 
 class TransformPredict(Rotation_Functions, FeatureGen):
     @checkTiming(enabled=True)
@@ -153,7 +151,6 @@ class TransformPredict(Rotation_Functions, FeatureGen):
                     self.R_MI_APF_mat[i0:i3, j0:j3] = R_MI_APF
 
                     self.Feature_AB.append(self.gen_Feature(R_MI_APF, atom_A, atom_B))
-
 
 class TransformTrain(Rotation_Functions, FeatureGen):
     @checkTiming(enabled=True)
