@@ -117,7 +117,7 @@ class Observables(Rotation_Functions):
                         (matrix[A3 : A3 + 3, B3 : B3 + 3]),
                     ),
                     (self.rot_X(np.pi)),
-                )
+                ),
             )
         matrix[A3 : A3 + 3, B3 : B3 + 3] = np.matmul(
             np.matmul(

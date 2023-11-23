@@ -41,7 +41,7 @@ class xTBHessTarget:
 class PredictHessian(Output, Observables):
 
     def gen_hess_from_vec_pred(
-            self, hess_vec_ab, N_atoms, R_MI_APF_mat, transpose_list
+            self, hess_vec_ab, N_atoms, R_MI_APF_mat, transpose_list,
         ):
             ite_hetero = 0
 
@@ -68,15 +68,15 @@ class PredictHessian(Output, Observables):
                 for atom_B in range(N_atoms):
                     if atom_A != atom_B:
                         Hessian[
-                            3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3
+                            3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3,
                         ] -= Hessian[
-                            3 * atom_A : 3 * atom_A + 3, 3 * atom_B : 3 * atom_B + 3
+                            3 * atom_A : 3 * atom_A + 3, 3 * atom_B : 3 * atom_B + 3,
                         ]
 
                 Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3] = (
                     Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
                     + np.transpose(
-                        Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
+                        Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3],
                     )
                 ) / 2
 

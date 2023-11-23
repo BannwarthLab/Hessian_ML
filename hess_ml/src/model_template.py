@@ -54,7 +54,7 @@ class Training(Input,Output):
     @checkTiming(enabled=True)
     def training(self,features,targets,shuffle_idx,i_split=None):
         self.print_params()
-        
+
         if self.method != "mlpr":
             self.complete_model.set_params(regressor__n_jobs=self.threads)
             self.complete_model.fit(

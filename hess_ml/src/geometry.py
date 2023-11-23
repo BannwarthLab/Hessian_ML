@@ -23,7 +23,7 @@ class Geometry:
         self.feature_file = config.get("feature_file", "ml_feature.csv")
         self.target_file = config.get("target_file", "hessian")
         self.do_calc = True
-        
+
 
     def importXYZ(self, file: str):
         with open(file) as myfile:

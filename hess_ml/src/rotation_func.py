@@ -65,11 +65,26 @@ class Rotation_Functions:
         align_vec = np.zeros([2, 3])
         align_vec[:, 2] = np.array([dist_r * 0.5, dist_r * 0.5])
 
+    def _check_x_axis_error(self,vec_x,i,j,coord_th = 1e-8):
+
+        if np.abs(vec_x[1]) > coord_th or np.abs(vec_x[2]) > coord_th:
+            print(vec_x)
+            print(f"Error in vec_x for {i,j}")
+    def _check_xyz_error(self,xyz,i,j,rotation_matrix,coord_th=1e-8):
+        xyz[i, :] = np.matmul(rotation_matrix, xyz[i, :])
+        xyz[j, :] = np.matmul(rotation_matrix, xyz[j, :])
+
+        if xyz[i, 0] > coord_th or xyz[i, 1] > coord_th:
+            print(f"Error in coord i:{i,j}")
+            print(xyz[[i, j], :])
+
+        if xyz[j, 0] > coord_th or xyz[j, 1] > coord_th:
+            print(f"Error in coord j:{i,j}")
+            print(xyz[[i, j], :])
     # ____Uses for i=j the mean of the xyz's atoms as an artifical atom____
     @checkTiming(enabled=False)
     def get_R_euler(self, coord_end, dipm, i, j):
         zero_th = 0.0
-        coord_th = 1e-8
         sum_th = 1e-12
         if i == j:
             print("error")
@@ -133,26 +148,16 @@ class Rotation_Functions:
         if vec_x[0] < zero_th:
             print(f"Error in vec_x[0] in {i,j}")
 
-        if np.abs(vec_x[1]) > coord_th or np.abs(vec_x[2]) > coord_th:
-            print(vec_x)
-            print(f"Error in vec_x for {i,j}")
-            print(coord_end[[i, j], :])
-            print(alpha, beta, gamma)
+        self._check_x_axis_error(vec_x,i,j)
 
-        coord_end[i, :] = np.matmul(R_euler, coord_end[i, :])
-        coord_end[j, :] = np.matmul(R_euler, coord_end[j, :])
-
-        if coord_end[i, 0] > coord_th or coord_end[i, 1] > coord_th:
-            print(f"Error in coord i:{i,j}")
-            print(coord_end[[i, j], :])
-            print(alpha, beta, gamma)
-
-        if coord_end[j, 0] > coord_th or coord_end[j, 1] > coord_th:
-            print(f"Error in coord j:{i,j}")
-            print(coord_end[[i, j], :])
-            print(alpha, beta, gamma)
+        self._check_xyz_error(coord_end,i,j,R_euler,coord_th=1e-8)
 
         return R_euler
+
+
+
+
+
 
     def rot_Z(self, alpha):  # Givens rotation around the z-axis
         return np.array(

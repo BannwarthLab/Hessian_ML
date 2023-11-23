@@ -10,7 +10,6 @@ from hess_ml.src.model_template import Training
 from hess_ml.src.parser import Parser
 from hess_ml.src.predicting import Predicting
 
-
 # 0.09769007921573508
 # 0.05527
 
@@ -203,8 +202,8 @@ class Environment(DataGeneration, Parser, Predicting, Input):
 
             self.Features = np.loadtxt("Features.txt",dtype=np.float32)
             self.Targets = np.loadtxt("Targets.txt")
-            self.test_geo =  Input().rd_txt_file('test_files.txt')
-            
+            self.test_geo =  Input().rd_txt_file("test_files.txt")
+
 
         else:
             print("Feature generation must be specified.")
