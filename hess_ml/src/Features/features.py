@@ -80,6 +80,8 @@ class FeatureTBlite:
 
             self.ml_feat = pd.DataFrame(X, columns=X.keys())
 
+            self.FilterFeatures()
+
 
         except:  # noqa: E722
 
@@ -87,7 +89,6 @@ class FeatureTBlite:
 
             print("No convergenve structure will not be considered.")
 
-        self.FilterFeatures()
 
     def ReadGradient(self, file):
         with open(file, "rb") as f:

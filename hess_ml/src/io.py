@@ -50,7 +50,6 @@ class Input:
             skip_footer=1,
             loose=True,
         )
-        # gradient = gradient.flatten()
 
     def import_wbo(self, file):
         return pd.read_csv(file, names=["at1", "at2", "wbo"], sep=r"\s+")

@@ -39,6 +39,8 @@ class Predicting(Input, Output, Observables):
             outfile.write("\n".join(str(i) for i in self.not_considered))
         outfile.close()
 
+        del self.model
+
     def error_estimation(self, folders, rnd_seed, train_size):
         print("Computing error on test set")
 
@@ -60,7 +62,7 @@ class Predicting(Input, Output, Observables):
                 mol.setConfiguration(folder, self.config["molecule"])
                 mol.hessians_difference(self.config["molecule"]["target_file"], "MLhessian")
                 shape = np.shape(mol.hess_diff)
-                size += shape[0] * shape[1]
+                size += shape[0]**2
                 error += np.sum(mol.hess_diff**2)
 
         error = np.sqrt(error / size)

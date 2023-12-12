@@ -22,6 +22,7 @@ def main() -> None:
         env.train_procedure()
 
     if env.config["general"].get("predict", False) and env.config.get("predict", False):
+        env.folders = []
         env.prediction_procedure()
 
 if __name__ == "__main__":

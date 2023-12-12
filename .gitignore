@@ -4,3 +4,5 @@ examples/
 hess_ml/tests/test_files/
 hess_ml/tests/
 hess_ml/src/test.ipynb
+**/**.cpython-38.**
+**/__pycache__/**

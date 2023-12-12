@@ -12,7 +12,8 @@ from hess_ml.src.observables import Observables
 
 
 class xTBHessTarget:
-    def __init__(self, file, N_atoms) -> None:
+
+    def __init__(self, file=None, N_atoms=None) -> None:
         self.N_atoms = N_atoms
         self.target_file = file
 
@@ -121,7 +122,6 @@ class ORCAHessTarget:
         pass
     @checkTiming(enabled=True)
     def ImportTarget(self) -> None:
-        print(self.target_file)
         if os.path.isfile(self.target_file):
             N_coords = int(self.N_atoms * 3)
             start_hessian = 16 # always first entry

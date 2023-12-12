@@ -47,15 +47,18 @@ class TestMLHessianGFN2xTB(TransformPredict, PredictHessian, TrainMLHessianGFN2x
     def hessians_difference(self, hess1, hess2):
         self.ImportStructure()
 
-        self.target_file = os.path.join(self.folder, hess1)
-        self.ImportTarget()
+        if self.do_calc:
 
-        target_file = os.path.join(self.folder, hess2)
-        read = xTBHessTarget(target_file, self.N_atoms)
-        read.ImportTarget()
+            self.target_file = os.path.join(self.folder, hess1)
+            self.ImportTarget()
 
-        self.hess_diff = self.target - read.target
+            target_file = os.path.join(self.folder, hess2)
+            read = xTBHessTarget(target_file, self.N_atoms)
+            read.ImportTarget()
 
+            self.hess_diff = self.target - read.target
+        else:
+            self.hess_diff = np.array([])
 
 class PredictMLHessianxTB(TestMLHessianGFN2xTB):
     def __init__(self) -> None:

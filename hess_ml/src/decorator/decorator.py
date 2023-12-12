@@ -15,6 +15,14 @@ def checkTiming(enabled=True):
 
     return Timing
 
+def check_calc(func):
+    def wrapper(self, *args, **kwargs):
+        if self.do_calc:
+            return func(self, *args, **kwargs)
+        else:
+            return None 
+    return wrapper
+
 
 def initProcess(func):
     def wrapper(self, *args, **kwargs):
