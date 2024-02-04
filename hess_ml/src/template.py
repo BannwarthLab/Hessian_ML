@@ -57,6 +57,7 @@ class TestMLHessianGFN2xTB(TransformPredict, PredictHessian, TrainMLHessianGFN2x
             read.ImportTarget()
 
             self.hess_diff = self.target - read.target
+            
         else:
             self.hess_diff = np.array([])
 

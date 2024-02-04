@@ -1,21 +1,22 @@
 import time
-
+from multiprocessing import Pool
 import numpy as np
+
+from functools import partial 
 
 from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src.geometry import Geometry
 from hess_ml.src.rotation_func import Rotation_Functions
 
-
 class FeatureGen(Geometry):
     @checkTiming(enabled=False)
-    def gen_Feature(self, R_MI_APF, atom_A: int, atom_B: int):
+    def gen_Feature(self, R_MI_APF, atom_A: int, atom_B: int) -> tuple:
         Features_temp = []
 
         A = atom_A
         B = atom_B
 
-        self.check_list.append([A, B])
+        transpose = None
 
         # Performs a rotation around the X axis by 180 ° if nuclear charge of A
         # is smaller than B to achieve a consistent alignment
@@ -24,7 +25,7 @@ class FeatureGen(Geometry):
         if self.NuclearCharge[A] < self.NuclearCharge[B]:
             B, A = A, B
 
-            self.transpose_list.append([B, A])
+            transpose = [B, A]
 
             rot_Mat_X = self.rot_X(np.pi)
 
@@ -38,7 +39,7 @@ class FeatureGen(Geometry):
             if np.linalg.norm(self.dipm["A"][A]) < np.linalg.norm(self.dipm["A"][B]):
                 B, A = A, B
 
-                self.transpose_list.append([B, A])
+                transpose = [B, A]
 
                 rot_Mat = self.rot_X(np.pi)
 
@@ -115,7 +116,7 @@ class FeatureGen(Geometry):
         Features_temp.extend([1 / R_AB])
         Features_temp.extend([1 / R_AB**6])
 
-        return np.array(Features_temp)
+        return np.array(Features_temp),transpose
 
 
 
@@ -125,9 +126,9 @@ class PredictProcess:
 
 class TransformPredict(Rotation_Functions, FeatureGen):
     @checkTiming(enabled=True)
-    def Transform(self):
-        self.R_MI_APF_mat = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
+    def Transform_np(self):
         if self.do_calc:
+            self.R_MI_APF_mat = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
             self.Feature_AB = []
             self.check_list = []
             self.transpose_list = []
@@ -149,18 +150,82 @@ class TransformPredict(Rotation_Functions, FeatureGen):
                     )
 
                     self.R_MI_APF_mat[i0:i3, j0:j3] = R_MI_APF
+                    feature,transpose = self.gen_Feature(R_MI_APF, atom_A, atom_B)
 
-                    self.Feature_AB.append(self.gen_Feature(R_MI_APF, atom_A, atom_B))
+                    if transpose is not None:
+                        self.transpose_list.append(transpose)
+
+                    self.Feature_AB.append(feature)
+
+
+
+    @checkTiming(enabled=True)
+    def Transform(self):
+        if self.do_calc:
+            num_cpus = 4
+            self.Feature_AB = []
+            self.R_MI_APF_mat = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
+            self.transpose_list = []
+            atoms = []
+            for atom_A in range(self.N_atoms):
+                for atom_B in range(atom_A + 1, self.N_atoms):
+                    atoms.append((atom_A,atom_B))                
+
+
+            partial_func = partial(self.single_transform,atoms=atoms)
+
+            indices = [i for i in range(len(atoms))]
+
+            with Pool(processes=num_cpus) as pool:
+                results = pool.map(partial_func,indices)
+
+            R_MI_APFs,self.Feature_AB,transposes = zip(*results)
+
+            self.Feature_AB = list(self.Feature_AB)
+
+            transposes = list(transposes)
+
+            for val in transposes:
+                if val is not None:
+                    self.transpose_list.append(val)
+
+            for atom_pair,rot_mat in zip(atoms,R_MI_APFs):
+
+                atom_A,atom_B = atom_pair
+                i0 = 3 * atom_A
+                i3 = 3 * atom_A + 3
+                j0 = 3 * atom_B
+                j3 = 3 * atom_B + 3
+
+                self.R_MI_APF_mat[i0:i3, j0:j3] = rot_mat
+    
+    def single_transform(self,index:int,atoms:list):
+        
+        atom_A,atom_B = atoms[index]
+        xyz = self.xyz.copy()
+
+        R_MI_APF = self.get_R_euler(
+            xyz,
+            self.dipm["A"],
+            atom_A,
+            atom_B,
+        )
+
+        Feature_AB,transpose = self.gen_Feature(R_MI_APF, atom_A, atom_B)
+
+        return R_MI_APF,Feature_AB,transpose
+
 
 class TransformTrain(Rotation_Functions, FeatureGen):
     @checkTiming(enabled=True)
-    def Transform(self):
+    def Transform_np(self):
         self.Feature_AB = []
         self.Target_AB = []
         self.check_list = []
         self.transpose_list = []
 
         if self.do_calc:
+
             for atom_A in range(self.N_atoms):
                 for atom_B in range(atom_A + 1, self.N_atoms):
                     xyz_temp = self.xyz.copy()
@@ -171,7 +236,12 @@ class TransformTrain(Rotation_Functions, FeatureGen):
                         atom_B,
                     )
 
-                    self.Feature_AB.append(self.gen_Feature(R_MI_APF, atom_A, atom_B))
+                    feature,transpose = self.gen_Feature(R_MI_APF, atom_A, atom_B)
+
+                    if transpose is not None:
+                        self.transpose_list.append(transpose)
+
+                    self.Feature_AB.append(feature)
 
                     i0 = 3 * atom_A
                     i3 = 3 * atom_A + 3
@@ -183,7 +253,7 @@ class TransformTrain(Rotation_Functions, FeatureGen):
                         np.transpose(R_MI_APF),
                     )  # Change Hessian
 
-                    if [atom_A, atom_B] in self.transpose_list:
+                    if transpose is not None:
                         H_APF = np.matmul(
                             np.matmul(self.rot_X(np.pi), np.transpose(H_APF)),
                             np.transpose(self.rot_X(np.pi)),
@@ -194,3 +264,70 @@ class TransformTrain(Rotation_Functions, FeatureGen):
                         )
 
                     self.Target_AB.append(list(H_APF.flatten()))
+
+
+    @checkTiming(enabled=True)
+    def Transform(self):
+
+        self.Feature_AB = []
+        self.Target_AB = []
+
+        if self.do_calc:
+            num_cpus = 4
+            self.transpose_list = []
+            atoms = []
+            for atom_A in range(self.N_atoms):
+                for atom_B in range(atom_A + 1, self.N_atoms):
+                    atoms.append((atom_A,atom_B))                
+
+            partial_func = partial(self.single_transform,atoms=atoms)
+
+            indices = [i for i in range(len(atoms))]
+
+            with Pool(processes=num_cpus) as pool:
+                results = pool.map(partial_func,indices)
+
+            self.Target_AB,self.Feature_AB,transposes = zip(*results)
+
+            self.Feature_AB = list(self.Feature_AB)
+            self.Target_AB = list(self.Target_AB)
+
+            for val in transposes:
+                if val is not None:
+                    self.transpose_list.append(val)
+    
+    def single_transform(self,index:int,atoms:list):
+        
+        atom_A,atom_B = atoms[index]
+        xyz = self.xyz.copy()
+
+        R_MI_APF = self.get_R_euler(
+            xyz,
+            self.dipm["A"],
+            atom_A,
+            atom_B,
+        )
+
+        Feature_AB,transpose = self.gen_Feature(R_MI_APF, atom_A, atom_B)
+
+        i0 = 3 * atom_A
+        i3 = 3 * atom_A + 3
+        j0 = 3 * atom_B
+        j3 = 3 * atom_B + 3
+
+        H_APF:np.ndarray = np.matmul(
+            np.matmul(R_MI_APF, self.target[i0:i3, j0:j3]),
+            np.transpose(R_MI_APF),
+        )  # Change Hessian
+
+        if transpose is not None:
+            H_APF = np.matmul(
+                np.matmul(self.rot_X(np.pi), np.transpose(H_APF)),
+                np.transpose(self.rot_X(np.pi)),
+            )
+            H_APF = np.matmul(
+                np.matmul(self.rot_Z(np.pi), (H_APF)),
+                np.transpose(self.rot_Z(np.pi)),
+            )
+
+        return list(H_APF.flatten()),Feature_AB,transpose

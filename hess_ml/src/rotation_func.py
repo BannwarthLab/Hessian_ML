@@ -155,10 +155,6 @@ class Rotation_Functions:
         return R_euler
 
 
-
-
-
-
     def rot_Z(self, alpha):  # Givens rotation around the z-axis
         return np.array(
             [

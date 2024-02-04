@@ -10,10 +10,6 @@ from hess_ml.src.model_template import Training
 from hess_ml.src.parser import Parser
 from hess_ml.src.predicting import Predicting
 
-# 0.09769007921573508
-# 0.05527
-
-
 class Environment(DataGeneration, Parser, Predicting, Input):
     def __init__(self):
         Predicting.__init__(self)
@@ -55,8 +51,6 @@ class Environment(DataGeneration, Parser, Predicting, Input):
 
     def import_data(self):
             self.gen_features()
-
-
 
     @initProcess
     def train_procedure(self):
