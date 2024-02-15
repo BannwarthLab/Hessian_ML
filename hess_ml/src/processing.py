@@ -53,11 +53,15 @@ class FeatureGen(Geometry):
                 print("Nucelar Charge and Dipole moment are the same.")
 
 
+        r_AB = (self.xyz[A, :] - self.xyz[B, :]).reshape(1,-1)
+
+        r_AB = np.matmul(R_MI_APF,r_AB.T).T
 
         R_AB = np.linalg.norm(self.xyz[A, :] - self.xyz[B, :])
 
         Quantity_AB = [[], []]
 
+        #Atom specific information 
         for j, atom in enumerate([A, B]):
             # ____Rotation from initial coordinate system to atom pair focused system____
 
@@ -73,15 +77,16 @@ class FeatureGen(Geometry):
                     np.transpose(R_MI_APF),
                 )
                 Quantity_AB[j].extend((temp_qm[np.triu_indices(3)]).tolist())
+                #Quantity_AB[j].extend([np.linalg.norm(temp_qm)])
 
             for dipm_key in self.dipm:
-                Quantity_AB[j].extend(
-                    np.matmul(R_MI_APF, self.dipm[dipm_key][atom]).tolist(),
-                )
+
+                temp_dipm:np.ndarray = np.matmul(R_MI_APF, self.dipm[dipm_key][atom])
+                Quantity_AB[j].extend(temp_dipm.tolist())
+                #Quantity_AB[j].extend([np.linalg.norm(temp_dipm)])
 
             for p_key in self.p:
                 Quantity_AB[j].extend(self.p[p_key][atom].tolist())
-
 
             # ____Append Features to Feature Vector____
 
@@ -96,13 +101,78 @@ class FeatureGen(Geometry):
             Quantity_AB[j].extend([self.q["default"][atom]])
             Quantity_AB[j].extend(self.q["delta"][atom])
 
-
-
         Quantity_AB_arr = np.array(Quantity_AB)
 
         Feature_Arith = ((Quantity_AB_arr[0] + Quantity_AB_arr[1]) / 2).tolist()
         Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1]).tolist()
         Feature_AbsDiff = (Quantity_AB_arr[0] - Quantity_AB_arr[1]).tolist()
+
+        #atom pair information
+
+        r_BA = -r_AB 
+
+        dipm_key = "A"
+
+        dipm_A = self.dipm[dipm_key][A].reshape(1,-1)
+        dipm_B = self.dipm[dipm_key][B].reshape(1,-1)
+
+        dipm_A = np.matmul(R_MI_APF,dipm_A.T).T
+        dipm_B = np.matmul(R_MI_APF,dipm_B.T).T
+
+        q_A = self.q["default"][A]
+        q_B = self.q["default"][B]
+
+        order1_aes = q_A*np.dot(dipm_B,r_BA.T) + q_B*np.dot(dipm_A,r_AB.T)
+        order1_aes /= R_AB**3
+
+        qm_key = "A"
+
+        qm_A = np.zeros([3, 3])
+        qm_A[np.tril_indices(qm_A.shape[0], k=0)] = self.qm[qm_key][A]
+        qm_A = qm_A + qm_A.T - np.diag(np.diag(qm_A))
+
+        qm_A = np.matmul(
+                    np.matmul(R_MI_APF, qm_A),
+                    np.transpose(R_MI_APF),
+                )
+
+        qm_B = np.zeros([3, 3])
+        qm_B[np.tril_indices(qm_B.shape[0], k=0)] = self.qm[qm_key][B]
+        qm_B = qm_B + qm_B.T - np.diag(np.diag(qm_B))
+
+        qm_B = np.matmul(
+                    np.matmul(R_MI_APF, qm_B),
+                    np.transpose(R_MI_APF),
+                )
+        
+        order2_aes = q_A*np.matmul(r_AB,np.matmul(qm_B,r_AB.T))
+        order2_aes += q_B*np.matmul(r_AB,np.matmul(qm_A,r_AB.T))
+
+        order2_aes -= 3*q_B*np.dot(dipm_A,r_AB.T)*np.dot(dipm_B,r_AB.T)
+        order2_aes += R_AB**2*np.dot(dipm_A,dipm_B.T)
+
+        order2_aes /= R_AB**5
+
+        C6_A = self.C6_params[A]
+        C6_B = self.C6_params[B]
+
+        C8_A = self.C8_params[A]
+        C8_B = self.C8_params[B]
+
+        potE = q_A*q_B/R_AB
+
+        Features_temp.append(potE)
+
+        Features_temp.append(C6_A)
+        Features_temp.append(C6_B)
+
+        Features_temp.append(C8_A)
+        Features_temp.append(C8_B)
+
+        Features_temp.extend(r_AB.tolist()[0])
+
+        Features_temp.extend(order1_aes[0])
+        Features_temp.extend(order2_aes[0])
 
         Features_temp.extend(Quantity_AB[0])
         Features_temp.extend(Quantity_AB[1])
@@ -110,15 +180,22 @@ class FeatureGen(Geometry):
         Features_temp.extend(Feature_Arith)
         Features_temp.extend(Feature_Prod)
         Features_temp.extend(Feature_AbsDiff)
-        Features_temp.extend([R_AB**12])
-        Features_temp.extend([R_AB**6])
-        Features_temp.extend([R_AB])
-        Features_temp.extend([1 / R_AB])
-        Features_temp.extend([1 / R_AB**6])
+
+        for i in [12,6,1,-1,-2,-3,-6]:
+            Features_temp.extend([R_AB**i])
 
         return np.array(Features_temp),transpose
 
 
+
+    def get_start_specific_key(self,keys,starting_string):
+
+        for key in keys:
+            if key.startswith(starting_string):
+                print(key)
+                break
+                
+        return key 
 
 class PredictProcess:
     def __init__(self) -> None:

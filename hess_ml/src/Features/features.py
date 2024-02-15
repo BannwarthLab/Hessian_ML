@@ -82,6 +82,24 @@ class FeatureTBlite:
 
             self.FilterFeatures()
 
+            with open(os.path.join(self.folder,'dftd4.out')) as fname:
+                lines = fname.readlines()
+            fname.close()
+
+            for j,line in enumerate(lines):
+                if "     #    Z              CN          q   " in line:
+                    header_idx = j-2
+
+                if "Molecular properties (in atomic units):" in line:
+                    footer_idx = len(lines)-j+2
+
+            df = pd.read_csv(os.path.join(self.folder,'dftd4.out'),
+                             names=['#','Z','CN','q','C6','C8'],
+                             sep='\s+',header=header_idx,skipfooter=footer_idx,
+                             engine='python')
+            
+            self.C6_params = df['C6'].to_numpy()
+            self.C8_params = df['C8'].to_numpy()
 
         except:  # noqa: E722
 
@@ -126,6 +144,7 @@ class FeatureTBlite:
 
                 if orb != "A":
                     self.p[f"{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(f"p_{orb}")].to_numpy()
+                    
 
         self.energy_based = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(pattern)].to_numpy()
 
