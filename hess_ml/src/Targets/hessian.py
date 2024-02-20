@@ -1,3 +1,4 @@
+from __future__ import annotations
 import math
 import os
 import sys
@@ -10,6 +11,9 @@ from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src.io import Output
 from hess_ml.src.observables import Observables
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from hess_ml.src.template import TrainMLHessianGFN2xTB,TestMLHessianGFN2xTB
 
 class xTBHessTarget:
 
@@ -85,7 +89,7 @@ class PredictHessian(Output, Observables):
 
 
     @checkTiming(enabled=True)
-    def Predict(self, model:DummyRegressor=False):
+    def Predict(self:TestMLHessianGFN2xTB, model:DummyRegressor=False):
 
         """
         Prediction environment. Checks first whether the prediciton shall
@@ -121,7 +125,7 @@ class ORCAHessTarget:
     def __init__(self) -> None:
         pass
     @checkTiming(enabled=True)
-    def ImportTarget(self) -> None:
+    def ImportTarget(self:TrainMLHessianGFN2xTB) -> None:
         if os.path.isfile(self.target_file):
             N_coords = int(self.N_atoms * 3)
             start_hessian = 16 # always first entry

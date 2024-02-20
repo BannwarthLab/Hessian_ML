@@ -1,16 +1,20 @@
+from __future__ import annotations
 import time
 from multiprocessing import Pool
 import numpy as np
 
 from functools import partial 
-
 from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src.geometry import Geometry
 from hess_ml.src.rotation_func import Rotation_Functions
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from hess_ml.src.template import TrainMLHessianGFN2xTB
+
 class FeatureGen(Geometry):
     @checkTiming(enabled=False)
-    def gen_Feature(self, R_MI_APF, atom_A: int, atom_B: int) -> tuple:
+    def gen_Feature(self:TrainMLHessianGFN2xTB, R_MI_APF, atom_A: int, atom_B: int) -> tuple:
         Features_temp = []
 
         A = atom_A
@@ -153,21 +157,41 @@ class FeatureGen(Geometry):
 
         order2_aes /= R_AB**5
 
-        C6_A = self.C6_params[A]
-        C6_B = self.C6_params[B]
-
-        C8_A = self.C8_params[A]
-        C8_B = self.C8_params[B]
+        C6_A = float(self.C6_params[A])
+        C6_B = float(self.C6_params[B])
 
         potE = q_A*q_B/R_AB
+
+        atoms = [A,B]
+
+        for atom in atoms:
+            wbo_r = np.zeros(3)
+            nuc_charge_loc = np.zeros(3)
+            n_adj =  0
+            for idx in range(self.N_atoms):
+                if idx not in atoms:
+                    if self.wbo[atom,idx] > 0.25:
+                        n_adj += 1 
+                        wbo_r += self.wbo[atom,idx] * np.matmul(R_MI_APF,self.xyz[idx].copy()-self.xyz[atom].copy())
+                        nuc_charge_loc += self.NuclearCharge[idx] * np.matmul(R_MI_APF,self.xyz[idx].copy()-self.xyz[atom].copy())
+            
+            if n_adj > 0:
+                wbo_r /= n_adj
+                nuc_charge_loc /= n_adj
+            else:
+                wbo_r = np.zeros(3)
+                nuc_charge_loc = np.zeros(3)
+
+            Features_temp.append(n_adj)
+            Features_temp.extend(wbo_r)
+            Features_temp.extend(nuc_charge_loc)
 
         Features_temp.append(potE)
 
         Features_temp.append(C6_A)
         Features_temp.append(C6_B)
 
-        Features_temp.append(C8_A)
-        Features_temp.append(C8_B)
+        Features_temp.append(self.wbo[A,B])
 
         Features_temp.extend(r_AB.tolist()[0])
 
@@ -203,7 +227,7 @@ class PredictProcess:
 
 class TransformPredict(Rotation_Functions, FeatureGen):
     @checkTiming(enabled=True)
-    def Transform_np(self):
+    def Transform_np(self:TrainMLHessianGFN2xTB):
         if self.do_calc:
             self.R_MI_APF_mat = np.zeros([self.N_atoms * 3, self.N_atoms * 3])
             self.Feature_AB = []
@@ -276,7 +300,7 @@ class TransformPredict(Rotation_Functions, FeatureGen):
 
                 self.R_MI_APF_mat[i0:i3, j0:j3] = rot_mat
     
-    def single_transform(self,index:int,atoms:list):
+    def single_transform(self:TrainMLHessianGFN2xTB,index:int,atoms:list):
         
         atom_A,atom_B = atoms[index]
         xyz = self.xyz.copy()

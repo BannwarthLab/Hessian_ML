@@ -1,11 +1,15 @@
+from __future__ import annotations
 import faulthandler
 import os
 
 import numpy as np
 import pandas as pd
-from ase.io import read as ase_read
-from ase.units import Bohr, Hartree
+from ase.units import Bohr
 from tblite.interface import Calculator
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from hess_ml.src.template import TrainMLHessianGFN2xTB
 
 strings = [
         "response",
@@ -38,9 +42,8 @@ class FeatureTBlite:
     def __init__(self) -> None:
         return
 
-    def ImportFeature(self):
+    def ImportFeature(self:TrainMLHessianGFN2xTB):
 
-        # Use ase to read in coordinates
         faulthandler.enable()
 
         try:
@@ -70,36 +73,23 @@ class FeatureTBlite:
             if self.solvent is not None:
                 calc.add("alpb-solvation",self.solvent)
 
+            calc.add("bond-orders")
             calc.add("xtbml_xyz")
 
             res = calc.singlepoint()
-
+            
             self.gradient = res.get("gradient")*1/Bohr
 
-            X = res.get("post-processing-dict")
+            X:dict = res.get("post-processing-dict")
+            X.pop("bond-orders")
+
+            self.wbo = res.get("bond-orders")
 
             self.ml_feat = pd.DataFrame(X, columns=X.keys())
 
+            self._get_dftd4_params()
+
             self.FilterFeatures()
-
-            with open(os.path.join(self.folder,'dftd4.out')) as fname:
-                lines = fname.readlines()
-            fname.close()
-
-            for j,line in enumerate(lines):
-                if "     #    Z              CN          q   " in line:
-                    header_idx = j-2
-
-                if "Molecular properties (in atomic units):" in line:
-                    footer_idx = len(lines)-j+2
-
-            df = pd.read_csv(os.path.join(self.folder,'dftd4.out'),
-                             names=['#','Z','CN','q','C6','C8'],
-                             sep='\s+',header=header_idx,skipfooter=footer_idx,
-                             engine='python')
-            
-            self.C6_params = df['C6'].to_numpy()
-            self.C8_params = df['C8'].to_numpy()
 
         except:  # noqa: E722
 
@@ -108,7 +98,7 @@ class FeatureTBlite:
             print("No convergenve structure will not be considered.")
 
 
-    def ReadGradient(self, file):
+    def ReadGradient(self:TrainMLHessianGFN2xTB, file):
         with open(file, "rb") as f:
             f.close()
 
@@ -119,7 +109,46 @@ class FeatureTBlite:
             loose=True,
         )
 
-    def FilterFeatures(self):
+    def read_wbos(self:TrainMLHessianGFN2xTB,nats):
+        wboFilePath = os.path.join(self.folder, "wbo")
+        wbos = np.zeros([nats,nats])
+
+        with open(wboFilePath) as file:
+            lines = file.readlines()
+            for line in lines:
+                i,j,val = tuple(line.split())
+                wbos[int(i)-1,int(j)-1] = float(val) 
+        file.close()
+
+        wbos += wbos.T
+
+        return wbos 
+    def _get_dftd4_params(self:TrainMLHessianGFN2xTB):
+
+        dftd4_name = os.path.join(self.folder,"dftd4.out")
+
+        os.system(f"dftd4 {self.xyz_file} > {dftd4_name}")
+
+        with open(os.path.join(self.folder,'dftd4.out')) as fname:
+            lines = fname.readlines()
+        fname.close()
+
+        for j,line in enumerate(lines):
+            if "     #    Z              CN          q   " in line:
+                header_idx = j-2
+
+            if "Molecular properties (in atomic units):" in line:
+                footer_idx = len(lines)-j+2
+
+        df = pd.read_csv(os.path.join(self.folder,'dftd4.out'),
+                            names=['#','Z','CN','q','C6','C8'],
+                            sep='\s+',header=header_idx,skipfooter=footer_idx,
+                            engine='python')
+        
+        self.C6_params = df['C6'].to_numpy()
+
+
+    def FilterFeatures(self:TrainMLHessianGFN2xTB):
 
         self.dipm = {}
         self.qm = {}
@@ -144,7 +173,6 @@ class FeatureTBlite:
 
                 if orb != "A":
                     self.p[f"{orb}"] = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(f"p_{orb}")].to_numpy()
-                    
 
         self.energy_based = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(pattern)].to_numpy()
 

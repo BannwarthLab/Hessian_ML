@@ -21,6 +21,7 @@ from sklearn.svm import SVR
 
 from hess_ml.src.decorator.decorator import checkTiming, initProcess
 from hess_ml.src.io import Input, Output
+from hess_ml.src.config import TrainConfig
 
 
 class MyTransform(BaseEstimator,TransformerMixin):
@@ -36,23 +37,21 @@ class MyTransform(BaseEstimator,TransformerMixin):
 
 class Training(Input,Output):
 
-    def __init__(self,config:dict,seed=None,threads=1)-> None:
-        self.config = config
+    def __init__(self,train_config:TrainConfig,threads=1)-> None:
+        self.train_config = train_config
         self.model_info = []
-        self.rnd_seed = seed
         self.threads = threads
 
 
     def build_model(self):
-        self.set_selection(self.config.get("select",None))
-        self.set_scaler(self.config.get("scale",None))
-        self.set_model(self.config.get("method","etr"))
+        self.set_selection(self.train_config.select)
+        self.set_scaler(self.train_config.scale)
+        self.set_model(self.train_config.method)
         self.set_pipeline()
-        self.set_target_transform(self.config.get("transform",None))
-
+        self.set_target_transform(self.train_config.transform)
 
     @checkTiming(enabled=True)
-    def training(self,features,targets,shuffle_idx,i_split=None):
+    def training(self,features,targets,shuffle_idx):
         self.print_params()
 
         if self.method != "mlpr":
@@ -74,7 +73,7 @@ class Training(Input,Output):
             f"Score on training data: {self.complete_model.score(features[shuffle_idx],targets[shuffle_idx])}",
         )
 
-        self.dump_model(i_split=i_split)
+        self.dump_model()
 
 
     def set_target_transform(self,transformation:str | None=None):
@@ -141,7 +140,7 @@ class Training(Input,Output):
         Define the ML model.
         """
         self.method = method
-        params= self.config.get("parameter",[{}])[0]
+        params= self.train_config.parameter[0]
 
         method = method.lower()
 
@@ -183,15 +182,19 @@ class Training(Input,Output):
 
         self.complete_model = Pipeline(steps=self.model_info)
 
+    def set_split(self,split=None):
+        self.i_split = split
 
+    def set_rnd_seed(self,seed):
+        self.rnd_seed = seed
 
-    def dump_model(self,i_split=None):
+    def dump_model(self):
 
-        model_name = self.config.get("model_name")
+        model_name = self.train_config.model_name
 
-        if i_split is not None:
-            os.mkdir(f"Model{i_split}")
-            pathname = f"Model{i_split}/{model_name}.joblib"
+        if self.i_split is not None:
+            os.mkdir(f"Model{self.i_split}_{self.rnd_seed}")
+            pathname = f"Model{self.i_split}_{self.rnd_seed}/{model_name}.joblib"
         else:
             pathname = f"{model_name}.joblib"
 
@@ -199,19 +202,25 @@ class Training(Input,Output):
 
         print(f"Model is saved in {pathname}.\n")
 
+    def print_params(self):
 
-
-    def do_train_split(self, i):
+        print("Parameters for the Model:")
+        param_temp = self.complete_model.get_params()
+        for param in param_temp:
+            print(f"{param}: {param_temp[param]}")
+            
+#    def do_train_split(self):
         """
         Does a split of the geometry file directories into train and test sets.
         Saves the information in txt files
         """
 
-        print(f"{self.train_size[i]*100} % of the set is used for training.")
+"""     print(f"{self.train_size[self.i_split]*100} % of the set is used for training.")
+        print(f"Random seed is: {self.rnd_seed}")
 
         self.files, temp = train_test_split(
             self.train_geo,
-            train_size=self.train_size[i],
+            train_size=self.train_size[self.i_split],
             random_state=self.rnd_seed,
         )
 
@@ -219,19 +228,13 @@ class Training(Input,Output):
 
         del temp
 
-        mypath = f"Model{i}"
+        mypath = f"Model{self.i_split}_{self.rnd_seed}"
 
         if not os.path.isdir(mypath):
             os.makedirs(mypath)
 
-        self.data_to_txt(self.train_geo, os.path.join(f"Model{i}/", "train_files.txt"))
+        self.data_to_txt(self.train_geo, os.path.join(f"Model{self.i_split}_{self.rnd_seed}/", "train_files.txt"))
 
 
-
-    def print_params(self):
-
-        print("Parameters for the Model:")
-        param_temp = self.complete_model.get_params()
-        for param in param_temp:
-            print(f"{param}: {param_temp[param]}")
-
+"""
+    

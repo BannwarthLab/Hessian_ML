@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import copy
 import os
 
@@ -8,12 +10,15 @@ from hess_ml.src.io import Input, Output
 from hess_ml.src.observables import Observables
 from hess_ml.src.template import TestMLHessianGFN2xTB, TestMLHessianORCA
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from hess_ml.src.environment import Environment
 
 class Predicting(Input, Output, Observables):
     def __init__(self) -> None:
         super().__init__()
 
-    def predict(self, files, folder="",model=None):
+    def predict(self:Environment, files, folder="",model=None):
 
         if model is None:
             self.model = load(os.path.join(folder, f"{self.model_name}.joblib"))
@@ -23,8 +28,8 @@ class Predicting(Input, Output, Observables):
 
         self.not_considered = []
 
-        for program in self.config["general"].get("program", ["xTB"]):
-            if len(self.config["general"].get("program", ["xTB"])) == 1:
+        for program in self.config.molecule.program:
+            if len(self.config.molecule.program) == 1:
                 if program.lower()  == "orca":
                     self.molgen = TestMLHessianORCA()
                 elif program.lower()  == "xtb":
@@ -41,14 +46,14 @@ class Predicting(Input, Output, Observables):
 
         del self.model
 
-    def error_estimation(self, folders, rnd_seed, train_size):
+    def error_estimation(self:Environment, folders, rnd_seed, train_size):
         print("Computing error on test set")
 
         size = 0
         error = 0
 
-        for program in self.config["general"].get("program", ["xTB"]):
-            if len(self.config["general"].get("program", ["xTB"])) == 1:
+        for program in self.config.molecule.program:
+            if len(self.config.molecule.program) == 1:
                 if program.lower()  == "orca":
                     self.molgen = TestMLHessianORCA()
                 elif program.lower()  == "xtb":
@@ -59,8 +64,8 @@ class Predicting(Input, Output, Observables):
         for folder in folders:
             if folder not in self.not_considered:
                 mol = copy.deepcopy(self.molgen)
-                mol.setConfiguration(folder, self.config["molecule"])
-                mol.hessians_difference(self.config["molecule"]["target_file"], "MLhessian")
+                mol.setConfiguration(folder, self.config.general,self.config.molecule)
+                mol.hessians_difference(self.config.molecule.target_file, "MLhessian")
                 shape = np.shape(mol.hess_diff)
                 size += shape[0]**2
                 error += np.sum(mol.hess_diff**2)
@@ -73,7 +78,7 @@ class Predicting(Input, Output, Observables):
         with open("results","a+") as file:
             file.write(f"{rnd_seed}\t{train_size*100: 3.0f}\t{error : 0.5f}\n")
 
-    def predict_hessian(self, folder):
+    def predict_hessian(self:Environment, folder):
         mol = copy.deepcopy(self.molgen)
-        mol.setConfiguration(folder, self.config["molecule"])
+        mol.setConfiguration(folder,self.config.general,self.config.molecule)
         mol.ProcessData(model=self.model)

@@ -1,20 +1,23 @@
-import copy
-import glob
-import os
-import pickle
-import time
+from __future__ import annotations
 
+import copy
+import os
+import time
+import sys
 import numpy as np
 from sklearn.model_selection import train_test_split
 
 from hess_ml.src.template import TrainMLHessianGFN2xTB, TrainMLHessianORCA
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from hess_ml.src.environment import Environment
 
 class DataGeneration:
     def __init__(self) -> None:
         return
 
-    def generate_data(self, idx=None):
+    def generate_data(self:Environment, idx=None):
         self.wall_time0 = time.time()
 
         print("Starting Data Generation for Features...")
@@ -24,8 +27,8 @@ class DataGeneration:
         # if idx == None:
         #    idx = np.arange(0,len(self.geo_dir))
         self.not_considered = []
-        for program in self.config["general"].get("program", ["xTB"]):
-            if len(self.config["general"].get("program", ["xTB"])) == 1:
+        for program in self.config.molecule.program:
+            if len(self.config.molecule.program) == 1:
                 if program.lower()  == "orca":
                     self.molgen = TrainMLHessianORCA()
                 elif program.lower()  == "xtb":
@@ -33,8 +36,36 @@ class DataGeneration:
             else:
                 print("More than one program not implemented yet!")
 
+        
+
+        self.n_data =  0
+        self.splitted = False 
+        self.n_split = 0
+
         for geo in idx:
             self.GenerateData(dir=self.folders[geo])
+
+            if self.n_data > 2.8e6:
+
+                self.Targets = np.array(self.Targets)
+                self.Features = np.array(self.Features).astype(np.float32)
+
+                np.savetxt(f"Features{self.n_split}.txt", self.Features)
+                np.savetxt(f"Targets{self.n_split}.txt", self.Targets)
+
+                self.Features = []
+                self.Targets = []
+                self.n_data =  0
+                self.n_split += 1 
+                self.splitted = True 
+
+        if self.splitted:
+            print("""Due to the large size of the Features and Targets, the data was split. 
+                  No training and predicting is performed as the data is only partially stored in the RAM.""")
+            self.config.general.train = False 
+            self.config.general.predict = False
+            sys.exit()
+
 
         print("")
         print(
@@ -47,10 +78,12 @@ class DataGeneration:
             outfile.write("\n".join(str(i) for i in self.not_considered))
         outfile.close()
 
-    def GenerateData(self, dir):
+    def GenerateData(self:Environment, dir):
         mol = copy.deepcopy(self.molgen)
-        mol.setConfiguration(dir, self.config["molecule"])
+        mol.setConfiguration(dir,self.config.general, self.config.molecule)
         mol.ProcessData()
+
+        self.n_data = mol.N_atoms*(mol.N_atoms-1)/2
 
         print(np.array(mol.Feature_AB).shape)
 
@@ -61,8 +94,8 @@ class DataGeneration:
         else:
             self.not_considered.append(
                 os.path.join(
-                    self.config["molecule"]["folder"],
-                    self.config["molecule"].get("xyz_file"),
+                    self.config.molecule.folder,
+                    self.config.molecule.xyz_file,
                 ),
             )
             del mol
@@ -76,7 +109,7 @@ class DataGeneration:
             f1.close()
 
     def do_preparation_split(
-        self,
+        self:Environment,
         folders,
         total_structures,
         train_size,
@@ -89,7 +122,7 @@ class DataGeneration:
         """
 
         max_train_size = 1.0
-        self.folders = folders
+        self.folders:list = folders
 
         geo_idx = np.arange(0, total_structures)
 

@@ -1,27 +1,29 @@
+from __future__ import annotations
 import os
-import sys
-import time
 
 import numpy as np
-
+from typing import TYPE_CHECKING
 from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src.Features.features import FeatureTBlite
 from hess_ml.src.processing import TransformPredict, TransformTrain
 from hess_ml.src.ReadIn.readin import ReadXYZ
 from hess_ml.src.Targets.hessian import ORCAHessTarget, PredictHessian, xTBHessTarget
 
+if TYPE_CHECKING:
+    from hess_ml.src.config import GeneralConfig,MoleculeConfig
 
 class TrainMLHessianGFN2xTB(ReadXYZ, FeatureTBlite, xTBHessTarget, TransformTrain):
     def __init__(self) -> None:
         super().__init__()
 
-    def setConfiguration(self, folder: str, config: dict):
-        self.config = config
+    def setConfiguration(self, folder: str,general_config:GeneralConfig,molecule_config: MoleculeConfig):
+        self.molecule_config = molecule_config
+        self.general_config = general_config
         self.folder = folder
-        self.xyz_file = os.path.join(self.folder,config.get("xyz_file", "xtbopt.xyz"))
-        self.target_file = os.path.join(self.folder,config.get("target_file", "hessian"))
+        self.xyz_file = os.path.join(self.folder,molecule_config.xyz_file)
+        self.target_file = os.path.join(self.folder,molecule_config.target_file)
         self.do_calc = True
-        self.solvent = self.config.get("solvent",None)
+        self.solvent = molecule_config.solvent
 
     def ProcessData(self, model=False):
         self.ImportStructure()

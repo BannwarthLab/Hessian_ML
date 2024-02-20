@@ -1,5 +1,4 @@
-from operator import matmul
-
+from __future__ import annotations
 import numpy as np
 from scipy import linalg
 
@@ -175,7 +174,7 @@ class Observables(Rotation_Functions):
 
         lamb, Q = linalg.eigh(hess)
 
-        M = matmul(overlap_mat, Q)
+        M = np.matmul(overlap_mat, Q)
 
         norm_x = np.array(linalg.norm(coord.loc[:, "x"]))
 

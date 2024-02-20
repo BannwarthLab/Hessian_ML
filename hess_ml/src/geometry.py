@@ -1,29 +1,14 @@
-import json
-import os
-import time
+from __future__ import annotations
 
+import os
 import numpy as np
 import pandas as pd
 
 import hess_ml.src.constants.constants as const
 
-
 class Geometry:
     def __init__(self) -> None:
         return
-
-    def setConfiguration(self, folder, config):
-        self.config = config
-        self.folder = folder
-        self.threads = config.get("threads", 1)
-        self.hessian_type = config.get("hessian_type", "xtb")
-
-        self.xyz_file = config.get("xyz_file", "xtbopt.xyz")
-        self.gradient_file = config.get("gradient_file", "gradient")
-        self.feature_file = config.get("feature_file", "ml_feature.csv")
-        self.target_file = config.get("target_file", "hessian")
-        self.do_calc = True
-
 
     def importXYZ(self, file: str):
         with open(file) as myfile:

@@ -1,11 +1,16 @@
+from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+
 import hess_ml.src.constants.constants as const
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from hess_ml.src.template import TestMLHessianGFN2xTB
 
 class ReadXYZ:
-    def ImportStructure(self):
+    def ImportStructure(self:TestMLHessianGFN2xTB):
         with open(self.xyz_file) as myfile:
             [next(myfile) for _ in range(2)]
 
