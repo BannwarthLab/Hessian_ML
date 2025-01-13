@@ -1,8 +1,4 @@
-[tool.black]
-line-length = 121
-
 [tool.ruff]
-exclude = ["ui_*",]
 target-version = "py39"
 line-length = 121#
 select = [

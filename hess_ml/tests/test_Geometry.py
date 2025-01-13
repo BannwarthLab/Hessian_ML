@@ -3,10 +3,8 @@ import unittest as ut
 from pathlib import Path
 
 import numpy as np
-
-from hess_ml.src.geometry import Geometry
-from hess_ml.src.io import Input
-
+from hess_ml.src2.molecule.molecule import Molecule
+from hess_ml.src2.molecule.tblite.prediction_feature import Feature
 
 class TestGeometry(ut.TestCase):
 
@@ -14,33 +12,16 @@ class TestGeometry(ut.TestCase):
 
         config = {}
 
-        config["xyz_file"] =   "struc.xyz"
-        config["feature"] = "tblite"
+        fxyz =   "struc.xyz"
 
         folder = Path(__file__).parent / "test_files/ethane/"
 
-        molecule = Geometry(folder = folder,config=config)
+        molecule = Molecule(folder=folder,fxyz=fxyz)
+        molecule.feature = Feature
+        molecule.read_hessian(fhess='hessian',hesstype='xTB')
+        molecule.feature.processed_features
 
-        input = Input()
-
-        file = Path(__file__).parent / "test_files/ethane/struc.xyz"
-
-        xyz, header = input.import_coord(file)
-
-        molecule.gen_data(threads=1)
-
-        elements = ["c","c","h","h","h","h","h","h"]
-        nuc_charge = [6.0,6.0,1.0,1.0,1.0,1.0,1.0,1.0]
-
-        for i in range(len(elements)):
-            assert molecule.elements[i].lower() == elements[i]
-            assert molecule.nuc_charge[i] == nuc_charge[i]
-
-        assert molecule.N_atoms == 8
-        assert np.sum(np.array(xyz.iloc[:, 1:])) == np.sum(molecule.xyz)
-
-
-        R = molecule.R_MI_APF_mat[:3,3:6]
+        R = molecule.feature.R_MI_APF_mat
         xyz_rot = molecule.xyz[0] - (molecule.xyz[0]+molecule.xyz[1])/2
         xyz_rot = np.matmul(R,xyz_rot)
         self.assertAlmostEqual(xyz_rot[0],0.0,10)

@@ -24,6 +24,8 @@ setup(
 
     install_requires=install_requirements,
 
+    packages = find_packages(),
+
     python_requires='>=3.6',
 
     entry_points={
