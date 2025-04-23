@@ -11,15 +11,16 @@ from hess_ml.src.decorator.decorator import initProcess
 from hess_ml.src2.ml_models.sklearn.model_template import ActiveTraining, Training
 from hess_ml.src2.utilities.parser import Parser
 from hess_ml.src2.utilities.reader import rd_txt_file
-from hess_ml.src2.ml_models.sklearn.predicting import HessianPredictor
+from hess_ml.src2.ml_models.sklearn.predicting import HessianPredictor,HessianPMPredictor
 from hess_ml.src2.governance.config import Configurations
 import hess_ml.src2.governance.globals as globals 
 from hess_ml.src2.utilities.writer import list_to_txt
 
-from hess_ml.src2.molecule.molecule import Molecule
+from hess_ml.src2.molecule.molecule import Molecule,NuclearHessian,NuclearHessianPM
 from hess_ml.src2.molecule.tblite.training_feature import Feature as TrainFeature
 from hess_ml.src2.molecule.tblite.training_feature import ReducedFeature as TrainReducedFeature
 from hess_ml.src2.molecule.tblite.training_feature import CustomFeature as TrainCustomFeature
+
 
 class Environment(Parser):
     def __init__(self):
@@ -35,7 +36,12 @@ class Environment(Parser):
 
         self.set_device()
         #self.producte = HessianProducer(self.config) -> generates the data etc.
-        self.predictor = HessianPredictor(self.config)
+
+        match self.config.general.runtype.lower():
+            case 'hessian_pm':
+                self.predictor = HessianPMPredictor(self.config)
+            case 'hessian':
+                self.predictor = HessianPredictor(self.config)
 
     def set_config(self):
         """
@@ -138,13 +144,18 @@ class Environment(Parser):
 
                 rmsd = np.sqrt(np.mean(self.Targets[validation_idx]-pred_vals)**2)
 
+
+                print(f"Validation statistics")
                 print(f"RndState: {self.config.general.random_state} Size: {train_size[i]} RMSD: {rmsd}")
 
                 if self.config.train.test_size >= test_size_threshold:
                     self.train_size = train_size[i]
                     self.rnd_seed = self.config.general.random_state
                     self.predictor.model = model_trainer.complete_model
-                    self.predictor.predict_array(self.test_geo)
+                    rmsd = self.predictor.test_array(self.test_geo)
+                    print("Test statistics")
+                    print(f"RndState: {self.config.general.random_state} Size: {train_size[i]} RMSD: {rmsd}")
+
 
                 del model_trainer
 
@@ -216,16 +227,17 @@ class Environment(Parser):
 
     def import_data(self):
         if self.config.molecule.feature.lower() in ["tblite","complete","reduced","custom"]:
-
+            self.folders = []
+            
             if not(os.path.isdir(globals.PROCESSED_DATA_FOLDER)):
                 os.mkdir(globals.PROCESSED_DATA_FOLDER)
 
             if self.config.molecule.folder is not None:
                 self.parse_data_set(self.config.molecule.folder)
             elif self.config.molecule.files is not None:
-                with open(self.config.molecule.files,"r+") as f:
-                    self.folders = f.readlines()
-                    f.close()
+                files = rd_txt_file(self.config.molecule.files)
+                self.folders.extend(files)
+
             else:
                 print("Neither a folder or files specified.")
 
@@ -394,6 +406,15 @@ class Environment(Parser):
             else:
                 print("More than one program not implemented yet!")
 
+        
+        match self.config.general.runtype.lower():
+            case 'hessian':
+                self.hess_type = NuclearHessian
+            case 'hessian_pm':
+                self.hess_type = NuclearHessianPM
+
+
+
         self.n_data =  0
         self.splitted = False
         n_split = 0
@@ -465,6 +486,9 @@ class Environment(Parser):
         print(f"Path: {dir}")
 
         mol = Molecule(dir,self.config.molecule.xyz_file)
+        mol.hessian = self.hess_type
+        mol.ml_hessian = self.hess_type
+
         print(f"Number of atoms: {mol.nat}")
         
         mol.feature = self.feature_class

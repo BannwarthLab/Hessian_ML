@@ -71,6 +71,7 @@ class FeatureCalculation:
     def ImportFeature(self):
         
         try:
+
             faulthandler.enable()
             from tblite.interface import Calculator
             
@@ -108,6 +109,8 @@ class FeatureCalculation:
             new_keys = self.adapt_keys(X.keys())
 
             self.ml_feat = pd.DataFrame(deepcopy(X),columns=X.keys())
+
+            #self.ml_feat.to_csv(os.path.join(self._mol.path,'features.csv'))
 
             self.ml_feat = self.ml_feat.rename(columns=new_keys)
             
@@ -199,7 +202,8 @@ class FeatureCalculation:
                 self.dipm[f"delta_{orb}"] = self.ml_feat.loc[:,
                     self.ml_feat.columns.str.contains(f"delta_dipm_{orb}_")].to_numpy()
 
-                vector.append(self.dipm[f"delta_{orb}"])
+                for idx in range(0,(self.dipm[f"delta_{orb}"]).shape[1],3):
+                    vector.append(self.dipm[f"delta_{orb}"][:,idx:idx+3])
 
                 # self.qm[f"delta_{orb}"] = self.ml_feat.loc[:,
                 #     self.ml_feat.columns.str.contains(f"delta_qm_{orb}_")].to_numpy()
@@ -213,7 +217,7 @@ class FeatureCalculation:
 
                 for key in [f"delta_dipm_{orb}"]:#,f"delta_qm_{orb}"
                     temp = self.ml_feat.loc[:,key].to_numpy()
-                    scalar.append(temp)
+                    scalar.extend(temp.reshape(-1,self._mol.nat))
                     self.scalar_keys.append(key)
                     self.norms[key] = temp
 
@@ -238,7 +242,7 @@ class FeatureCalculation:
 
                 for key in [f"dipm_{orb}",f"qm_{orb}"]:
                     temp = self.ml_feat.loc[:,key].to_numpy()
-                    scalar.append(temp)
+                    scalar.extend(temp.reshape(-1,self._mol.nat))
                     self.scalar_keys.append(key)
                     self.norms[key] = temp
 
@@ -256,14 +260,15 @@ class FeatureCalculation:
         self.scalar_keys.append("delta_CN")
 
         scalar.append(self.cn["default"])
-        scalar.append(self.cn["delta"].flatten())
+
+        scalar.extend(self.cn["delta"].reshape(-1,self._mol.nat))
         
         self.q["default"] = self.ml_feat.loc[:, "q_A"].to_numpy()
         self.q["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.contains("delta_q_A")].to_numpy()
 
         scalar.append(self.q["default"])
-
-        scalar.append(self.q["delta"].flatten())
+        
+        scalar.extend(self.q["delta"].reshape(-1,self._mol.nat))
 
         self.scalar_keys.append("default_q_A")
         self.scalar_keys.append("delta_q_A")
@@ -497,7 +502,10 @@ class FeatureCalculation:
 
         elif self._mol.atomic_numbers[A] == self._mol.atomic_numbers[B]:
 
-            if np.linalg.norm(self.dipm["A"][A]) < np.linalg.norm(self.dipm["A"][B]):
+            dipm_norm_A = np.linalg.norm(self.dipm["A"][A]) 
+            dipm_norm_B = np.linalg.norm(self.dipm["A"][B])
+
+            if dipm_norm_A < dipm_norm_B:
                 B, A = A, B
 
                 transpose = [B, A]
@@ -507,7 +515,7 @@ class FeatureCalculation:
 
                 R_MI_APF = np.matmul(R_y, R_MI_APF)
 
-            elif np.linalg.norm(self.dipm["A"][A]) == np.linalg.norm(self.dipm["A"][B]):
+            elif dipm_norm_A == dipm_norm_B:
                 print("Nucelar Charge and Dipole moment are the same.")
 
         r_AB = (self._mol.xyz[A, :].copy() - self._mol.xyz[B, :].copy()).reshape(1,-1)
@@ -797,11 +805,11 @@ class FeatureCalculation:
 
         potE = q_A*q_B/R_AB
         
-        atoms = [A,B]
-        for atom in atoms:
-            mask = np.ones(self._mol.nat,dtype=bool)
-            mask[atom] = False
-            V_J = np.sum(self.q["default"][mask]/self.distance_mat[atom,mask])
+        # atoms = [A,B]
+        # for atom in atoms:
+        #     mask = np.ones(self._mol.nat,dtype=bool)
+        #     mask[atom] = False
+        #     V_J = np.sum(self.q["default"][mask]/self.distance_mat[atom,mask])
         #    Features_temp.append(V_J*self.q["default"][atom])
 
         Features_temp.append(potE)

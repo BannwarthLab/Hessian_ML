@@ -79,8 +79,6 @@ class Parser:
 
         walker = os.walk(main_folder)
 
-        self.folders = []
-
         if self.config.general.feature:
             for folder,_,files in walker:
                 if xyz_file in files and target_file in files:

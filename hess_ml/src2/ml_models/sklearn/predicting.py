@@ -14,10 +14,9 @@ from tcgm_lib.IO.writer import wrt_hess_to_xtb
 
 from hess_ml.src.decorator.decorator import checkTiming
 from hess_ml.src2.molecule.molecule import Molecule
-from hess_ml.src2.utilities.matrix_operation import fill_matrix_block_AB,rotate_matrix
 from hess_ml.src2.molecule.tblite.prediction_feature import ReducedFeature
 from hess_ml.src2.molecule.tblite.prediction_feature import CustomFeature
-from numba import njit
+
 
 if TYPE_CHECKING:
     from sklearn.dummy import DummyRegressor
@@ -134,9 +133,9 @@ class HessianPredictor(Predictor):
 
 
             return Hessian
-
+    
     def damping(self,dist):
-        return 1/(np.exp((dist-13)/0.1)+1)
+        return 1/(np.exp((dist-13.0)/0.1)+1)
 
     def gen_hess_from_vec_pred_damped(
                 self, hess_vec_ab, N_atoms, R_MI_APF_mat, transpose_list, atom_pairs, dist_mat
@@ -209,6 +208,29 @@ class HessianPredictor(Predictor):
                 wrt_hess_to_xtb(os.path.join(mol.path, "MLhessian"),mol.ml_hessian.hessian)
                 #np.save(os.path.join(mol.path, "MLhessian.npy"),mol.ml_hessian.hessian)
 
+    def test_array(self,folders):
+        sd = 0
+        n_val = 0 
+        for path in folders:
+            mol = Molecule(path,self.config.molecule.xyz_file)
+            
+            if self.config.molecule.feature in ["reduced"]:
+                mol.feature = ReducedFeature
+            elif self.config.molecule.feature in ["custom","numpy","numpy_list"]:
+                mol.feature = CustomFeature
+
+            print(f"Path: {path}")
+            print(f"Number of atoms: {mol.nat}")
+            
+            mol = self.predict(mol)
+        
+            mol.read_hessian(os.path.join(mol.path, "hessian"))
+            
+            sd += np.sum((mol.ml_hessian.hessian - mol.hessian.hessian)**2)
+            n_val += mol.hessian.hessian.shape[0]*mol.hessian.hessian.shape[1]
+        
+        return np.sqrt(sd/n_val)
+                
 def restructure_RH(hess_vec_ab, atom_pairs, R_MI_APF_mat, transpose_list):
 
     hess_ab = np.zeros((len(hess_vec_ab),3,3))
@@ -226,6 +248,7 @@ def restructure_RH(hess_vec_ab, atom_pairs, R_MI_APF_mat, transpose_list):
         ite_hetero += 1
 
     return rabs,hess_ab
+
     # def error_estimation(self:Environment, folders, rnd_seed, train_size):
     #     print("Computing error on test set")
 
@@ -257,3 +280,35 @@ def restructure_RH(hess_vec_ab, atom_pairs, R_MI_APF_mat, transpose_list):
     #     self.mol.ProcessData(model=self.model)
 
     #     self.mol.optimize_step()
+
+class HessianPMPredictor(HessianPredictor):
+
+    @checkTiming(enabled=True)
+    def predict(self, mol:Molecule):
+        """Predict the Hessian of a molecule from its features.
+
+        Args:
+            mol (Molecule): Molecule
+        """
+        if mol.nat == 1:
+            mol.calc_succeeded = False
+
+        feat = mol.feature.processed_features.astype(np.float32)
+        
+
+        if mol.calc_succeeded:
+            upper_tri_blocks_hessian = self.model.predict(feat)
+            upper_tri_blocks_hessian[:,:9] += upper_tri_blocks_hessian[:,9:]
+
+            mol.ml_hessian.hessian = self.gen_hess_from_vec_pred_damped(
+                upper_tri_blocks_hessian[:,:9],
+                mol.nat,
+                mol.feature.R_MI_APF_mat,
+                mol.feature.transpose_list,
+                mol.computed_atom_pairs,
+                mol.feature.distance_mat,
+            )
+            
+            del upper_tri_blocks_hessian
+
+        return mol

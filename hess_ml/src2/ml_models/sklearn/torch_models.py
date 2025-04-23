@@ -23,8 +23,9 @@ class DummyScheduler():
 class DeepNN(nn.Module):
     def __init__(self):
         super(DeepNN, self).__init__()
-        layer_size = 350
+        layer_size = 500
         self.init_layer_size = 1
+        self.final_layer_size = 9 
 
         self.fc1 = nn.Linear(self.init_layer_size, layer_size)  
         self.norm1 = nn.LayerNorm(layer_size)
@@ -41,11 +42,15 @@ class DeepNN(nn.Module):
         self.fc43 = nn.Linear(layer_size, layer_size,bias=False)  
         
         self.fc5 = nn.Linear(layer_size, 64,bias=False) 
-        self.fc_last = nn.Linear(64, 9,bias=False) 
+        self.fc_last = nn.Linear(64,self.final_layer_size,bias=False) 
 
     def update_init_layer(self,size:int):
-        self.fc1 = nn.Linear(size, 350)
+        self.fc1 = nn.Linear(size, 500)
         self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(64,size)
+        self.final_layer_size = size
 
     def forward(self, x):
         x = x.view(-1, self.init_layer_size)  # Flatten the input
@@ -53,11 +58,7 @@ class DeepNN(nn.Module):
         x = torch.nn.functional.tanh(self.fc2(x))
         x = torch.nn.functional.hardtanh(self.fc3(x))
         x = self.norm1(x)
-        #x = self.drop2(x)
         x = torch.nn.functional.tanh(self.fc31(x))
-        
-        #x = self.norm2(x)
-        #x = torch.nn.functional.tanh(self.fc32(x))
         x = torch.nn.functional.tanh(self.fc32(x))
         x = torch.nn.functional.hardtanh(self.fc33(x))
         
@@ -65,7 +66,7 @@ class DeepNN(nn.Module):
         x = torch.nn.functional.tanh(self.fc42(x))
         x = torch.nn.functional.hardtanh(self.fc43(x))
 
-        x = torch.nn.functional.tanh(self.fc5(x))
+        x = torch.nn.functional.hardshrink(self.fc5(x),lambd=1e-5)
 
         x = self.fc_last(x)
 
@@ -76,16 +77,21 @@ class HessiaNN(nn.Module):
     def __init__(self):
         super(HessiaNN, self).__init__()
         self.init_layer_size = 1
+        self.final_layer_size = 9 
         layer_size = 700
         self.fc1 = nn.Linear(self.init_layer_size, layer_size) 
         self.norm = nn.LayerNorm(layer_size,eps=5e-7)
         self.fc2 = nn.Linear(layer_size, layer_size)
         self.fc3 = nn.Linear(layer_size, layer_size)
-        self.fc_last = nn.Linear(layer_size, 9)
+        self.fc_last = nn.Linear(layer_size, self.final_layer_size)
 
     def update_init_layer(self,size:int):
         self.fc1 = nn.Linear(size, 700)
         self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(700,size)
+        self.final_layer_size = size
 
     def forward(self, x):
         x = x.view(-1, self.init_layer_size)  # Flatten the input
@@ -100,17 +106,86 @@ class CustomNN(nn.Module):
     def __init__(self):
         super(CustomNN, self).__init__()
         self.init_layer_size = 1
+        self.final_layer_size = 9 
         layer_size = 700
         self.fc1 = nn.Linear(self.init_layer_size,layer_size) 
         self.norm = nn.LayerNorm(layer_size)
         self.fc2 = nn.Linear(layer_size, layer_size)
         self.fc3 = nn.Linear(layer_size, layer_size)
         self.fc4 = nn.Linear(layer_size, layer_size,bias=False)
-        self.fc_last = nn.Linear(layer_size, 9, bias=False)
+        self.fc_last = nn.Linear(layer_size, self.final_layer_size, bias=False)
 
     def update_init_layer(self,size:int):
         self.fc1 = nn.Linear(size, 700)
         self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(700,size, bias=False)
+        self.final_layer_size = size
+
+    def forward(self, x):
+        x = x.view(-1, self.init_layer_size)  # Flatten the input
+        x = nn.functional.softshrink(self.fc1(x),lambd=1e-7)
+        x = self.norm(x)
+        x = nn.functional.tanhshrink(self.fc2(x))
+        x = nn.functional.tanh(self.fc3(x))
+        x = nn.functional.tanhshrink(self.fc4(x))
+        x = nn.functional.hardshrink(self.fc_last(x),lambd=1e-5)
+
+        return x
+    
+class DoubledNN(nn.Module):
+    def __init__(self):
+        super(DoubledNN, self).__init__()
+        self.init_layer_size = 1
+        self.final_layer_size = 9 
+        layer_size = 1000
+        self.fc1 = nn.Linear(self.init_layer_size,layer_size) 
+        self.norm = nn.LayerNorm(layer_size)
+        self.fc2 = nn.Linear(layer_size, layer_size)
+        self.fc3 = nn.Linear(layer_size, layer_size)
+        self.fc4 = nn.Linear(layer_size, layer_size,bias=False)
+        self.fc_last = nn.Linear(layer_size, self.final_layer_size, bias=False)
+
+    def update_init_layer(self,size:int):
+        self.fc1 = nn.Linear(size, 1000)
+        self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(1000,size, bias=False)
+        self.final_layer_size = size
+
+    def forward(self, x):
+        x = x.view(-1, self.init_layer_size)  # Flatten the input
+        x = nn.functional.softshrink(self.fc1(x),lambd=1e-7)
+        x = self.norm(x)
+        x = nn.functional.tanhshrink(self.fc2(x))
+        x = nn.functional.tanh(self.fc3(x))
+        x = nn.functional.tanhshrink(self.fc4(x))
+        x = nn.functional.hardshrink(self.fc_last(x),lambd=1e-5)
+
+        return x
+    
+class IncreasedNN(nn.Module):
+    def __init__(self):
+        super(IncreasedNN, self).__init__()
+        self.init_layer_size = 1
+        self.final_layer_size = 9 
+        layer_size = 1300
+        self.fc1 = nn.Linear(self.init_layer_size,layer_size) 
+        self.norm = nn.LayerNorm(layer_size)
+        self.fc2 = nn.Linear(layer_size, layer_size)
+        self.fc3 = nn.Linear(layer_size, layer_size)
+        self.fc4 = nn.Linear(layer_size, layer_size,bias=False)
+        self.fc_last = nn.Linear(layer_size, self.final_layer_size, bias=False)
+
+    def update_init_layer(self,size:int):
+        self.fc1 = nn.Linear(size, 1300)
+        self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(1300,size, bias=False)
+        self.final_layer_size = size
 
     def forward(self, x):
         x = x.view(-1, self.init_layer_size)  # Flatten the input
@@ -123,21 +198,92 @@ class CustomNN(nn.Module):
 
         return x
 
+class TestNN(nn.Module):
+    def __init__(self):
+        super(TestNN, self).__init__()
+        self.init_layer_size = 1
+        self.final_layer_size = 9
+        layer_size = 1000
+        self.fc1 = nn.Linear(self.init_layer_size,layer_size,bias=False) 
+        self.norm = nn.LayerNorm(layer_size)
+        self.fc2 = nn.Linear(layer_size, layer_size,bias=False)
+        self.fc3 = nn.Linear(layer_size, layer_size,bias=False)
+        self.fc4 = nn.Linear(layer_size, layer_size,bias=False)
+        self.norm1 = nn.LayerNorm(layer_size)
+        self.fc5 = nn.Linear(layer_size, layer_size,bias=False)
+        self.fc_last = nn.Linear(layer_size, self.final_layer_size, bias=False)
+
+    def update_init_layer(self,size:int):
+        self.fc1 = nn.Linear(size, 1000)
+        self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(1000,size, bias=False)
+        self.final_layer_size = size
+
+    def forward(self, x):
+        x = x.view(-1, self.init_layer_size)  # Flatten the input
+        x = nn.functional.softshrink(self.fc1(x),lambd=1e-7)
+        x = self.norm(x)
+        x = nn.functional.tanhshrink(self.fc2(x))
+        x = nn.functional.tanh(self.fc3(x))
+        x = nn.functional.tanhshrink(self.fc4(x))
+        x = self.norm1(x)
+        x = nn.functional.tanh(self.fc5(x))
+        x = nn.functional.hardshrink(self.fc_last(x),lambd=1e-5)
+
+        return x
+    
+
+class Test2NN(nn.Module):
+    def __init__(self):
+        super(Test2NN, self).__init__()
+        self.init_layer_size = 1
+        self.final_layer_size = 9
+        layer_size = 100
+        self.fc1 = nn.Linear(self.init_layer_size,layer_size,bias=False) 
+        #self.norm = nn.LayerNorm(layer_size)
+        self.fc2 = nn.Linear(layer_size, layer_size, bias=False)
+        self.fc3 = nn.Linear(layer_size, layer_size, bias=False)
+        self.fc_last = nn.Linear(layer_size, self.final_layer_size, bias=False)
+
+    def update_init_layer(self,size:int):
+        self.fc1 = nn.Linear(size, 100)
+        self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(100,size, bias=False)
+        self.final_layer_size = size
+
+    def forward(self, x):
+        x = x.view(-1, self.init_layer_size)  # Flatten the input
+        x = nn.functional.softshrink(self.fc1(x),lambd=1e-7)
+        #x = self.norm(x)
+        x = nn.functional.tanhshrink(self.fc2(x))
+        x = nn.functional.tanh(self.fc3(x))
+        x = nn.functional.hardshrink(self.fc_last(x),lambd=1e-6)
+        return x
+    
 class EnlargedNN(nn.Module):
     def __init__(self):
         super(EnlargedNN, self).__init__()
         self.init_layer_size = 1
+        self.final_layer_size = 9 
         layer_size = 900
         self.fc1 = nn.Linear(self.init_layer_size,layer_size) 
         self.norm = nn.LayerNorm(layer_size)
         self.fc2 = nn.Linear(layer_size, layer_size)
         self.fc3 = nn.Linear(layer_size, layer_size)
         self.fc4 = nn.Linear(layer_size, layer_size,bias=False)
-        self.fc_last = nn.Linear(layer_size, 9, bias=False)
+        self.fc_last = nn.Linear(layer_size, self.final_layer_size, bias=False)
 
     def update_init_layer(self,size:int):
         self.fc1 = nn.Linear(size, 900)
         self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(900,size, bias=False)
+        self.final_layer_size = size
 
     def forward(self, x):
         x = x.view(-1, self.init_layer_size)  # Flatten the input
@@ -154,6 +300,7 @@ class HessiaNN_custom(nn.Module):
     def __init__(self):
         super(HessiaNN_custom, self).__init__()
         self.init_layer_size = 1
+        self.final_layer_size = 9 
         layer_size = 700
         self.fc1 = nn.Linear(self.init_layer_size,layer_size) 
         self.norm = nn.LayerNorm(layer_size)
@@ -165,6 +312,10 @@ class HessiaNN_custom(nn.Module):
     def update_init_layer(self,size:int):
         self.fc1 = nn.Linear(size, 700)
         self.init_layer_size = size
+
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(700,size, bias=False)
+        self.final_layer_size = size
 
     def forward(self, x):
         x = x.view(-1, self.init_layer_size)  # Flatten the input
@@ -181,6 +332,7 @@ class ReducedNN(nn.Module):
     def __init__(self):
         super(ReducedNN, self).__init__()
         self.init_layer_size = 1
+        self.final_layer_size = 9 
         layer_size = 400
         self.fc1 = nn.Linear(self.init_layer_size, layer_size)  
         self.norm1 = nn.LayerNorm(layer_size)
@@ -202,6 +354,10 @@ class ReducedNN(nn.Module):
         self.fc1 = nn.Linear(size, 400)
         self.init_layer_size = size
 
+    def update_final_layer(self,size:int):
+        self.fc_last = nn.Linear(64,size)
+        self.final_layer_size = size
+
     def forward(self, x):
         x = x.view(-1, self.init_layer_size)  # Flatten the input
         x = torch.nn.functional.tanh(self.fc1(x))
@@ -222,6 +378,34 @@ class ReducedNN(nn.Module):
 
         x = self.fc_last(x)
         return x
+
+class EarlyStopping:
+    def __init__(self, patience=5, delta=0):
+        self.patience = patience
+        self.delta = delta
+        self.best_score = None
+        self.early_stop = False
+        self.counter = 0
+        self.best_model_state = None
+
+    def __call__(self, val_loss, model:nn.Module):
+        score = -val_loss
+
+        if self.best_score is None:
+            self.best_score = score
+            self.best_model_state = model.state_dict()
+        elif score < self.best_score + self.delta:
+            self.counter += 1
+            if self.counter >= self.patience:
+                self.early_stop = True
+        else:
+            self.best_score = score
+            self.best_model_state = model.state_dict()
+            self.counter = 0
+
+    def load_best_model(self, model):
+        model.load_state_dict(self.best_model_state)
+
 
 class PyTorchRegressor(BaseEstimator, RegressorMixin):
     def __init__(self, lr=0.0002, gamma=0.99, epochs=100,model:nn.Module=HessiaNN(),criterion:nn.Module=nn.HuberLoss(delta=5e-2),
@@ -255,23 +439,26 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
         print(f"Number of model parameter: {num_params}.\n")
 
         self.model.update_init_layer(X_tensor.shape[1])
+        self.model.update_final_layer(y_tensor.shape[1])
+
         print(f"The initial layer size is set to: {X_tensor.shape[1]}.")
+        print(f"The final layer size is set to: {y_tensor.shape[1]}.")
 
         self.model = self.model.to(self.device)
         self.model.train()
 
-        criterion = nn.HuberLoss(delta=5e-2)
-        features_test = features_test.to(self.device)
-        n_epochs = 20
-        optimizer = optim.Adam(self.model.parameters(), lr=1e-3)
-        scheduler = ExponentialLR(optimizer,gamma=0.95)
-        trainloader = DataLoader(trainset , batch_size=self.batch_size, shuffle=True)
-        r2scores = self.fit_model(trainloader,features_test,targets_test,scheduler=scheduler,
-                                  criterion=criterion,
-                                  optimizer=optimizer,
-                                  n_epochs=n_epochs)
+        # criterion = nn.HuberLoss(delta=5e-2)
+        # features_test = features_test.to(self.device)
+        # n_epochs = 20
+        # optimizer = optim.Adam(self.model.parameters(), lr=1e-3)
+        # scheduler = ExponentialLR(optimizer,gamma=0.95)
+        # trainloader = DataLoader(trainset , batch_size=self.batch_size, shuffle=True)
+        # r2scores = self.fit_model(trainloader,features_test,targets_test,scheduler=scheduler,
+        #                           criterion=criterion,
+        #                           optimizer=optimizer,
+        #                           n_epochs=n_epochs)
         
-        tot_r2scores = r2scores
+        # tot_r2scores = r2scores
 
         self.model = self.model.to(self.device)
         self.model.train()
@@ -287,7 +474,9 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
                                   optimizer=optimizer,
                                   n_epochs=n_epochs)
 
-        tot_r2scores = np.append(tot_r2scores,r2scores,axis=0)
+
+        tot_r2scores = r2scores 
+        #tot_r2scores = np.append(tot_r2scores,r2scores,axis=0)
 
         np.savetxt('statistics',tot_r2scores)
 
@@ -321,9 +510,11 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
                   optimizer=None,
                   n_epochs=30) -> np.ndarray:
 
-        statistics = np.zeros([n_epochs,4])
+        statistics = np.zeros([n_epochs,5])
 
         t_init = time.time()
+
+        early_stopping = EarlyStopping(patience=30,delta=0.0)
 
         if optimizer is None:
             optim.Adam(self.model.parameters(), lr=0.001)
@@ -359,17 +550,26 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
 
                 r2 = r2_score(pred_target.numpy(),targets_test.numpy())
                 rmse = np.sqrt(np.mean((pred_target.numpy()-targets_test.numpy())**2))
-                loss = criterion(pred_target,targets_test)
-                mae = np.mean(np.abs(pred_target.numpy()-targets_test.numpy()))
+                val_loss = criterion(pred_target,targets_test).item()
 
+                mae = np.mean(np.abs(pred_target.numpy()-targets_test.numpy()))
                 statistics[epoch,0] = r2
                 statistics[epoch,1] = rmse 
                 statistics[epoch,2] = mae
-                statistics[epoch,3] = loss.item()
+                statistics[epoch,3] = val_loss
+                statistics[epoch,4] = running_loss / len(trainloader)
 
             scheduler.step()
 
-            print(f'Epoch [{epoch + 1}/{n_epochs}], Loss: {running_loss / len(trainloader):2.4E}')
+            print(f'Epoch [{epoch + 1}/{n_epochs}], Loss: {running_loss / len(trainloader):2.4E},  Val: {val_loss:2.4E}')
+            
+            early_stopping(val_loss,self.model)
+
+            if early_stopping.early_stop:
+                print("Early stopping.")
+                break 
+
+        early_stopping.load_best_model(self.model)
 
         t_final = time.time()
         print(f'Fit took {t_final-t_init:3.3f} s')

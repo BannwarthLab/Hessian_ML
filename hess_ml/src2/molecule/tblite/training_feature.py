@@ -30,8 +30,6 @@ class Feature(FeatureCalculation):
         if self._mol.calc_succeeded:
             self.transpose_list = []
 
-#            atom_pairs = [(atom_A,atom_B) for atom_A in range(self._mol.nat) for atom_B in range(atom_A+1,self._mol.nat)]
-
             temp_dist_mat = self._mol.feature.distance_mat.copy()
             temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
             atom_pairs = np.argwhere(temp_dist_mat<20)
@@ -117,12 +115,10 @@ class ReducedFeature(Feature):
         j3 = 3 * atom_B + 3
 
         H_APF = rotate_matrix(R_MI_APF,self._mol.hessian.hessian[i0:i3, j0:j3])
-
         if transpose is not None:
             H_APF = H_APF.T
 
         return list(H_APF.flatten()),Feature_AB,transpose
-    
     
 class CustomFeature(Feature):
     def _transform_block(self,atom_pair:list):
@@ -133,24 +129,8 @@ class CustomFeature(Feature):
 
         atom_A,atom_B = atom_pair
         supporting_vector = self.supporting_vector(atom_pair)
-
-        R_MI_APF = get_atom_pair_rot_mat(
-            self._mol.xyz,
-            supporting_vector,
-            atom_pair,
-        )
-
+        R_MI_APF = get_atom_pair_rot_mat(self._mol.xyz,supporting_vector,atom_pair,)
         Feature_AB,transpose,R_MI_APF = self.gen_Feature_custom(R_MI_APF,atom_pair)
-        
-        i0 = 3 * atom_A
-        i3 = 3 * atom_A + 3
-        j0 = 3 * atom_B
-        j3 = 3 * atom_B + 3
-
-        H_APF = rotate_matrix(R_MI_APF,self._mol.hessian.hessian[i0:i3, j0:j3])
-
-        if transpose is not None:
-            H_APF = H_APF.T
-
+        H_APF = self._mol.hessian.get_rotated_matrix(R_MI_APF,atom_A,atom_B,transpose)
         return list(H_APF.flatten()),Feature_AB,transpose
 

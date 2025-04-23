@@ -200,7 +200,7 @@ class Training(Input,Output):
 
         elif method == "mlpr":
             regr_model = MLPRegressor(hidden_layer_sizes=(500,500))
-
+            
             regr_model.set_params(**params)
 
         elif method == "hgbr":
@@ -229,7 +229,7 @@ class Training(Input,Output):
         model_key:str = params.get("model","CustomNN")
         model_key = model_key[:-2].lower().capitalize() + model_key[-2:].upper()
 
-        criterion_key = params.get("criterion","huber_loss")
+        criterion_key:str = params.get("criterion","huberloss")
 
         model = getattr(nn_hessian,model_key)
 
@@ -237,11 +237,11 @@ class Training(Input,Output):
             "relative_error" : CustomRelativeError(delta=error_parameter.get("delta",5e-3),
                                                    relative_delta=error_parameter.get("rel_delta",1e-4)),
             "custom_huber_loss" : CustomHuberLoss(),
-            "huber_loss" : torch.nn.HuberLoss(delta=error_parameter.get("delta",5e-2))
+            "huberloss" : torch.nn.HuberLoss(delta=error_parameter.get("delta",5e-2))
         }
 
-        print(criterions[criterion_key])
-        return model(), criterions[criterion_key]
+        print(criterions[criterion_key.lower()])
+        return model(), criterions[criterion_key.lower()]
 
     def get_nn_params(self,params:dict):
         lr = params.get("learning_rate",0.001)
@@ -281,6 +281,7 @@ class Training(Input,Output):
 
         print("Parameters for the Model:")
         param_temp = self.complete_model.get_params()
+        print(param_temp)
         for param in param_temp:
             print(f"{param}: {param_temp[param]}")
 
