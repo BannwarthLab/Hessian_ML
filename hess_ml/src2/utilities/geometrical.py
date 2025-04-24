@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 from numpy import linalg
 
-from hess_ml.src.decorator.decorator import checkTiming
+from hess_ml.src2.utilities.decorator import checkTiming
 
 
 def angle_two_vec(a, b, norm_a,norm_b):

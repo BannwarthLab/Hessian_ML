@@ -8,7 +8,6 @@ if os.path.isfile(requirement_path):
     with open(requirement_path) as f:
         install_requirements = list(f.read().splitlines())
 
-
 setup(
     name='hessml',
 

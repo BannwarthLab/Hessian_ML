@@ -12,7 +12,7 @@ import numpy as np
 from joblib import load
 from tcgm_lib.IO.writer import wrt_hess_to_xtb
 
-from hess_ml.src.decorator.decorator import checkTiming
+from hess_ml.src2.utilities.decorator import checkTiming
 from hess_ml.src2.molecule.molecule import Molecule
 from hess_ml.src2.molecule.tblite.prediction_feature import ReducedFeature
 from hess_ml.src2.molecule.tblite.prediction_feature import CustomFeature

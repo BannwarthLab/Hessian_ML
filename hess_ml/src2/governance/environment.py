@@ -7,7 +7,7 @@ import glob
 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from hess_ml.src.decorator.decorator import initProcess
+from hess_ml.src2.utilities.decorator import initProcess
 from hess_ml.src2.ml_models.sklearn.model_template import ActiveTraining, Training
 from hess_ml.src2.utilities.parser import Parser
 from hess_ml.src2.utilities.reader import rd_txt_file

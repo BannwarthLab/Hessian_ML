@@ -4,7 +4,7 @@ from multiprocessing import Pool
 import numpy as np
 import os 
 
-from hess_ml.src.decorator.decorator import checkTiming
+from hess_ml.src2.utilities.decorator import checkTiming
 from hess_ml.src2.molecule.molecule import Molecule
 from hess_ml.src2.molecule.tblite.generation import FeatureCalculation
 from hess_ml.src2.utilities.geometrical import get_atom_pair_rot_mat

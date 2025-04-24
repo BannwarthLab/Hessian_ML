@@ -12,7 +12,7 @@ from ase.units import Bohr
 
 from copy import deepcopy 
 
-from hess_ml.src.decorator.decorator import checkTiming
+from hess_ml.src2.utilities.decorator import checkTiming
 from hess_ml.src2.utilities.matrix_operation import rotate_matrix,rotate_vector_array,rotate_vector
 from hess_ml.src2.utilities.parser import parse_dftd4_output
 
@@ -70,8 +70,8 @@ class FeatureCalculation:
 
     def ImportFeature(self):
         
-        try:
-
+        #try:
+        if True:
             faulthandler.enable()
             from tblite.interface import Calculator
             
@@ -122,11 +122,11 @@ class FeatureCalculation:
 
             self.FilterFeatures()
 
-        except:  # noqa: E722
-            self._mol.calc_succeeded = False
-            calc = None 
-            res = None 
-            print("No convergence structure will not be considered.")
+        # except:  # noqa: E722
+        #     self._mol.calc_succeeded = False
+        #     calc = None 
+        #     res = None 
+        #     print("No convergence structure will not be considered.")
 
     def adapt_keys(self,keys):
 

@@ -21,9 +21,9 @@ from sklearn.svm import SVR
 
 from copy import deepcopy
 
-from hess_ml.src.config import TrainConfig
-from hess_ml.src.decorator.decorator import checkTiming, initProcess
-from hess_ml.src.io import Input, Output
+from hess_ml.src2.governance.config import TrainConfig
+from hess_ml.src2.utilities.decorator import checkTiming, initProcess
+from hess_ml.src2.utilities.io import Input, Output
 from hess_ml.src2.ml_models.sklearn.torch_models import PyTorchRegressor
 import hess_ml.src2.ml_models.sklearn.torch_models as nn_hessian 
 from hess_ml.src2.ml_models.sklearn.custom_loss_functions import CustomHuberLoss,CustomRelativeError
@@ -33,7 +33,7 @@ from sklearn.decomposition import PCA
 
 
 if TYPE_CHECKING:
-    from hess_ml.src.config import TrainConfig
+    from hess_ml.src2.governance.config import TrainConfig
 
 
 class MyTransform(BaseEstimator,TransformerMixin):
