@@ -208,9 +208,14 @@ class HessianPredictor(Predictor):
                 wrt_hess_to_xtb(os.path.join(mol.path, "MLhessian"),mol.ml_hessian.hessian)
                 #np.save(os.path.join(mol.path, "MLhessian.npy"),mol.ml_hessian.hessian)
 
+            if mol.nat == 1:
+                mol.ml_hessian.hessian = np.zeros([3,3])
+                wrt_hess_to_xtb(os.path.join(mol.path, "MLhessian"),mol.ml_hessian.hessian)
+
     def test_array(self,folders):
-        sd = 0
         n_val = 0 
+        err = 0.0
+        s_err = 0.0
         for path in folders:
             mol = Molecule(path,self.config.molecule.xyz_file)
             
@@ -226,10 +231,11 @@ class HessianPredictor(Predictor):
         
             mol.read_hessian(os.path.join(mol.path, "hessian"))
             
-            sd += np.sum((mol.ml_hessian.hessian - mol.hessian.hessian)**2)
+            err += np.sum(np.abs(mol.ml_hessian.hessian - mol.hessian.hessian))
+            s_err += np.sum((mol.ml_hessian.hessian - mol.hessian.hessian)**2)
             n_val += mol.hessian.hessian.shape[0]*mol.hessian.hessian.shape[1]
         
-        return np.sqrt(sd/n_val)
+        return np.sqrt(s_err/n_val),err/n_val
                 
 def restructure_RH(hess_vec_ab, atom_pairs, R_MI_APF_mat, transpose_list):
 

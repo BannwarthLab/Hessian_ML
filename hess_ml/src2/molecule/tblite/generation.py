@@ -70,8 +70,7 @@ class FeatureCalculation:
 
     def ImportFeature(self):
         
-        #try:
-        if True:
+        try:
             faulthandler.enable()
             from tblite.interface import Calculator
             
@@ -122,11 +121,11 @@ class FeatureCalculation:
 
             self.FilterFeatures()
 
-        # except:  # noqa: E722
-        #     self._mol.calc_succeeded = False
-        #     calc = None 
-        #     res = None 
-        #     print("No convergence structure will not be considered.")
+        except:  # noqa: E722
+            self._mol.calc_succeeded = False
+            calc = None 
+            res = None 
+            print("No convergence structure will not be considered.")
 
     def adapt_keys(self,keys):
 

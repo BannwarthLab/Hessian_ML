@@ -21,6 +21,7 @@ class Feature(FeatureCalculation):
         """Processes the features to ML readable.
         """
         if self._mol.nat == 1:
+            
             self._mol.calc_succeeded = False
             
         if self._mol.calc_succeeded:

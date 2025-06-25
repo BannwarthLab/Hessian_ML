@@ -152,9 +152,9 @@ class Environment(Parser):
                     self.train_size = train_size[i]
                     self.rnd_seed = self.config.general.random_state
                     self.predictor.model = model_trainer.complete_model
-                    rmsd = self.predictor.test_array(self.test_geo)
+                    rmsd,mae = self.predictor.test_array(self.test_geo)
                     print("Test statistics")
-                    print(f"RndState: {self.config.general.random_state} Size: {train_size[i]} RMSD: {rmsd}")
+                    print(f"RndState: {self.config.general.random_state} Size: {train_size[i]} RMSD: {rmsd} MAE: {mae}")
 
 
                 del model_trainer
@@ -169,7 +169,6 @@ class Environment(Parser):
             print(len(self.shuffle_idx))
 
             temp_time_old = time.time()
-
 
             if self.config.train.active:
                 model_trainer = ActiveTraining(self.config.train)

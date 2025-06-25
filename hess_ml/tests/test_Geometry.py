@@ -27,7 +27,5 @@ class TestGeometry(ut.TestCase):
         self.assertAlmostEqual(xyz_rot[0],0.0,10)
         self.assertAlmostEqual(xyz_rot[1],0.0,10)
 
-
-
 if __name__ == "__main___":
     ut.main()

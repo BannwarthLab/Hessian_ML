@@ -89,7 +89,6 @@ class Parser:
                     self.folders.append(folder)
         self.folders = sorted(self.folders)
         
-
         print("done")
 
         if len(self.folders) == 0:

@@ -9,7 +9,7 @@ import hess_ml.src2.governance.globals as globals
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score 
 from torch.optim.lr_scheduler import ExponentialLR
-
+import torch.nn.functional as F
 
 class DummyScheduler():
     
@@ -18,7 +18,6 @@ class DummyScheduler():
 
     def step(self):
         pass 
-
 
 class DeepNN(nn.Module):
     def __init__(self):
@@ -234,34 +233,98 @@ class TestNN(nn.Module):
 
         return x
     
+class GatingNetwork(nn.Module):
+    def __init__(self, input_dim, num_experts):
+        super(GatingNetwork, self).__init__()
+        self.gate = nn.Linear(input_dim, num_experts)
 
+    def forward(self, x):
+        return F.softmax(self.gate(x), dim=1)
+    
+class MoeNN(nn.Module):
+    def __init__(self):
+        super(MoeNN, self).__init__()
+        self.num_experts = 3
+        self.experts:list[DoubledNN] = nn.ModuleList([
+            DoubledNN() for _ in range(self.num_experts)
+        ])
+        
+        #self.gating_network = GatingNetwork(input_dim, num_experts)
+
+    def update_init_layer(self,size:int):
+        for expert in self.experts:
+            expert.update_init_layer(size)
+
+        self.gating_network = GatingNetwork(size, self.num_experts)
+        
+    def update_final_layer(self,size:int):
+        for expert in self.experts:
+            expert.update_final_layer(size)
+
+    def forward(self, x):
+        expert_outputs = torch.stack([expert(x) for expert in self.experts], dim=1)  # (batch_size, output_dim, num_experts)
+        gate_weights = self.gating_network(x).unsqueeze(1)  # (batch_size, 1, num_experts)
+        output = torch.bmm(gate_weights, expert_outputs).squeeze(1)  # (batch_size, output_dim)
+        return output
+
+
+class Moe2NN(nn.Module):
+    def __init__(self):
+        super(Moe2NN, self).__init__()
+        self.num_experts = 2
+        self.experts:list[CustomNN,DoubledNN] = nn.ModuleList([CustomNN(),DoubledNN()])
+        
+        #self.gating_network = GatingNetwork(input_dim, num_experts)
+
+    def update_init_layer(self,size:int):
+        for expert in self.experts:
+            expert.update_init_layer(size)
+
+        self.gating_network = GatingNetwork(size, self.num_experts)
+        
+
+    def update_final_layer(self,size:int):
+        for expert in self.experts:
+            expert.update_final_layer(size)
+
+
+    def forward(self, x):
+        expert_outputs = torch.stack([expert(x) for expert in self.experts], dim=1)  # (batch_size, output_dim, num_experts)
+        gate_weights = self.gating_network(x).unsqueeze(1)  # (batch_size, 1, num_experts)
+        output = torch.bmm(gate_weights, expert_outputs).squeeze(1)  # (batch_size, output_dim)
+        return output
+    
 class Test2NN(nn.Module):
     def __init__(self):
         super(Test2NN, self).__init__()
         self.init_layer_size = 1
-        self.final_layer_size = 9
-        layer_size = 100
-        self.fc1 = nn.Linear(self.init_layer_size,layer_size,bias=False) 
-        #self.norm = nn.LayerNorm(layer_size)
-        self.fc2 = nn.Linear(layer_size, layer_size, bias=False)
-        self.fc3 = nn.Linear(layer_size, layer_size, bias=False)
+        self.final_layer_size = 9 
+        layer_size = 40
+        self.fc1 = nn.Linear(self.init_layer_size,layer_size) 
+        self.norm = nn.LayerNorm(layer_size)
+        self.fc2 = nn.Linear(layer_size, layer_size)
+        self.fc3 = nn.Linear(layer_size, layer_size)
+        self.fc4 = nn.Linear(layer_size, layer_size,bias=False)
         self.fc_last = nn.Linear(layer_size, self.final_layer_size, bias=False)
 
     def update_init_layer(self,size:int):
-        self.fc1 = nn.Linear(size, 100)
+        self.fc1 = nn.Linear(size, 40)
         self.init_layer_size = size
 
     def update_final_layer(self,size:int):
-        self.fc_last = nn.Linear(100,size, bias=False)
+        self.fc_last = nn.Linear(40,size, bias=False)
         self.final_layer_size = size
 
     def forward(self, x):
+        
         x = x.view(-1, self.init_layer_size)  # Flatten the input
         x = nn.functional.softshrink(self.fc1(x),lambd=1e-7)
-        #x = self.norm(x)
+        x = self.norm(x)
         x = nn.functional.tanhshrink(self.fc2(x))
         x = nn.functional.tanh(self.fc3(x))
-        x = nn.functional.hardshrink(self.fc_last(x),lambd=1e-6)
+        x = nn.functional.tanhshrink(self.fc4(x))
+        x = nn.functional.hardshrink(self.fc_last(x),lambd=1e-5)
+
         return x
     
 class EnlargedNN(nn.Module):
@@ -433,7 +496,9 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
         y_tensor = torch.tensor(y, dtype=torch.float32)
 
         features_train,features_test,targets_train,targets_test = train_test_split(X_tensor,y_tensor,train_size=0.99,random_state=24)
+        #features_train,features_test,targets_train,targets_test = X_tensor,X_tensor,y_tensor,y_tensor
         trainset  = TensorDataset(features_train,targets_train)
+        
 
         num_params = sum(p.numel() for p in self.model.parameters())
         print(f"Number of model parameter: {num_params}.\n")
@@ -460,8 +525,8 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
         
         # tot_r2scores = r2scores
 
-        self.model = self.model.to(self.device)
-        self.model.train()
+        # self.model = self.model.to(self.device)
+        # self.model.train()
         
         criterion = self.criterion
         features_test = features_test.to(self.device)
@@ -514,7 +579,7 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
 
         t_init = time.time()
 
-        early_stopping = EarlyStopping(patience=30,delta=0.0)
+        early_stopping = EarlyStopping(patience=25,delta=0.0)
 
         if optimizer is None:
             optim.Adam(self.model.parameters(), lr=0.001)
@@ -548,7 +613,7 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
                 pred_target = self.model(features_test)
                 pred_target = torch.Tensor.cpu(pred_target)
 
-                r2 = r2_score(pred_target.numpy(),targets_test.numpy())
+                r2 = r2_score(targets_test.numpy(),pred_target.numpy())
                 rmse = np.sqrt(np.mean((pred_target.numpy()-targets_test.numpy())**2))
                 val_loss = criterion(pred_target,targets_test).item()
 
