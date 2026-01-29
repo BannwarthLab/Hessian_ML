@@ -207,6 +207,7 @@ class Environment(Parser):
 
         if self.config.predict.folder is not None:
             self.parse_data_set(self.config.predict.folder)
+            
 
         if self.config.predict.folder_list is not None:
             files = rd_txt_file(self.config.predict.folder_list)
@@ -480,7 +481,6 @@ class Environment(Parser):
         outfile.close()
 
     def GenerateData(self, dir):
-
 
         print(f"Path: {dir}")
 

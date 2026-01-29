@@ -31,14 +31,13 @@ strings = [
         # "delta_chem_pot",
         # "delta_HOAO",
         # "delta_LUAO",
-
         "E_rep",
-        "E_EHT",
+        "E_eht",
         "E_disp2",
         "E_disp3",
         "E_ies_ixc",
-        "E_AES",
-        "E_AXC",
+        "E_aes",
+        "E_axc",
         "E_tot"
     ]
 
@@ -47,6 +46,35 @@ pattern = ""
 for string in strings:
     pattern += string + "|"
 pattern = pattern[:-1]
+
+
+strings = [
+        "response_alpha",
+        #"gap",
+        # "chem_pot",
+        # "HOAO_a",
+        # "LUAO_a",
+        # "HOAO_b",
+        # "LUAO_b",
+        #"delta_gap",
+        # "delta_chem_pot",
+        # "delta_HOAO",
+        # "delta_LUAO",
+        "E_rep",
+        "E_eht",
+        "E_disp2",
+        "E_disp3",
+        "E_ies_ixc",
+        "E_aes",
+        "E_axc",
+        "E_tot"
+    ]
+
+pattern_uhf = ""
+
+for string in strings:
+    pattern_uhf += string + "|"
+pattern_uhf = pattern_uhf[:-1]
 
 class FeatureCalculation:
     def __init__(self,mol:Molecule) -> None:
@@ -61,7 +89,6 @@ class FeatureCalculation:
             self.get_processed_features()
         return np.array(self._processed_features)
     
-
     def get_processed_features(self):
         self.ImportFeature()
         self._processed_features = self.scalars.flatten().tolist()
@@ -199,26 +226,26 @@ class FeatureCalculation:
             if orb not in {"s", "p", "d"}:
 
                 self.dipm[f"delta_{orb}"] = self.ml_feat.loc[:,
-                    self.ml_feat.columns.str.contains(f"delta_dipm_{orb}_")].to_numpy()
+                    self.ml_feat.columns.str.contains(f"ext_dipm_{orb}_")].to_numpy()
 
                 for idx in range(0,(self.dipm[f"delta_{orb}"]).shape[1],3):
                     vector.append(self.dipm[f"delta_{orb}"][:,idx:idx+3])
 
                 # self.qm[f"delta_{orb}"] = self.ml_feat.loc[:,
-                #     self.ml_feat.columns.str.contains(f"delta_qm_{orb}_")].to_numpy()
+                #     self.ml_feat.columns.str.contains(f"ext_qm_{orb}_")].to_numpy()
 
-                #self.qm[f"delta_{orb}"] = self._transform_sym_mat_array(self.qm[f"delta_{orb}"])
+                # self.qm[f"delta_{orb}"] = self._transform_sym_mat_array(self.qm[f"delta_{orb}"])
 
                 #matrix.append(self.qm[f"delta_{orb}"])
 
-                self.vector_keys.append(f"delta_dipm_{orb}")
-                # self.matrix_keys.append(f"delta_qm_{orb}")
+                self.matrix_keys.append(f"delta_qm_{orb}")
+                #self.vector_keys.append(f"delta_dipm_{orb}")
 
-                for key in [f"delta_dipm_{orb}"]:#,f"delta_qm_{orb}"
+                for key in [f"ext_dipm_{orb}"]:#,f"delta_qm_{orb}"
                     temp = self.ml_feat.loc[:,key].to_numpy()
                     scalar.extend(temp.reshape(-1,self._mol.nat))
-                    self.scalar_keys.append(key)
-                    self.norms[key] = temp
+                    self.scalar_keys.append("delta"+key[3:])
+                    self.norms["delta"+key[3:]] = temp
 
             if orb not in {"e", "Z"}:
 
@@ -242,28 +269,31 @@ class FeatureCalculation:
                 for key in [f"dipm_{orb}",f"qm_{orb}"]:
                     temp = self.ml_feat.loc[:,key].to_numpy()
                     scalar.extend(temp.reshape(-1,self._mol.nat))
-                    self.scalar_keys.append(key)
-                    self.norms[key] = temp
+                    self.scalar_keys.append("delta"+key[3:])
+                    self.norms["delta"+key[3:]] = temp
 
         self.dipm_norm = np.linalg.norm(self.dipm["A"],axis=1)
 
-        self.energy_based = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(pattern)].to_numpy()
+        if "response_alpha" in self.ml_feat.keys():
+            self.energy_based = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(pattern_uhf)].to_numpy()
+        else:
+            self.energy_based = self.ml_feat.loc[:,self.ml_feat.columns.str.contains(pattern)].to_numpy()
+
         self.scalar_keys.extend(strings)
 
         scalar.extend(self.energy_based.T)
 
-        self.cn["default"] = self.ml_feat.loc[:, "CN"].to_numpy()
-        self.cn["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.startswith("delta_CN")].to_numpy()
+        self.cn["default"] = self.ml_feat.loc[:, "CN_A"].to_numpy()
+        self.cn["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.startswith("ext_CN")].to_numpy()
 
         self.scalar_keys.append("default_CN")
         self.scalar_keys.append("delta_CN")
 
         scalar.append(self.cn["default"])
-
         scalar.extend(self.cn["delta"].reshape(-1,self._mol.nat))
         
         self.q["default"] = self.ml_feat.loc[:, "q_A"].to_numpy()
-        self.q["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.contains("delta_q_A")].to_numpy()
+        self.q["delta"] = self.ml_feat.loc[:, self.ml_feat.columns.str.contains("ext_q_A")].to_numpy()
 
         scalar.append(self.q["default"])
         
@@ -388,6 +418,8 @@ class FeatureCalculation:
             Quantity_AB[j].extend(quad_moments[:,np.tril_indices(3)[0],np.tril_indices(3)[1]].flatten().tolist())
 
             dipole_moments = rotate_vector_array(R_MI_APF,self.vectors[atom])
+
+            
             Quantity_AB[j].extend(dipole_moments.flatten().tolist())
 
             # ____Append Features to Feature Vector____
@@ -737,6 +769,8 @@ class FeatureCalculation:
         etot_idx = self.scalar_keys.index("E_tot")
         #Atom specific information
 
+
+
         for j, atom in enumerate([A, B]):
             # ____Rotation from initial coordinate system to atom pair focused system____
             
@@ -748,6 +782,7 @@ class FeatureCalculation:
             Quantity_AB[j].extend(quad_moments[:,np.tril_indices(3)[0],np.tril_indices(3)[1]].flatten().tolist())
 
             dipole_moments = rotate_vector_array(R_MI_APF,self.vectors[atom])
+            
             Quantity_AB[j].extend(dipole_moments.flatten().tolist())
 
             # ____Append Features to Feature Vector____
@@ -757,7 +792,7 @@ class FeatureCalculation:
 
         Quantity_AB_arr = np.array(Quantity_AB)
 
-        # Feature_Arith = ((Quantity_AB_arr[0] + Quantity_AB_arr[1]) / 2).tolist()
+        #Feature_Arith = ((Quantity_AB_arr[0] + Quantity_AB_arr[1]) / 2).tolist()
         Feature_Prod = (Quantity_AB_arr[0] * Quantity_AB_arr[1]).tolist()
 
         Feature_AbsDiff = (Quantity_AB_arr[0] - Quantity_AB_arr[1]).tolist()

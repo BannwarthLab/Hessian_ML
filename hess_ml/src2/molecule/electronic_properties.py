@@ -41,7 +41,7 @@ class ElectronicProperties:
         self._charge = charge
 
     @property
-    def uhf(self):
+    def uhf(self) -> int:
         """Multiplicity of the moleucle.
 
         If the multiplicity is not set, in the path of the Molecule object is searched for a '.UHF' file.

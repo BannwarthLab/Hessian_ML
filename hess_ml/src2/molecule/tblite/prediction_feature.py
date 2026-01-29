@@ -64,6 +64,8 @@ class Feature(FeatureCalculation):
 
                 self.R_MI_APF_mat[i0:i3, j0:j3] = rot_mat
 
+        np.savetxt('rot_mat.txt',self.R_MI_APF_mat)
+
 
     def _transform_block(self,atom_pair:tuple)-> tuple:
         """Construction of feature vector for the prediction of the an AB Hessian matrix block.

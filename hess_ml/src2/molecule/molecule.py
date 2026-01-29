@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from tcgm_lib.trv.trv_models.rrho import RRHO
 
 class NuclearHessian(AbstractNuclearHessian):
+
     def get_hess_pm(self:AbstractNuclearHessian):
         pass 
  
@@ -36,7 +37,7 @@ class NuclearHessian(AbstractNuclearHessian):
         if transpose is not None:
             H_APF = H_APF.T
 
-        return H_APF 
+        return H_APF
 
 class NuclearHessianPM(AbstractNuclearHessian):
 

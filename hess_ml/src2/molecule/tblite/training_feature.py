@@ -37,6 +37,7 @@ class Feature(FeatureCalculation):
             self._mol.computed_atom_pairs = atom_pairs
 
             pool = Pool(processes=NUM_THREADS)
+            
             results_iterator = pool.map(self._transform_block, atom_pairs)
 
             transposes = self.process_results(results_iterator)
@@ -49,6 +50,7 @@ class Feature(FeatureCalculation):
                     self.transpose_list.append(val)
 
             del atom_pairs, pool, results_iterator
+
         self._processed_features = np.array(self._processed_features)
 
     def process_results(self,results)-> list:

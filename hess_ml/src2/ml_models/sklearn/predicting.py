@@ -17,7 +17,6 @@ from hess_ml.src2.molecule.molecule import Molecule
 from hess_ml.src2.molecule.tblite.prediction_feature import ReducedFeature
 from hess_ml.src2.molecule.tblite.prediction_feature import CustomFeature
 
-
 if TYPE_CHECKING:
     from sklearn.dummy import DummyRegressor
     from hess_ml.src2.governance.config import Configurations
@@ -95,7 +94,8 @@ class HessianPredictor(Predictor):
             transposes = np.array([tuple(pair) in transpose_set for pair in atom_indices])
 
             rabs,hess_ab = restructure_RH(np.array(hess_vec_ab), N_atoms, R_MI_APF_mat, np.array(transposes))
-
+            
+            
             hess_ab = np.einsum('mij,mjk,mlk->mil', rabs, hess_ab, rabs)
 
             Hessian = np.zeros([N_atoms * 3, N_atoms * 3])

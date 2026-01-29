@@ -46,7 +46,7 @@ class MyTransform(BaseEstimator,TransformerMixin):
     def inverse_transform(self, X):
         return X*3-2#-np.sign(X)*10**(-np.sign(X)*X+1)
 
-class Training(Input,Output):
+class Training:
 
     def __init__(self,train_config:TrainConfig)-> None:
         self.train_config = train_config

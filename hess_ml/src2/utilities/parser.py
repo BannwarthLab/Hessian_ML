@@ -68,7 +68,8 @@ class Parser:
         return self.parsed_config
 
     def parse_data_set(self, main_folder) -> None:
-        print(f"Parsing data set in {main_folder}...", end="")
+        msg= f"Parsing data set in {main_folder}..." 
+        print(msg, end="")
 
         xyz_file = self.parsed_config.get("molecule", {"xyz_file": "xtbopt.xyz"}).get(
             "xyz_file",
@@ -77,16 +78,17 @@ class Parser:
             "target_file",
         )
 
+        file_subset = set([xyz_file])
+        if self.config.general.feature:
+            file_subset.add(target_file)
+
         walker = os.walk(main_folder)
 
-        if self.config.general.feature:
+        if self.config.general.feature or self.config.general.predict:
             for folder,_,files in walker:
-                if xyz_file in files and target_file in files:
+                if file_subset.issubset(files):
                     self.folders.append(folder)
-        else:
-            for folder,_,files in walker:
-                if xyz_file in files:
-                    self.folders.append(folder)
+
         self.folders = sorted(self.folders)
         
         print("done")
@@ -94,12 +96,14 @@ class Parser:
         if len(self.folders) == 0:
             print("No folders were found. Stopping the program.")
             sys.exit()
-            
-        print(f"Total of {len(self.folders)} folders found.")
+        
+        msg = f"Total of {len(self.folders)} folders found."
+        print("")
+        print(msg)
         print("")
 
 
-
+##to readers
 def parse_dftd4_output(output:str)-> np.ndarray:
     """Get the C6 parameter from the DFT-D4 output.
 
