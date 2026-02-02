@@ -1,0 +1,36 @@
+[general]
+collector = true
+trainer = true
+predictor = false
+random_state = 79
+split_feature = false
+
+[molecule]
+xyz_file ='coord.xyz'
+hessian_origin = 'xtb'
+alhpas = [1.0]
+
+[collector]
+folder = '/home/gfeldmann/projects/hessian/fit_sets/mindless_molecules_calc'
+gather='npy'
+
+[train]
+train_size = 1.0
+test_size=0.0
+scale='standardscaler'
+loss='huberloss'
+method = 'mlh_s'
+model_name = 'custom_pm'
+
+[[train.parameter]]
+learning_rate=5e-4
+gamma=0.98
+epochs=10
+model='CustomNN'
+criterion='relative_error'
+active=false
+
+
+[[train.error_parameter]]
+delta = 5e-2
+rel_delta = 1e-2

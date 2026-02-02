@@ -1,0 +1,15 @@
+[general]
+collector = true
+trainer = false
+predictor = false
+random_state = 79
+split_feature = false
+
+[molecule]
+xyz_file ='xtbopt.xyz'
+hessian_origin = 'xtb'
+alhpas = [1.0]
+
+[collector]
+folder = "collector_data/mol_structures"
+feature_type = "xtbml"##Something like from mol / from big data or so.

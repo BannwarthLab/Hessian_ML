@@ -1,0 +1,24 @@
+name: mlh_env_
+
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+
+channel_priority: strict
+dependencies:
+  # --- Base Python environment ---
+  - python>3.11
+  - pip
+  - numpy
+  - scipy
+  - pytest
+  - tblite
+  - tblite-python
+  - dftd4
+  - dftd4-python
+  - pytorch
+  - tomli
+  # --- Install extra tools with pip ---
+  - pip:
+      - pytest-cov

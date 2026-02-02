@@ -1,0 +1,8 @@
+[post-processing]
+xtbml.tensorial-output = true
+xtbml.orbital = true
+xtbml.a = [1.0]
+xtbml.energy = true
+xtbml.convolution = true
+xtbml.geometry = true
+xtbml.density = true

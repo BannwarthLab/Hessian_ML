@@ -1,0 +1,18 @@
+[general]
+collector = true
+trainer = false
+predictor = false
+random_state = 79
+split_feature = false
+
+[molecule]
+xyz_file ='xtbopt.xyz'
+target_file='wrong_hessian'
+feature_type = "xtbml"#"npy"
+runtype = 'hessian_pm'
+hessian_origin = 'xtb'
+alhpas = [1.0]
+
+[collector]
+folder = "tests/collector_data/mol_structures"
+feature_type = "npy"##Something like from mol / from big data or so.s

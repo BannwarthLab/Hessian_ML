@@ -1,8 +1,0 @@
-joblib
-numpy
-pandas
-scikit_learn
-scipy
-setuptools
-tomli
-ase

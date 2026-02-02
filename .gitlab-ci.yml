@@ -1,0 +1,21 @@
+stages:
+  - test
+
+variables:
+  MAMBA_NO_BANNER: "true"
+  MAMBA_NO_PROMPT: "true"
+
+test:
+  stage: test
+  image: condaforge/mambaforge:latest
+  script:
+    # Create environment from your environment.yml
+    - mamba env create -f environment.yml -n test-env
+    - source activate test-env
+
+    # Optionally show environment info
+    - conda info
+    - conda list
+
+    # Run tests
+    - pytest --maxfail=1 --disable-warnings --cov=myproject --cov-report=term-missing

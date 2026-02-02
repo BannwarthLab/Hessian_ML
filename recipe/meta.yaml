@@ -1,0 +1,45 @@
+{% set name = "mlhess" %}
+{% set version = "0.1.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: ..
+
+
+build:
+  noarch: python
+  script: python -m pip install . --no-deps --ignore-installed -vv
+
+requirements:
+  host:
+    - python>3.11
+    - pip
+    - setuptools
+    - wheel
+
+  run:
+    - python>3.11
+    - pip
+    - numpy
+    - scipy
+    - tblite-python
+    - dftd4
+    - dftd4-python
+    - pytorch
+    - tomli
+    - scikit-learn
+    - pymatgen
+#   requires:
+#     - pytest
+    # - pip:
+    #   - pytest-cov
+#   commands:
+#     - pytest --maxfail=1 --disable-warnings -q
+
+about:
+  summary: "A package to train, test and use ML models for nuclear Hessian."
+  license: MIT
+  license_file: LICENSE

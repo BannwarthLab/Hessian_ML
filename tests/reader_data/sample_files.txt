@@ -1,0 +1,6 @@
+path/to/file/1/coord.xyz
+path/to/file/2/coord.xyz
+path/to/file/3/coord.xyz
+path/to/file/4/coord.xyz
+path/to/file/5/coord.xyz
+path/to/file/6/coord.xyz

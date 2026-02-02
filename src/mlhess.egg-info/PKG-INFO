@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: mlhess
+Version: 0.0.1
+Summary: A package to train, test and use ML models for nuclear Hessian.
+Author-email: Gereon Feldmann <feldmann@pc.rwth-aachen.com>
+License: MIT
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pytest
+Requires-Dist: pytest-cov
+Requires-Dist: requests>=2.28
+Requires-Dist: pymatgen
+Requires-Dist: ase
+Requires-Dist: joblib
+Requires-Dist: numpy<2.0,>=1.0
+Requires-Dist: pandas
+Requires-Dist: scikit_learn
+Requires-Dist: scipy
+Requires-Dist: torch==2.3.0
+Requires-Dist: tomli
+Requires-Dist: tblite
+Requires-Dist: dftd4
+Requires-Dist: cffi
+Requires-Dist: pkgconfig
+Requires-Dist: cffi
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: requests>=2.28; extra == "dev"
+Requires-Dist: pymatgen; extra == "dev"
+Requires-Dist: ase; extra == "dev"
+Requires-Dist: joblib; extra == "dev"
+Requires-Dist: numpy<2.0,>=1.0; extra == "dev"
+Requires-Dist: pandas; extra == "dev"
+Requires-Dist: scikit_learn; extra == "dev"
+Requires-Dist: scipy; extra == "dev"
+Requires-Dist: torch==2.3.0; extra == "dev"
+Requires-Dist: tomli; extra == "dev"
+Requires-Dist: tblite; extra == "dev"
+Requires-Dist: dftd4; extra == "dev"
+Requires-Dist: cffi; extra == "dev"
+Requires-Dist: pkgconfig; extra == "dev"
+Requires-Dist: cffi; extra == "dev"
+Dynamic: license-file
+
+MISSING
