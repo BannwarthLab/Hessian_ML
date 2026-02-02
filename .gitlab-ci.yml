@@ -21,8 +21,10 @@ lint:
   script:
     - ruff check .
     - mypy .
-
+    
 test:
-  stage: test
   script:
+    - pip install .[dev]
     - pytest
+    - mypy
+    - codespell
