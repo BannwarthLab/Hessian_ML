@@ -17,7 +17,7 @@ Requires-Dist: numpy<2.0,>=1.0
 Requires-Dist: pandas
 Requires-Dist: scikit_learn
 Requires-Dist: scipy
-Requires-Dist: torch==2.3.0
+Requires-Dist: torch>=1.1.0
 Requires-Dist: tomli
 Requires-Dist: tblite
 Requires-Dist: dftd4
@@ -35,7 +35,7 @@ Requires-Dist: numpy<2.0,>=1.0; extra == "dev"
 Requires-Dist: pandas; extra == "dev"
 Requires-Dist: scikit_learn; extra == "dev"
 Requires-Dist: scipy; extra == "dev"
-Requires-Dist: torch==2.3.0; extra == "dev"
+Requires-Dist: torch>=1.1.0; extra == "dev"
 Requires-Dist: tomli; extra == "dev"
 Requires-Dist: tblite; extra == "dev"
 Requires-Dist: dftd4; extra == "dev"
@@ -44,4 +44,5 @@ Requires-Dist: pkgconfig; extra == "dev"
 Requires-Dist: cffi; extra == "dev"
 Dynamic: license-file
 
-MISSING
+A python package providing a framework for the training and using machine learning (ML) models to predict Hessian matrices and compute thermodynamic corrections. 
+

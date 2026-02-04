@@ -83,25 +83,26 @@ pattern_uhf = pattern_uhf[:-1]
 
 
 class Calculator:
+    """
+    Wrapper class for tblite calculations and processing its features.
+    """
     def __init__(self, mol: Molecule) -> None:
+        """
+        Initializes the Calculator.
+        
+        :param self: Calculator
+        :param mol: Molecule class
+        :type mol: Molecule
+        """
         self._mol = mol
-        # self._processed_features: np.ndarray | list | None = None
         self.new_keys: None | list = None
-        return
-
-    # @property
-    # def processed_features(self) -> np.ndarray:
-    #     if self._processed_features is None:
-    #         self.get_processed_features()
-    #     return np.array(self._processed_features)
-
-    # def get_processed_features(self):
-    #     self.compute_feature()
-    #     self._processed_features = self.scalars.flatten().tolist()
-    #     self._processed_features.extend(self.vectors.flatten().tolist())
-    #     self._processed_features.extend(self.matrices.flatten().tolist())
 
     def compute_feature(self):
+        """
+        Calculate features from tblite and processes.
+        
+        :param self: Calculator
+        """
 
         try:
             faulthandler.enable()

@@ -8,7 +8,7 @@ numpy<2.0,>=1.0
 pandas
 scikit_learn
 scipy
-torch==2.3.0
+torch>=1.1.0
 tomli
 tblite
 dftd4
@@ -27,7 +27,7 @@ numpy<2.0,>=1.0
 pandas
 scikit_learn
 scipy
-torch==2.3.0
+torch>=1.1.0
 tomli
 tblite
 dftd4

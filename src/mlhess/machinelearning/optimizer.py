@@ -5,11 +5,12 @@ import torch.nn as nn
 import torch.optim as optim
 import time
 import numpy as np
+import mlhess.management.base_settings as globals
 
+
+from sklearn.metrics import r2_score
 from sklearn.base import BaseEstimator, RegressorMixin
 from torch.utils.data import DataLoader, TensorDataset
-import mlhess.management.base_settings as globals
-from sklearn.metrics import r2_score
 from torch.optim.lr_scheduler import ExponentialLR
 from mlhess.machinelearning.architecture.neural_nets import MLH_s
 
@@ -175,7 +176,6 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
 
                 # Forward pass
                 outputs = self.model(feature)
-
                 loss = criterion(outputs, target)
 
                 # Backward pass and optimize

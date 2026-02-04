@@ -16,7 +16,7 @@ from mlhess.utils.io.reader import read_txt_file
 from mlhess.utils.io.writer import list_to_txt
 from mlhess.utils.io.parser import parse_data_set
 from mlhess.utils.chemistry.molecule import Molecule
-from mlhess.calculator.tblite import Calculator
+from mlhess.calculator.tblite_wrapper import Calculator
 from mlhess.utils.patcher import patch_methods
 
 
@@ -107,7 +107,7 @@ class FittingDataHandler:
             "numpy",
             "processed",
         ]:
-            self._collect_processed_feature_targets(base_settings.PROCESSED_DATA_FOLDER)
+            self._collect_processed_feature_targets()
 
         return self.config
 

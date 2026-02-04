@@ -1,7 +1,7 @@
 import os
 import pytest
 from mlhess.utils.chemistry.molecule import Molecule
-from mlhess.calculator.tblite import Calculator
+from mlhess.calculator.tblite_wrapper import Calculator
 from mlhess.machinelearning.transform.transform_mlh import transform_training
 from mlhess.utils.math.geometrical import get_atom_pair_rot_mat
 from mlhess.utils.math.geometrical import supporting_vector

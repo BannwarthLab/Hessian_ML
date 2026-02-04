@@ -82,13 +82,9 @@ class Constructor:
         if name.lower() in ["huber_loss", "huberloss"]:
             model = torch.nn.HuberLoss(delta=error_parameter.get("delta", 5e-2))
         elif name.lower() in ["relhuber", "rel_huber", "relhuber_loss", "relhuberloss"]:
-            model = (
-                RelHuberLoss(
+            model = RelHuberLoss(
                     delta=error_parameter.get("delta", 5e-3),
-                    relative_delta=error_parameter.get("rel_delta", 1e-4),
-                ),
-            )
-
+                    relative_delta=error_parameter.get("rel_delta", 1e-4))
         return model
 
     def set_scaler(self, scaling: str | None = None) -> None:

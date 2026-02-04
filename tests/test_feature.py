@@ -3,7 +3,7 @@ import pytest
 import numpy as np
 from pathlib import Path
 from mlhess.machinelearning.feature.base_class import Feature
-from mlhess.calculator.tblite import Calculator
+from mlhess.calculator.tblite_wrapper import Calculator
 from mlhess.utils.chemistry.molecule import Molecule
 
 feature = np.float32(

@@ -9,7 +9,7 @@ from mlhess.utils.chemistry.molecule import Molecule
 from mlhess.machinelearning.feature.base_class import Feature
 from mlhess.machinelearning.target.hessian import NuclearHessianPM, NuclearHessian
 from mlhess.utils.patcher import patch_methods
-from mlhess.calculator.tblite import Calculator
+from mlhess.calculator.tblite_wrapper import Calculator
 from tcgm_lib.trv.trv_models.mrrho import truhlar_cramer_RRHO
 
 if TYPE_CHECKING:

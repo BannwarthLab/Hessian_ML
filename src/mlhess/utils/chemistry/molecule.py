@@ -12,7 +12,7 @@ from tcgm_lib.molecule.symmetry import Symmetry
 
 from mlhess.utils.chemistry.nuclear_properties import NuclearProperties
 from mlhess.utils.io.reader import read_xyz
-from mlhess.calculator.tblite import Calculator
+from mlhess.calculator.tblite_wrapper import Calculator
 
 from mlhess.machinelearning.target.hessian import NuclearHessian
 from mlhess.utils.chemistry.electronic_properties import ElectronicProperties

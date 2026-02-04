@@ -4,7 +4,7 @@ import pytest
 import numpy as np
 from pathlib import Path
 from mlhess.utils.chemistry.molecule import Molecule
-from mlhess.calculator.tblite import Calculator
+from mlhess.calculator.tblite_wrapper import Calculator
 from mlhess.machinelearning.feature.processing_schemes import gen_pair_features
 from mlhess.utils.math.geometrical import get_atom_pair_rot_mat, supporting_vector
 

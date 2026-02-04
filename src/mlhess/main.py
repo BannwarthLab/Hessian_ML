@@ -1,9 +1,12 @@
+"""
+Programme entry for Machine Learning Hesisan. 
+
+This module can be used to collect data, train models and prediction new targets.
+"""
 #!/usr/bin/env python3
 from __future__ import annotations
-
-import torch
-
 import time
+import torch
 import numpy as np
 
 # from tblite.interface import Calculator
@@ -11,12 +14,15 @@ from mlhess.management.config import Configurator
 from mlhess.scripts.data_handling import FittingDataHandler
 from mlhess.scripts.training_handler import TrainingHandler
 from mlhess.scripts.predicting_handler import PredictionHandling
-import mlhess.utils.io.parser as parser
+from mlhess.utils.io import parser 
 
 # has to be beneath tblite to circumvent conflicts
 
 
 def main() -> None:
+    """
+    Entry point for programme.
+    """
     init_time = time.time()
     arg_parser = parser.parse_cmd_line_input()
     arguments = arg_parser.parse_args()

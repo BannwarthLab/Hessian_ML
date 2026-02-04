@@ -1,6 +1,5 @@
 .. autosummary::
-   :toctree: mlhess
+   :toctree: mlhess.machinelearning
    :recursive:
 
-   mlhess.calculator
    mlhess.machinelearning

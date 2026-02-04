@@ -10,7 +10,7 @@ from __future__ import annotations
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../"))
+sys.path.insert(0, os.path.abspath("../src"))
 
 
 def skip(app, what, name, obj, would_skip, options):
@@ -22,6 +22,10 @@ def skip(app, what, name, obj, would_skip, options):
 def setup(app):
     app.connect("autodoc-skip-member", skip)
 
+
+print("Current working directory:", os.getcwd())
+print("sys.path contents:", sys.path)
+print("Project root path:", os.path.abspath('../src'))
 
 autodoc_default_options = {
     "members": True,
@@ -42,9 +46,9 @@ author = 'Gereon Feldmann'
 templates_path = ["_templates"]
 
 extensions = [
-    "sphinx.ext.todo",
+    #"sphinx.ext.todo",
     "sphinx.ext.autosummary",
-    "sphinx.ext.napoleon",
+    #"sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
 ]
 
@@ -66,3 +70,13 @@ latex_elements = {
 }
 
 latex_show_urls = "footnote"
+
+autodoc_mock_imports = [
+    "numpy",
+    "pandas",
+    "torch",
+    "requests",
+    "tblite",
+    "dftd4",
+    # add anything that isn't guaranteed to exist
+]
