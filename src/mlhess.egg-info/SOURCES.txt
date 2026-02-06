@@ -1,4 +1,5 @@
 LICENSE
+MANIFEST.in
 README.md
 pyproject.toml
 src/mlhess/__init__.py
@@ -16,6 +17,7 @@ src/mlhess/machinelearning/constructor.py
 src/mlhess/machinelearning/optimizer.py
 src/mlhess/machinelearning/architecture/base_model.py
 src/mlhess/machinelearning/architecture/neural_nets.py
+src/mlhess/machinelearning/default_model/default_MLH.joblib
 src/mlhess/machinelearning/feature/base_class.py
 src/mlhess/machinelearning/feature/processing_schemes.py
 src/mlhess/machinelearning/loss/huber.py
