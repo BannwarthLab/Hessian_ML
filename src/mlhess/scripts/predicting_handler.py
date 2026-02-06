@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os 
 
 from typing import TYPE_CHECKING
 from joblib import load
@@ -11,6 +12,7 @@ from mlhess.machinelearning.target.hessian import NuclearHessianPM, NuclearHessi
 from mlhess.utils.patcher import patch_methods
 from mlhess.calculator.tblite_wrapper import Calculator
 from tcgm_lib.trv.trv_models.mrrho import truhlar_cramer_RRHO
+from tcgm_lib.IO.writer import wrt_hess_to_xtb
 
 if TYPE_CHECKING:
     from mlhess.management.config import Configurator
@@ -101,6 +103,7 @@ class PredictionHandling:
                 mol.prepare_prediction(Calculator, self.config.general.threads)
                 if mol.calc_succeeded:
                     mol.predict(self.model)
+                    wrt_hess_to_xtb(os.path.join(mol.path,'MLhessian'),mol.ml_hessian.hessian)
                     mol.nuclear_properties.calc_properties(shift=False)
                     trv = truhlar_cramer_RRHO(mol)
                     trv.print_thermoprop()
