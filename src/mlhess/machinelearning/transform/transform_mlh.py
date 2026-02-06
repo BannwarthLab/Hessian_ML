@@ -71,7 +71,7 @@ def transform_training(mol: Molecule, num_threads: int = 4):
 
         temp_dist_mat = mol.feature.distance_mat.copy()
         temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-        atom_pairs = np.argwhere(temp_dist_mat < 20, dtype=int)
+        atom_pairs:np.ndarray[int] = np.argwhere(temp_dist_mat < 20)
 
         mol.computed_atom_pairs = atom_pairs
 
