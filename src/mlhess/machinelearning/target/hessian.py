@@ -4,7 +4,6 @@ from tcgm_lib.molecule.nuclear_hessian import NuclearHessian as AbstractNuclearH
 from mlhess.utils.math.matrix_operation import rotate_matrix
 from mlhess.utils.math.matrix_operation import restructure_hessian_rotation_mat
 
-
 class NuclearHessian(AbstractNuclearHessian):
     def __init__(self, mol):
         super().__init__(mol)
@@ -93,9 +92,10 @@ class NuclearHessian(AbstractNuclearHessian):
         return self.hessian
 
 
-class NuclearHessianPM(AbstractNuclearHessian):
+class NuclearHessianPM(NuclearHessian):
     def __init__(self, mol):
         super().__init__(mol)
+        self._mol = mol
 
     def apply_adaptation(self):
         eigvals, eigvecs = np.linalg.eigh(self.hessian)
@@ -125,3 +125,10 @@ class NuclearHessianPM(AbstractNuclearHessian):
             H_APF_p = H_APF_p.T
 
         return np.array([H_APF_p, H_APF_m])
+
+    def get_processed_target(self):
+        upper_tri_blocks_hessian = self._mol.target
+        upper_tri_blocks_hessian[:,:9] += upper_tri_blocks_hessian[:,9:]
+        self._mol.target = upper_tri_blocks_hessian[:,:9]
+        self.hessian = self.gen_hess_from_vec_pred_damped()
+        return self.hessian

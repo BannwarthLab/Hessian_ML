@@ -1,5 +1,7 @@
 import os
 import torch
+from pathlib import Path
+
 
 
 def set_num_threads():
@@ -21,3 +23,7 @@ if torch.cuda.is_available():
 
 global PROCESSED_DATA_FOLDER
 PROCESSED_DATA_FOLDER: str = "processed_data"
+
+global PACKAGE_DIR
+PACKAGE_DIR = os.path.abspath(Path(__file__).resolve().parent.parent)
+

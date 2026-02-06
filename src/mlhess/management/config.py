@@ -1,8 +1,9 @@
 """Setting up a class for configurations."""
 
 from __future__ import annotations
+import os 
 import mlhess.utils.io.parser as parser
-
+from mlhess.management.base_settings import PACKAGE_DIR
 
 class GeneralConfig:
     def __init__(self) -> None:
@@ -63,7 +64,7 @@ class TrainParameterConfig:
 
 class PredictConfig:
     def __init__(self) -> None:
-        self.model_name = "ML_Hess"
+        self.model_name = os.path.join(PACKAGE_DIR,"/machinelearning/default_model/default_MLH.joblib")
         self.folder = None
         self.file_list = None
 

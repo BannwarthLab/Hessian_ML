@@ -5,8 +5,7 @@ import sys
 from typing import TYPE_CHECKING
 
 import torch
-from joblib import dump
-
+from joblib import dump,load
 # Model pipeline
 from sklearn.pipeline import Pipeline
 
@@ -25,7 +24,7 @@ from mlhess.machinelearning.loss.huber import RelHuberLoss
 
 # optimizer
 from mlhess.machinelearning.optimizer import PyTorchRegressor
-
+from mlhess.management.base_settings import PACKAGE_DIR
 
 if TYPE_CHECKING:
     from mlhess.management.config import TrainConfig
@@ -189,3 +188,7 @@ class Constructor:
         print(param_temp)
         for param in param_temp:
             print(f"{param}: {param_temp[param]}")
+
+
+def load_model(path=os.path.join(PACKAGE_DIR,"machinelearning/default_model/default_MLH.joblib")):
+    return load(path)
