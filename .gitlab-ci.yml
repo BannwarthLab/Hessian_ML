@@ -14,13 +14,19 @@ cache:
 before_script:
   - python --version
   - pip install --upgrade pip
-  - pip install -r requirements.txt
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install ruff 
+  - pip install mypy
 
 lint:
+
   stage: lint
   script:
     - ruff check .
     - mypy .
+  tags:
+  - docker
     
 test:
   script:
@@ -28,3 +34,5 @@ test:
     - pytest
     - mypy
     - codespell
+  tags:
+  - docker
