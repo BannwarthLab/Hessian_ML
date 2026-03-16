@@ -21,6 +21,8 @@ def test_transform_training(fname, atom_pair):
     full_path = os.path.join(Path(__file__).parent, fname)
     mol = Molecule(full_path, "coord.xyz")
     mol.read_hessian("hessian")
+    cwd = os.path.abspath("./")
+    os.chdir(os.path.join(Path(__file__).parent,'general_test_dir'))
     a, b = atom_pair
     h_expected = mol.hessian.hessian[a * 3 : a * 3 + 3, b * 3 : b * 3 + 3]
 
@@ -48,3 +50,5 @@ def test_transform_training(fname, atom_pair):
     h_actual = np.matmul(np.matmul(rmat.T, h), rmat)
 
     np.testing.assert_array_almost_equal(h_actual, h_expected, 5)
+
+    os.chdir(cwd)

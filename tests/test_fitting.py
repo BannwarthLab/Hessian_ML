@@ -16,8 +16,11 @@ from sklearn.preprocessing import StandardScaler
 def test_xy():
     config_path = os.path.join(Path(__file__).parent, "fitting_data/input.toml")
     config = Configurator(config_path)
+    cwd = os.path.abspath("./")
+    os.chdir(os.path.join(Path(__file__).parent,'fitting_data'))
+
     base_settings.PROCESSED_DATA_FOLDER = os.path.join(
-        Path(__file__).parent, "fitting_data/processed_data"
+        Path(__file__).parent, "processed_data"
     )
 
     random_state = config.general.random_state
@@ -42,3 +45,5 @@ def test_xy():
         ),
         3,
     ) > np.round(0.1388, 3)
+
+    os.chdir(cwd)

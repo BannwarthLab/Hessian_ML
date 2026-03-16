@@ -11,5 +11,5 @@ hessian_origin = 'xtb'
 alhpas = [1.0]
 
 [collector]
-folder = "collector_data/mol_structures"
+folder = "mol_structures"
 feature_type = "xtbml"##Something like from mol / from big data or so.

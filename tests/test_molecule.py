@@ -34,6 +34,8 @@ def test_prepare_training(fname, data, hess_class):
     mol = Molecule(full_path, "coord.xyz")
     if hess_class == "mlh_pm":
         mol.hess_class = NuclearHessianPM
+    cwd = os.path.abspath("./")
+    os.chdir(os.path.join(Path(__file__).parent,'general_test_dir'))
 
     mol.read_hessian("hessian")
     mol.prepare_training()
@@ -49,6 +51,7 @@ def test_prepare_training(fname, data, hess_class):
     np.testing.assert_allclose(
         test_feature[feature > 1e-7], feature[feature > 1e-7], 1e-4
     )
+    os.chdir(cwd)
 
 
 @pytest.mark.parametrize("fname, data", [("single_mol_data/0001", mol_0001)])

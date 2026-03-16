@@ -16,7 +16,7 @@ from pathlib import Path
 def test_read_txt_file(test_data_path, expected):
     full_path = os.path.join(Path(__file__).parent, "reader_data", test_data_path)
     lines = read_txt_file(full_path)
-    assert isinstance(type(lines), list)
+    assert type(lines) is list
     assert len(lines) == expected
 
 

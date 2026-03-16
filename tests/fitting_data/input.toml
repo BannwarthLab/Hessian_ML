@@ -11,7 +11,7 @@ hessian_origin = 'xtb'
 alphas = [1.0]
 
 [collector]
-folder = '/home/gfeldmann/projects/hessian/fit_sets/mindless_molecules_calc'
+folder = 'processed_data'
 gather='npy'
 
 [train]

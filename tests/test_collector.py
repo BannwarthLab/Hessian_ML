@@ -1,5 +1,8 @@
 import pytest
+import torch
+import tblite
 
+from .clean_up import cleanup_file,cleanup_folder
 import os
 from pathlib import Path
 import numpy as np
@@ -26,14 +29,18 @@ def test_run_protocol(cleanup_file, cleanup_folder):
         cleanup_folder(folder)
 
     path = os.path.join(Path(__file__).parent, inp_fname)
+    cwd = os.path.abspath('./')
+    os.chdir(os.path.join(Path(__file__).parent, "collector_data"))
     config = Configurator(path)
     fdh = FittingDataHandler(config)
     fdh.run_protocol()
+
     assert os.path.isdir(PROCESSED_DATA_FOLDER)
     assert len(fdh.Features) == 44
     np.testing.assert_array_equal(fdh.train_idx, np.array([0, 1, 3]))
 
-
+    os.chdir(cwd)
+    
 def test_collect_folder():
     inp_fname = "collector_data/input.toml"
     path = os.path.join(Path(__file__).parent, inp_fname)
@@ -96,6 +103,9 @@ def test_pick_feature_class(feature_model, expected):
 @pytest.mark.parametrize("folder_name, nat", [("single_mol_data/0001", 5)])
 def test_collect_feature_target_from_mol(folder_name, nat):
     path = os.path.join(Path(__file__).parent, folder_name)
+    cwd = os.path.abspath("./")
+    os.chdir(os.path.join(Path(__file__).parent, folder_name))
+
     config = Configurator(None)
     config.molecule.xyz_file = "xtbopt.xyz"
     fdh = FittingDataHandler(config)
@@ -109,7 +119,7 @@ def test_collect_feature_target_from_mol(folder_name, nat):
     assert mol.hessian.hessian.shape[0] == nat * 3
     assert fdh.n_data == nat * (nat - 1) / 2
     assert mol.calc_succeeded is True
-
+    os.chdir(cwd)
 
 def test_dump_features_and_targets(cleanup_folder):
     cleanup_folder(PROCESSED_DATA_FOLDER)

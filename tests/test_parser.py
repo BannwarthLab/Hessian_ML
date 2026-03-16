@@ -38,9 +38,11 @@ def test_parse_input_toml_file(inp_fname, expected, exit):
 def test_parse_data_set(inp_fname, expected):
     full_path = os.path.join(Path(__file__).parent, "collector_data", inp_fname)
     config = Configurator(full_path)
+    cwd = os.path.abspath("./")
+    os.chdir(os.path.join(Path(__file__).parent,'collector_data'))
     folder_names = parser.parse_data_set(config)
     assert len(folder_names) == expected
-
+    os.chdir(cwd)
 
 @pytest.mark.parametrize(
     "idx,val",
@@ -51,7 +53,8 @@ def test_parse_data_set(inp_fname, expected):
     ],
 )
 def test_parse_dftd4_output(idx, val):
-    with open("reader_data/dftd4.out", "r") as f:
+    full_path = full_path = os.path.join(Path(__file__).parent, "reader_data/dftd4.out")
+    with open(full_path, "r") as f:
         dftd4_stdout = f.read()
         f.close()
 

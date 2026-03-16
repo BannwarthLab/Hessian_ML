@@ -38,21 +38,11 @@ def test_molecule_class(fname, data):
     else:
         np.testing.assert_almost_equal(xyz, mol.xyz)
 
-    mol.nuclear_properties.print_center_of_mass()
-
     f = io.StringIO()
     with redirect_stdout(f):
         mol.nuclear_properties.print_center_of_mass()
     s = f.getvalue()
 
-    assert (
-        s
-        == """Center of mass is at:
-x:  0.0
-
-y:  0.0
-
-z:  1.0
-
-"""
-    )
+    msg = "Center of mass is at:\n"+"x:  0.0 \n"+"\n"+"y:  0.0 \n"+"\n"+"z:  1.0 \n"+"\n"
+    assert s == msg
+ 

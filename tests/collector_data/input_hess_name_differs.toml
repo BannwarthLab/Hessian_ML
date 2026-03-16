@@ -14,5 +14,5 @@ hessian_origin = 'xtb'
 alhpas = [1.0]
 
 [collector]
-folder = "tests/collector_data/mol_structures"
+folder = "mol_structures"
 feature_type = "npy"##Something like from mol / from big data or so.s
