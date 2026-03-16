@@ -1,5 +1,4 @@
 image: python:3.11
-image: gcc:13
 
 stages:
   - test
@@ -34,6 +33,7 @@ test:
   stage: test
   script:
     - source venv/bin/activate
+    - pip show tblite
     - pytest tests/ --cov
   tags:
     - docker
