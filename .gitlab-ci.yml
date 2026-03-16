@@ -1,36 +1,26 @@
 image: python:3.11
 
 stages:
-  - setup
   - lint
   - test
 
 variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/venv/pip"
 
 cache:
   paths:
     - venv/
+    - .cache/pip
 
-setup:
-  stage: setup
-  script:
-    - pip install --upgrade pip
-    - python -m venv venv
-    - source venv/bin/activate
-    - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
-    - pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
-  artifacts:
-    paths:
-      - /usr/local/lib/python3.11/site-packages
-    expire_in: 1h
-  tags:
-    - docker
+before_script:
+  - pip install --upgrade pip
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
+  - pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
 
 lint:
   stage: lint
-  dependencies:
-    - setup
   script:
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
@@ -40,8 +30,6 @@ lint:
 
 test:
   stage: test
-  dependencies:
-    - setup
   script:
     - pytest
   tags:
