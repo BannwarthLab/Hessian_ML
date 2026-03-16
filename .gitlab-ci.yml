@@ -18,7 +18,9 @@ before_script:
   - source venv/bin/activate
   - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
   - pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
-
+  - apt-get update
+  - apt-get install -y gcc gfortran build-essential python3-dev
+  
 lint:
   stage: lint
   script:
