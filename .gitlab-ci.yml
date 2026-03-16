@@ -16,24 +16,22 @@ before_script:
   - pip install --upgrade pip
   - python -m venv venv
   - source venv/bin/activate
-  - pip install ruff 
-  - pip install mypy 
+  - pip install ruff mypy codespell
   - pip install .[dev]
   - pip install types-requests types-PyYAML
 
 lint:
-
   stage: lint
   script:
     - ruff check .
     - mypy --exclude build/ .
     - codespell
   tags:
-  - docker
-    
+    - docker
+
 test:
+  stage: test
   script:
     - pytest
-    
   tags:
-  - docker
+    - docker
