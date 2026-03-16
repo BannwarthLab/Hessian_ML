@@ -10,7 +10,7 @@ variables:
 
 cache:
   paths:
-    - .cache/pip
+    - venv/
 
 setup:
   stage: setup
