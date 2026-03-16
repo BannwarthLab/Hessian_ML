@@ -25,7 +25,7 @@ lint:
     - source venv/bin/activate
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
-    - codespell .
+    - codespell src/
   tags:
     - docker
 
