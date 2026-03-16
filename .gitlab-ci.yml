@@ -18,13 +18,14 @@ before_script:
   - source venv/bin/activate
   - pip install ruff 
   - pip install mypy 
+  - pip install types-requests types-PyYAML
 
 lint:
 
   stage: lint
   script:
     - ruff check .
-    - mypy --install-types --exclude build/ .
+    - mypy --exclude build/ .
     - codespell
   tags:
   - docker
