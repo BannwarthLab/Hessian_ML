@@ -38,8 +38,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest",
-    "pytest-cov",
      "requests>=2.28",
     "pymatgen",
     "ase",
@@ -53,8 +51,7 @@ dev = [
     "pkgconfig",
     "tomli",
     "tblite",
-    "dftd4",
-    "git+https://gitlab-ci-token:${CI_JOB_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git",
+    "dftd4"
 ]
 
 [tool.mypy]
