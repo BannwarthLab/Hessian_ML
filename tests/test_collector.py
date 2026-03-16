@@ -76,7 +76,7 @@ def test_pick_target_type(target_model, expected):
 
     fdh.folder_names = ["0", "1", "2", "3"]
     target_type = fdh._pick_target_class()
-    assert type(target_type) == type(expected)
+    assert type(target_type) is type(expected)
 
 
 @pytest.mark.parametrize(
@@ -90,7 +90,7 @@ def test_pick_feature_class(feature_model, expected):
 
     target_type = fdh._pick_feature_class()
 
-    assert type(target_type) == type(expected)
+    assert type(target_type) is type(expected)
 
 
 @pytest.mark.parametrize("folder_name, nat", [("single_mol_data/0001", 5)])
