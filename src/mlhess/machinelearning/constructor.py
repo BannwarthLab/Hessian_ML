@@ -5,16 +5,16 @@ import sys
 from typing import TYPE_CHECKING
 
 import torch
-from joblib import dump,load
+from joblib import dump,load # type: ignore
 # Model pipeline
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import Pipeline # type: ignore
 
-# Feature scaling
-from sklearn.preprocessing import Normalizer, StandardScaler
+# Feature scaling 
+from sklearn.preprocessing import Normalizer, StandardScaler # type: ignore
 
 # Feature Selection
-from sklearn.decomposition import PCA, TruncatedSVD
-from sklearn.feature_selection import VarianceThreshold
+from sklearn.decomposition import PCA, TruncatedSVD # type: ignore
+from sklearn.feature_selection import VarianceThreshold # type: ignore
 
 # ML Model
 from mlhess.machinelearning.architecture.neural_nets import MLH_l, MLH_s
@@ -71,21 +71,23 @@ class Constructor:
 
     def _choose_model(self, method: str):
         if method.lower() == "mlh_l":
-            model = MLH_l
+            model:type[MLH_l]|type[MLH_s] = MLH_l
         elif method.lower() == "mlh_s":
             model = MLH_s
 
         return model
 
-    def _choose_loss(self, name: str, error_parameter: dict):
+    def _choose_loss(self, name: str, error_parameter: dict) -> torch.nn.HuberLoss|RelHuberLoss:
         if name.lower() in ["huber_loss", "huberloss"]:
-            model = torch.nn.HuberLoss(delta=error_parameter.get("delta", 5e-2))
+            return torch.nn.HuberLoss(delta=error_parameter.get("delta", 5e-2))
         elif name.lower() in ["relhuber", "rel_huber", "relhuber_loss", "relhuberloss"]:
-            model = RelHuberLoss(
+            return RelHuberLoss(
                     delta=error_parameter.get("delta", 5e-3),
                     relative_delta=error_parameter.get("rel_delta", 1e-4))
-        return model
-
+        else:
+            print("Loss name not found. Falling back to HuberLoss.")
+            return torch.nn.HuberLoss(delta=error_parameter.get("delta", 5e-2))
+        
     def set_scaler(self, scaling: str | None = None) -> None:
         """
         Define the standard scaler for the ML model.

@@ -28,14 +28,13 @@ def transform_prediction(self: Molecule, num_threads):
     if self.calc_succeeded:
         temp_dist_mat = self.feature.distance_mat.copy()
         temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-        atom_pairs = np.argwhere(temp_dist_mat < 20)
+        atom_pairs:list = list(np.argwhere(temp_dist_mat < 20))
 
         self.computed_atom_pairs = atom_pairs
 
         init_worker(self)
-        print(num_threads)
         with Pool(processes=num_threads) as pool:
-            results_iterator = pool.map(_transform_block_prediction, atom_pairs)
+            results_iterator = pool.map(_transform_block_prediction, atom_pairs) 
             pool.terminate()
             pool.join()
         pool.close()
@@ -44,7 +43,7 @@ def transform_prediction(self: Molecule, num_threads):
 
         self.feature.processed = processed_feature
 
-        transposes = list(transposes)
+        transposes = list(transposes) # type: ignore
 
         for val in transposes:
             if val is not None:
@@ -71,18 +70,18 @@ def transform_training(mol: Molecule, num_threads: int = 4):
 
         temp_dist_mat = mol.feature.distance_mat.copy()
         temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-        atom_pairs:np.ndarray[int] = np.argwhere(temp_dist_mat < 20)
+        atom_pairs:list = list(np.argwhere(temp_dist_mat < 20))
 
         mol.computed_atom_pairs = atom_pairs
 
         init_worker(mol)
         with Pool(processes=num_threads) as pool:
-            results_iterator = pool.map(_transform_block_training, atom_pairs)
+            results_iterator = pool.map(_transform_block_training, atom_pairs) 
             pool.terminate()
             pool.join()
         pool.close()
 
-        mol.feature.processed, mol.processed_target, transposes = process_results(
+        mol.feature.processed, mol.processed_target, transposes = process_results(   # type: ignore
             results_iterator
         )
 
@@ -95,7 +94,7 @@ def transform_training(mol: Molecule, num_threads: int = 4):
     mol.feature.processed = np.array(mol.feature.processed)
 
 
-def _transform_block_prediction(atom_pair: list[int]) -> tuple:
+def _transform_block_prediction(atom_pair:tuple[int,int]) -> tuple:
     """Construction of feature vector for the prediction of the an AB Hessian matrix block.
 
     Args:
@@ -119,7 +118,7 @@ def _transform_block_prediction(atom_pair: list[int]) -> tuple:
     return R_MI_APF, Feature_AB, transpose
 
 
-def _transform_block_training(atom_pair: list[int]) -> tuple:
+def _transform_block_training(atom_pair: tuple[int,int]) -> tuple:
     """Rotation of an AB Hessian matrix block and the construction its feature vector.
 
     :param index: index of for the list of atom pairs
@@ -143,18 +142,18 @@ def _transform_block_training(atom_pair: list[int]) -> tuple:
 
     H_APF = mol.hessian.get_rotated_matrix(R_MI_APF, atom_A, atom_B, transpose)
 
-    return list(H_APF.flatten()), Feature_AB, transpose
+    return H_APF.flatten(), Feature_AB, transpose
 
 
-def process_results(results) -> tuple[list, list, list]:
+def process_results(results:list) -> tuple[list, list, list]:
     # Process and release memory for results incrementally
-    processed_features: list[np.array] = []
-    processed_target: list[np.array] = []
+    processed_features: list[np.ndarray] = []
+    processed_target: list[np.ndarray] = []
 
     processed_target.extend(result[0] for result in results)
     processed_features.extend(result[1] for result in results)
     transposes: list[list | None] = [result[2] for result in results]
-    # Release memory for results
+        # Release memory for results
     del results
 
     return processed_features, processed_target, transposes

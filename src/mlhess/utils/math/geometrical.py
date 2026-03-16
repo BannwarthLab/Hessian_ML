@@ -173,7 +173,8 @@ def rot_Y(alpha: float) -> np.ndarray:
     )
 
 
-def supporting_vector(mol: Molecule, atom_pair):
+def supporting_vector(mol: Molecule, atom_pair:tuple[int,int]) -> np.ndarray:
+    "Compute supporting vector for the calculation of the rotation matrix."
     i, j = atom_pair
 
     support_vec = mol.feature.dipm["A"][i] + mol.feature.dipm["A"][j]

@@ -18,7 +18,7 @@ from mlhess.utils.io.parser import parse_dftd4_output
 from dftd4.interface import DispersionModel
 from tblite.interface import Calculator as TBCalculator
 
-bohr_in_m, _, _ = physical_constants["Bohr radius"]
+bohr_in_m, _, _ = physical_constants["Bohr radius"] # type: ignore
 Bohr = bohr_in_m * 1e10
 
 if TYPE_CHECKING:

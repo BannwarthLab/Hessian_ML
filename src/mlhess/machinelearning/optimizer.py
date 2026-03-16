@@ -1,5 +1,5 @@
 from __future__ import annotations
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split # type: ignore
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -8,8 +8,8 @@ import numpy as np
 import mlhess.management.base_settings as globals
 
 
-from sklearn.metrics import r2_score
-from sklearn.base import BaseEstimator, RegressorMixin
+from sklearn.metrics import r2_score # type: ignore
+from sklearn.base import BaseEstimator, RegressorMixin # type: ignore
 from torch.utils.data import DataLoader, TensorDataset
 from torch.optim.lr_scheduler import ExponentialLR
 from mlhess.machinelearning.architecture.neural_nets import MLH_s
@@ -143,7 +143,7 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
 
     def fit_model(
         self,
-        trainloader: TensorDataset,
+        trainloader: DataLoader,
         features_test: torch.Tensor,
         targets_test: torch.Tensor,
         scheduler=None,
