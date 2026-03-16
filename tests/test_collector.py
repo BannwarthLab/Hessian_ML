@@ -1,8 +1,5 @@
 import pytest
-import torch
-import tblite
 
-from .clean_up import cleanup_file,cleanup_folder
 import os
 from pathlib import Path
 import numpy as np
