@@ -54,8 +54,7 @@ dev = [
     "tomli",
     "tblite",
     "dftd4",
-    "tcgm_lib @ git@git.rwth-aachen.de:bannwarthlab/tcgm-lib-py.git",
-    #"tblite @ git+https://github.com/awvwgk/tblite.git#subdirectory=python",
+    "git+https://gitlab-ci-token:${CI_JOB_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git",
 ]
 
 [tool.mypy]

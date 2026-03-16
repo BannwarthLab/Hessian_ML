@@ -18,7 +18,7 @@ setup:
     - pip install --upgrade pip
     - python -m venv venv
     - source venv/bin/activate
-    - pip install .[dev] ruff mypy codespell pytest
+    - pip install .[dev] ruff mypy codespell pytest types-requests types-PyYAML
   artifacts:
     paths:
       - /usr/local/lib/python3.11/site-packages
