@@ -18,6 +18,7 @@ before_script:
   - source venv/bin/activate
   - pip install ruff 
   - pip install mypy 
+  - pip install .[dev]
   - pip install types-requests types-PyYAML
 
 lint:
@@ -32,7 +33,6 @@ lint:
     
 test:
   script:
-    - pip install .[dev]
     - pytest
     
   tags:
