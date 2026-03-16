@@ -18,7 +18,7 @@ setup:
     - pip install --upgrade pip
     - python -m venv venv
     - source venv/bin/activate
-    - pip install git+https://gitlab-ci-token:${CI_JOB_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
+    - pip install git+https://gitlab-ci-token:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
     - pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
   artifacts:
     paths:
