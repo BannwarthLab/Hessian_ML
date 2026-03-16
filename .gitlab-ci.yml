@@ -18,13 +18,13 @@ before_script:
   - source venv/bin/activate
   - pip install ruff 
   - pip install mypy 
-  - mypy --install-types
 
 lint:
 
   stage: lint
   script:
     - ruff check .
+    - mypy --install-types
     - mypy --exclude build/ .
     - codespell
   tags:
