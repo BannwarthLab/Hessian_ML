@@ -24,8 +24,7 @@ lint:
   stage: lint
   script:
     - ruff check .
-    - mypy --install-types
-    - mypy --exclude build/ .
+    - mypy --install-types --exclude build/ .
     - codespell
   tags:
   - docker
