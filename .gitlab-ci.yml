@@ -17,14 +17,16 @@ before_script:
   - python -m venv venv
   - source venv/bin/activate
   - pip install ruff 
-  - pip install mypy
+  - pip install mypy 
+  - mypy --install-types
 
 lint:
 
   stage: lint
   script:
     - ruff check .
-    - mypy .
+    - mypy --exclude build/ .
+    - codespell
   tags:
   - docker
     
@@ -32,7 +34,6 @@ test:
   script:
     - pip install .[dev]
     - pytest
-    - mypy
-    - codespell
+    
   tags:
   - docker
