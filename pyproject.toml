@@ -27,12 +27,11 @@ dependencies = [
     "scikit_learn",
     "scipy",
     "torch>=1.1.0",
+    "cffi",
+    "pkgconfig",
     "tomli",
     "tblite",
     "dftd4",
-    "cffi",
-    "pkgconfig",
-    "cffi",
     #"tcgm_lib @ git@git.rwth-aachen.de:bannwarthlab/tcgm-lib-py.git"
     #"tblite @ git+https://github.com/awvwgk/tblite.git#subdirectory=python"
     ]
@@ -50,17 +49,17 @@ dev = [
     "scikit_learn",
     "scipy",
     "torch>=1.1.0",
+    "cffi",
+    "pkgconfig",
     "tomli",
     "tblite",
     "dftd4",
-    "cffi",
-    "pkgconfig",
-    "cffi",
-    #"tcgm_lib @ git@git.rwth-aachen.de:bannwarthlab/tcgm-lib-py.git",
+    "tcgm_lib @ git@git.rwth-aachen.de:bannwarthlab/tcgm-lib-py.git",
     #"tblite @ git+https://github.com/awvwgk/tblite.git#subdirectory=python",
 ]
 
 [tool.mypy]
+ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = ["tcgm-lib.*","sklearn.*"]
 ignore_missing_imports = true

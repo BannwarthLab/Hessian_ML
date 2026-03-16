@@ -1,6 +1,7 @@
 image: python:3.11
 
 stages:
+  - setup
   - lint
   - test
 
@@ -11,26 +12,35 @@ cache:
   paths:
     - .cache/pip
 
-before_script:
-  - python --version
-  - pip install --upgrade pip
-  - python -m venv venv
-  - source venv/bin/activate
-  - pip install ruff mypy codespell
-  - pip install .[dev]
-  - pip install types-requests types-PyYAML
+setup:
+  stage: setup
+  script:
+    - pip install --upgrade pip
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install .[dev] ruff mypy codespell pytest types-requests types-PyYAML
+  artifacts:
+    paths:
+      - /usr/local/lib/python3.11/site-packages
+    expire_in: 1h
+  tags:
+    - docker
 
 lint:
   stage: lint
+  dependencies:
+    - setup
   script:
     - ruff check .
-    - mypy --exclude build/ .
+    - mypy --ignore-missing-imports --exclude build/ .
     - codespell
   tags:
     - docker
 
 test:
   stage: test
+  dependencies:
+    - setup
   script:
     - pytest
   tags:
