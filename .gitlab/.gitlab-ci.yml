@@ -1,0 +1,64 @@
+stages:
+  - build
+  - lint
+  - test
+
+build-image:
+  stage: build
+  cache:
+    key: "image-$CI_COMMIT_REF_SLUG"
+    paths:
+      - containers/
+  script:
+    - mkdir -p containers
+    - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
+  tags:
+    - shell
+  variables:
+    CONTAINER_NAME: "hessml_image"
+
+
+test:
+  stage: test
+  cache:
+    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    paths:
+      - containers/
+  dependencies:
+    - build-hessml_image
+  variables:
+    IMAGE_NAME: ""
+    CONTAINER_NAME: "containers/hessml_image.sif"
+    APPTAINER_EXEC_ARGS: "" 
+  tags:
+    - cpu
+  script:
+    - pytest tests/ --cov 
+
+  artifacts:
+    when: on_failure
+    paths:
+      - tests/test_results/
+    expire_in: 1 week
+
+lint:
+  stage: lint
+  cache:
+    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    paths:
+      - containers/
+  dependencies:
+    - build-hessml_image
+  variables:
+    IMAGE_NAME: ""
+    CONTAINER_NAME: "containers/hessml_image.sif"
+    APPTAINER_EXEC_ARGS: "" 
+  tags:
+    - cpu
+  script:
+    # Activate venv if needed (optional if image already has Python deps)
+    - source venv/bin/activate || echo "venv not found, skipping"
+    # Run linters
+    - ruff check .
+    - mypy --ignore-missing-imports --exclude build/ .
+    - codespell src/
