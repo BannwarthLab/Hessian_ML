@@ -25,7 +25,7 @@ test:
     paths:
       - containers/
   dependencies:
-    - build-hessml_image
+    - build-image
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
@@ -48,7 +48,7 @@ lint:
     paths:
       - containers/
   dependencies:
-    - build-hessml_image
+    - build-image
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
