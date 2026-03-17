@@ -7,17 +7,27 @@ cache:
   paths:
     - venv/
     - .cache/pip
+variables:
+  IMAGE_NAME: registry.gitlab.com/$CI_PROJECT_PATH:latest
 
 build-image:
   stage: build
   image: docker:latest
   services:
     - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
   script:
-    - docker build -t registry.gitlab.com/$CI_PROJECT_PATH:latest .
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH:latest
-    
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME .
+
+
+
 before_script:
+  image: registry.gitlab.com/$CI_PROJECT_PATH:latest
+  script:
   - python -m venv venv
   - source venv/bin/activate
   - pip install --upgrade pip setuptools wheel
