@@ -12,24 +12,26 @@ cache:
     - .cache/pip
 
 before_script:
-  - pip install --upgrade pip
   - python -m venv venv
   - source venv/bin/activate
+  - pip install --upgrade pip setuptools wheel
+
+  # Install compilers and runtime libraries
   - apt-get update
-  - apt-get install -y gcc-13 gfortran-13 build-essential libopenblas-dev pkg-config
-  - gfortran-13 --version
+  - apt-get install -y gfortran-13 build-essential libopenblas-dev pkg-config libgfortran5
+
+  # Make gfortran available as 'gfortran'
   - ln -s /usr/bin/gfortran-13 /usr/bin/gfortran
 
-  - export CC=/usr/bin/gcc-13
-  - export FC=/usr/bin/gfortran-13
-  - export F77=/usr/bin/gfortran-13
-  - export LDFLAGS="-lgfortran"
-  
-  - ldd venv/lib/python3.11/site-packages/tblite/_libtblite*.so | grep gfortran
+  # Set runtime library path
   - export LD_LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13:$LD_LIBRARY_PATH
 
-  - pip install --no-binary=tblite --no-cache-dir tblite   
-  - python -c "import tblite.interface"
+  # Install tblite from source so it uses gfortran
+  - pip install --no-binary=tblite --no-cache-dir tblite
+
+  # Verify import
+  - python -c "import tblite.interface; print('tblite C extension loaded OK')"
+
 
   - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
   - pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
