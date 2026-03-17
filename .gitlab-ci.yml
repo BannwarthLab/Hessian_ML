@@ -17,7 +17,7 @@ before_script:
   - python -m venv venv
   - source venv/bin/activate
   - apt-get update
-  - apt-get install -y gcc-13 gfortran-13
+  - apt-get install -y gcc-13 gfortran-13 build-essential libopenblas-dev pkg-config
 
   - export CC=gcc-13
   - export FC=gfortran-13
@@ -26,6 +26,7 @@ before_script:
 
   - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
   - pip install --no-binary=tblite --no-cache-dir tblite   
+  - python -c "import tblite.interface"
   - pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
 
 lint:
@@ -42,6 +43,7 @@ test:
   stage: test
   script:
     - source venv/bin/activate
+    - python -c "import tblite.interface; print('tblite import OK')"
     - pytest tests/ --cov
   tags:
     - docker
