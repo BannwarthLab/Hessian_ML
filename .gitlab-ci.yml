@@ -24,25 +24,20 @@ build-image:
     - docker push $IMAGE_NAME .
 
 
+# before_script:
 
-before_script:
-  image: registry.gitlab.com/$CI_PROJECT_PATH:latest
-  script:
-  - python -m venv venv
-  - source venv/bin/activate
-  - pip install --upgrade pip setuptools wheel
+#   - python -m venv venv
+#   - source venv/bin/activate
+#   - pip install --upgrade pip setuptools wheel
 
 
-  - apt-get update
-  - apt-get install -y --no-install-recommends gfortran build-essential libopenblas-dev pkg-config libgfortran5
+#   - apt-get update
+#   - apt-get install -y --no-install-recommends gfortran build-essential libopenblas-dev pkg-config libgfortran5
 
-  - pip install --no-binary=tblite --no-cache-dir tblite
+#   - pip install --no-binary=tblite --no-cache-dir tblite
 
-  - python -c "import tblite.interface; print('tblite C extension loaded OK')"
+#   - python -c "import tblite.interface; print('tblite C extension loaded OK')"
 
-
-  - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
-  - pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
 
 lint:
   stage: lint

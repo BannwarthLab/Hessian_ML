@@ -31,3 +31,6 @@ RUN pip install --no-binary=tblite --no-cache-dir tblite
 
 # Verify
 RUN python3.11 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+
+RUN pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
+RUN pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
