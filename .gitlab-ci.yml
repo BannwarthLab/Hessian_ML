@@ -1,27 +1,20 @@
 name: CI/CD Pipeline
 
-on: [push, pull_request]
+steps:
+  - uses: actions/checkout@v3
 
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  - name: Set up Apptainer
+    run: sudo apt-get update && sudo apt-get install -y apptainer
 
-      - name: Set up Apptainer
-        run: |
-          sudo apt-get update && sudo apt-get install -y apptainer
+  - name: Build Apptainer image
+    run: apptainer build mlhess_image.sif mlhess_image.def
 
-      - name: Build Apptainer image
-        run: |
-          apptainer build mlhess_image.sif mlhess_image.def
+  - name: Run linting
+    run: |
+      apptainer exec mlhess_image.sif ruff check .
+      apptainer exec mlhess_image.sif mypy --ignore-missing-imports --exclude build/ .
+      apptainer exec mlhess_image.sif codespell src/
 
-      - name: Run linting
-        run: |
-          apptainer exec mlhess_image.sif ruff check .
-          apptainer exec mlhess_image.sif mypy --ignore-missing-imports --exclude build/ .
-          apptainer exec mlhess_image.sif codespell src/
-
-      - name: Run tests
-        run: |
-          apptainer exec mlhess_image.sif pytest tests/ --cov
+  - name: Run tests
+    run: |
+      apptainer exec mlhess_image.sif pytest tests/ --cov
