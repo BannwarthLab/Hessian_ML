@@ -1,20 +1,42 @@
-name: CI/CD Pipeline
+stages:
+  - build
+  - lint
+  - test
 
-steps:
-  - uses: actions/checkout@v3
+default:
+  before_script:
+    # Show info about Apptainer and build the image remotely
+    - apptainer info
+    - apptainer build --remote mlhess_image.sif mlhess_image.def
 
-  - name: Set up Apptainer
-    run: sudo apt-get update && sudo apt-get install -y apptainer
+build-image:
+  stage: build
+  artifacts:
+    paths:
+      - mlhess_image.sif  # your built Apptainer image
+  script:
+    - echo "Image built as mlhess_image.sif"
 
-  - name: Build Apptainer image
-    run: apptainer build mlhess_image.sif mlhess_image.def
+cache:
+  paths:
+    - venv/
+    - .cache/pip
 
-  - name: Run linting
-    run: |
-      apptainer exec mlhess_image.sif ruff check .
-      apptainer exec mlhess_image.sif mypy --ignore-missing-imports --exclude build/ .
-      apptainer exec mlhess_image.sif codespell src/
+lint:
+  stage: lint
+  script:
+    # Activate venv if needed (optional if image already has Python deps)
+    - source venv/bin/activate || echo "venv not found, skipping"
+    # Run linters
+    - apptainer exec myimage.sif ruff check .
+    - apptainer exec myimage.sif mypy --ignore-missing-imports --exclude build/ .
+    - apptainer exec myimage.sif codespell src/
 
-  - name: Run tests
-    run: |
-      apptainer exec mlhess_image.sif pytest tests/ --cov
+test:
+  stage: test
+  script:
+    - source venv/bin/activate || echo "venv not found, skipping"
+    - apptainer exec myimage.sif python -c "import tblite.interface; print('tblite import OK')"
+    - apptainer exec myimage.sif pytest tests/ --cov
+  tags:
+    - docker
