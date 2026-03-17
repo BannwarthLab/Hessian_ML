@@ -1,11 +1,8 @@
-image: python:3.11
+image: python:3.11-slim
 stages:
   - test
   - lint
   
-variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/venv/pip"
-
 cache:
   paths:
     - venv/
@@ -16,20 +13,12 @@ before_script:
   - source venv/bin/activate
   - pip install --upgrade pip setuptools wheel
 
-  # Install compilers and runtime libraries
+
   - apt-get update
-  - apt-get install -y gfortran-13 build-essential libopenblas-dev pkg-config libgfortran5
+  - apt-get install -y --no-install-recommends gfortran build-essential libopenblas-dev pkg-config libgfortran5
 
-  # Make gfortran available as 'gfortran'
-  - ln -s /usr/bin/gfortran-13 /usr/bin/gfortran
-
-  # Set runtime library path
-  - export LD_LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13:$LD_LIBRARY_PATH
-
-  # Install tblite from source so it uses gfortran
   - pip install --no-binary=tblite --no-cache-dir tblite
 
-  # Verify import
   - python -c "import tblite.interface; print('tblite C extension loaded OK')"
 
 
