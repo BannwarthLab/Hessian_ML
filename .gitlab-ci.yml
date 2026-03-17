@@ -1,4 +1,4 @@
-image: python:3.11
+image: python:3.11-slim
 
 stages:
   - test
@@ -18,13 +18,14 @@ before_script:
   - source venv/bin/activate
   - apt-get update
   - apt-get install -y gcc-13 gfortran-13 build-essential libopenblas-dev pkg-config
+  - gfortran-13 --version
+  - ln -s /usr/bin/gfortran-13 /usr/bin/gfortran
 
-  - export CC=gcc-13
-  - export FC=gfortran-13
-  - export F77=gfortran-13
+  - export CC=/usr/bin/gcc-13
+  - export FC=/usr/bin/gfortran-13
+  - export F77=/usr/bin/gfortran-13
   - export LDFLAGS="-lgfortran"
-
-  - gfortran --version
+  
   - ldd venv/lib/python3.11/site-packages/tblite/_libtblite*.so | grep gfortran
 
   - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
