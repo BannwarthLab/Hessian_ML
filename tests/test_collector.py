@@ -1,6 +1,9 @@
 import pytest
 
 import os
+import torch
+import tblite
+ 
 from pathlib import Path
 import numpy as np
 from mlhess.scripts.data_handling import FittingDataHandler
