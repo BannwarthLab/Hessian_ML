@@ -1,4 +1,4 @@
-image: python:3.11
+image: python:3.11-slim
 
 stages:
   - test
@@ -27,10 +27,10 @@ before_script:
   - export LDFLAGS="-lgfortran"
   
   - ldd venv/lib/python3.11/site-packages/tblite/_libtblite*.so | grep gfortran
-
-  - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
   - pip install --no-binary=tblite --no-cache-dir tblite   
   - python -c "import tblite.interface"
+
+  - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
   - pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
 
 lint:
