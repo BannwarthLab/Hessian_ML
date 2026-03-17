@@ -1,60 +1,27 @@
-stages:
-  - build
-  - test
-  - lint
-  
-cache:
-  paths:
-    - venv/
-    - .cache/pip
-variables:
-  IMAGE_NAME: registry.gitlab.com/$CI_PROJECT_PATH:latest
+name: CI/CD Pipeline
 
-build-image:
-  stage: build
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_TLS_CERTDIR: ""
-  script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - docker build -t $IMAGE_NAME .
-    - docker push $IMAGE_NAME .
+on: [push, pull_request]
 
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-# before_script:
+      - name: Set up Apptainer
+        run: |
+          sudo apt-get update && sudo apt-get install -y apptainer
 
-#   - python -m venv venv
-#   - source venv/bin/activate
-#   - pip install --upgrade pip setuptools wheel
+      - name: Build Apptainer image
+        run: |
+          apptainer build mlhess_image.sif mlhess_image.def
 
+      - name: Run linting
+        run: |
+          apptainer exec mlhess_image.sif ruff check .
+          apptainer exec mlhess_image.sif mypy --ignore-missing-imports --exclude build/ .
+          apptainer exec mlhess_image.sif codespell src/
 
-#   - apt-get update
-#   - apt-get install -y --no-install-recommends gfortran build-essential libopenblas-dev pkg-config libgfortran5
-
-#   - pip install --no-binary=tblite --no-cache-dir tblite
-
-#   - python -c "import tblite.interface; print('tblite C extension loaded OK')"
-
-
-lint:
-  stage: lint
-  image: registry.gitlab.com/$CI_PROJECT_PATH:latest
-  script:
-    - source venv/bin/activate
-    - ruff check .
-    - mypy --ignore-missing-imports --exclude build/ .
-    - codespell src/
-  tags:
-    - docker
-
-test:
-  stage: test
-  image: registry.gitlab.com/$CI_PROJECT_PATH:latest
-  script:
-    - source venv/bin/activate
-    - python -c "import tblite.interface; print('tblite import OK')"
-    - pytest tests/ --cov
-  tags:
-    - docker
+      - name: Run tests
+        run: |
+          apptainer exec mlhess_image.sif pytest tests/ --cov
