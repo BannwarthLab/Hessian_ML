@@ -5,7 +5,7 @@ From: ubuntu:24.04
     # Add the virtual environment to PATH
     export CC=gcc
     export FC=gfortran
-    export PATH="/opt/venv/bin:$PATH"
+    export PATH="~/.local/venv/bin:$PATH"
     export OPENBLAS_CORETYPE=NEHALEM
 
 %post
@@ -28,19 +28,16 @@ From: ubuntu:24.04
     && rm -rf /var/lib/apt/lists/*
 
     #install venv
-    python3 -m venv opt/venv
+    python3 -m venv ~/.local/venv
     # Activate it
-    . /opt/venv/bin/activate
+    . ~/.local/venv/bin/activate
     # Upgrade pip, setuptools, wheel
     pip install --upgrade pip setuptools wheel
-    pip install setuptools>=77.0.3
     # Install tblite from source linking to gfortran
     export CFLAGS="-O2 -march=x86-64 -mtune=generic"
     export FFLAGS="-O2 -march=x86-64 -mtune=generic"
     export OPENBLAS_CORETYPE=NEHALEM
     pip install --no-binary=tblite --no-cache-dir tblite
-
-    chmod -R 777 /opt/venv/
     
 %test
     # Test that tblite loads correctly
