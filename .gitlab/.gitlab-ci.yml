@@ -23,7 +23,6 @@ build-env:
   stage: build-env
   image: containers/${CONTAINER_NAME}.sif
   cache:
-    #key: "venv-$CI_COMMIT_REF_SLUG"
     key: "hessml_image-$CI_COMMIT_REF_SLUG"
     paths:
       - containers/
@@ -59,13 +58,13 @@ test:
   stage: test
   image: containers/${CONTAINER_NAME}.sif
   dependencies:
-    - build-hessml_image
     - build-env
   cache:
-    key: "venv-$CI_COMMIT_REF_SLUG"
+    key: "hessml_image-$CI_COMMIT_REF_SLUG"
     paths:
       - /tmp/venv/
       - containers/
+
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
@@ -81,15 +80,13 @@ lint:
   stage: lint
   image: containers/${CONTAINER_NAME}.sif
   dependencies:
-    - build-hessml_image
     - build-env
   cache:
-    key: "venv-$CI_COMMIT_REF_SLUG"
+    key: "hessml_image-$CI_COMMIT_REF_SLUG"
     paths:
       - /tmp/venv/
       - containers/
-  dependencies:
-    - build-hessml_image
+
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
