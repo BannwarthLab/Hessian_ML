@@ -3,10 +3,10 @@ stages:
   - lint
   - test
 
-build-image:
+build-hessml_image:
   stage: build
   cache:
-    key: "image-$CI_COMMIT_REF_SLUG"
+    key: "hessml_image-$CI_COMMIT_REF_SLUG"
     paths:
       - containers/
   script:
