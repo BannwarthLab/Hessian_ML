@@ -11,8 +11,8 @@ build-hessml_image:
       - containers/
   script:
     - mkdir -p containers
-    #- if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
-    - apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
+    - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
+    #- apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
   tags:
     - shell
   variables:
@@ -56,7 +56,7 @@ lint:
     - cpu
   script:
     - python3 -m venv /tmp/venv 
-    - source /temp/venv/bin/activate 
+    - source /tmp/venv/bin/activate 
     - python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     - pip install scipy
     # - pip install .[dev]
