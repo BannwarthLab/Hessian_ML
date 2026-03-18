@@ -7,8 +7,6 @@ License: MIT
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: pytest
-Requires-Dist: pytest-cov
 Requires-Dist: requests>=2.28
 Requires-Dist: pymatgen
 Requires-Dist: ase
@@ -24,6 +22,8 @@ Requires-Dist: tomli
 Requires-Dist: tblite
 Requires-Dist: dftd4
 Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
 Requires-Dist: requests>=2.28; extra == "dev"
 Requires-Dist: pymatgen; extra == "dev"
 Requires-Dist: ase; extra == "dev"
@@ -38,6 +38,11 @@ Requires-Dist: pkgconfig; extra == "dev"
 Requires-Dist: tomli; extra == "dev"
 Requires-Dist: tblite; extra == "dev"
 Requires-Dist: dftd4; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: codespell; extra == "dev"
+Requires-Dist: types-requests; extra == "dev"
+Requires-Dist: types-PyYAML; extra == "dev"
 Dynamic: license-file
 
 A python package providing a framework for the training and using machine learning (ML) models to predict Hessian matrices and compute thermodynamic corrections. 
