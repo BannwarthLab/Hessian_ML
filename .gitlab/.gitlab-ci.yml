@@ -13,7 +13,7 @@ build-hessml_image:
     - mkdir -p containers
     #- if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
     - apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
-    -  pip install .[dev]
+    - pip install .[dev]
   tags:
     - shell
   variables:
