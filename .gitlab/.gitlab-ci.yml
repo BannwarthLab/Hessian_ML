@@ -12,23 +12,30 @@ build-hessml_image:
       - containers/
   script:
     - mkdir -p containers
-    #- if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
-    - apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
+    - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
+    #- apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
   tags:
     - shell
   variables:
     CONTAINER_NAME: "hessml_image"
 
-
 build-env:
   stage: build-env
   image: containers/${CONTAINER_NAME}.sif
   cache:
-    key: "venv-$CI_COMMIT_REF_SLUG"
+    #key: "venv-$CI_COMMIT_REF_SLUG"
+    key: "hessml_image-$CI_COMMIT_REF_SLUG"
     paths:
+      - containers/
       - /tmp/venv/
+
   dependencies:
     - build-hessml_image
+  variables:
+    IMAGE_NAME: ""
+    CONTAINER_NAME: "containers/hessml_image.sif"
+    APPTAINER_EXEC_ARGS: ""
+
   script:
     - rm -rf /tmp/venv
     - python3 -m venv /tmp/venv
