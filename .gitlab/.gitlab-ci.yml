@@ -11,8 +11,8 @@ build-hessml_image:
       - containers/
   script:
     - mkdir -p containers
-    - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
-    #- apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
+    #- if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
+    - apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
   tags:
     - shell
   variables:
@@ -54,8 +54,6 @@ lint:
   tags:
     - cpu
   script:
-    - apt-get update && apt-get install -y --no-install-recommends \
-        pkg-config \
 
     - echo $LD_LIBRARY_PATH
     - /opt/venv/bin/python3 -c "import tblite.interface"

@@ -43,11 +43,11 @@ From: ubuntu:24.04
     export CFLAGS="-O2 -march=x86-64 -mtune=generic"
     export FFLAGS="-O2 -march=x86-64 -mtune=generic"
     export OPENBLAS_CORETYPE=NEHALEM
-    pip install --no-binary=tblite --no-cache-dir tblite
+    #pip install --no-binary=tblite --no-cache-dir tblite
     ldd /opt/venv/lib/python3.12/site-packages/tblite/_libtblite*.so
     
 %test
     # Test that tblite loads correctly
     . /opt/venv/bin/activate
-    python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+    #python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
 
