@@ -54,13 +54,8 @@ lint:
   tags:
     - cpu
   script:
-    -  export CC=gcc
-    - export FC=gfortran
-    - export PATH=/opt/venv/bin:$PATH
-    - export OPENBLAS_CORETYPE=NEHALEM
-    - export CFLAGS="-O2 -march=x86-64 -mtune=generic"
-    - export FFLAGS="-O2 -march=x86-64 -mtune=generic"
     - /opt/venv/bin/python3 -c "import tblite.interface"
+    - ldd /opt/venv/lib/python3.12/site-packages/tblite/_libtblite*.so
     - /opt/venv/bin/python3 -m venv --system-site-packages /tmp/venv 
     - source /tmp/venv/bin/activate
     - which python3

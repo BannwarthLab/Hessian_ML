@@ -7,6 +7,7 @@ From: ubuntu:24.04
     export FC=gfortran
     export PATH=/opt/venv/bin:$PATH
     export OPENBLAS_CORETYPE=NEHALEM
+    export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 %post
     # Update and install dependencies
@@ -40,6 +41,7 @@ From: ubuntu:24.04
     export FFLAGS="-O2 -march=x86-64 -mtune=generic"
     export OPENBLAS_CORETYPE=NEHALEM
     pip install --no-binary=tblite --no-cache-dir tblite
+    ldd /opt/venv/lib/python3.12/site-packages/tblite/_libtblite*.so
     
 %test
     # Test that tblite loads correctly
