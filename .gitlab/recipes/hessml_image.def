@@ -30,6 +30,7 @@ From: ubuntu:24.04
     #install venv
     python3 -m venv ~/.local/venv
     # Activate it
+    pwd
     . ~/.local/venv/bin/activate
     # Upgrade pip, setuptools, wheel
     pip install --upgrade pip setuptools wheel
