@@ -64,7 +64,7 @@ lint:
     #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     #- pip install torch
     - /tmp/venv/bin/pip install .[dev]
-    - /tmp/venv/bin/pip install --no-binary=tblite --force-reinstall :all:  tblite
+    - /tmp/venv/bin/pip install --no-binary=tblite tblite
     - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
 
     # - ruff check .
