@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: rockylinux:9
+From: ubuntu:22.04
 
 %environment
     # Add the virtual environment to PATH
