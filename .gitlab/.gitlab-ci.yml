@@ -1,5 +1,6 @@
 stages:
   - build
+  - build-env
   - lint
   - test
 
@@ -11,15 +12,27 @@ build-hessml_image:
       - containers/
   script:
     - mkdir -p containers
-#    - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
+    #- if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
     - apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
-    - echo $LD_LIBRARY_PATH
-    #- /opt/venv/bin/python3 -c "import tblite.interface"
-    - rm -r /tmp/venv
-    - /opt/venv/bin/python3 -m venv /tmp/venv 
+  tags:
+    - shell
+  variables:
+    CONTAINER_NAME: "hessml_image"
+
+
+build-env:
+  stage: build-env
+  image: containers/${CONTAINER_NAME}.sif
+  cache:
+    key: "venv-$CI_COMMIT_REF_SLUG"
+    paths:
+      - /tmp/venv/
+  dependencies:
+    - build-hessml_image
+  script:
+    - rm -rf /tmp/venv
+    - python3 -m venv /tmp/venv
     - source /tmp/venv/bin/activate
-    #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
-    #- pip install torch
     - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
     - export CFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
     - export FFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
@@ -27,21 +40,25 @@ build-hessml_image:
     - /tmp/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
     - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     - /tmp/venv/bin/pip install .[dev]
-    
+
+  artifacts:
+    paths:
+      - /tmp/venv/
+    expire_in: 1h
   tags:
-    - shell
-  variables:
-    CONTAINER_NAME: "hessml_image"
+    - cpu
 
 test:
   stage: test
   image: containers/${CONTAINER_NAME}.sif
-  cache:
-    key: "hessml_image-$CI_COMMIT_REF_SLUG"
-    paths:
-      - containers/
   dependencies:
     - build-hessml_image
+    - build-env
+  cache:
+    key: "venv-$CI_COMMIT_REF_SLUG"
+    paths:
+      - /tmp/venv/
+      - containers/
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
@@ -55,9 +72,14 @@ test:
 
 lint:
   stage: lint
+  image: containers/${CONTAINER_NAME}.sif
+  dependencies:
+    - build-hessml_image
+    - build-env
   cache:
-    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    key: "venv-$CI_COMMIT_REF_SLUG"
     paths:
+      - /tmp/venv/
       - containers/
   dependencies:
     - build-hessml_image
