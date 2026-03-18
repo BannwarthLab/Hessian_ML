@@ -29,8 +29,8 @@ From: ubuntu:22.04
     python3.11 -m venv /opt/venv
 
     # Install tblite from source linking to gfortran
-    /opt/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
-    /opt/venv/bin/pip install .[dev]
+    python3.11 -m pip install --no-binary=tblite --no-cache-dir tblite
+    
 
 %test
     # Test that tblite loads correctly
