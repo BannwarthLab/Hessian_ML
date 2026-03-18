@@ -5,7 +5,7 @@ From: ubuntu:24.04
     # Add the virtual environment to PATH
     export CC=gcc
     export FC=gfortran
-    export PATH="~/.local/venv/bin:$PATH"
+    export PATH="~/.local/bin:$PATH"
     export OPENBLAS_CORETYPE=NEHALEM
 
 %post
