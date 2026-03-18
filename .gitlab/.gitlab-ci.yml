@@ -56,10 +56,8 @@ lint:
   script:
     - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
     - /opt/venv/bin/python3 -c "import tblite.interface"
-    - ldd /opt/venv/lib/python3.12/site-packages/tblite/_libtblite*.so
-    - /opt/venv/bin/python3 -m venv --system-site-packages /tmp/venv 
+    - /opt/venv/bin/python3 -m venv --system-site-packages --always-copy /tmp/venv 
     - source /tmp/venv/bin/activate
-    - which python3
     - python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     - pip install scipy
     # - pip install .[dev]
