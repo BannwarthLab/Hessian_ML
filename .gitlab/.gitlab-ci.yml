@@ -32,12 +32,9 @@ test:
   tags:
     - cpu
   script:
-    - which python3.11
-    - pip install .[dev]
-    - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git  
+    
     - pytest tests/ --cov 
     
-
   artifacts:
     when: on_failure
     paths:
@@ -60,7 +57,6 @@ lint:
     - cpu
   script:
     - which python3
-    - pip install .[dev]
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
     - codespell src/
