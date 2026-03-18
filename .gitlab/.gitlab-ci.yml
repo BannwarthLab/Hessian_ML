@@ -12,8 +12,8 @@ build-hessml_image:
       - containers/
   script:
     - mkdir -p containers
-    #- if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
-    - apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
+    - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
+    #- apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
 
   tags:
     - shell
@@ -45,7 +45,7 @@ build-env:
     - export FFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
     - export OPENBLAS_CORETYPE=NEHALEM
     - /tmp/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
-    - pip install git+https://gitlab-ci-token:${CI_JOB_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
+    - pip install git+https://${PRIVATE_DEPLOY_USERNAME}:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
     - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     - /tmp/venv/bin/pip install .[dev]
 
