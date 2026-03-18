@@ -39,9 +39,10 @@ From: ubuntu:24.04
     export OPENBLAS_CORETYPE=NEHALEM
     pip install --no-binary=tblite --no-cache-dir tblite
     pip install .[dev]
-    
+
     
 %test
     # Test that tblite loads correctly
     which python3 
+
     python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
