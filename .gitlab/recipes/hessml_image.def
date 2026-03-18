@@ -33,7 +33,11 @@ From: ubuntu:24.04
     #pwd
     #. ~/.local/venv/bin/activate
     # Upgrade pip, setuptools, wheel
+    export PATH=~/.local/bin:$PATH
     echo $PATH
+    which python3 
+    which pip 
+
     pip install --upgrade pip setuptools wheel
     # Install tblite from source linking to gfortran
     export CFLAGS="-O2 -march=x86-64 -mtune=generic"
