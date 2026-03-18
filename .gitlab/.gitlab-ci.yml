@@ -62,8 +62,8 @@ lint:
     - /opt/venv/bin/python3 -m venv --system-site-packages /tmp/venv 
     - source /tmp/venv/bin/activate
     #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
-    - pip install scipy
-    # - pip install .[dev]
+    #- pip install torch
+    - pip install .[dev]
     # - ruff check .
     # - mypy --ignore-missing-imports --exclude build/ .
     # - codespell src/
