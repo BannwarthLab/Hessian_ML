@@ -33,8 +33,6 @@ test:
     - cpu
   script:
     - which python3.11
-    - source opt/venv/bin/activate 
-    - which python3.11
     - pip install .[dev]
     - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git  
     - pytest tests/ --cov 
@@ -61,8 +59,6 @@ lint:
   tags:
     - cpu
   script:
-    - source venv/bin/activate
-    # Run linters
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
     - codespell src/
