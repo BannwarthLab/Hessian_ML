@@ -38,6 +38,7 @@ From: ubuntu:24.04
     export FFLAGS="-O2 -march=x86-64 -mtune=generic"
     export OPENBLAS_CORETYPE=NEHALEM
     pip install --no-binary=tblite --no-cache-dir tblite
+    cd /opt/hessian_ml
     pip install .[dev]
     
 %test
