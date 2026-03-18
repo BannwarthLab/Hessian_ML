@@ -12,7 +12,8 @@ build-hessml_image:
   script:
     - mkdir -p containers
     - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
-
+  tags:
+    - shell
   variables:
     CONTAINER_NAME: "hessml_image"
 
