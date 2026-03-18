@@ -59,6 +59,8 @@ lint:
   tags:
     - cpu
   script:
+    - which python3
+    - pip install .[dev]
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
     - codespell src/
