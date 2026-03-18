@@ -5,7 +5,7 @@ From: ubuntu:24.04
     # Add the virtual environment to PATH
     export CC=gcc
     export FC=gfortran
-    export PATH="~/.local/bin:$PATH"
+    export PATH=~/.local/bin:$PATH
     export OPENBLAS_CORETYPE=NEHALEM
 
 %post
@@ -33,6 +33,7 @@ From: ubuntu:24.04
     #pwd
     #. ~/.local/venv/bin/activate
     # Upgrade pip, setuptools, wheel
+    echo $PATH
     pip install --upgrade pip setuptools wheel
     # Install tblite from source linking to gfortran
     export CFLAGS="-O2 -march=x86-64 -mtune=generic"
