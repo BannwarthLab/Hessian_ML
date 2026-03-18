@@ -63,7 +63,10 @@ lint:
     - source /tmp/venv/bin/activate
     #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     #- pip install torch
-    - pip install .[dev]
+    - /opt/venv/bin/pip install .[dev]
+    - /opt/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
+    - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+
     # - ruff check .
     # - mypy --ignore-missing-imports --exclude build/ .
     # - codespell src/
