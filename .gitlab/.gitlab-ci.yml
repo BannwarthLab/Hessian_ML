@@ -12,7 +12,7 @@ build-hessml_image:
   script:
     - mkdir -p containers
     #- if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
-    - apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
+    - apptainer build --force --fix-perms containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
   tags:
     - shell
   variables:
