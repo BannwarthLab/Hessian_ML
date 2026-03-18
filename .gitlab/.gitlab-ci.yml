@@ -59,12 +59,12 @@ lint:
 
     - echo $LD_LIBRARY_PATH
     - /opt/venv/bin/python3 -c "import tblite.interface"
-    - /opt/venv/bin/python3 -m venv --system-site-packages /tmp/venv 
+    - /opt/venv/bin/python3 -m venv packages /tmp/venv 
     - source /tmp/venv/bin/activate
     #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     #- pip install torch
     - /tmp/venv/bin/pip install .[dev]
-    - /tmp/venv/bin/pip install --no-binary=tblite --no-cache-dir --force-reinstall tblite
+    - /tmp/venv/bin/pip install --no-binary=tblite --force-reinstall :all:  tblite
     - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
 
     # - ruff check .
