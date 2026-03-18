@@ -5,7 +5,8 @@ From: ubuntu:24.04
     # Add the virtual environment to PATH
     export CC=gcc
     export FC=gfortran
-
+    export PATH="/opt/venv/bin:$PATH"
+    export OPENBLAS_CORETYPE=NEHALEM
 
 %post
     # Update and install dependencies
@@ -26,8 +27,10 @@ From: ubuntu:24.04
         pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
+    # Activate it
+    . /opt/venv/bin/activate
     # Upgrade pip, setuptools, wheel
-    python3 -m pip install --upgrade pip setuptools wheel
+    pip install --upgrade pip setuptools wheel
     # Install tblite from source linking to gfortran
     export CFLAGS="-O2 -march=x86-64 -mtune=generic"
     export FFLAGS="-O2 -march=x86-64 -mtune=generic"
@@ -36,4 +39,5 @@ From: ubuntu:24.04
     
 %test
     # Test that tblite loads correctly
+    which python3 
     python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
