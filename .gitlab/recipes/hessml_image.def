@@ -3,7 +3,6 @@ From: ubuntu:22.04
 
 %environment
     # Add the virtual environment to PATH
-    export PATH="/opt/venv/bin:$PATH"
     export CC=gcc
     export FC=gfortran
 
