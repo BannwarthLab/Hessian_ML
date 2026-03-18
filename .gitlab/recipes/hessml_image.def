@@ -27,6 +27,8 @@ From: ubuntu:24.04
         pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
+    #install venv
+    python3 -m venv opt/venv
     # Activate it
     . /opt/venv/bin/activate
     # Upgrade pip, setuptools, wheel
