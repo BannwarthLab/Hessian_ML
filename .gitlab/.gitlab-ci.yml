@@ -60,6 +60,8 @@ lint:
     - cpu
   script:
     - . /opt/venv/bin/activate
+    - which python
+    - pip install scipy
     - pip install .[dev]
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
