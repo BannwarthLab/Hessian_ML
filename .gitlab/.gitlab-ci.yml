@@ -13,6 +13,21 @@ build-hessml_image:
     - mkdir -p containers
 #    - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
     - apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
+    - echo $LD_LIBRARY_PATH
+    #- /opt/venv/bin/python3 -c "import tblite.interface"
+    - rm -r /tmp/venv
+    - /opt/venv/bin/python3 -m venv /tmp/venv 
+    - source /tmp/venv/bin/activate
+    #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+    #- pip install torch
+    - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
+    - export CFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
+    - export FFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
+    - export OPENBLAS_CORETYPE=NEHALEM
+    - /tmp/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
+    - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+    - /tmp/venv/bin/pip install .[dev]
+    
   tags:
     - shell
   variables:
@@ -34,8 +49,7 @@ test:
   tags:
     - cpu
   script:  
-    - export PYTHON=python3
-    - which python3
+    - source /tmp/venv/bin/activate
     - pytest tests/ --cov 
 
 
@@ -54,24 +68,9 @@ lint:
   tags:
     - cpu
   script:
-
-    - echo $LD_LIBRARY_PATH
-    #- /opt/venv/bin/python3 -c "import tblite.interface"
-    - rm -r /tmp/venv
-    - /opt/venv/bin/python3 -m venv /tmp/venv 
     - source /tmp/venv/bin/activate
     #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
-    #- pip install torch
-    - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
-    - export CFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
-    - export FFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
-    - export OPENBLAS_CORETYPE=NEHALEM
-    - /tmp/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
-    - /tmp/venv/bin/pip install .[dev]
-    
-    - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
-
-    # - ruff check .
+    - ruff check .
     # - mypy --ignore-missing-imports --exclude build/ .
     # - codespell src/
 
