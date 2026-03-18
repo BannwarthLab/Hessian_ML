@@ -28,10 +28,15 @@ From: ubuntu:22.04
     # Create a Python virtual environment
     python3.11 -m venv /opt/venv
 
+    # Load venv 
+    source /opt/venv/bin/activate
+    which python3.11 
+    
     # Install tblite from source linking to gfortran
     python3.11 -m pip install --no-binary=tblite --no-cache-dir tblite
     
 
 %test
     # Test that tblite loads correctly
+    source /opt/venv/bin/activate
     python3.11 -c "import tblite.interface; print('tblite C extension loaded successfully')"
