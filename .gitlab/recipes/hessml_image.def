@@ -14,7 +14,7 @@ From: ubuntu:24.04
     export OPENBLAS_CORETYPE=NEHALEM
 %post
     # Update and install dependencies
-    apt-get update && apt-get install -y --no-install-recommends \
+    sudo apt-get update && apt-get install -y --no-install-recommends \
         cmake \
         git \
         python3 \
