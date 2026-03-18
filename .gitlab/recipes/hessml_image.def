@@ -7,7 +7,8 @@ From: ubuntu:24.04
     export FC=gfortran
     export PATH=/opt/venv/bin:$PATH
     export OPENBLAS_CORETYPE=NEHALEM
-    export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+    #export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
 
 %post
     # Update and install dependencies

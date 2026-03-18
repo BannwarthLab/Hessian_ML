@@ -54,8 +54,7 @@ lint:
   tags:
     - cpu
   script:
-    - export PYTHONNOUSERSITE=1
-    - /opt/venv/bin/python -c "import sys; print(sys.path)"
+    - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
     - /opt/venv/bin/python3 -c "import tblite.interface"
     - ldd /opt/venv/lib/python3.12/site-packages/tblite/_libtblite*.so
     - /opt/venv/bin/python3 -m venv --system-site-packages /tmp/venv 
