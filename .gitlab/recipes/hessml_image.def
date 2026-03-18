@@ -40,6 +40,7 @@ From: ubuntu:24.04
     export OPENBLAS_CORETYPE=NEHALEM
     pip install --no-binary=tblite --no-cache-dir tblite
 
+    chmod -R 777 /opt/venv/
     
 %test
     # Test that tblite loads correctly
