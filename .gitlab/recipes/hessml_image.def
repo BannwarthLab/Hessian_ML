@@ -41,6 +41,5 @@ From: ubuntu:24.04
     
 %test
     # Test that tblite loads correctly
-    which python3 
-
+    . ~/.local/venv/bin/activate
     python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
