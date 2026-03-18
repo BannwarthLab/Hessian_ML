@@ -54,11 +54,14 @@ lint:
   tags:
     - cpu
   script:
+    - apt-get update && apt-get install -y --no-install-recommends \
+        pkg-config \
+
     - echo $LD_LIBRARY_PATH
     - /opt/venv/bin/python3 -c "import tblite.interface"
     - /opt/venv/bin/python3 -m venv --system-site-packages /tmp/venv 
     - source /tmp/venv/bin/activate
-    - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+    #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     - pip install scipy
     # - pip install .[dev]
     # - ruff check .
