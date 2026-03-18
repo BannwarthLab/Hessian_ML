@@ -1,13 +1,6 @@
 Bootstrap: docker
 From: ubuntu:24.04
 
-%environment
-    # Add the virtual environment to PATH
-    export CC=gcc
-    export FC=gfortran
-    export PATH="~/.local/venv/bin:$PATH"
-    export OPENBLAS_CORETYPE=NEHALEM
-
 %post
     # Update and install dependencies
     apt-get update && apt-get install -y --no-install-recommends \
@@ -44,3 +37,10 @@ From: ubuntu:24.04
     # Test that tblite loads correctly
     . ~/.local/venv/bin/activate
     python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+
+%environment
+    # Add the virtual environment to PATH
+    export CC=gcc
+    export FC=gfortran
+    export PATH="~/.local/venv/bin:$PATH"
+    export OPENBLAS_CORETYPE=NEHALEM

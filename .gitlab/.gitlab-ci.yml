@@ -33,8 +33,7 @@ test:
     APPTAINER_EXEC_ARGS: "" 
   tags:
     - cpu
-  script:
-    - . ~/.local/venv/bin/activate    
+  script:  
     - which python3
     - pytest tests/ --cov 
     
@@ -60,7 +59,6 @@ lint:
   tags:
     - cpu
   script:
-    - . ~/.local/venv/bin/activate
     - which python
     - pip install scipy
     - pip install .[dev]
