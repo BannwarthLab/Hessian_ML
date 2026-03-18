@@ -57,6 +57,7 @@ lint:
 
     - echo $LD_LIBRARY_PATH
     #- /opt/venv/bin/python3 -c "import tblite.interface"
+    - rm -r /tmp/venv
     - /opt/venv/bin/python3 -m venv /tmp/venv 
     - source /tmp/venv/bin/activate
     #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
