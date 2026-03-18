@@ -30,8 +30,7 @@ From: ubuntu:22.04
 
     # Install tblite from source linking to gfortran
     /opt/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
-    /opt/venv/bin/pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
-    /opt/venv/bin/pip install .[dev] ruff mypy codespell pytest pytest-cov types-requests types-PyYAML
+    /opt/venv/bin/pip install .[dev]
 
 %test
     # Test that tblite loads correctly

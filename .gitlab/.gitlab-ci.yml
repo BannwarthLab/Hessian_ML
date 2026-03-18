@@ -32,7 +32,10 @@ test:
   tags:
     - cpu
   script:
+    - source venv/bin/activate 
+    - pip install git+https://gitlab+deploy-token-1478:${PRIVATE_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git  
     - pytest tests/ --cov 
+    
 
   artifacts:
     when: on_failure
@@ -55,8 +58,7 @@ lint:
   tags:
     - cpu
   script:
-    # Activate venv if needed (optional if image already has Python deps)
-    - source venv/bin/activate || echo "venv not found, skipping"
+    - source venv/bin/activate
     # Run linters
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
