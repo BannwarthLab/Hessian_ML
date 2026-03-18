@@ -10,7 +10,7 @@ from mlhess.management.base_settings import PROCESSED_DATA_FOLDER
 
 from mlhess.machinelearning.target.hessian import NuclearHessian, NuclearHessianPM
 from mlhess.machinelearning.feature.base_class import Feature
-
+from clean_up import cleanup_file,cleanup_folder # noqa: F811, F401
 
 os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
 
@@ -18,7 +18,7 @@ files = ["test_files.txt", "train_files.txt", "not_considered"]
 folders = [PROCESSED_DATA_FOLDER]
 
 
-def test_run_protocol(cleanup_file, cleanup_folder):
+def test_run_protocol(cleanup_file, cleanup_folder): # noqa: F811
     inp_fname = "collector_data/input.toml"
 
     for file in files:
@@ -54,7 +54,7 @@ def test_collect_folder():
         assert true_folder == test_folder
 
 
-def test_do_preparation_split(cleanup_file):
+def test_do_preparation_split(cleanup_file): # noqa: F811
     inp_fname = "collector_data/input.toml"
     for file in files:
         cleanup_file(file)
@@ -119,8 +119,8 @@ def test_collect_feature_target_from_mol(folder_name, nat):
     assert mol.calc_succeeded is True
     os.chdir(cwd)
 
-def test_dump_features_and_targets(cleanup_folder):
-    cleanup_folder(PROCESSED_DATA_FOLDER)
+def test_dump_features_and_targets(cleanup_folder): # noqa: F811
+    cleanup_folder(PROCESSED_DATA_FOLDER)# noqa: F811
     config = Configurator("default")
     fdh = FittingDataHandler(config)
     os.mkdir(PROCESSED_DATA_FOLDER)
@@ -135,8 +135,8 @@ def test_dump_features_and_targets(cleanup_folder):
     assert fdh.Features == []
 
 
-def test_collect_processed_feature_targets(cleanup_folder):
-    cleanup_folder(PROCESSED_DATA_FOLDER)
+def test_collect_processed_feature_targets(cleanup_folder): # noqa: F811
+    cleanup_folder(PROCESSED_DATA_FOLDER) # noqa: F811
     config = Configurator("default")
     fdh = FittingDataHandler(config)
     os.mkdir(PROCESSED_DATA_FOLDER)
