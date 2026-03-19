@@ -1,7 +1,11 @@
 stages:
+# generate an image to install some prior packages.
   - build
+# install python packages
   - build-env
+# type checking, spell checking etc.
   - lint
+# pytests and upload coverage
   - test
 
 build-hessml_image:
@@ -12,6 +16,7 @@ build-hessml_image:
       - containers/
   script:
     - mkdir -p containers
+    #builds a sif if it is not built yet
     - if [ ! -e "containers/${CONTAINER_NAME}.sif" ] ; then apptainer build containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def ; fi
     #- apptainer build --force containers/${CONTAINER_NAME}.sif .gitlab/recipes/${CONTAINER_NAME}.def
 
@@ -38,6 +43,7 @@ build-env:
     APPTAINER_EXEC_ARGS: ""
 
   script:
+    # generate new venv and install packages
     #- rm -rf /tmp/venv
     - python3 -m venv /tmp/venv
     - source /tmp/venv/bin/activate
@@ -91,7 +97,7 @@ test:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_EXEC_ARGS: "" 
+    APPTAINER_EXEC_ARGS: "--bind $CI_PROJECT_DIR:$CI_PROJECT_DIR" 
     APPTAINER_BIND: "$CI_PROJECT_DIR:$CI_PROJECT_DIR"
 
   tags:
