@@ -28,6 +28,7 @@ build-env:
     paths:
       - containers/
       - /tmp/venv/
+      - .cache/pip
 
   dependencies:
     - build-hessml_image
