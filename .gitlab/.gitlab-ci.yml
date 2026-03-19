@@ -105,7 +105,6 @@ test:
   script:  
     - source /tmp/venv/bin/activate
     - pytest tests/ --cov=hessian_ml --cov-report term --cov-report xml:coverage.xml
-    - chmod 644 $CI_PROJECT_DIR/coverage.xml
 
   artifacts:
     reports:
