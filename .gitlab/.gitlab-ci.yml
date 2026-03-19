@@ -39,7 +39,7 @@ build-env:
 
   script:
     - rm -rf /tmp/venv
-    - python3 -m venv /tmp/venv
+    - python3 -m venv --system-site-packages /tmp/venv
     - source /tmp/venv/bin/activate
     - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
     - export CFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
