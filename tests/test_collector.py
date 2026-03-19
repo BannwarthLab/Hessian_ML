@@ -10,7 +10,7 @@ from mlhess.management.base_settings import PROCESSED_DATA_FOLDER
 
 from mlhess.machinelearning.target.hessian import NuclearHessian, NuclearHessianPM
 from mlhess.machinelearning.feature.base_class import Feature
-from clean_up import cleanup_file,cleanup_folder # noqa: F811, F401
+from .clean_up import cleanup_file,cleanup_folder # noqa: F811, F401
 
 os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
 
