@@ -53,7 +53,7 @@ build-env:
     - export FFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
     - export OPENBLAS_CORETYPE=NEHALEM
     - /tmp/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
-    - pip install git+https://gitlab+deploy-token-1486:${OTCGM_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/tcgm-lib-py.git
+    - pip install git+https://gitlab+deploy-token-1486:${OTCGM_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/open_tcgm-lib-py.git
     - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     - /tmp/venv/bin/pip install .[dev]
 
