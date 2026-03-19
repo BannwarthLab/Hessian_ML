@@ -38,7 +38,7 @@ build-env:
     APPTAINER_EXEC_ARGS: ""
 
   script:
-    - rm -rf /tmp/venv
+    #- rm -rf /tmp/venv
     - python3 -m venv /tmp/venv
     - source /tmp/venv/bin/activate
     - pip install "numpy>=1.0,<2.0"
@@ -96,7 +96,7 @@ test:
     - cpu
   script:  
     - source /tmp/venv/bin/activate
-    - pytest tests/ --cov=hessian_ml --cov-report=xml
+    - pytest tests/ --cov=hessian_ml --cov-report term --cov-report=xml:coverage.xml
 
   artifacts:
     reports:
