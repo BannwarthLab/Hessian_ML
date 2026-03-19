@@ -95,7 +95,7 @@ test:
     - cpu
   script:  
     - source /tmp/venv/bin/activate
-    - pytest tests/ --cov=src/mlhess --cov-report=xml
+    - pytest tests/ --cov=hessian_ml --cov-report=xml
 
   artifacts:
     reports:
