@@ -30,8 +30,7 @@ dependencies = [
     "tomli",
     "tblite",
     "dftd4",
-    #"tcgm_lib @ git@git.rwth-aachen.de:bannwarthlab/tcgm-lib-py.git"
-    #"tblite @ git+https://github.com/awvwgk/tblite.git#subdirectory=python"
+    "tcgm_lib @ git@git.rwth-aachen.de:bannwarthlab/open_tcgm_lib_py.git",
     ]
 
 [project.optional-dependencies]
