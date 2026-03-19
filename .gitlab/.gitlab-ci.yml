@@ -50,10 +50,6 @@ build-env:
     - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
     - /tmp/venv/bin/pip install .[dev]
 
-  artifacts:
-    paths:
-      - /tmp/venv/
-    expire_in: 1h
   tags:
     - cpu
 
@@ -99,7 +95,7 @@ test:
     - cpu
   script:  
     - source /tmp/venv/bin/activate
-    - pytest tests/ --cov=src/ --cov-report=xml
+    - pytest tests/ --cov=src/mlhess --cov-report=xml
 
   artifacts:
     reports:
