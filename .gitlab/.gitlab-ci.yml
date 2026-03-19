@@ -98,4 +98,10 @@ test:
     - cpu
   script:  
     - source /tmp/venv/bin/activate
-    - pytest tests/ --cov 
+    - pytest tests/ --cov=src/ --cov-report=xml
+
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
