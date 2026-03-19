@@ -93,12 +93,12 @@ test:
     CONTAINER_NAME: "containers/hessml_image.sif"
     APPTAINER_EXEC_ARGS: "" 
     APPTAINER_BIND: "$CI_PROJECT_DIR:$CI_PROJECT_DIR"
-    
+
   tags:
     - cpu
   script:  
     - source /tmp/venv/bin/activate
-    - pytest tests/ --cov=hessian_ml --cov-report term --cov-report=xml:coverage.xml
+    - pytest tests/ --cov=hessian_ml --cov-report term --cov-report=xml:$CI_PROJECT_DIR/coverage.xml
 
   artifacts:
     reports:
