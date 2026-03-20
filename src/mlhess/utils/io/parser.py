@@ -35,6 +35,13 @@ def parse_cmd_line_input() -> ArgumentParser:
         action="store_true",
         help="generates a basic example .toml file",
     )
+
+    arg_parser.add_argument(
+        "--xyz",
+        type=str,
+        help="computes the Hessian of a given xyz",
+    )
+
     return arg_parser
 
 

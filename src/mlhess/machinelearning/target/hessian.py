@@ -1,8 +1,12 @@
 import numpy as np
-
+#from typing import TYPE_CHECKING
 from tcgm_lib.molecule.nuclear_hessian import NuclearHessian as AbstractNuclearHessian
 from mlhess.utils.math.matrix_operation import rotate_matrix
 from mlhess.utils.math.matrix_operation import restructure_hessian_rotation_mat
+
+
+# if TYPE_CHECKING:
+#     from mlhess.utils.chemistry.molecule import Molecule
 
 class NuclearHessian(AbstractNuclearHessian):
     def __init__(self, mol):
@@ -32,7 +36,7 @@ class NuclearHessian(AbstractNuclearHessian):
         hess_vec_ab = self._mol.target
         R_MI_APF_mat = self._mol.R_MI_APF_mat
         transpose_list = self._mol.transpose_list
-        atom_pairs = self._mol.computed_atom_pairs
+        atom_pairs = np.array(self._mol.computed_atom_pairs)
         dist_mat = self._mol.feature.distance_mat
 
         # Convert transpose_list to a set for faster membership checking

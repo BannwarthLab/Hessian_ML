@@ -27,6 +27,7 @@ src/mlhess/management/__init__.py
 src/mlhess/management/base_settings.py
 src/mlhess/management/config.py
 src/mlhess/scripts/__init__.py
+src/mlhess/scripts/compute_xyz.py
 src/mlhess/scripts/data_handling.py
 src/mlhess/scripts/predicting_handler.py
 src/mlhess/scripts/training_handler.py

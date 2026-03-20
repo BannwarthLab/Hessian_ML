@@ -16,6 +16,7 @@ from mlhess.scripts.training_handler import TrainingHandler
 from mlhess.scripts.predicting_handler import PredictionHandling
 from mlhess.utils.io import parser 
 
+from mlhess.scripts.compute_xyz import comp_hessian_from_xyz_cli
 # has to be beneath tblite to circumvent conflicts
 
 
@@ -27,28 +28,34 @@ def main() -> None:
     arg_parser = parser.parse_cmd_line_input()
     arguments = arg_parser.parse_args()
 
-    config = Configurator(arguments.input)
 
-    random_state = config.general.random_state
-    torch.random.manual_seed(random_state)
-    np.random.seed(random_state)
+    if arguments.xyz is not None:
+        comp_hessian_from_xyz_cli(arguments.xyz)
 
-    if config.general.collector:
-        fit_data_handler = FittingDataHandler(config)
-        config = fit_data_handler.run_protocol()
+    else:
 
-    if config.general.trainer:
-        training_handler = TrainingHandler(
-            fit_data_handler.Features, fit_data_handler.Targets, config
-        )
-        training_handler.run_protocol()
+        config = Configurator(arguments.input)
 
-    if config.general.predictor:
-        prediction_handler = PredictionHandling(config)
-        prediction_handler.run_protocol()
+        random_state = config.general.random_state
+        torch.random.manual_seed(random_state)
+        np.random.seed(random_state)
 
-    msg = f"Total wall time: {time.time() - init_time:4.2F} s"
-    print(msg)
+        if config.general.collector:
+            fit_data_handler = FittingDataHandler(config)
+            config = fit_data_handler.run_protocol()
+
+        if config.general.trainer:
+            training_handler = TrainingHandler(
+                fit_data_handler.Features, fit_data_handler.Targets, config
+            )
+            training_handler.run_protocol()
+
+        if config.general.predictor:
+            prediction_handler = PredictionHandling(config)
+            prediction_handler.run_protocol()
+
+        msg = f"Total wall time: {time.time() - init_time:4.2F} s"
+        print(msg)
 
 
 if __name__ == "main":

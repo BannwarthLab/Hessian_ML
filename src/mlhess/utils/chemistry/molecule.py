@@ -186,6 +186,7 @@ class Molecule(AbstractMolecule):
     def prepare_prediction(
         self, calc_class: type[Calculator] = Calculator, num_threads=4
     ):
+        
         calc = calc_class(self)
         calc.compute_feature()
         transform_prediction(self, num_threads)
@@ -194,4 +195,5 @@ class Molecule(AbstractMolecule):
     def predict(self, model: DummyRegressor):
         self.target = model.predict(self.feature.processed)
         self.ml_hessian.get_processed_target()
+        self.access_ml_hessian = True
         return self.ml_hessian.hessian

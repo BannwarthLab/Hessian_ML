@@ -17,7 +17,7 @@ from copy import deepcopy
 from mlhess.utils.io.parser import parse_dftd4_output
 from dftd4.interface import DispersionModel
 from tblite.interface import Calculator as TBCalculator
-
+from mlhess.management.base_settings import PACKAGE_DIR
 bohr_in_m, _, _ = physical_constants["Bohr radius"] # type: ignore
 Bohr = bohr_in_m * 1e10
 
@@ -96,7 +96,14 @@ class Calculator:
         """
         self._mol = mol
         self.new_keys: None | list = None
-
+        self.xtbml_toml = self.set_xtbmol_toml()
+    
+    def set_xtbmol_toml(self):
+        if os.path.isfile("xtbml.toml"):
+            return "xtbml.toml"
+        else:
+            return os.path.join(PACKAGE_DIR,"calculator/default_xtbml.toml")
+        
     def compute_feature(self):
         """
         Calculate features from tblite and processes.
@@ -123,7 +130,7 @@ class Calculator:
 
             calc.add("bond-orders")
 
-            calc.add("xtbml.toml")
+            calc.add(self.xtbml_toml)
 
             res = calc.singlepoint()
 
