@@ -30,27 +30,13 @@ dependencies = [
     "tomli",
     "tblite",
     "dftd4",
-    "tcgm_lib  @ git+ssh://git@git.rwth-aachen.de:bannwarthlab/open_tcgm_lib_py.git@main",
+    "tcgm_lib  @ git+https://git.rwth-aachen.de/bannwarthlab/open_tcgm_lib_py.git",
     ]
 
 [project.optional-dependencies]
 dev = [
     "pytest",
     "pytest-cov",
-     "requests>=2.28",
-    "pymatgen",
-    "ase",
-    "joblib",
-    "numpy>=1.0,<2.0",
-    "pandas",
-    "scikit_learn",
-    "scipy",
-    "torch>=1.1.0",
-    "cffi",
-    "pkgconfig",
-    "tomli",
-    "tblite",
-    "dftd4",
     "ruff",
     "mypy",
     "codespell",
