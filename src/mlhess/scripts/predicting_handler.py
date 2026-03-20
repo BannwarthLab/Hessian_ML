@@ -11,7 +11,7 @@ from mlhess.machinelearning.feature.base_class import Feature
 from mlhess.machinelearning.target.hessian import NuclearHessianPM, NuclearHessian
 from mlhess.utils.patcher import patch_methods
 from mlhess.calculator.tblite_wrapper import Calculator
-from tcgm_lib.trv.trv_models.mrrho import truhlar_cramer_RRHO
+from tcgm_lib.trv.trv_models.mrrho import TruhlarCramerRRHO
 from tcgm_lib.IO.writer import wrt_hess_to_xtb
 
 if TYPE_CHECKING:
@@ -105,5 +105,5 @@ class PredictionHandling:
                     mol.predict(self.model)
                     wrt_hess_to_xtb(os.path.join(mol.path,'MLhessian'),mol.ml_hessian.hessian)
                     mol.nuclear_properties.calc_properties(shift=False)
-                    trv = truhlar_cramer_RRHO(mol)
+                    trv = TruhlarCramerRRHO(mol)
                     trv.print_thermoprop()
