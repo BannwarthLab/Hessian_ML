@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    from mlhess.utils.chemistry.molecule import Molecule
+    pass
 
 
 def angle_two_vec(a, b, norm_a, norm_b):
@@ -173,11 +173,13 @@ def rot_Y(alpha: float) -> np.ndarray:
     )
 
 
-def supporting_vector(mol: Molecule, atom_pair:tuple[int,int]) -> np.ndarray:
+
+
+def supporting_vector(vector, atom_pair:tuple[int,int]) -> np.ndarray:
     "Compute supporting vector for the calculation of the rotation matrix."
     i, j = atom_pair
 
-    support_vec = mol.feature.dipm["A"][i] + mol.feature.dipm["A"][j]
+    support_vec = vector[i] + vector[j]
 
     # support_vec = np.cross(self._mol.feature.dipm["A"][i],self._mol.feature.dipm["A"][j])
 
@@ -185,3 +187,17 @@ def supporting_vector(mol: Molecule, atom_pair:tuple[int,int]) -> np.ndarray:
         support_vec = np.array([0.0, 1.0, 0.0])
 
     return support_vec
+
+
+# def supporting_vector(mol: Molecule, atom_pair:tuple[int,int]) -> np.ndarray:
+#     "Compute supporting vector for the calculation of the rotation matrix."
+#     i, j = atom_pair
+
+#     support_vec = mol.feature.dipm["A"][i] + mol.feature.dipm["A"][j]
+
+#     # support_vec = np.cross(self._mol.feature.dipm["A"][i],self._mol.feature.dipm["A"][j])
+
+#     if np.sum(np.abs(support_vec)) / 3 < 1e-5:
+#         support_vec = np.array([0.0, 1.0, 0.0])
+
+#     return support_vec

@@ -15,6 +15,19 @@ def rotate_matrix(rotation_matrix: np.ndarray, matrix: np.ndarray) -> np.ndarray
     """
     return np.matmul(np.matmul(rotation_matrix, matrix), np.transpose(rotation_matrix))
 
+def get_rotated_33_block_matrix(rotation_matrix:np.ndarray,matrix:np.ndarray,a:int,b:int,transpose:bool|None=None):
+
+        i0 = 3 * a 
+        i3 = 3 * a + 3
+        j0 = 3 * b
+        j3 = 3 * b + 3
+
+        rot_mat = rotate_matrix(rotation_matrix, matrix[i0:i3, j0:j3])
+
+        if transpose is not None and transpose is not False:
+            rot_mat = rot_mat.T
+
+        return rot_mat
 
 def rotate_vector_array(rotation_matrix: np.ndarray, vectors: np.ndarray) -> np.ndarray:
     """Rotate an array of vectors

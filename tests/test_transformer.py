@@ -30,7 +30,7 @@ def test_transform_training(fname, atom_pair):
     calc.compute_feature()
     transform_training(mol)
 
-    sup_vector = supporting_vector(mol, atom_pair)
+    sup_vector = supporting_vector(mol.feature.dipm["A"], atom_pair)
 
     rmat = get_atom_pair_rot_mat(mol.xyz, sup_vector, atom_pair)
 

@@ -12,9 +12,9 @@ class Feature:
         self.new_keys: None | list = None
 
         # atomwise
-        self._scalars = None
-        self._vectors = None
-        self._matrices = None
+        self._scalars :np.ndarray |None = None
+        self._vectors :np.ndarray |None= None
+        self._matrices :np.ndarray |None= None
 
         # atomwise
         self.scalar_keys = None
@@ -37,27 +37,27 @@ class Feature:
         self._processed = vals
 
     @property
-    def scalar(self):
+    def scalars(self)->np.ndarray|None:
         return self._scalars
 
-    @scalar.setter
-    def scalar(self, vals):
+    @scalars.setter
+    def scalars(self, vals:np.ndarray):
         self._scalars = vals
 
     @property
-    def vectors(self):
+    def vectors(self)->np.ndarray|None:
         return self._vectors
 
     @vectors.setter
-    def vectors(self, vals):
+    def vectors(self, vals:np.ndarray):
         self._vectors = vals
 
     @property
-    def matrices(self):
+    def matrices(self)->np.ndarray|None:
         return self._matrices
 
     @matrices.setter
-    def matrices(self, vals):
+    def matrices(self, vals:np.ndarray): 
         self._matrices = vals
 
     @property

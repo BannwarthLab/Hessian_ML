@@ -37,7 +37,7 @@ def test_gen_pair_feature_equivalence(fname, atom_pairs, expected_transposes):
     features = []
 
     for ap, et in zip(atom_pairs, expected_transposes):
-        sup_vector = supporting_vector(mol, ap)
+        sup_vector = supporting_vector(mol.feature.dipm["A"], ap)
         rmat = get_atom_pair_rot_mat(mol.xyz, sup_vector, ap)
 
         feature, transpose, rmat_adapted = gen_pair_features(mol.feature, rmat, ap)
@@ -67,7 +67,7 @@ def test_gen_pair_feature_same_element_diff_dipm(fname, atom_pair, expected_tran
     calc = Calculator(mol)
     calc.compute_feature()
 
-    sup_vector = supporting_vector(mol, atom_pair)
+    sup_vector = supporting_vector(mol.feature.dipm["A"], atom_pair)
     rmat = get_atom_pair_rot_mat(mol.xyz, sup_vector, atom_pair)
 
     feature, transpose, rmat_adapted = gen_pair_features(mol.feature, rmat, atom_pair)

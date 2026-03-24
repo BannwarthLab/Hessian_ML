@@ -11,6 +11,7 @@ src/mlhess.egg-info/entry_points.txt
 src/mlhess.egg-info/requires.txt
 src/mlhess.egg-info/top_level.txt
 src/mlhess/calculator/__init__.py
+src/mlhess/calculator/default_xtbml.toml
 src/mlhess/calculator/tblite_wrapper.py
 src/mlhess/machinelearning/__init__.py
 src/mlhess/machinelearning/constructor.py

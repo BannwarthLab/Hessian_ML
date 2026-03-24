@@ -1,7 +1,7 @@
 import numpy as np
 #from typing import TYPE_CHECKING
 from tcgm_lib.molecule.nuclear_hessian import NuclearHessian as AbstractNuclearHessian
-from mlhess.utils.math.matrix_operation import rotate_matrix
+from mlhess.utils.math.matrix_operation import get_rotated_33_block_matrix
 from mlhess.utils.math.matrix_operation import restructure_hessian_rotation_mat
 
 
@@ -17,17 +17,7 @@ class NuclearHessian(AbstractNuclearHessian):
         pass
 
     def get_rotated_matrix(self, rot_mat, atom_A, atom_B, transpose):
-        i0 = 3 * atom_A
-        i3 = 3 * atom_A + 3
-        j0 = 3 * atom_B
-        j3 = 3 * atom_B + 3
-
-        H_APF = rotate_matrix(rot_mat, self.hessian[i0:i3, j0:j3])
-
-        if transpose is not None:
-            H_APF = H_APF.T
-
-        return H_APF
+        return get_rotated_33_block_matrix(rot_mat,self.hessian,atom_A,atom_B,transpose)
 
     def damping(self, dist):
         return 1 / (np.exp((dist - 13.0) / 0.1) + 1)
@@ -116,18 +106,8 @@ class NuclearHessianPM(NuclearHessian):
     def get_rotated_matrix(
         self, rot_mat: np.ndarray, atom_A: int, atom_B: int, transpose: bool
     ):
-        i0 = 3 * atom_A
-        i3 = 3 * atom_A + 3
-        j0 = 3 * atom_B
-        j3 = 3 * atom_B + 3
-
-        H_APF_m = rotate_matrix(rot_mat, self.hess_m[i0:i3, j0:j3])
-        H_APF_p = rotate_matrix(rot_mat, self.hess_p[i0:i3, j0:j3])
-
-        if transpose is not None:
-            H_APF_m = H_APF_m.T
-            H_APF_p = H_APF_p.T
-
+        H_APF_m = get_rotated_33_block_matrix(rot_mat,self.hess_m,atom_A,atom_B,transpose)
+        H_APF_p = get_rotated_33_block_matrix(rot_mat,self.hess_p,atom_A,atom_B,transpose)
         return np.array([H_APF_p, H_APF_m])
 
     def get_processed_target(self):
