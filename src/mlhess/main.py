@@ -6,10 +6,12 @@ This module can be used to collect data, train models and prediction new targets
 #!/usr/bin/env python3
 from __future__ import annotations
 import time
+
+#This import has to be here otherwise errors may occur.
+from tblite.interface import Calculator #noQA: F401
 import torch
 import numpy as np
 
-# from tblite.interface import Calculator
 from mlhess.management.config import Configurator
 from mlhess.scripts.data_handling import FittingDataHandler
 from mlhess.scripts.training_handler import TrainingHandler

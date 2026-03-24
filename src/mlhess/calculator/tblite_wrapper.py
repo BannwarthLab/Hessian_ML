@@ -1,7 +1,6 @@
 "Put the tblite calculation frame work here"
 
 from __future__ import annotations
-
 import faulthandler
 import os
 import subprocess
@@ -114,15 +113,15 @@ class Calculator:
         try:
             faulthandler.enable()
             os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
-
+            
             calc = TBCalculator(
-                method="GFN2-xTB",
+                "GFN2-xTB",
                 uhf=self._mol.electronic_properties.uhf,
                 charge=self._mol.electronic_properties.charge,
                 numbers=np.array(self._mol.atomic_numbers),
                 positions=self._mol.xyz * 1 / Bohr,
             )
-
+        
             if self._mol.solvent is not None:
                 calc.add("alpb-solvation", self._mol.solvent)
 
