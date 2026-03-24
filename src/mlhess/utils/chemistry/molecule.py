@@ -67,7 +67,7 @@ class Molecule(AbstractMolecule):
         self.access_ml_hessian: bool = False
 
         self._solvent: str | None = solvent
-        # self._feature: Feature | None = None
+
         self._feature: None = None
         self._feature_class = Feature
         self._trv_properties: None = None

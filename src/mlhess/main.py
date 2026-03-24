@@ -56,8 +56,8 @@ def main() -> None:
             prediction_handler = PredictionHandling(config)
             prediction_handler.run_protocol()
 
-        msg = f"Total wall time: {time.time() - init_time:4.2F} s"
-        print(msg)
+    msg = f"Total wall time: {time.time() - init_time:4.2F} s"
+    print(msg)
 
 
 if __name__ == "main":
