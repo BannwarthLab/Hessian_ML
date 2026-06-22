@@ -19,7 +19,7 @@ Requires-Dist: torch>=1.1.0
 Requires-Dist: cffi
 Requires-Dist: pkgconfig
 Requires-Dist: tomli
-Requires-Dist: tblite
+Requires-Dist: tblite==0.5.0
 Requires-Dist: dftd4
 Requires-Dist: tcgm_lib @ git+https://git.rwth-aachen.de/bannwarthlab/open_tcgm_lib_py.git
 Provides-Extra: dev

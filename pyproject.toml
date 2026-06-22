@@ -28,7 +28,7 @@ dependencies = [
     "cffi",
     "pkgconfig",
     "tomli",
-    "tblite",
+    "tblite==0.5.0",
     "dftd4",
     "tcgm_lib  @ git+https://git.rwth-aachen.de/bannwarthlab/open_tcgm_lib_py.git",
     ]
