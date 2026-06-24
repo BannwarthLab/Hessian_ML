@@ -38,7 +38,7 @@ class NuclearHessian(AbstractNuclearHessian):
         rabs, hess_ab = restructure_hessian_rotation_mat(
             np.array(hess_vec_ab), atom_pairs, R_MI_APF_mat, np.array(transposes)
         )
-
+        
         hess_ab = np.einsum("mij,mjk,mlk->mil", rabs, hess_ab, rabs)
 
         Hessian = np.zeros([self._mol.nat * 3, self._mol.nat * 3])

@@ -6,3 +6,6 @@ __pycache__/
 *.env
 .vscode/
 .coverage
+*/tests/*/*.npy
+tests/fitting_data/statistics
+tests/fitting_data/custom_pm.joblib

@@ -73,7 +73,7 @@ class Feature:
         return self._C6params
 
     @C6_params.setter  # type: ignore[attr-defined]
-    def C6params(self, vals):
+    def C6_params(self, vals):
         self._C6params = vals
 
     @property

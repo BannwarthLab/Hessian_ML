@@ -50,6 +50,7 @@ def set_shared_memory_array(self):
     matrices = self.feature.matrices
     etot_idx = np.array([self.scalar_keys.index("E_tot")])#np.array(self.feature.scalar_keys)
     C6_params = self.feature.C6_params
+    
     wbo = self.feature.wbo
     arrays = atomic_numbers,dipm_norm,xyz,distance_mat,q,dipm,qm,scalars,vectors,matrices,etot_idx,C6_params,wbo
     return arrays

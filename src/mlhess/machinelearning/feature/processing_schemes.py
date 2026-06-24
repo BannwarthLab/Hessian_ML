@@ -102,6 +102,7 @@ def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
     Features_temp.extend(Quantity_AB[0])
     Features_temp.extend(Quantity_AB[1])
 
+
     # atom pair information
 
     r_BA = -r_AB
@@ -152,7 +153,7 @@ def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
     Features_temp.append(C6_A)
     Features_temp.append(C6_B)
 
-    Features_temp.append(self.wbo[A, B])
+    Features_temp.append(self.wbo[A, B][0])
     Features_temp.extend(order1_aes[0])
     Features_temp.extend(order2_aes[0])
 
@@ -196,7 +197,7 @@ def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
     for j, atom in enumerate([A, B]):
         # ____Rotation from initial coordinate system to atom pair focused system____
 
-        # This is a 7 x 3 x 3 matrix, rotation of all matrices is achieved with this routine
+        # This is a 4 x 3 x 3 matrix, rotation of all matrices is achieved with this routine
 
         quad_moments = rotate_matrix(R_MI_APF, matrices[atom])
 
@@ -215,6 +216,7 @@ def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
 
         Quantity_AB[j].extend(scalars[atom])
         Quantity_AB[j].extend(scalars[atom] / scalars[atom][etot_idx[0]])
+
 
     Quantity_AB_arr = np.array(Quantity_AB)
 
@@ -273,7 +275,8 @@ def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
     Features_temp.append(C6_A)
     Features_temp.append(C6_B)
 
-    Features_temp.append(wbo[A, B])
+    Features_temp.append(wbo[A, B][0])
+
     Features_temp.extend(order1_aes[0])
     Features_temp.extend(order2_aes[0])
 
