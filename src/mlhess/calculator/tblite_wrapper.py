@@ -267,7 +267,7 @@ class Calculator:
                     self.scalar_keys.append("delta" + key[3:])
                     self.norms["delta" + key[3:]] = temp
 
-                    print(f"ext_dipm_{orb} adpated" )
+                    print(f"ext_dipm_{orb} adapted" )
 
             if orb not in {"e", "Z"}:
                 
