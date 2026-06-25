@@ -1,4 +1,5 @@
 from __future__ import annotations
+import sys 
 import numpy as np
 
 from typing import TYPE_CHECKING
@@ -217,11 +218,15 @@ def attach_shared_memory(meta):
     if GLOBAL_ARRAYS is None:
         GLOBAL_ARRAYS = []
         GLOBAL_SHMS = []
-        for name, shape, dtype in meta:
-            shm = shared_memory.SharedMemory(name=name)
-            arr = np.ndarray(shape, dtype=dtype, buffer=shm.buf)
-            GLOBAL_ARRAYS.append(arr)
-            GLOBAL_SHMS.append(shm)
+        if sys.platform == "darwin":
+            GLOBAL_ARRAYS.extend(meta)
+            GLOBAL_SHMS = None
+        else:
+            for name, shape, dtype in meta:
+                shm = shared_memory.SharedMemory(name=name)
+                arr = np.ndarray(shape, dtype=dtype, buffer=shm.buf)
+                GLOBAL_ARRAYS.append(arr)
+                GLOBAL_SHMS.append(shm)
 
 def detach_shared_memory():
     global GLOBAL_SHMS, GLOBAL_ARRAYS
@@ -236,11 +241,17 @@ def detach_shared_memory():
 
 def attach_shared_memory_hessian(meta):
     global GLOBAL_HESS, GLOBAL_SHM_HESS
-    name, shape, dtype = meta[0]
-    shm = shared_memory.SharedMemory(name=name)
-    GLOBAL_HESS = np.ndarray(shape, dtype=dtype, buffer=shm.buf)
-    GLOBAL_SHM_HESS = shm
-    return meta,shm 
+    if sys.platform == "darwin":
+        # Single-thread fallback: meta contains actual array
+        GLOBAL_HESS = meta[0]   # just pass ndarray directly
+        GLOBAL_SHM_HESS = None
+        return meta, None
+    else:
+        name, shape, dtype = meta[0]
+        shm = shared_memory.SharedMemory(name=name)
+        GLOBAL_HESS = np.ndarray(shape, dtype=dtype, buffer=shm.buf)
+        GLOBAL_SHM_HESS = shm
+        return meta,shm 
 
 def detach_shared_memory_hessian():
     global GLOBAL_HESS, GLOBAL_SHM_HESS
@@ -268,8 +279,16 @@ def transform_prediction(self: Molecule, num_threads):
 
         
         arrays = set_shared_memory_array(self)
-        meta,shms = init_memory(arrays)
-        parallel = Parallel(n_jobs=num_threads, backend="loky")
+        
+        if sys.platform =="darwin":
+            backend = 'threading'
+            meta = arrays
+            shms =[]
+        else:
+            meta,shms = init_memory(arrays)
+            backend = 'loky'
+
+        parallel = Parallel(n_jobs=num_threads, backend=backend)
         output_generator = parallel(delayed(_transform_block_prediction)(atom_pair,meta) for atom_pair in atom_pairs)
         R_MI_APFs, processed_feature, transposes = zip(*deepcopy(output_generator))
 
@@ -294,6 +313,7 @@ def transform_prediction(self: Molecule, num_threads):
             shm.close()
             shm.unlink()
 
+
 def transform_training(mol: Molecule, num_threads: int = 4):
     """Transforms the Hessian matrix and features of a molecule into a target-descriptor relation for training."""
  
@@ -311,6 +331,7 @@ def transform_training(mol: Molecule, num_threads: int = 4):
 
         arrays = set_shared_memory_array(mol)
 
+
         if isinstance(mol.hessian,NuclearHessianPM):
             a,b = mol.hessian.hessian.shape
             hessian = np.zeros((2,a,b))
@@ -321,10 +342,19 @@ def transform_training(mol: Molecule, num_threads: int = 4):
         else:
             hessian = mol.hessian.hessian
 
-        meta,shms = init_memory(arrays)
-        meta_hess,shm_hess =init_memory([hessian])
+
+        if sys.platform =="darwin":
+            backend = 'threading'
+            meta = arrays
+            meta_hess = [hessian]
+            shms,shm_hess =[],[]
+        else:
+            meta,shms = init_memory(arrays)
+            meta_hess,shm_hess =init_memory([hessian])
+            backend = 'loky'
+
         
-        with Parallel(n_jobs=num_threads, backend="loky", prefer="processes") as parallel:
+        with Parallel(n_jobs=num_threads, backend=backend, prefer="processes") as parallel:
             output_generator = parallel(delayed(_transform_block_training)(atom_pair,meta,meta_hess) for atom_pair in atom_pairs)
             parallel._backend.terminate()
 
