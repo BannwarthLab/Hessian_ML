@@ -29,6 +29,7 @@ From: ubuntu:24.04
         libc6 \
         libgcc-s1 \
         pkg-config \
+        meson \
     && rm -rf /var/lib/apt/lists/*
 
     #install venv
@@ -38,7 +39,7 @@ From: ubuntu:24.04
     # Upgrade pip, setuptools, wheel
 
     pip install --upgrade pip setuptools wheel
-    pip install pymatgen ase joblib "numpy>=1.0,<2.0" pandas scikit_learn "scipy" 
+    pip install pymatgen ase joblib pandas scikit_learn scipy
 
     # Install tblite from source linking to gfortran
     export CFLAGS="-O2 -march=x86-64 -mtune=generic"
