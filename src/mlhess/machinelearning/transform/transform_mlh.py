@@ -279,7 +279,7 @@ def transform_prediction(self: Molecule, num_threads):
 
         
         arrays = set_shared_memory_array(self)
-        
+
         if sys.platform =="darwin":
             backend = 'threading'
             meta = arrays

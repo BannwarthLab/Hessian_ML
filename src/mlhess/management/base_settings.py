@@ -5,6 +5,9 @@ from pathlib import Path
 
 
 def set_num_threads():
+    # torch, sklearn, and tblite each bundle their own libomp.dylib on macOS,
+    # which crashes with "OMP: Error #15" when more than one gets loaded.
+    os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
     omp_threads = os.environ.get("OMP_NUM_THREADS")
     if omp_threads:
         return int(omp_threads)
