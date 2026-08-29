@@ -33,7 +33,7 @@ build-env:
   cache:
     key: "venv-$CI_COMMIT_REF_SLUG"
     paths:
-      - /tmp/venv/
+      - .venv/
       - .cache/pip
 
   variables:
@@ -45,20 +45,20 @@ build-env:
 
   script:
     # generate new venv and install packages
-    #- rm -rf /tmp/venv
+    #- rm -rf .venv
 
-    - python3.11 -m venv /tmp/venv
-    - source /tmp/venv/bin/activate
+    - python3.11 -m venv .venv
+    - source .venv/bin/activate
     #- module load gnu-compilers/15.2.0 meson
     # - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
     # - export CFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
     # - export FFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
     # - export OPENBLAS_CORETYPE=NEHALEM
-    #- /tmp/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
+    #- .venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
     #- pip install git+https://gitlab+deploy-token-1486:${OTCGM_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/open_tcgm_lib_py.git
-    #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
-    - /tmp/venv/bin/pip install .[dev,docs]
-    - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+    #- .venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
+    - .venv/bin/pip install .[dev,docs]
+    - .venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
 
   tags:
     - cpu
@@ -71,7 +71,7 @@ lint:
   cache:
     key: "venv-$CI_COMMIT_REF_SLUG"
     paths:
-      - /tmp/venv/
+      - .venv/
 
   variables:
     IMAGE_NAME: ""
@@ -82,7 +82,7 @@ lint:
   tags:
     - cpu
   script:
-    - source /tmp/venv/bin/activate
+    - source .venv/bin/activate
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
     - codespell src/
@@ -95,7 +95,7 @@ test:
   cache:
     key: "venv-$CI_COMMIT_REF_SLUG"
     paths:
-      - /tmp/venv/
+      - .venv/
 
   variables:
     IMAGE_NAME: ""
@@ -108,7 +108,7 @@ test:
   tags:
     - cpu
   script:
-    - source /tmp/venv/bin/activate
+    - source .venv/bin/activate
     - pytest tests/ --cov=hessian_ml --cov-report term --cov-report xml:coverage.xml
 
   artifacts:
@@ -126,7 +126,7 @@ build-docs:
   cache:
     key: "venv-$CI_COMMIT_REF_SLUG"
     paths:
-      - /tmp/venv/
+      - .venv/
 
   variables:
     IMAGE_NAME: ""
@@ -137,7 +137,7 @@ build-docs:
   tags:
     - cpu
   script:
-    - source /tmp/venv/bin/activate
+    - source .venv/bin/activate
     - sphinx-build -b html docs docs/_build
 
   artifacts:

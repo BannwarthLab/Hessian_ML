@@ -11,3 +11,4 @@ tests/fitting_data/statistics
 tests/fitting_data/custom_pm.joblib
 docs/_build/
 docs/api/
+.venv/
