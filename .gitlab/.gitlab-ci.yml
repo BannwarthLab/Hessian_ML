@@ -31,10 +31,13 @@ build-env:
   needs:
     - build-mlhess-container
   cache:
-    key: "venv-$CI_COMMIT_REF_SLUG"
+    key: "pip-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .cache/pip
+  artifacts:
+    expire_in: 1 hour
     paths:
       - .venv/
-      - .cache/pip
 
   variables:
     IMAGE_NAME: ""
@@ -68,10 +71,6 @@ lint:
   image: "${CONTAINER_NAME}"
   needs:
     - build-env
-  cache:
-    key: "venv-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .venv/
 
   variables:
     IMAGE_NAME: ""
@@ -92,10 +91,6 @@ test:
   image: "${CONTAINER_NAME}"
   needs:
     - build-env
-  cache:
-    key: "venv-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .venv/
 
   variables:
     IMAGE_NAME: ""
@@ -123,10 +118,6 @@ build-docs:
   image: "${CONTAINER_NAME}"
   needs:
     - build-env
-  cache:
-    key: "venv-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .venv/
 
   variables:
     IMAGE_NAME: ""
