@@ -7,14 +7,17 @@ from mlhess.utils.math.geometrical import get_atom_pair_rot_mat,supporting_vecto
 
 
 def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
-    """Generate Features for an atom pair.
+    """Generate features for an atom pair.
+
+    Called with a Feature instance as ``self``, holding the computed
+    molecular features.
 
     Args:
-        R_MI_APF (_type_): Rotation matrix
-        atom_pair (tuple[int,int]): index of atom A and B
+        R_MI_APF (np.ndarray): Rotation matrix.
+        atom_pair (tuple[int, int]): Index of atom A and atom B.
 
     Returns:
-        tuple: Features,transpose, rotation matrix
+        tuple: Features, transpose info, and rotation matrix.
     """
     Features_temp = []
 
@@ -168,14 +171,16 @@ def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
 
 
 def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
-    """Generate Features for an atom pair.
+    """Generate features for an atom pair.
 
     Args:
-        R_MI_APF (_type_): Rotation matrix
-        atom_pair (tuple[int,int]): index of atom A and B
+        atom_pair (tuple[int, int]): Index of atom A and atom B.
+        *args: Single-element tuple containing the shared molecular arrays
+            (atomic_numbers, dipm_norm, xyz, distance_mat, q, dipm, qm,
+            scalars, vectors, matrices, etot_idx, C6_params, wbo).
 
     Returns:
-        tuple: Features,transpose, rotation matrix
+        tuple: Features, transpose info, and rotation matrix.
     """
     Features_temp = []
 

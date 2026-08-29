@@ -14,16 +14,20 @@ class NuclearProperties:
     """Holds geometric properties of molecule."""
 
     def __init__(self, molecule: Molecule) -> None:
-        """Initialize NuclearProperties object.
+        """Initialize the NuclearProperties object.
 
         Args:
-            molecule (object): Molecule object.
-
+            molecule (Molecule): Molecule object.
         """
         self.molecule = molecule
 
     def calc_properties(self, shift: bool) -> None:
-        """Build the properties of a molecule."""
+        """Build the properties of a molecule.
+
+        Args:
+            shift (bool): If True, keep coordinates shifted to the center of
+                mass. If False, shift them back to their original position.
+        """
         self.center_of_mass = self.calc_center_of_mass()
 
         self._shiftCOM()
@@ -43,16 +47,15 @@ class NuclearProperties:
 
         .. math::
             \\mathbf{s}  = \\frac{1}{M} \\sum_i^N m_i \\mathbf{x_i}
+
+        Returns:
+            np.ndarray: Center of mass, dim: 3.
         """
         ws = np.sum(self.molecule.xyz * self.molecule.masses[:, np.newaxis], axis=0)
         return ws / self.molecule.mol_mass
 
     def print_center_of_mass(self) -> None:
-        """Prints the center of mass of an atom.
-
-        Args:
-            com (float): Center of Mass.
-        """
+        """Prints the center of mass of the molecule."""
         print("Center of mass is at:")
         print("x: ", self.center_of_mass[0], "\n")
         print("y: ", self.center_of_mass[1], "\n")
@@ -74,7 +77,8 @@ class NuclearProperties:
             \\end{pmatrix}
 
         Returns:
-            np.ndarray: Inertia Tensor, dim: 3x3 (in atomic mass unit * Bohr^2).
+            tuple[np.ndarray, np.ndarray]: Eigenvalues and eigenvectors of the
+                inertia tensor (in atomic mass unit * Bohr^2).
         """
         self.itens = np.zeros((3, 3), dtype=float)
 

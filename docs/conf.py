@@ -48,11 +48,17 @@ templates_path = ["_templates"]
 extensions = [
     #"sphinx.ext.todo",
     "sphinx.ext.autosummary",
-    #"sphinx.ext.napoleon",
+    "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
 ]
 
 autosummary_generate = True
+
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+napoleon_include_init_with_doc = True
+napoleon_use_param = True
+napoleon_use_rtype = True
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store","test_*"]
 
@@ -60,7 +66,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store","test_*"]
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_static_path = ["_static"]
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
 
 latex_elements = {
     "preamble": r"""
@@ -70,13 +76,3 @@ latex_elements = {
 }
 
 latex_show_urls = "footnote"
-
-autodoc_mock_imports = [
-    "numpy",
-    "pandas",
-    "torch",
-    "requests",
-    "tblite",
-    "dftd4",
-    # add anything that isn't guaranteed to exist
-]

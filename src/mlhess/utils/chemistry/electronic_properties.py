@@ -18,10 +18,14 @@ class ElectronicProperties:
 
     @property
     def charge(self):
-        """Charge of the moleucle.
+        """Charge of the molecule.
 
-        If the charge is not set, in the path of the Molecule object is searched for a '.CHRG' file.
-        If it is not found the charge is set to zero.
+        If the charge has not been set, the Molecule object's path is
+        searched for a '.CHRG' file. If it is not found, the charge is
+        set to zero.
+
+        Returns:
+            int: The molecular charge.
         """
         if self._charge is None:
             chargeFilePath = os.path.join(self._mol.path, ".CHRG")
@@ -34,18 +38,23 @@ class ElectronicProperties:
 
     @charge.setter
     def charge(self, charge: int) -> None:
-        """Charge.
+        """Set the charge.
+
         Args:
-            charge (np.ndarray): charge
+            charge (int): The molecular charge.
         """
         self._charge = charge
 
     @property
     def uhf(self):
-        """Multiplicity of the moleucle.
+        """Multiplicity of the molecule.
 
-        If the multiplicity is not set, in the path of the Molecule object is searched for a '.UHF' file.
-        If it is not found the multiplicity is set to zero.
+        If the multiplicity has not been set, the Molecule object's path is
+        searched for a '.UHF' file. If it is not found, the multiplicity is
+        set to zero.
+
+        Returns:
+            int: The multiplicity (UHF value).
         """
         if self._uhf is None:
             uhfFilePath = os.path.join(self._mol.path, ".UHF")
@@ -58,15 +67,16 @@ class ElectronicProperties:
 
     @uhf.setter
     def uhf(self, uhf: int) -> None:
-        """Multiplicity.
+        """Set the multiplicity.
+
         Args:
-            uhf (np.ndarray): multiplicity
+            uhf (int): The multiplicity.
         """
         self._uhf = uhf
 
     @property
     def atomic_dipole(self):
-        """Atomic dipole moments"""
+        """Atomic dipole moments."""
         return self._atomic_dipole
 
     @atomic_dipole.setter
@@ -74,7 +84,7 @@ class ElectronicProperties:
         """Set the atomic dipole moments.
 
         Args:
-            atomic dipole moments (np.ndarray): atomic dipole moments
+            atomic_dipole (np.ndarray): Atomic dipole moments.
         """
         assert len(atomic_dipole) == self._mol.nat, (
             "Dimension of gradient does not correspond to number of atoms."

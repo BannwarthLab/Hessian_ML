@@ -171,8 +171,9 @@ def init_memory(arrays):
 # def _transform_block_training(atom_pair: tuple[int,int]) -> tuple:
 #     """Rotation of an AB Hessian matrix block and the construction its feature vector.
 
-#     :param index: index of for the list of atom pairs
-#     :param atom_pairs: list of atom pairs for the comp. of the rotation matrix"""
+#     Args:
+#         atom_pair (tuple[int, int]): Index of atom A and atom B.
+#     """
 #     mol = GLOBAL_MOL  # type: ignore[name-defined] #noQA: F821 
 
 #     atom_A, atom_B = atom_pair
@@ -382,10 +383,16 @@ def transform_training(mol: Molecule, num_threads: int = 4):
     mol.feature.processed = np.array(mol.feature.processed)
 
 def _transform_block_training(atom_pair: tuple[int,int],meta,meta_hess) -> tuple:
-    """Rotation of an AB Hessian matrix block and the construction its feature vector.
+    """Rotation of an AB Hessian matrix block and construction of its feature vector.
 
-    :param index: index of for the list of atom pairs
-    :param atom_pairs: list of atom pairs for the comp. of the rotation matrix"""
+    Args:
+        atom_pair (tuple[int, int]): Index of atom A and atom B.
+        meta: Shared-memory metadata (or arrays) used to attach the feature arrays.
+        meta_hess: Shared-memory metadata (or array) used to attach the Hessian.
+
+    Returns:
+        tuple: Flattened rotated Hessian block, features, and transpose info.
+    """
 
     attach_shared_memory(meta)
     attach_shared_memory_hessian(meta_hess)
@@ -407,14 +414,14 @@ def _transform_block_training(atom_pair: tuple[int,int],meta,meta_hess) -> tuple
     return H_APF.flatten(), Feature_AB, transpose
 
 def _transform_block_prediction(atom_pair:tuple[int,int],meta) -> tuple:
-    """Construction of feature vector for the prediction of the an AB Hessian matrix block.
+    """Construction of the feature vector for the prediction of an AB Hessian matrix block.
 
     Args:
-        index (int): index of for the list of atom pairs.
-        atom_pairs (list[tuple]): list of atom pairs for the comp. of the rotation matrix.
+        atom_pair (tuple[int, int]): Index of atom A and atom B.
+        meta: Shared-memory metadata (or arrays) used to attach the feature arrays.
 
     Returns:
-        tuple: Rotation Matrix, Features, transpose info
+        tuple: Rotation matrix, features, transpose info.
     """
 
     attach_shared_memory(meta)

@@ -43,6 +43,10 @@ dev = [
     "types-requests",
     "types-PyYAML",
 ]
+docs = [
+    "sphinx",
+    "furo",
+]
 
 [tool.mypy]
 ignore_missing_imports = true

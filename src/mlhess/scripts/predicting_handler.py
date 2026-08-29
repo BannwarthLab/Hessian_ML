@@ -21,12 +21,10 @@ if TYPE_CHECKING:
 
 class PredictionHandling:
     def __init__(self, config: Configurator):
-        """
-        Initialize the handler for predictions.
+        """Initialize the handler for predictions.
 
-        :param self: PredictionHandling
-        :param config: Configurations
-        :type config: Configurator
+        Args:
+            config (Configurator): Configuration for the prediction run.
         """
         self.config = config
         self._model: DummyRegressor | None = None
@@ -39,18 +37,18 @@ class PredictionHandling:
         print(f"Total of {len(self.folder_names)} found.")
 
     def _pick_feature_class(self):
-        """pick a class to describe features.
+        """Pick a class to describe features.
 
-        :return: _description_
-        :rtype: _type_
+        Returns:
+            type[Feature]: Feature class used to represent molecular features.
         """
         return Feature
 
     def _pick_target_class(self):
         """Pick the target type for further calculations.
 
-        :return: target class
-        :rtype: AbstractTarget
+        Returns:
+            AbstractTarget: Target class used for further calculations.
         """
         match self.config.molecule.target_class.lower():
             case "mlh":
@@ -62,11 +60,10 @@ class PredictionHandling:
 
     @property
     def model(self) -> DummyRegressor:
-        """ML Model
+        """ML model.
 
-        :param self: PredictionHandler
-        :return: ML model
-        :rtype: DummyRegressor
+        Returns:
+            DummyRegressor: The trained ML model.
         """
         if self._model is None:
             self._model = load(self.config.predict.model_name)
@@ -74,19 +71,15 @@ class PredictionHandling:
 
     @model.setter
     def model(self, model: DummyRegressor) -> None:
-        """
-        Set the ML model
+        """Set the ML model.
 
-        :param self: PredictionHandler
-        :param model: ML model
-        :type model: DummyRegressor
+        Args:
+            model (DummyRegressor): The ML model to use.
         """
         self._model = model
 
     def run_protocol(self):
-        """
-        Compute Hessians of collected structures and print thermo. props.
-        """
+        """Compute Hessians of collected structures and print thermodynamic properties."""
 
         self.collect_folders()
 

@@ -1,4 +1,4 @@
-"Put the tblite calculation frame work here"
+"""Put the tblite calculation framework here."""
 
 from __future__ import annotations
 import faulthandler
@@ -83,16 +83,13 @@ pattern_uhf = pattern_uhf[:-1]
 
 #response     E_eht     E_rep  E_ies_ixc     E_axc     E_aes   E_disp2       E_disp3     E_tot
 class Calculator:
-    """
-    Wrapper class for tblite calculations and processing its features.
-    """
+    """Wrapper class for tblite calculations and processing its features."""
+
     def __init__(self, mol: Molecule) -> None:
-        """
-        Initializes the Calculator.
-        
-        :param self: Calculator
-        :param mol: Molecule class
-        :type mol: Molecule
+        """Initializes the Calculator.
+
+        Args:
+            mol (Molecule): Molecule for which features are computed.
         """
         self._mol = mol
         self.new_keys: None | list = None
@@ -105,11 +102,7 @@ class Calculator:
             return os.path.join(PACKAGE_DIR,"calculator/default_xtbml.toml")
         
     def compute_feature(self):
-        """
-        Calculate features from tblite and processes.
-        
-        :param self: Calculator
-        """
+        """Calculate features from tblite and processes."""
 
         try:
             faulthandler.enable()

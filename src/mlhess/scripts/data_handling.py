@@ -30,9 +30,9 @@ class FittingDataHandler:
         self.folder_names.extend(read_txt_file(self.config.collector.file_list))
 
     def do_preparation_split(self):
-        """
-        Does a split of the geometry file directories into train and test sets.
-        Saves the information in txt files
+        """Split the geometry file directories into train and test sets.
+
+        Saves the resulting file lists to text files.
         """
 
         train_size = self.config.train.train_size
@@ -78,12 +78,10 @@ class FittingDataHandler:
         list_to_txt(self.train_geo, os.path.join("", "train_files.txt"))
 
     def run_protocol(self) -> Configurator:
-        """Collect data depending on given input
+        """Collect data depending on the given input.
 
-        :param config: Configurations
-        :type config: Configurator
-        :return: optionally adapted configurations
-        :rtype: Configurator
+        Returns:
+            Configurator: The (optionally adapted) configuration.
         """
 
         if self.config.collector.gather.lower() in ["molecules"]:
@@ -162,18 +160,18 @@ class FittingDataHandler:
         self.Features = features
 
     def _pick_feature_class(self):
-        """pick a class to describe features.
+        """Pick a class to describe features.
 
-        :return: _description_
-        :rtype: _type_
+        Returns:
+            type[Feature]: Feature class used to represent molecular features.
         """
         return Feature
 
     def _pick_target_class(self):
         """Pick the target type for further calculations.
 
-        :return: target class
-        :rtype: AbstractTarget
+        Returns:
+            AbstractTarget: Target class used for further calculations.
         """
         match self.config.molecule.target_class.lower():
             case "mlh":

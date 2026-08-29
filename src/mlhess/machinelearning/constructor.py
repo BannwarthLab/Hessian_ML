@@ -108,11 +108,14 @@ class Constructor:
         return
 
     def set_selection(self, selection: str | None = None) -> None:
-        """
-        Define the feature selector for the ML model.
-        param:
-        selection:str: Defines the model needed
-        processing_info:list: List of information to give to a pipeline afterwards.
+        """Define the feature selector for the ML model.
+
+        The selected feature selector is appended to ``self.model_info``,
+        the list of pipeline steps used to build the model.
+
+        Args:
+            selection (str, optional): Name of the feature selection method
+                to use. Defaults to None.
         """
         if selection is None:
             return

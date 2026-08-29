@@ -2,10 +2,10 @@ import os
 
 
 def truncate_file(file: str):
-    """Truncate a file
+    """Truncate a file.
 
-    :param file: file name
-    :type file: str
+    Args:
+        file (str): File name.
     """
     if os.path.isfile(file):
         with open(file, "wb+") as f:
@@ -16,10 +16,9 @@ def truncate_file(file: str):
 def list_to_txt(list: list, file: str):
     """Write a list to a txt file.
 
-    :param list: list to converted
-    :type list: list
-    :param file: name of the file
-    :type file: str
+    Args:
+        list (list): List to convert.
+        file (str): Name of the file.
     """
     with open(file, "w+") as f:
         for d in list:

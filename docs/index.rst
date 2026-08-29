@@ -1,5 +1,10 @@
+Machine Learning Hessian: MLH
+==============================
+
+A package to train, test and use ML models for nuclear Hessian.
+
 .. autosummary::
-   :toctree: mlhess.machinelearning
+   :toctree: api
    :recursive:
 
-   mlhess.machinelearning
+   mlhess

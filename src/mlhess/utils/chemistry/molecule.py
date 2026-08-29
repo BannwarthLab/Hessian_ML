@@ -37,15 +37,15 @@ class Molecule(AbstractMolecule):
         multiplicity: int | None = None,
         solvent: str | None = None,
     ) -> None:
-        """Instantiate the a molecule with basic properties.
+        """Instantiate a molecule with basic properties.
 
         Args:
-            path (str): path to the folder.
-            fxyz (str): filename of a xyz.
-            elements (np.ndarray): array of elements. Defaults to np.array([], dtype=str).
-            symmetry (tuple, optional): Symmetry of the molecule. Defaults to ("auto",1).
-            charge (int | None, optional): charge. Defaults to None.
-            multiplicity (int | None, optional): multiplicity. Defaults to None.
+            path (str): Path to the folder.
+            fxyz (str): Filename of a xyz.
+            symmetry (tuple[str, int], optional): Symmetry of the molecule. Defaults to ("c1", 1).
+            charge (int | None, optional): Charge. Defaults to None.
+            multiplicity (int | None, optional): Multiplicity. Defaults to None.
+            solvent (str | None, optional): Solvent. Defaults to None.
         """
 
         self.calc_succeeded = True
@@ -97,7 +97,7 @@ class Molecule(AbstractMolecule):
         """Features of the molecule.
 
         Returns:
-            TBLiteFeatureCalc: Features computed with tblite.
+            Feature: Features computed for the molecule.
         """
         if self._feature is None:
             self._feature: Feature = self._feature_class(self)

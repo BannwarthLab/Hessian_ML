@@ -7,6 +7,10 @@ stages:
   - lint
 # pytests and upload coverage
   - test
+# build the sphinx documentation
+  - docs
+# publish the built documentation to GitLab Pages
+  - deploy
 
 build-hessml_image:
   stage: build
@@ -65,7 +69,7 @@ build-env:
 lint:
   stage: lint
   image: containers/${CONTAINER_NAME}.sif
-  dependencies:
+  needs:
     - build-env
   cache:
     key: "hessml_image-$CI_COMMIT_REF_SLUG"
@@ -88,7 +92,7 @@ lint:
 test:
   stage: test
   image: containers/${CONTAINER_NAME}.sif
-  dependencies:
+  needs:
     - build-env
   cache:
     key: "hessml_image-$CI_COMMIT_REF_SLUG"
@@ -113,3 +117,47 @@ test:
       coverage_report:
         coverage_format: cobertura
         path: coverage.xml
+
+# Build documentation
+build-docs:
+  stage: docs
+  image: containers/${CONTAINER_NAME}.sif
+  needs:
+    - build-env
+  cache:
+    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    paths:
+      - /tmp/venv/
+      - containers/
+
+  variables:
+    IMAGE_NAME: ""
+    CONTAINER_NAME: "containers/hessml_image.sif"
+    APPTAINER_EXEC_ARGS: ""
+  tags:
+    - cpu
+  script:
+    - source /tmp/venv/bin/activate
+    - pip install .[docs]
+    - sphinx-build -b html docs docs/_build
+
+  artifacts:
+    paths:
+      - docs/_build
+
+# Deploy docs
+pages: # this job name is fixed
+  stage: deploy
+  needs:
+    - build-docs
+  image: alpine:latest
+  tags:
+    - docker
+  script:
+    - mkdir -p public
+    - mv docs/_build/* public/
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  artifacts:
+    paths:
+      - public

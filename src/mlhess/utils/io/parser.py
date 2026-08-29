@@ -16,8 +16,8 @@ if TYPE_CHECKING:
 def parse_cmd_line_input() -> ArgumentParser:
     """Parses through the command line input.
 
-    :return: ArugmentParser class
-    :rtype: ArgumentParser
+    Returns:
+        ArgumentParser: Configured argument parser.
     """
     arg_parser = ArgumentParser()
 
@@ -46,12 +46,13 @@ def parse_cmd_line_input() -> ArgumentParser:
 
 
 def parse_input_toml_file(input_file_name: str) -> dict:
-    """Parser for the .toml to generate a dictionoary for the input information.
+    """Parser for the .toml to generate a dictionary for the input information.
 
-    :param input_file_name: name of the input file
-    :type input_file_name: str
-    :return: All information from the toml-file.
-    :rtype: dict
+    Args:
+        input_file_name (str): Name of the input file.
+
+    Returns:
+        dict: All information from the toml file.
     """
 
     inp_file = input_file_name
@@ -87,10 +88,11 @@ def parse_input_toml_file(input_file_name: str) -> dict:
 def parse_data_set(config: Configurator) -> list:
     """Search for all folders which include a xyzfile and optionally a target_file.
 
-    :param config: overall configuration
-    :type config: Configurator
-    :return: found folders
-    :rtype: list
+    Args:
+        config (Configurator): Overall configuration.
+
+    Returns:
+        list: Found folders.
     """
     main_folder = config.collector.folder
     if os.path.isdir(main_folder):
@@ -124,10 +126,11 @@ def parse_data_set(config: Configurator) -> list:
 def parse_dftd4_output(output: str) -> np.ndarray:
     """Get the C6 parameter from the DFT-D4 output.
 
-    :param output: output of the dftd4 program
-    :type output: str
-    :return: C6 parameter
-    :rtype: np.ndarray
+    Args:
+        output (str): Output of the dftd4 program.
+
+    Returns:
+        np.ndarray: C6 parameter.
     """
     lines = output.split("\n")
 

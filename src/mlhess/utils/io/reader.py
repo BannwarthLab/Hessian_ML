@@ -5,10 +5,11 @@ import numpy as np
 def read_dftd4(fname: str) -> np.ndarray:
     """Get the C6 parameter from the DFT-D4 output.
 
-    :param fname: filename of the dftd4 output
-    :type fname: str
-    :return: C6 parameter
-    :rtype: np.ndarray
+    Args:
+        fname (str): Filename of the dftd4 output.
+
+    Returns:
+        np.ndarray: C6 parameter.
     """
 
     with open(fname, "r") as file:
@@ -36,10 +37,11 @@ def read_dftd4(fname: str) -> np.ndarray:
 def read_txt_file(fname: str) -> list:
     """Reads a txt file and returns lines.
 
-    :param fname: name of the file
-    :type fname: str
-    :return: lines of the file
-    :rtype: list
+    Args:
+        fname (str): Name of the file.
+
+    Returns:
+        list: Lines of the file.
     """
     if fname is None:
         return []

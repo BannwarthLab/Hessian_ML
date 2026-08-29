@@ -1,7 +1,6 @@
-"""
-Programme entry for Machine Learning Hesisan. 
+"""Programme entry point for the Machine Learning Hessian package.
 
-This module can be used to collect data, train models and prediction new targets.
+This module can be used to collect data, train models, and predict new targets.
 """
 #!/usr/bin/env python3
 from __future__ import annotations

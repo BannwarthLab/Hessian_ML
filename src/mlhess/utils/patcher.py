@@ -34,10 +34,10 @@ def patch_molecule(config):
 
 
 def pick_feature_class():
-    """pick a class to describe features.
+    """Pick a class to describe features.
 
-    :return: _description_
-    :rtype: _type_
+    Returns:
+        type[Feature]: Feature class used to represent molecular features.
     """
     return Feature
 
@@ -45,8 +45,11 @@ def pick_feature_class():
 def pick_target_class(config: Configurator):
     """Pick the target type for further calculations.
 
-    :return: target class
-    :rtype: AbstractTarget
+    Args:
+        config (Configurator): Overall configuration.
+
+    Returns:
+        AbstractTarget: Target class used for further calculations.
     """
     match config.molecule.target_class.lower():
         case "mlh":
