@@ -18,8 +18,12 @@ stages:
 # a private git dependency the image build has no credentials to install.
 .mlhess_install:
   script:
-    - pip install --no-deps -e ".[dev,docs]"
-    - pip install "tcgm_lib @ git+https://gitlab.git.nrw/rwth-bannwarthlab/open_tcgm_lib_py.git"
+    # /opt/venv is baked into the read-only image, so nothing here may
+    # `pip install` into it. mlhess is pure Python: just put src/ on
+    # PYTHONPATH. tcgm_lib needs installing (private git dep, not baked into
+    # the image), so it goes into a writable target dir added to PYTHONPATH.
+    - pip install --target=.pydeps "tcgm_lib @ git+https://gitlab.git.nrw/rwth-bannwarthlab/open_tcgm_lib_py.git"
+    - export PYTHONPATH="$CI_PROJECT_DIR/src:$CI_PROJECT_DIR/.pydeps:$PYTHONPATH"
 
 .container_vars: &container_vars
   IMAGE_NAME: ""
@@ -69,7 +73,7 @@ test:
   tags:
     - cpu
   script:
-    - pytest tests/ --cov=hessian_ml --cov-report term --cov-report xml:coverage.xml
+    - pytest tests/ --cov=mlhess --cov-report term --cov-report xml:coverage.xml
 
   artifacts:
     reports:
