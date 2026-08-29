@@ -60,7 +60,7 @@ build-env:
     #- /tmp/venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
     #- pip install git+https://gitlab+deploy-token-1486:${OTCGM_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/open_tcgm_lib_py.git
     #- /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
-    - /tmp/venv/bin/pip install .[dev]
+    - /tmp/venv/bin/pip install .[dev,docs]
     - /tmp/venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
 
   tags:
@@ -138,7 +138,6 @@ build-docs:
     - cpu
   script:
     - source /tmp/venv/bin/activate
-    - pip install .[docs]
     - sphinx-build -b html docs docs/_build
 
   artifacts:
