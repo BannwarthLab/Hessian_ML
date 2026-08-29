@@ -44,7 +44,7 @@ build-env:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_RECIPE: "hessml_image.def"
+    APPTAINER_RECIPE: ".gitlab/recipes/hessml_image.def"
     APPTAINER_EXEC_ARGS: ""
 
   script:
@@ -81,7 +81,7 @@ lint:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_RECIPE: "hessml_image.def"
+    APPTAINER_RECIPE: ".gitlab/recipes/hessml_image.def"
     APPTAINER_EXEC_ARGS: ""
   tags:
     - cpu
@@ -105,7 +105,7 @@ test:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_RECIPE: "hessml_image.def"
+    APPTAINER_RECIPE: ".gitlab/recipes/hessml_image.def"
     APPTAINER_EXEC_ARGS: "--bind $CI_PROJECT_DIR:$CI_PROJECT_DIR"
     APPTAINER_BIND: "$CI_PROJECT_DIR:$CI_PROJECT_DIR"
 
@@ -136,7 +136,7 @@ build-docs:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_RECIPE: "hessml_image.def"
+    APPTAINER_RECIPE: ".gitlab/recipes/hessml_image.def"
     APPTAINER_EXEC_ARGS: ""
   tags:
     - cpu
