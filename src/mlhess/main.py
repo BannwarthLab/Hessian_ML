@@ -10,10 +10,10 @@ import time
 # tblite, torch, and sklearn each bundle their own libomp.dylib on macOS;
 # this must be set before any of them are imported below, or the process
 # aborts with "OMP: Error #15".
-os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
 
 #This import has to be here otherwise errors may occur.
-from tblite.interface import Calculator #noQA: F401
+from tblite.interface import Calculator #noQA: F401 E402
 import sklearn #noQA: F401
 import torch
 import numpy as np
@@ -26,7 +26,7 @@ from mlhess.utils.io import parser
 
 from mlhess.scripts.compute_xyz import comp_hessian_from_xyz_cli
 # has to be beneath tblite to circumvent conflicts
-
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
 
 def main() -> None:
     """
