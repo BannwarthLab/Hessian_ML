@@ -45,6 +45,7 @@ build-env:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/mlhess_image.sif"
     APPTAINER_RECIPE: ".gitlab/recipes/mlhess_image.def"
+    APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""
 
   script:
@@ -82,6 +83,7 @@ lint:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/mlhess_image.sif"
     APPTAINER_RECIPE: ".gitlab/recipes/mlhess_image.def"
+    APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""
   tags:
     - cpu
@@ -106,6 +108,7 @@ test:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/mlhess_image.sif"
     APPTAINER_RECIPE: ".gitlab/recipes/mlhess_image.def"
+    APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: "--bind $CI_PROJECT_DIR:$CI_PROJECT_DIR"
     APPTAINER_BIND: "$CI_PROJECT_DIR:$CI_PROJECT_DIR"
 
@@ -137,6 +140,7 @@ build-docs:
     IMAGE_NAME: ""
     CONTAINER_NAME: "containers/mlhess_image.sif"
     APPTAINER_RECIPE: ".gitlab/recipes/mlhess_image.def"
+    APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""
   tags:
     - cpu
