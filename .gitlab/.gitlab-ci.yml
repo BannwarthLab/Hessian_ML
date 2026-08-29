@@ -22,6 +22,7 @@ build-env:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "rl9-gnu-openblas-none"
+    APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
     APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""
 
@@ -58,6 +59,7 @@ lint:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "rl9-gnu-openblas-none"
+    APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
     APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""
   tags:
@@ -81,6 +83,7 @@ test:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "rl9-gnu-openblas-none"
+    APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
     APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: "--bind $CI_PROJECT_DIR:$CI_PROJECT_DIR"
     APPTAINER_BIND: "$CI_PROJECT_DIR:$CI_PROJECT_DIR"
@@ -111,6 +114,7 @@ build-docs:
   variables:
     IMAGE_NAME: ""
     CONTAINER_NAME: "rl9-gnu-openblas-none"
+    APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
     APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""
   tags:
