@@ -47,7 +47,7 @@ build-env:
     # generate new venv and install packages
     #- rm -rf /tmp/venv
 
-    - python3 -m venv /tmp/venv
+    - python3.11 -m venv /tmp/venv
     - source /tmp/venv/bin/activate
     #- module load gnu-compilers/15.2.0 meson
     # - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH

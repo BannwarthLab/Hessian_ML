@@ -129,7 +129,7 @@ def generate_recipe(name: str) -> str:
     lines.append("    export TZ=Europe/Berlin")
     lines.append("    dnf -y update")
     lines.append("    dnf groupinstall -y \"Development Tools\"")
-    lines.append("    dnf install -y wget git python3-pip")
+    lines.append("    dnf install -y wget git python3-pip python3.11 python3.11-pip")
     lines.append("    dnf install -y epel-release")
     lines.append("    dnf config-manager --set-enabled crb")
     lines.append("    dnf install -y cmake")
