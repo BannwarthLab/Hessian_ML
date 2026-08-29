@@ -1,4 +1,9 @@
+include:
+  - local: .gitlab/common-scripts.yml
+
 stages:
+# build the apptainer image this project uses
+  - build-container
 # install python packages
   - build-env
 # type checking, spell checking etc.
@@ -10,9 +15,21 @@ stages:
 # publish the built documentation to GitLab Pages
   - deploy
 
+build-mlhess-container:
+  stage: build-container
+  extends: .build_container
+  tags:
+    - shell
+  variables:
+    OS: "RL9"
+    COMPILER: "gnu-openblas"
+    GPU: "none"
+
 build-env:
   stage: build-env
   image: "${CONTAINER_NAME}"
+  needs:
+    - build-mlhess-container
   cache:
     key: "venv-$CI_COMMIT_REF_SLUG"
     paths:
@@ -21,7 +38,7 @@ build-env:
 
   variables:
     IMAGE_NAME: ""
-    CONTAINER_NAME: "rl9-gnu-openblas-none"
+    CONTAINER_NAME: "RL9-gnu-openblas-none"
     APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
     APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""
@@ -58,7 +75,7 @@ lint:
 
   variables:
     IMAGE_NAME: ""
-    CONTAINER_NAME: "rl9-gnu-openblas-none"
+    CONTAINER_NAME: "RL9-gnu-openblas-none"
     APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
     APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""
@@ -82,7 +99,7 @@ test:
 
   variables:
     IMAGE_NAME: ""
-    CONTAINER_NAME: "rl9-gnu-openblas-none"
+    CONTAINER_NAME: "RL9-gnu-openblas-none"
     APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
     APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: "--bind $CI_PROJECT_DIR:$CI_PROJECT_DIR"
@@ -113,7 +130,7 @@ build-docs:
 
   variables:
     IMAGE_NAME: ""
-    CONTAINER_NAME: "rl9-gnu-openblas-none"
+    CONTAINER_NAME: "RL9-gnu-openblas-none"
     APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
     APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
     APPTAINER_EXEC_ARGS: ""

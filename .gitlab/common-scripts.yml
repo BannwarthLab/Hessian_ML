@@ -1,0 +1,35 @@
+.build_container:
+  script:
+    - export CONTAINER_NAME="${OS}-${COMPILER}-${GPU}"
+    - echo $CONTAINER_NAME
+    - python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}
+    - /gitlab-runner/build_container.sh ${CONTAINER_NAME}.def
+
+.compiler_setup:
+  script:
+    - |
+      if [[ "$COMPILER" == gnu* ]]; then
+        export CC=gcc CXX=g++ FC=gfortran
+      elif [[ "$COMPILER" == intel* ]]; then
+        export CC=icx CXX=icpx FC=ifx
+        source ${MKLROOT}/env/vars.sh
+        source ${TBBROOT}/env/vars.sh
+        source ${COMPILERROOT}/env/vars.sh
+      fi
+    - if [ -n "$MKLROOT" ]; then source ${MKLROOT}/env/vars.sh; fi
+    - case "$COMPILER" in gnu-openblas) LAPACK="openblas" ;; gnu-mkl*) LAPACK="mkl-rt" ;; intel*) LAPACK="mkl" ;; esac
+
+.meson_test:
+  script:
+    - cd _build
+    - meson compile
+    - export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
+    - meson install
+    - meson test
+
+.cmake_test:
+  script:
+    - cd _build
+    - make -j 4
+    - cmake --install .
+    - ctest
