@@ -2,7 +2,7 @@
   script:
     - export CONTAINER_NAME="${OS}-${COMPILER}-${GPU}"
     - echo $CONTAINER_NAME
-    - python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}
+    - python3 .gitlab/generate_mlhess_recipe.py ${CONTAINER_NAME}
     - /gitlab-runner/build_container.sh ${CONTAINER_NAME}.def
 
 .compiler_setup:

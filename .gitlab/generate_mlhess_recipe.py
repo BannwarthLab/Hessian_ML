@@ -1,5 +1,45 @@
+import re
 import sys
+from pathlib import Path
 from typing import Dict, Tuple
+
+PYPROJECT_PATH = Path(__file__).resolve().parent.parent / "pyproject.toml"
+
+# tcgm_lib is a private git dependency; the image build has no credentials
+# for it, so it's installed fresh per CI job instead of baked into the image.
+_EXCLUDED_FROM_IMAGE = ("tcgm_lib",)
+
+
+def _extract_toml_array(text: str, key: str) -> list[str]:
+    """Pull the quoted strings out of a `key = [...]` array in pyproject.toml.
+
+    This is a light-touch regex extraction, not a full TOML parser — it only
+    needs to handle this project's own pyproject.toml, and avoids depending on
+    tomllib (Python 3.11+) since this script also runs on the shell-tagged
+    runner host, whose Python version is unknown.
+    """
+    match = re.search(rf"^{re.escape(key)}\s*=\s*\[(.*?)\]", text, re.DOTALL | re.MULTILINE)
+    if not match:
+        raise ValueError(f"Could not find '{key} = [...]' in {PYPROJECT_PATH}")
+    return [item.strip() for item in re.findall(r'"([^"]+)"', match.group(1))]
+
+
+def get_mlhess_pip_packages() -> list[str]:
+    """Read this project's own dependencies + dev/docs extras from pyproject.toml.
+
+    Excludes tcgm_lib (see _EXCLUDED_FROM_IMAGE) and mlhess itself, which is
+    installed editable, fresh per job, not baked into the image.
+    """
+    text = PYPROJECT_PATH.read_text()
+    packages = (
+        _extract_toml_array(text, "dependencies")
+        + _extract_toml_array(text, "dev")
+        + _extract_toml_array(text, "docs")
+    )
+    return [
+        p for p in packages
+        if not any(p.lower().startswith(excluded) for excluded in _EXCLUDED_FROM_IMAGE)
+    ]
 
 # Configuration mappings for each component
 OS_CONFIG = {
@@ -34,19 +74,14 @@ COMPILER_CONFIG = {
     },
 }
 
+# Only "mlhess" is supported: this project needs exactly one combo
+# (RL9-gnu-mlhess-none), so the other LAPACK options from the lab's shared
+# recipe generator were dropped. The tag stays distinct from "openblas" so
+# this project's image can never collide with the shared RL9-gnu-openblas-none
+# combo other projects may depend on staying generic.
 LAPACK_CONFIG = {
-    "openblas": {
+    "mlhess": {
         "packages": "openblas-devel lapack-devel",
-    },
-    "mkl2023.2.0": {
-        "repo": True,
-        "packages": "intel-oneapi-mkl-devel-2023.2.0",
-        "env": {"MKLROOT": "/opt/intel/oneapi/mkl/2023.2.0"},
-    },
-    "mkl2025.3.0": {
-        "repo": True,
-        "packages": "intel-oneapi-mkl-devel-2025.3.0",
-        "env": {"MKLROOT": "/opt/intel/oneapi/mkl/2025.3"},
     },
 }
 
@@ -117,11 +152,11 @@ def generate_recipe(name: str) -> str:
     validate_config(os_name, compiler, lapack, gpu)
 
     lines = []
-    
+
     # Bootstrap section
     lines.append("Bootstrap: docker")
     lines.append(f"From: {OS_CONFIG[os_name]}\n")
-    
+
     # Post section
     lines.append("%post")
     lines.append("    # Update system and install necessary packages")
@@ -135,7 +170,7 @@ def generate_recipe(name: str) -> str:
     lines.append("    dnf install -y cmake")
     lines.append("    pip3 install meson ninja")
     lines.append("")
-    
+
     # Intel OneAPI repo if needed (for compiler or MKL)
     needs_oneapi_repo = COMPILER_CONFIG[compiler].get("repo") or LAPACK_CONFIG[lapack].get("repo")
     if needs_oneapi_repo:
@@ -152,17 +187,17 @@ def generate_recipe(name: str) -> str:
         lines.append("EOF")
         lines.append("    mv /tmp/oneAPI.repo /etc/yum.repos.d")
         lines.append("")
-    
+
     # Compiler installation
     lines.append(f"    # {compiler.title()} Compiler")
     lines.append(f"    dnf install -y {COMPILER_CONFIG[compiler]['packages']}")
     lines.append("")
-    
+
     # LAPACK/BLAS installation
     lines.append(f"    # {lapack.upper()} Installation")
     lines.append(f"    dnf install -y {LAPACK_CONFIG[lapack]['packages']}")
     lines.append("")
-    
+
     # GPU installation
     if gpu != "none":
         cuda_repo = get_cuda_repo(os_name, gpu)
@@ -172,39 +207,55 @@ def generate_recipe(name: str) -> str:
         lines.append(f"    # {gpu.upper()} Installation")
         lines.append(f"    dnf install -y {GPU_CONFIG[gpu]['packages']}")
         lines.append("")
-    
+
+    # mlhess project dependencies (baked in so CI jobs don't reinstall on
+    # every run; excludes tcgm_lib, a private git dependency the image build
+    # has no credentials for, and mlhess itself, installed fresh per job).
+    lines.append("    # mlhess static Python dependencies")
+    lines.append("    python3.11 -m venv /opt/venv")
+    lines.append("    . /opt/venv/bin/activate")
+    lines.append("    pip install --upgrade pip setuptools wheel")
+    lines.append("    pip install \\")
+    packages = get_mlhess_pip_packages()
+    for i, package in enumerate(packages):
+        connector = " \\" if i < len(packages) - 1 else ""
+        lines.append(f'        "{package}"{connector}')
+    lines.append("")
+
     # Cleanup
     lines.append("    # Clean up cache to reduce image size")
     lines.append("    dnf clean all")
     lines.append("    rm -rf /var/cache/dnf\n")
-    
+
     # Environment section
     lines.append("%environment")
-    
+
     # Collect all environment variables
     env_vars = {}
     for config in [COMPILER_CONFIG[compiler], LAPACK_CONFIG[lapack], GPU_CONFIG[gpu]]:
         env_vars.update(config.get("env", {}))
-    
+
     for key, value in env_vars.items():
         lines.append(f"    export {key}={value}")
-    
+
+    lines.append("    export PATH=/opt/venv/bin:$PATH")
+
     return "\n".join(lines)
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python generate_recipe.py <recipe-name>")
+        print("Usage: python generate_mlhess_recipe.py <recipe-name>")
         print("Format: OS-COMPILER-LAPACK-GPU")
         print(f"Supported OS: {', '.join(OS_CONFIG.keys())}")
         print(f"Supported Compilers: {', '.join(COMPILER_CONFIG.keys())}")
         print(f"Supported LAPACK: {', '.join(LAPACK_CONFIG.keys())}")
         print(f"Supported GPU: {', '.join(GPU_CONFIG.keys())}")
         sys.exit(1)
-    
+
     name = sys.argv[1]
     print(f"Making recipe for {name}")
-    
+
     try:
         content = generate_recipe(name)
         with open(f"{name}.def", "w") as f:

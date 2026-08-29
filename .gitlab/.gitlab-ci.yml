@@ -2,10 +2,8 @@ include:
   - local: .gitlab/common-scripts.yml
 
 stages:
-# build the apptainer image this project uses
+# build the apptainer image this project uses (static deps baked in)
   - build-container
-# install python packages
-  - build-env
 # type checking, spell checking etc.
   - lint
 # pytests and upload coverage
@@ -15,6 +13,20 @@ stages:
 # publish the built documentation to GitLab Pages
   - deploy
 
+# Registers mlhess itself (fresh from this checkout, --no-deps since the
+# static dependency stack is already baked into the image) plus tcgm_lib,
+# a private git dependency the image build has no credentials to install.
+.mlhess_install:
+  script:
+    - pip install --no-deps -e ".[dev,docs]"
+    - pip install "tcgm_lib @ git+https://gitlab.git.nrw/rwth-bannwarthlab/open_tcgm_lib_py.git"
+
+.container_vars: &container_vars
+  IMAGE_NAME: ""
+  CONTAINER_NAME: "RL9-gnu-mlhess-none"
+  APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
+  APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_mlhess_recipe.py ${CONTAINER_NAME}"
+
 build-mlhess-container:
   stage: build-container
   extends: .build_container
@@ -22,66 +34,22 @@ build-mlhess-container:
     - shell
   variables:
     OS: "RL9"
-    COMPILER: "gnu-openblas"
+    COMPILER: "gnu-mlhess"
     GPU: "none"
-
-build-env:
-  stage: build-env
-  image: "${CONTAINER_NAME}"
-  needs:
-    - build-mlhess-container
-  cache:
-    key: "pip-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .cache/pip
-  artifacts:
-    expire_in: 1 hour
-    paths:
-      - .venv/
-
-  variables:
-    IMAGE_NAME: ""
-    CONTAINER_NAME: "RL9-gnu-openblas-none"
-    APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
-    APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
-    APPTAINER_EXEC_ARGS: ""
-
-  script:
-    # generate new venv and install packages
-    #- rm -rf .venv
-
-    - python3.11 -m venv .venv
-    - source .venv/bin/activate
-    #- module load gnu-compilers/15.2.0 meson
-    # - export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
-    # - export CFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
-    # - export FFLAGS="-O2 -march=x86-64 -mtune=generic -mno-avx -mno-avx2"
-    # - export OPENBLAS_CORETYPE=NEHALEM
-    #- .venv/bin/pip install --no-binary=tblite --no-cache-dir tblite
-    #- pip install git+https://gitlab+deploy-token-1486:${OTCGM_DEPLOY_TOKEN}@git.rwth-aachen.de/bannwarthlab/open_tcgm_lib_py.git
-    #- .venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
-    - .venv/bin/pip install .[dev,docs]
-    - .venv/bin/python3 -c "import tblite.interface; print('tblite C extension loaded successfully')"
-
-  tags:
-    - cpu
 
 lint:
   stage: lint
   image: "${CONTAINER_NAME}"
   needs:
-    - build-env
-
+    - build-mlhess-container
+  before_script:
+    - !reference [.mlhess_install, script]
   variables:
-    IMAGE_NAME: ""
-    CONTAINER_NAME: "RL9-gnu-openblas-none"
-    APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
-    APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
+    <<: *container_vars
     APPTAINER_EXEC_ARGS: ""
   tags:
     - cpu
   script:
-    - source .venv/bin/activate
     - ruff check .
     - mypy --ignore-missing-imports --exclude build/ .
     - codespell src/
@@ -90,20 +58,17 @@ test:
   stage: test
   image: "${CONTAINER_NAME}"
   needs:
-    - build-env
-
+    - build-mlhess-container
+  before_script:
+    - !reference [.mlhess_install, script]
   variables:
-    IMAGE_NAME: ""
-    CONTAINER_NAME: "RL9-gnu-openblas-none"
-    APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
-    APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
+    <<: *container_vars
     APPTAINER_EXEC_ARGS: "--bind $CI_PROJECT_DIR:$CI_PROJECT_DIR"
     APPTAINER_BIND: "$CI_PROJECT_DIR:$CI_PROJECT_DIR"
 
   tags:
     - cpu
   script:
-    - source .venv/bin/activate
     - pytest tests/ --cov=hessian_ml --cov-report term --cov-report xml:coverage.xml
 
   artifacts:
@@ -117,18 +82,15 @@ build-docs:
   stage: docs
   image: "${CONTAINER_NAME}"
   needs:
-    - build-env
-
+    - build-mlhess-container
+  before_script:
+    - !reference [.mlhess_install, script]
   variables:
-    IMAGE_NAME: ""
-    CONTAINER_NAME: "RL9-gnu-openblas-none"
-    APPTAINER_RECIPE: "${CONTAINER_NAME}.def"
-    APPTAINER_RECIPE_GENERATE_CMD: "python3 .gitlab/generate_recipe.py ${CONTAINER_NAME}"
+    <<: *container_vars
     APPTAINER_EXEC_ARGS: ""
   tags:
     - cpu
   script:
-    - source .venv/bin/activate
     - sphinx-build -b html docs docs/_build
 
   artifacts:
