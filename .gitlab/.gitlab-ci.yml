@@ -39,7 +39,7 @@ build-env:
       - /tmp/venv/
       - .cache/pip
 
-  dependencies:
+  needs:
     - build-hessml_image
   variables:
     IMAGE_NAME: ""
