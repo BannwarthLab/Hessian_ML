@@ -1,10 +1,11 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+
 from contextlib import contextmanager
+from typing import TYPE_CHECKING
+
 from mlhess.machinelearning.feature.base_class import Feature
 from mlhess.machinelearning.target.hessian import NuclearHessian, NuclearHessianPM
 from mlhess.utils.chemistry.molecule import Molecule
-
 
 if TYPE_CHECKING:
     from mlhess.management.config import Configurator

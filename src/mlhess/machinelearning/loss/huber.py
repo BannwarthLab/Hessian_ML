@@ -4,7 +4,7 @@ from torch import nn
 
 class HuberLoss(nn.Module):
     def __init__(self):
-        super(HuberLoss, self).__init__()
+        super().__init__()
 
     def forward(self, output, target):
         delta = 5e-2
@@ -17,7 +17,7 @@ class HuberLoss(nn.Module):
 
 class RelHuberLoss(nn.Module):
     def __init__(self, delta=5e-3, relative_delta=1e-4):
-        super(RelHuberLoss, self).__init__()
+        super().__init__()
         self._delta = delta
         self._relative_delta = relative_delta
 
@@ -34,5 +34,5 @@ class RelHuberLoss(nn.Module):
             0.5 * (diff) ** 2,
             self._delta * (diff - 0.5 * self._delta),
         )
-        delta2 = torch.mean((diff2))
+        delta2 = torch.mean(diff2)
         return (delta1 + delta2) * 0.5

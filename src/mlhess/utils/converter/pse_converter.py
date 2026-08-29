@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import numpy as np
-
 from tcgm_lib.constants.periodic_table import (
     ATOMIC_NUMBERS_TO_ELEMENTS,
     ATOMIC_NUMBERS_TO_MASSES,

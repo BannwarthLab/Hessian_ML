@@ -10,25 +10,23 @@ import tcgm_lib.convert.pse_converter as pse_cv
 from tcgm_lib.molecule.molecule import Molecule as AbstractMolecule
 from tcgm_lib.molecule.symmetry import Symmetry
 
+from mlhess.calculator.tblite_wrapper import Calculator
+from mlhess.machinelearning.feature.base_class import Feature
+from mlhess.machinelearning.target.hessian import NuclearHessian
+from mlhess.machinelearning.transform.transform_mlh import (
+    transform_prediction,
+    transform_training,
+)
+from mlhess.utils.chemistry.electronic_properties import ElectronicProperties
 from mlhess.utils.chemistry.nuclear_properties import NuclearProperties
 from mlhess.utils.io.reader import read_xyz
-from mlhess.calculator.tblite_wrapper import Calculator
-
-from mlhess.machinelearning.target.hessian import NuclearHessian
-from mlhess.utils.chemistry.electronic_properties import ElectronicProperties
-from mlhess.machinelearning.transform.transform_mlh import (
-    transform_training,
-    transform_prediction,
-)
-from mlhess.machinelearning.feature.base_class import Feature
-
 
 if TYPE_CHECKING:
     from sklearn.dummy import DummyRegressor
 
 
 class Molecule(AbstractMolecule):
-    def __init__(  # noQA: PLR0913
+    def __init__(
         self,
         path: str,
         fxyz: str,
@@ -190,7 +188,6 @@ class Molecule(AbstractMolecule):
         calc = calc_class(self)
         calc.compute_feature()
         transform_prediction(self, num_threads)
-        return
 
     def predict(self, model: DummyRegressor):
         self.target = model.predict(self.feature.processed)

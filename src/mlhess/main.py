@@ -2,29 +2,28 @@
 
 This module can be used to collect data, train models, and predict new targets.
 """
-#!/usr/bin/env python3
 from __future__ import annotations
+
 import os
 import time
+
+import numpy as np
+import sklearn  #noQA: F401
+import torch
 
 # tblite, torch, and sklearn each bundle their own libomp.dylib on macOS;
 # this must be set before any of them are imported below, or the process
 # aborts with "OMP: Error #15".
-
-
 #This import has to be here otherwise errors may occur.
-from tblite.interface import Calculator #noQA: F401 E402
-import sklearn #noQA: F401
-import torch
-import numpy as np
+from tblite.interface import Calculator  # noqa: F401
 
 from mlhess.management.config import Configurator
-from mlhess.scripts.data_handling import FittingDataHandler
-from mlhess.scripts.training_handler import TrainingHandler
-from mlhess.scripts.predicting_handler import PredictionHandling
-from mlhess.utils.io import parser 
-
 from mlhess.scripts.compute_xyz import comp_hessian_from_xyz_cli
+from mlhess.scripts.data_handling import FittingDataHandler
+from mlhess.scripts.predicting_handler import PredictionHandling
+from mlhess.scripts.training_handler import TrainingHandler
+from mlhess.utils.io import parser
+
 # has to be beneath tblite to circumvent conflicts
 os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
 

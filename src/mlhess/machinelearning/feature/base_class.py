@@ -1,8 +1,5 @@
-import numpy as np
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    pass
+import numpy as np
 
 
 class Feature:
@@ -26,7 +23,6 @@ class Feature:
         self._C6params = None
         self.wbo = None
         self._dipm_key = None
-        return
 
     @property
     def processed(self):

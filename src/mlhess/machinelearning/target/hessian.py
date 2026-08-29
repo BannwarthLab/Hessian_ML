@@ -1,9 +1,12 @@
 import numpy as np
+
 #from typing import TYPE_CHECKING
 from tcgm_lib.molecule.nuclear_hessian import NuclearHessian as AbstractNuclearHessian
-from mlhess.utils.math.matrix_operation import get_rotated_33_block_matrix
-from mlhess.utils.math.matrix_operation import restructure_hessian_rotation_mat
 
+from mlhess.utils.math.matrix_operation import (
+    get_rotated_33_block_matrix,
+    restructure_hessian_rotation_mat,
+)
 
 # if TYPE_CHECKING:
 #     from mlhess.utils.chemistry.molecule import Molecule
@@ -43,9 +46,7 @@ class NuclearHessian(AbstractNuclearHessian):
 
         Hessian = np.zeros([self._mol.nat * 3, self._mol.nat * 3])
 
-        ite_hetero = 0
-
-        for atom_A, atom_B in zip(atom_pairs[:, 0], atom_pairs[:, 1]):
+        for ite_hetero, (atom_A, atom_B) in enumerate(zip(atom_pairs[:, 0], atom_pairs[:, 1])):
             Hessian[
                 3 * atom_A : 3 * atom_A + 3,
                 3 * atom_B : 3 * atom_B + 3,
@@ -58,8 +59,6 @@ class NuclearHessian(AbstractNuclearHessian):
                 3 * atom_A : 3 * atom_A + 3,
                 3 * atom_B : 3 * atom_B + 3,
             ].T
-
-            ite_hetero += 1
 
         for atom_A in range(self._mol.nat):
             for atom_B in range(self._mol.nat):

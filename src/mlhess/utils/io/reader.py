@@ -1,4 +1,5 @@
 import os
+
 import numpy as np
 
 
@@ -73,7 +74,7 @@ def read_xyz(file: str) -> tuple[np.ndarray, np.ndarray]:
     with open(file) as f:
         _ = f.readline()  # Skip nat
         next(f)  # Skip comment line
-        for line in f.readlines():
+        for line in f:
             elms.append(line.split()[0])
             coords.append([float(a) for a in line.split()[1:]])
     return np.array(elms, dtype=str), np.array(coords)

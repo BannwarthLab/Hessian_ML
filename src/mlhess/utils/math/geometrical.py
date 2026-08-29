@@ -5,12 +5,6 @@ from numpy import linalg
 
 from mlhess.utils.decorator import checkTiming
 
-from typing import TYPE_CHECKING
-
-
-if TYPE_CHECKING:
-    pass
-
 
 def angle_two_vec(a, b, norm_a, norm_b):
     cosangle = 0 if norm_a == 0 or norm_b == 0 else np.dot(a, b) / (norm_a * norm_b)

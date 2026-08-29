@@ -1,12 +1,8 @@
 """Electronic properties of a molecule."""
 
 import os
-from typing import TYPE_CHECKING
 
 import numpy as np
-
-if TYPE_CHECKING:
-    pass
 
 
 class ElectronicProperties:

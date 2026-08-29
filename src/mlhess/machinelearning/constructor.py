@@ -5,16 +5,17 @@ import sys
 from typing import TYPE_CHECKING
 
 import torch
-from joblib import dump,load # type: ignore
-# Model pipeline
-from sklearn.pipeline import Pipeline # type: ignore
-
-# Feature scaling 
-from sklearn.preprocessing import Normalizer, StandardScaler # type: ignore
+from joblib import dump, load  # type: ignore
 
 # Feature Selection
-from sklearn.decomposition import PCA, TruncatedSVD # type: ignore
-from sklearn.feature_selection import VarianceThreshold # type: ignore
+from sklearn.decomposition import PCA, TruncatedSVD  # type: ignore
+from sklearn.feature_selection import VarianceThreshold  # type: ignore
+
+# Model pipeline
+from sklearn.pipeline import Pipeline  # type: ignore
+
+# Feature scaling 
+from sklearn.preprocessing import Normalizer, StandardScaler  # type: ignore
 
 # ML Model
 from mlhess.machinelearning.architecture.neural_nets import MLH_l, MLH_s
@@ -71,7 +72,7 @@ class Constructor:
 
     def _choose_model(self, method: str):
         if method.lower() == "mlh_l":
-            model:type[MLH_l]|type[MLH_s] = MLH_l
+            model:type[MLH_l | MLH_s] = MLH_l
         elif method.lower() == "mlh_s":
             model = MLH_s
 
@@ -120,7 +121,7 @@ class Constructor:
         if selection is None:
             return
 
-        print("")
+        print()
         print("Setting selection")
 
         if selection.lower() in ["svd", "truncatedsvd"]:
@@ -194,6 +195,6 @@ class Constructor:
         for param in param_temp:
             print(f"{param}: {param_temp[param]}")
 
-
-def load_model(path=os.path.join(PACKAGE_DIR,"machinelearning/default_model/default_MLH.joblib")):
+path = os.path.join(PACKAGE_DIR,"machinelearning/default_model/default_MLH.joblib")
+def load_model(path=path):
     return load(path)

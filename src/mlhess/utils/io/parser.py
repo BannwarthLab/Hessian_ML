@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import os
 import sys
-import tomli
 from argparse import ArgumentParser
-import numpy as np
-
-
 from typing import TYPE_CHECKING
+
+import numpy as np
+import tomli
 
 if TYPE_CHECKING:
     from mlhess.management.config import Configurator
@@ -78,7 +77,7 @@ def parse_input_toml_file(input_file_name: str) -> dict:
 
     else:
         print(f"Input file: {inp_file} not found.")
-        print("")
+        print()
 
         sys.exit(1)
 
@@ -99,7 +98,7 @@ def parse_data_set(config: Configurator) -> list:
         msg = f"Parsing data set in {main_folder}..."
         print(msg, end="")
 
-        file_subset = set([config.molecule.xyz_file])
+        file_subset = set([config.molecule.xyz_file]) #noQA: C405
         if config.general.collector:
             file_subset.add(config.molecule.target_file)
 
@@ -115,9 +114,9 @@ def parse_data_set(config: Configurator) -> list:
         print("done")
 
         msg = f"Total of {len(folders)} folders found."
-        print("")
+        print()
         print(msg)
-        print("")
+        print()
 
         return folders
     return []

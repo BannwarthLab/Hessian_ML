@@ -2,7 +2,7 @@ import time
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from mlhess.utils.chemistry.molecule import Molecule
+    from mlhess.utils.chemistry.molecule import Molecule  #noQA: TC004
 
 
 def checkTiming(enabled=True):

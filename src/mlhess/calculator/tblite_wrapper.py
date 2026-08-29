@@ -1,23 +1,23 @@
 """Put the tblite calculation framework here."""
 
 from __future__ import annotations
+
 import faulthandler
 import os
 import subprocess
+from copy import deepcopy
 from typing import TYPE_CHECKING
+
 import numpy as np
 import pandas as pd
-
-
-from scipy.spatial import distance_matrix
-
+from dftd4.interface import DispersionModel
 from scipy.constants import physical_constants
-from copy import deepcopy
+from scipy.spatial import distance_matrix
+from tblite.interface import Calculator as TBCalculator
+
+from mlhess.management.base_settings import PACKAGE_DIR
 from mlhess.utils.io.parser import parse_dftd4_output
 
-from tblite.interface import Calculator as TBCalculator
-from dftd4.interface import DispersionModel
-from mlhess.management.base_settings import PACKAGE_DIR
 bohr_in_m, _, _ = physical_constants["Bohr radius"] # type: ignore
 Bohr = bohr_in_m * 1e10
 
@@ -190,7 +190,7 @@ class Calculator:
 
     def _get_dftd4_params_old(self):
         fxyz = os.path.join(self._mol.path, self._mol.fxyz)
-        result = subprocess.run(
+        result = subprocess.run( #noQA: PLW1510 UP022
             ["dftd4", fxyz], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
         )
 
@@ -313,7 +313,7 @@ class Calculator:
         self.dipm_norm = np.linalg.norm(self.dipm["A"], axis=1)
 
 
-        if "response_alpha" in self.ml_feat.keys():
+        if "response_alpha" in self.ml_feat.keys(): #noQA: SIM118
             self.energy_based = self.ml_feat.loc[
                 :, self.ml_feat.columns.str.contains(pattern_uhf)
             ].to_numpy()

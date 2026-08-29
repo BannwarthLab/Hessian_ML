@@ -18,6 +18,10 @@ stages:
 # a private git dependency the image build has no credentials to install.
 .mlhess_install:
   script:
+    # Fail fast on any command's non-zero exit, including whatever runs
+    # after this before_script (ruff/mypy/pytest/sphinx-build) — the custom
+    # executor's own script handling isn't guaranteed to do this for us.
+    - set -e
     # /opt/venv is baked into the read-only image, so nothing here may
     # `pip install` into it. mlhess is pure Python: just put src/ on
     # PYTHONPATH. tcgm_lib needs installing (private git dep, not baked into

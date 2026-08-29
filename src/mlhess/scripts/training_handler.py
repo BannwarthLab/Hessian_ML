@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import time
 from typing import TYPE_CHECKING
+
 import numpy as np
-from sklearn.model_selection import train_test_split
-from mlhess.utils.decorator import initProcess
-from mlhess.machinelearning.constructor import Constructor
-from mlhess.utils.tools import test_array
 from sklearn.metrics import r2_score
+from sklearn.model_selection import train_test_split
+
+from mlhess.machinelearning.constructor import Constructor
+from mlhess.utils.decorator import initProcess
+from mlhess.utils.tools import test_array
 
 if TYPE_CHECKING:
     from mlhess.management.config import Configurator

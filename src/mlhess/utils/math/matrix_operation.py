@@ -103,8 +103,7 @@ def restructure_hessian_rotation_mat(
     hess_ab = np.zeros((len(hess_vec_ab), 3, 3))
     rabs = np.zeros((len(hess_vec_ab), 3, 3))
 
-    ite_hetero = 0
-    for atom_A, atom_B in zip(atom_pairs[:, 0], atom_pairs[:, 1]):
+    for ite_hetero, (atom_A, atom_B) in enumerate(zip(atom_pairs[:, 0], atom_pairs[:, 1])):
         hess_ab[ite_hetero] = hess_vec_ab[ite_hetero].reshape(3, 3)
         if transpose_list[ite_hetero]:
             hess_ab[ite_hetero] = hess_ab[ite_hetero].T
@@ -113,6 +112,5 @@ def restructure_hessian_rotation_mat(
             3 * atom_A : 3 * atom_A + 3,
             3 * atom_B : 3 * atom_B + 3,
         ].T
-        ite_hetero += 1
 
     return rabs, hess_ab

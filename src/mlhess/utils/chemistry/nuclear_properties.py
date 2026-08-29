@@ -113,7 +113,7 @@ class NuclearProperties:
         # print(f"{evals}")
         conv2 = 16.8576522
         amuang2_kgm2 = 1.66053  ## * 10 e -47
-        mHz_rcm = 2.9979245e4  # noQA:  N806
+        mHz_rcm = 2.9979245e4
 
         islin: bool = False
         avmom = np.sum(self.ieval) / 2.0

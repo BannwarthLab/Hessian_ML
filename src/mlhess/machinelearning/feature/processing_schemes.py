@@ -1,6 +1,7 @@
 import numpy as np
+
+from mlhess.utils.math.geometrical import get_atom_pair_rot_mat, supporting_vector
 from mlhess.utils.math.matrix_operation import rotate_matrix, rotate_vector_array
-from mlhess.utils.math.geometrical import get_atom_pair_rot_mat,supporting_vector
 
 # if TYPE_CHECKING:
 #     from mlhess.machinelearning.feature.base_class import Feature

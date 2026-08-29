@@ -1,22 +1,22 @@
 """potentially rename to FittingDataHandler or similarly as Collector does not mean it is also for handling data."""
 
-import os
 import glob
-import time
+import os
 import sys
-import numpy as np
+import time
 
+import numpy as np
 from sklearn.model_selection import train_test_split
-import mlhess.management.base_settings as base_settings
-from mlhess.management.config import Configurator
+
+from mlhess.calculator.tblite_wrapper import Calculator
 from mlhess.machinelearning.feature.base_class import Feature
 from mlhess.machinelearning.target.hessian import NuclearHessian, NuclearHessianPM
-
+from mlhess.management import base_settings
+from mlhess.management.config import Configurator
+from mlhess.utils.chemistry.molecule import Molecule
+from mlhess.utils.io.parser import parse_data_set
 from mlhess.utils.io.reader import read_txt_file
 from mlhess.utils.io.writer import list_to_txt
-from mlhess.utils.io.parser import parse_data_set
-from mlhess.utils.chemistry.molecule import Molecule
-from mlhess.calculator.tblite_wrapper import Calculator
 from mlhess.utils.patcher import patch_methods
 
 
@@ -218,7 +218,7 @@ class FittingDataHandler:
                 outfile.write("\n".join(str(i) for i in self.not_considered))
             outfile.close()
 
-            print("")
+            print()
             print(
                 f"Features and Targets of {len(idx) - len(self.not_considered)} structures "
                 f"were generated in {round(time.time() - self.wall_time0)} s\n",

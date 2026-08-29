@@ -1,17 +1,17 @@
 from __future__ import annotations
-from sklearn.model_selection import train_test_split # type: ignore
-import torch
-import torch.nn as nn
-import torch.optim as optim
+
 import time
+
 import numpy as np
-import mlhess.management.base_settings as globals
-
-
-from sklearn.metrics import r2_score # type: ignore
-from sklearn.base import BaseEstimator, RegressorMixin # type: ignore
-from torch.utils.data import DataLoader, TensorDataset
+import torch
+from sklearn.base import BaseEstimator, RegressorMixin  # type: ignore
+from sklearn.metrics import r2_score  # type: ignore
+from sklearn.model_selection import train_test_split  # type: ignore
+from torch import nn, optim
 from torch.optim.lr_scheduler import ExponentialLR
+from torch.utils.data import DataLoader, TensorDataset
+
+import mlhess.management.base_settings as globals
 from mlhess.machinelearning.architecture.neural_nets import MLH_s
 
 
@@ -57,8 +57,8 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
         lr=0.0002,
         gamma=0.99,
         epochs=100,
-        model: nn.Module = MLH_s(),
-        criterion: nn.Module = nn.HuberLoss(delta=5e-2),
+        model: nn.Module = MLH_s(), #noQA: B008
+        criterion: nn.Module = nn.HuberLoss(delta=5e-2),  #noQA: B008
         batch_size: int = 1024,
     ):
         torch.set_num_threads(globals.NUM_THREADS)

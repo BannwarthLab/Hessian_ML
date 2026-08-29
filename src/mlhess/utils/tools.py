@@ -1,9 +1,11 @@
 import os
+
 import numpy as np
-from mlhess.utils.patcher import patch_molecule
+from tcgm_lib.IO.writer import wrt_hess_to_xtb
+
 from mlhess.management.config import Configurator
 from mlhess.utils.chemistry.molecule import Molecule
-from tcgm_lib.IO.writer import wrt_hess_to_xtb
+from mlhess.utils.patcher import patch_molecule
 
 
 def predict_array(model, folders, config=None):

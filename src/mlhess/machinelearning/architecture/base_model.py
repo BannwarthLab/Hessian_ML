@@ -1,10 +1,13 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
+
 import torch
-from mlhess.machinelearning.architecture.neural_nets import MLH_l
-from mlhess.machinelearning.optimizer import PyTorchRegressor
-from mlhess.machinelearning.loss.huber import RelHuberLoss
 from sklearn.metrics import r2_score
+
+from mlhess.machinelearning.architecture.neural_nets import MLH_l
+from mlhess.machinelearning.loss.huber import RelHuberLoss
+from mlhess.machinelearning.optimizer import PyTorchRegressor
 
 if TYPE_CHECKING:
     from mlhess.management.config import Configurator
@@ -12,7 +15,6 @@ if TYPE_CHECKING:
 
 class DummyTransformer:
     def __init__(self):
-        pass
 
         self.is_fitted_ = True
 

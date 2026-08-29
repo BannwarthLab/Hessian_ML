@@ -1,9 +1,12 @@
 """Setting up a class for configurations."""
 
 from __future__ import annotations
-import os 
-import mlhess.utils.io.parser as parser
+
+import os
+
 from mlhess.management.base_settings import PACKAGE_DIR
+from mlhess.utils.io import parser
+
 
 class GeneralConfig:
     def __init__(self) -> None:
@@ -85,7 +88,7 @@ class Configurator:
         self._set_config(config)
 
     def _set_config(self, config: dict):
-        for key in config:
+        for key in config: #noQA: PLC0206
             adapt_class = self._choose_config_class(key)
             for subkey in config[key]:
                 name = subkey.lower()

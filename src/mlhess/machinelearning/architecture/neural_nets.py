@@ -3,7 +3,7 @@ from torch import nn
 
 class MLH_l(nn.Module):
     def __init__(self):
-        super(MLH_l, self).__init__()
+        super().__init__()
         self.init_layer_size = 1
         self.final_layer_size = 9
         layer_size = 1000
@@ -36,7 +36,7 @@ class MLH_l(nn.Module):
 
 class MLH_s(nn.Module):
     def __init__(self):
-        super(MLH_s, self).__init__()
+        super().__init__()
         self.init_layer_size = 1
         self.final_layer_size = 9
         layer_size = 700

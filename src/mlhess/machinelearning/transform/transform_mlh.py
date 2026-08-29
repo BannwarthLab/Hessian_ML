@@ -1,17 +1,16 @@
 from __future__ import annotations
-import sys 
-import numpy as np
 
-from typing import TYPE_CHECKING
+import sys
 from copy import deepcopy
-
 from multiprocessing import shared_memory
+from typing import TYPE_CHECKING
+
+import numpy as np
 from joblib import Parallel, delayed
 
 from mlhess.machinelearning.feature.processing_schemes import new_gen_pair_features
-from mlhess.utils.math.matrix_operation import get_rotated_33_block_matrix
 from mlhess.machinelearning.target.hessian import NuclearHessianPM
-import time as time
+from mlhess.utils.math.matrix_operation import get_rotated_33_block_matrix
 
 if TYPE_CHECKING:
     from mlhess.utils.chemistry.molecule import Molecule
@@ -154,7 +153,7 @@ def init_memory(arrays):
 #     Returns:
 #         tuple: Rotation Matrix, Features, transpose info
 #     """
-#     mol = GLOBAL_MOL  # type: ignore[name-defined] #noQA: F821 
+#     mol = GLOBAL_MOL  # type: ignore[name-defined]
 #     sup_vector = supporting_vector(mol.feature.dipm["A"], atom_pair)
 
 #     R_MI_APF = get_atom_pair_rot_mat(mol.xyz, sup_vector, atom_pair)
@@ -174,7 +173,7 @@ def init_memory(arrays):
 #     Args:
 #         atom_pair (tuple[int, int]): Index of atom A and atom B.
 #     """
-#     mol = GLOBAL_MOL  # type: ignore[name-defined] #noQA: F821 
+#     mol = GLOBAL_MOL  # type: ignore[name-defined]
 
 #     atom_A, atom_B = atom_pair
 #     sup_vector = supporting_vector(mol.feature.dipm["A"], atom_pair)
@@ -263,7 +262,6 @@ def detach_shared_memory_hessian():
 
     GLOBAL_HESS = None 
     GLOBAL_SHM_HESS = None 
-    return 
 
 def transform_prediction(self: Molecule, num_threads):
     """Processes the features to ML readable."""
