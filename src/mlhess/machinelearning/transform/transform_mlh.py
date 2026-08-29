@@ -284,7 +284,7 @@ def transform_prediction(self: Molecule, num_threads):
         if sys.platform =="darwin":
             backend = 'threading'
             meta = arrays
-            shms =[]
+            shms: list[shared_memory.SharedMemory] = []
         else:
             meta,shms = init_memory(arrays)
             backend = 'loky'
@@ -348,7 +348,8 @@ def transform_training(mol: Molecule, num_threads: int = 4):
             backend = 'threading'
             meta = arrays
             meta_hess = [hessian]
-            shms,shm_hess =[],[]
+            shms: list[shared_memory.SharedMemory] = []
+            shm_hess: list[shared_memory.SharedMemory] = []
         else:
             meta,shms = init_memory(arrays)
             meta_hess,shm_hess =init_memory([hessian])

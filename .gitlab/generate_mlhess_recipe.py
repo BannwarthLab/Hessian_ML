@@ -1,7 +1,7 @@
 import re
 import sys
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Tuple
 
 PYPROJECT_PATH = Path(__file__).resolve().parent.parent / "pyproject.toml"
 

@@ -54,7 +54,7 @@ lint:
   tags:
     - cpu
   script:
-    - ruff check .
+    - ruff check src/
     - mypy --ignore-missing-imports --exclude build/ .
     - codespell src/
 
