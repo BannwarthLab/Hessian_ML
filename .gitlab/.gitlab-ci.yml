@@ -12,10 +12,10 @@ stages:
 # publish the built documentation to GitLab Pages
   - deploy
 
-build-hessml_image:
+build-mlhess_image:
   stage: build
   cache:
-    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    key: "mlhess_image-$CI_COMMIT_REF_SLUG"
     paths:
       - containers/
   script:
@@ -27,24 +27,24 @@ build-hessml_image:
   tags:
     - shell
   variables:
-    CONTAINER_NAME: "hessml_image"
+    CONTAINER_NAME: "mlhess_image"
 
 build-env:
   stage: build-env
   image: containers/${CONTAINER_NAME}.sif
   cache:
-    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    key: "mlhess_image-$CI_COMMIT_REF_SLUG"
     paths:
       - containers/
       - /tmp/venv/
       - .cache/pip
 
   needs:
-    - build-hessml_image
+    - build-mlhess_image
   variables:
     IMAGE_NAME: ""
-    CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_RECIPE: ".gitlab/recipes/hessml_image.def"
+    CONTAINER_NAME: "containers/mlhess_image.sif"
+    APPTAINER_RECIPE: ".gitlab/recipes/mlhess_image.def"
     APPTAINER_EXEC_ARGS: ""
 
   script:
@@ -73,15 +73,15 @@ lint:
   needs:
     - build-env
   cache:
-    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    key: "mlhess_image-$CI_COMMIT_REF_SLUG"
     paths:
       - /tmp/venv/
       - containers/
 
   variables:
     IMAGE_NAME: ""
-    CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_RECIPE: ".gitlab/recipes/hessml_image.def"
+    CONTAINER_NAME: "containers/mlhess_image.sif"
+    APPTAINER_RECIPE: ".gitlab/recipes/mlhess_image.def"
     APPTAINER_EXEC_ARGS: ""
   tags:
     - cpu
@@ -97,15 +97,15 @@ test:
   needs:
     - build-env
   cache:
-    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    key: "mlhess_image-$CI_COMMIT_REF_SLUG"
     paths:
       - /tmp/venv/
       - containers/
 
   variables:
     IMAGE_NAME: ""
-    CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_RECIPE: ".gitlab/recipes/hessml_image.def"
+    CONTAINER_NAME: "containers/mlhess_image.sif"
+    APPTAINER_RECIPE: ".gitlab/recipes/mlhess_image.def"
     APPTAINER_EXEC_ARGS: "--bind $CI_PROJECT_DIR:$CI_PROJECT_DIR"
     APPTAINER_BIND: "$CI_PROJECT_DIR:$CI_PROJECT_DIR"
 
@@ -128,15 +128,15 @@ build-docs:
   needs:
     - build-env
   cache:
-    key: "hessml_image-$CI_COMMIT_REF_SLUG"
+    key: "mlhess_image-$CI_COMMIT_REF_SLUG"
     paths:
       - /tmp/venv/
       - containers/
 
   variables:
     IMAGE_NAME: ""
-    CONTAINER_NAME: "containers/hessml_image.sif"
-    APPTAINER_RECIPE: ".gitlab/recipes/hessml_image.def"
+    CONTAINER_NAME: "containers/mlhess_image.sif"
+    APPTAINER_RECIPE: ".gitlab/recipes/mlhess_image.def"
     APPTAINER_EXEC_ARGS: ""
   tags:
     - cpu
