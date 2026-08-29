@@ -73,9 +73,11 @@ test:
   tags:
     - cpu
   script:
-    - pytest tests/ --cov=mlhess --cov-report term --cov-report xml:coverage.xml
+    - pytest tests/ --cov=mlhess --cov-report term --cov-report xml:coverage.xml --cov-report html:htmlcov
 
   artifacts:
+    paths:
+      - htmlcov/
     reports:
       coverage_report:
         coverage_format: cobertura
@@ -101,17 +103,20 @@ build-docs:
     paths:
       - docs/_build
 
-# Deploy docs
+# Deploy docs + coverage report
 pages: # this job name is fixed
   stage: deploy
   needs:
     - build-docs
+    - test
   image: alpine:latest
   tags:
     - docker
   script:
     - mkdir -p public
     - mv docs/_build/* public/
+    - mkdir -p public/coverage
+    - mv htmlcov/* public/coverage/
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   artifacts:
