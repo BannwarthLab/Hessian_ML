@@ -6,6 +6,8 @@ from mlhess.utils.math.matrix_operation import rotate_matrix, rotate_vector_arra
 # if TYPE_CHECKING:
 #     from mlhess.machinelearning.feature.base_class import Feature
 
+TRIL = np.tril_indices(3)          # module level, computed once
+
 
 def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
     """Generate features for an atom pair.
@@ -82,7 +84,7 @@ def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
 
         # Only takes the lower triangle values as the matrices are symmetric
         Quantity_AB[j].extend(
-            quad_moments[:, np.tril_indices(3)[0], np.tril_indices(3)[1]]
+            quad_moments[:, TRIL[0], TRIL[1]]
             .flatten()
             .tolist()
         )
@@ -225,7 +227,7 @@ def new_gen_pair_features(atom_pair: tuple[int, int], *args) -> tuple:
 
         # Only takes the lower triangle values as the matrices are symmetric
         Quantity_AB[j].extend(
-            quad_moments[:, np.tril_indices(3)[0], np.tril_indices(3)[1]]
+            quad_moments[:, TRIL[0], TRIL[1]]
             .flatten()
             .tolist()
         )
