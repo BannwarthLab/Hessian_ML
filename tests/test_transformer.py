@@ -56,3 +56,39 @@ def test_transform_training(fname, atom_pair):
     np.testing.assert_array_almost_equal(h_actual, h_expected, 5)
 
     os.chdir(cwd)
+
+
+@pytest.mark.parametrize(
+    "fname, xyz_file",
+    [
+        ("single_mol_data/0002", "coord.xyz"),
+        ("single_mol_data/0004", "xtbopt.xyz"),
+    ],
+)
+def test_hessian_round_trip(fname, xyz_file, monkeypatch):
+    """Training targets fed back into the reconstruction give the original off-diagonal blocks."""
+    monkeypatch.chdir(os.path.join(Path(__file__).parent, "general_test_dir"))
+    full_path = os.path.join(Path(__file__).parent, fname)
+
+    mol_train = Molecule(full_path, xyz_file)
+    mol_train.read_hessian("hessian")
+    mol_train.prepare_training(num_threads=1)
+
+    mol_pred = Molecule(full_path, xyz_file)
+    mol_pred.prepare_prediction(num_threads=1)
+    mol_pred.target = np.array(mol_train.processed_target)
+
+    H_rec = mol_pred.ml_hessian.get_processed_target()
+    H_ref = mol_train.hessian.hessian
+    nat = mol_pred.nat
+
+    np.testing.assert_allclose(H_rec, H_rec.T, atol=1e-12)
+
+    damping = mol_pred.ml_hessian.damping(mol_pred.feature.distance_mat)
+    for a in range(nat):
+        for b in range(nat):
+            if a == b:
+                continue
+            block_rec = H_rec[3 * a : 3 * a + 3, 3 * b : 3 * b + 3]
+            block_ref = H_ref[3 * a : 3 * a + 3, 3 * b : 3 * b + 3] * damping[a, b]
+            np.testing.assert_allclose(block_rec, block_ref, atol=1e-10)
