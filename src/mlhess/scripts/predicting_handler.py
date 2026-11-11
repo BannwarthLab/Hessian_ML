@@ -92,7 +92,6 @@ class PredictionHandling:
         }
 
         with patch_methods(Molecule, methods):
-
             data_frame = {}
             for fname in self.folder_names:
                 mol = Molecule(fname, self.config.molecule.xyz_file)
@@ -101,20 +100,23 @@ class PredictionHandling:
                 mol.prepare_prediction(Calculator, self.config.general.threads)
                 if mol.calc_succeeded:
                     mol.predict(self.model)
-                    wrt_hess_to_xtb(os.path.join(mol.path,'MLhessian'),mol.ml_hessian.hessian)
+                    wrt_hess_to_xtb(
+                        os.path.join(mol.path, "MLhessian"), mol.ml_hessian.hessian
+                    )
                     mol.nuclear_properties.calc_properties(shift=False)
                     trv = TruhlarCramerRRHO(mol)
-                    #trv.print_thermoprop()
+                    # trv.print_thermoprop()
                     data_frame[fname] = trv_to_series(trv)
 
             df = pd.DataFrame(data_frame)
-            df.to_pickle('results.pkl')
+            df.to_pickle("results.pkl")
 
-def trv_to_series(trv:TruhlarCramerRRHO):
+
+def trv_to_series(trv: TruhlarCramerRRHO):
     series = {}
-    series['frequencies'] = trv.frequencies
-    series['ZPVE'] = trv.zpve
-    series['G_tot'] = trv.G_tot
-    series['H_tot'] = trv.H_tot
-    series['S_trv'] = trv.S_trv
-    return series 
+    series["frequencies"] = trv.frequencies
+    series["ZPVE"] = trv.zpve
+    series["G_tot"] = trv.G_tot
+    series["H_tot"] = trv.H_tot
+    series["S_trv"] = trv.S_trv
+    return series

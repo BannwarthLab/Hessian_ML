@@ -17,7 +17,7 @@ from mlhess.utils.io.reader import read_dftd4, read_txt_file
 def test_read_txt_file(test_data_path, expected):
     full_path = os.path.join(Path(__file__).parent, "reader_data", test_data_path)
     lines = read_txt_file(full_path)
-    assert isinstance(lines,list)
+    assert isinstance(lines, list)
     assert len(lines) == expected
 
 

@@ -40,10 +40,11 @@ def test_parse_data_set(inp_fname, expected):
     full_path = os.path.join(Path(__file__).parent, "collector_data", inp_fname)
     config = Configurator(full_path)
     cwd = os.path.abspath("./")
-    os.chdir(os.path.join(Path(__file__).parent,'collector_data'))
+    os.chdir(os.path.join(Path(__file__).parent, "collector_data"))
     folder_names = parser.parse_data_set(config)
     assert len(folder_names) == expected
     os.chdir(cwd)
+
 
 @pytest.mark.parametrize(
     "idx,val",

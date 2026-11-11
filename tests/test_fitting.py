@@ -17,7 +17,7 @@ def test_xy():
     config_path = os.path.join(Path(__file__).parent, "fitting_data/input.toml")
     config = Configurator(config_path)
     cwd = os.path.abspath("./")
-    os.chdir(os.path.join(Path(__file__).parent,'fitting_data'))
+    os.chdir(os.path.join(Path(__file__).parent, "fitting_data"))
 
     base_settings.PROCESSED_DATA_FOLDER = os.path.join(
         Path(__file__).parent, "processed_data"

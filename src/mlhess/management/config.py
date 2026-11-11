@@ -75,7 +75,9 @@ class TrainParameterConfig:
 
 class PredictConfig:
     def __init__(self) -> None:
-        self.model_name = os.path.join(PACKAGE_DIR,"/machinelearning/default_model/default_MLH.joblib")
+        self.model_name = os.path.join(
+            PACKAGE_DIR, "/machinelearning/default_model/default_MLH.joblib"
+        )
         self.folder = None
         self.file_list = None
 
@@ -96,7 +98,7 @@ class Configurator:
         self._set_config(config)
 
     def _set_config(self, config: dict):
-        for key in config: #noQA: PLC0206
+        for key in config:  # noQA: PLC0206
             adapt_class = self._choose_config_class(key)
             for subkey in config[key]:
                 name = subkey.lower()

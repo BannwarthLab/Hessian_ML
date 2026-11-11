@@ -18,7 +18,7 @@ files = ["test_files.txt", "train_files.txt", "not_considered"]
 folders = [PROCESSED_DATA_FOLDER]
 
 
-def test_run_protocol(cleanup_file, cleanup_folder): # noqa: F811
+def test_run_protocol(cleanup_file, cleanup_folder):  # noqa: F811
     inp_fname = "collector_data/input.toml"
 
     for file in files:
@@ -27,7 +27,7 @@ def test_run_protocol(cleanup_file, cleanup_folder): # noqa: F811
         cleanup_folder(folder)
 
     path = os.path.join(Path(__file__).parent, inp_fname)
-    cwd = os.path.abspath('./')
+    cwd = os.path.abspath("./")
     os.chdir(os.path.join(Path(__file__).parent, "collector_data"))
     config = Configurator(path)
     fdh = FittingDataHandler(config)
@@ -38,7 +38,8 @@ def test_run_protocol(cleanup_file, cleanup_folder): # noqa: F811
     np.testing.assert_array_equal(fdh.train_idx, np.array([0, 1, 3]))
 
     os.chdir(cwd)
-    
+
+
 def test_collect_folder():
     inp_fname = "collector_data/input.toml"
     path = os.path.join(Path(__file__).parent, inp_fname)
@@ -54,7 +55,7 @@ def test_collect_folder():
         assert true_folder == test_folder
 
 
-def test_do_preparation_split(cleanup_file): # noqa: F811
+def test_do_preparation_split(cleanup_file):  # noqa: F811
     inp_fname = "collector_data/input.toml"
     for file in files:
         cleanup_file(file)

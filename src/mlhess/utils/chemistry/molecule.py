@@ -184,7 +184,6 @@ class Molecule(AbstractMolecule):
     def prepare_prediction(
         self, calc_class: type[Calculator] = Calculator, num_threads=4
     ):
-        
         calc = calc_class(self)
         calc.compute_feature()
         transform_prediction(self, num_threads)

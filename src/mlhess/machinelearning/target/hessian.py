@@ -1,6 +1,6 @@
 import numpy as np
 
-#from typing import TYPE_CHECKING
+# from typing import TYPE_CHECKING
 from tcgm_lib.molecule.nuclear_hessian import NuclearHessian as AbstractNuclearHessian
 
 from mlhess.utils.math.matrix_operation import (
@@ -11,6 +11,7 @@ from mlhess.utils.math.matrix_operation import (
 # if TYPE_CHECKING:
 #     from mlhess.utils.chemistry.molecule import Molecule
 
+
 class NuclearHessian(AbstractNuclearHessian):
     def __init__(self, mol):
         super().__init__(mol)
@@ -20,7 +21,9 @@ class NuclearHessian(AbstractNuclearHessian):
         pass
 
     def get_rotated_matrix(self, rot_mat, atom_A, atom_B, transpose):
-        return get_rotated_33_block_matrix(rot_mat,self.hessian,atom_A,atom_B,transpose)
+        return get_rotated_33_block_matrix(
+            rot_mat, self.hessian, atom_A, atom_B, transpose
+        )
 
     def damping(self, dist):
         return 1 / (np.exp((dist - 13.0) / 0.1) + 1)
@@ -41,12 +44,14 @@ class NuclearHessian(AbstractNuclearHessian):
         rabs, hess_ab = restructure_hessian_rotation_mat(
             np.array(hess_vec_ab), atom_pairs, R_MI_APF_mat, np.array(transposes)
         )
-        
+
         hess_ab = np.einsum("mij,mjk,mlk->mil", rabs, hess_ab, rabs)
 
         Hessian = np.zeros([self._mol.nat * 3, self._mol.nat * 3])
 
-        for ite_hetero, (atom_A, atom_B) in enumerate(zip(atom_pairs[:, 0], atom_pairs[:, 1])):
+        for ite_hetero, (atom_A, atom_B) in enumerate(
+            zip(atom_pairs[:, 0], atom_pairs[:, 1])
+        ):
             Hessian[
                 3 * atom_A : 3 * atom_A + 3,
                 3 * atom_B : 3 * atom_B + 3,
@@ -105,13 +110,17 @@ class NuclearHessianPM(NuclearHessian):
     def get_rotated_matrix(
         self, rot_mat: np.ndarray, atom_A: int, atom_B: int, transpose: bool
     ):
-        H_APF_m = get_rotated_33_block_matrix(rot_mat,self.hess_m,atom_A,atom_B,transpose)
-        H_APF_p = get_rotated_33_block_matrix(rot_mat,self.hess_p,atom_A,atom_B,transpose)
+        H_APF_m = get_rotated_33_block_matrix(
+            rot_mat, self.hess_m, atom_A, atom_B, transpose
+        )
+        H_APF_p = get_rotated_33_block_matrix(
+            rot_mat, self.hess_p, atom_A, atom_B, transpose
+        )
         return np.array([H_APF_p, H_APF_m])
 
     def get_processed_target(self):
         upper_tri_blocks_hessian = self._mol.target
-        upper_tri_blocks_hessian[:,:9] += upper_tri_blocks_hessian[:,9:]
-        self._mol.target = upper_tri_blocks_hessian[:,:9]
+        upper_tri_blocks_hessian[:, :9] += upper_tri_blocks_hessian[:, 9:]
+        self._mol.target = upper_tri_blocks_hessian[:, :9]
         self.hessian = self.gen_hess_from_vec_pred_damped()
         return self.hessian

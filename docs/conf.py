@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath("../src"))
 
 
 def skip(app, what, name, obj, would_skip, options):
-    if name in ["__init__","main"]:
+    if name in ["__init__", "main"]:
         return False
     return would_skip
 
@@ -25,7 +25,7 @@ def setup(app):
 
 print("Current working directory:", os.getcwd())
 print("sys.path contents:", sys.path)
-print("Project root path:", os.path.abspath('../src'))
+print("Project root path:", os.path.abspath("../src"))
 
 autodoc_default_options = {
     "members": True,
@@ -35,9 +35,9 @@ autodoc_default_options = {
     "exclude-members": "__weakref__",
 }
 
-project = 'Machine Learning Hessian: MLH'
-copyright = '2026, Gereon Feldmann'
-author = 'Gereon Feldmann'
+project = "Machine Learning Hessian: MLH"
+copyright = "2026, Gereon Feldmann"
+author = "Gereon Feldmann"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -46,7 +46,7 @@ author = 'Gereon Feldmann'
 templates_path = ["_templates"]
 
 extensions = [
-    #"sphinx.ext.todo",
+    # "sphinx.ext.todo",
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
@@ -60,7 +60,7 @@ napoleon_include_init_with_doc = True
 napoleon_use_param = True
 napoleon_use_rtype = True
 
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store","test_*"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "test_*"]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

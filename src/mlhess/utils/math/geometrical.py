@@ -167,9 +167,7 @@ def rot_Y(alpha: float) -> np.ndarray:
     )
 
 
-
-
-def supporting_vector(vector, atom_pair:tuple[int,int]) -> np.ndarray:
+def supporting_vector(vector, atom_pair: tuple[int, int]) -> np.ndarray:
     """Compute supporting vector for the calculation of the rotation matrix."""
     i, j = atom_pair
 

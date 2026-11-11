@@ -98,7 +98,7 @@ def parse_data_set(config: Configurator) -> list:
         msg = f"Parsing data set in {main_folder}..."
         print(msg, end="")
 
-        file_subset = set([config.molecule.xyz_file]) #noQA: C405
+        file_subset = set([config.molecule.xyz_file])  # noQA: C405
         if config.general.collector:
             file_subset.add(config.molecule.target_file)
 
