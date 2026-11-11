@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 import os
-
+import sys 
 from mlhess.management.base_settings import PACKAGE_DIR
 from mlhess.utils.io import parser
 
 
 class GeneralConfig:
     def __init__(self) -> None:
-        self.threads = 4
+        self._threads = 4
         self.gpu = True
         self.random_state = 79
         self.runtype = "mlhess"
@@ -19,6 +19,13 @@ class GeneralConfig:
         self.predictor = False
         self.target = "hessian_pm"  # hessian
 
+    @property
+    def threads(self):
+        return self._threads if sys.platform != "darwin" else 1
+
+    @threads.setter
+    def threads(self,val):
+        self._threads = val
 
 class CollectorConfig:
     def __init__(self):

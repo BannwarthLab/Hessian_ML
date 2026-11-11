@@ -2,7 +2,6 @@ from __future__ import annotations
 import os 
 import pandas as pd 
 
-import os
 from typing import TYPE_CHECKING
 
 from joblib import load

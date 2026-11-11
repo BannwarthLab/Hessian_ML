@@ -172,13 +172,13 @@ class Molecule(AbstractMolecule):
     def R_MI_APF_mat(self):
         return self._R_MI_APF_mat
 
-    def prepare_training(self, calc_class: type[Calculator] = Calculator):
+    def prepare_training(self, calc_class: type[Calculator] = Calculator, num_threads=4):
         if self._hessian is None:
             print("No hessian provided.")
             return
         calc = calc_class(self)
         calc.compute_feature()
-        transform_training(self)
+        transform_training(self, num_threads)
         return
 
     def prepare_prediction(

@@ -1,4 +1,5 @@
 import pytest
+import sys 
 from mlhess.management.config import Configurator
 
 
@@ -38,7 +39,7 @@ def test_collector_configurator(key, expected):
 @pytest.mark.parametrize(
     "key, expected",
     [
-        ("threads", 4),
+        ("threads", 1 if sys.platform =="darwin" else 4),
         ("gpu", True),
         ("random_state", 79),
         ("runtype", "mlhess"),

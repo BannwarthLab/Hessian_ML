@@ -10,15 +10,19 @@ torch==2.3.0
 cffi
 pkgconfig
 tomli
-tblite==0.4.0
+tblite==0.6.0
 dftd4==4.2.0
 tcgm_lib @ git+https://gitlab.git.nrw/rwth-bannwarthlab/open_tcgm_lib_py.git
 
 [dev]
 pytest
 pytest-cov
-ruff
+ruff==0.16.5
 mypy
 codespell
 types-requests
 types-PyYAML
+
+[docs]
+sphinx
+furo

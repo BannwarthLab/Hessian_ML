@@ -1,4 +1,5 @@
 import os
+import sys 
 import pytest
 from mlhess.utils.chemistry.molecule import Molecule
 from mlhess.calculator.tblite_wrapper import Calculator
@@ -25,10 +26,12 @@ def test_transform_training(fname, atom_pair):
     os.chdir(os.path.join(Path(__file__).parent,'general_test_dir'))
     a, b = atom_pair
     h_expected = mol.hessian.hessian[a * 3 : a * 3 + 3, b * 3 : b * 3 + 3]
+    
+    num_threads = 1 if sys.platform =='darwin' else 4
 
     calc = Calculator(mol)
     calc.compute_feature()
-    transform_training(mol)
+    transform_training(mol,num_threads)
 
     sup_vector = supporting_vector(mol.feature.dipm["A"], atom_pair)
 

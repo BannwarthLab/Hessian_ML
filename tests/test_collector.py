@@ -12,7 +12,7 @@ from mlhess.machinelearning.target.hessian import NuclearHessian, NuclearHessian
 from mlhess.machinelearning.feature.base_class import Feature
 from .clean_up import cleanup_file,cleanup_folder # noqa: F811, F401
 
-os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
+#os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
 
 files = ["test_files.txt", "train_files.txt", "not_considered"]
 folders = [PROCESSED_DATA_FOLDER]
@@ -48,7 +48,7 @@ def test_collect_folder():
 
     folder_names = []
     for i in range(1, 5):
-        folder_names.append(f"collector_data/mol_structures/{i:04d}")
+        folder_names.append(f"mol_structures/{i:04d}")
 
     for true_folder, test_folder in zip(folder_names, fdh.folder_names):
         assert true_folder == test_folder
@@ -106,6 +106,7 @@ def test_collect_feature_target_from_mol(folder_name, nat):
 
     config = Configurator(None)
     config.molecule.xyz_file = "xtbopt.xyz"
+    
     fdh = FittingDataHandler(config)
 
     fdh.n_data = 0

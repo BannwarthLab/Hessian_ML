@@ -43,7 +43,6 @@ src/mlhess/utils/chemistry/molecule.py
 src/mlhess/utils/chemistry/nuclear_properties.py
 src/mlhess/utils/converter/__init__.py
 src/mlhess/utils/converter/pse_converter.py
-src/mlhess/utils/io/__init__ copy.py
 src/mlhess/utils/io/__init__.py
 src/mlhess/utils/io/parser.py
 src/mlhess/utils/io/reader.py

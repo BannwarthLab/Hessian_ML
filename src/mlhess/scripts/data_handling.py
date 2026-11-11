@@ -267,7 +267,7 @@ class FittingDataHandler:
         print(f"Number of atoms: {mol.nat}")
 
         mol.read_hessian(self.config.molecule.target_file)
-        mol.prepare_training(Calculator)
+        mol.prepare_training(Calculator,self.config.general.threads)
 
         self.n_data += mol.nat * (mol.nat - 1) / 2
         print(f"Feature shape: {mol.feature.processed.shape}")

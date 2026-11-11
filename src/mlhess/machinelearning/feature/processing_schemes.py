@@ -157,7 +157,7 @@ def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
     Features_temp.append(C6_A)
     Features_temp.append(C6_B)
 
-    Features_temp.append(self.wbo[A, B][0])
+    Features_temp.append(self.wbo[A, B])
     Features_temp.extend(order1_aes[0])
     Features_temp.extend(order2_aes[0])
 

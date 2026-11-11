@@ -1,4 +1,5 @@
 import os
+import sys
 import pytest
 import numpy as np
 from pathlib import Path
@@ -36,9 +37,11 @@ def test_prepare_training(fname, data, hess_class):
         mol.hess_class = NuclearHessianPM
     cwd = os.path.abspath("./")
     os.chdir(os.path.join(Path(__file__).parent,'general_test_dir'))
+    
+    num_threads = 1 if sys.platform =='darwin' else 4
 
     mol.read_hessian("hessian")
-    mol.prepare_training()
+    mol.prepare_training(num_threads=num_threads)
 
     test_target = np.float32(mol.processed_target)
 
