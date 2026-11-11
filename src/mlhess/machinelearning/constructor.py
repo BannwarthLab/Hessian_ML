@@ -14,7 +14,7 @@ from sklearn.feature_selection import VarianceThreshold  # type: ignore
 # Model pipeline
 from sklearn.pipeline import Pipeline  # type: ignore
 
-# Feature scaling 
+# Feature scaling
 from sklearn.preprocessing import Normalizer, StandardScaler  # type: ignore
 
 # ML Model
@@ -72,23 +72,26 @@ class Constructor:
 
     def _choose_model(self, method: str):
         if method.lower() == "mlh_l":
-            model:type[MLH_l | MLH_s] = MLH_l
+            model: type[MLH_l | MLH_s] = MLH_l
         elif method.lower() == "mlh_s":
             model = MLH_s
 
         return model
 
-    def _choose_loss(self, name: str, error_parameter: dict) -> torch.nn.HuberLoss|RelHuberLoss:
+    def _choose_loss(
+        self, name: str, error_parameter: dict
+    ) -> torch.nn.HuberLoss | RelHuberLoss:
         if name.lower() in ["huber_loss", "huberloss"]:
             return torch.nn.HuberLoss(delta=error_parameter.get("delta", 5e-2))
         elif name.lower() in ["relhuber", "rel_huber", "relhuber_loss", "relhuberloss"]:
             return RelHuberLoss(
-                    delta=error_parameter.get("delta", 5e-3),
-                    relative_delta=error_parameter.get("rel_delta", 1e-4))
+                delta=error_parameter.get("delta", 5e-3),
+                relative_delta=error_parameter.get("rel_delta", 1e-4),
+            )
         else:
             print("Loss name not found. Falling back to HuberLoss.")
             return torch.nn.HuberLoss(delta=error_parameter.get("delta", 5e-2))
-        
+
     def set_scaler(self, scaling: str | None = None) -> None:
         """
         Define the standard scaler for the ML model.
@@ -195,6 +198,9 @@ class Constructor:
         for param in param_temp:
             print(f"{param}: {param_temp[param]}")
 
-path = os.path.join(PACKAGE_DIR,"machinelearning/default_model/default_MLH.joblib")
+
+path = os.path.join(PACKAGE_DIR, "machinelearning/default_model/default_MLH.joblib")
+
+
 def load_model(path=path):
     return load(path)

@@ -1,4 +1,3 @@
-
 import numpy as np
 
 
@@ -9,9 +8,9 @@ class Feature:
         self.new_keys: None | list = None
 
         # atomwise
-        self._scalars :np.ndarray |None = None
-        self._vectors :np.ndarray |None= None
-        self._matrices :np.ndarray |None= None
+        self._scalars: np.ndarray | None = None
+        self._vectors: np.ndarray | None = None
+        self._matrices: np.ndarray | None = None
 
         # atomwise
         self.scalar_keys = None
@@ -33,27 +32,27 @@ class Feature:
         self._processed = vals
 
     @property
-    def scalars(self)->np.ndarray|None:
+    def scalars(self) -> np.ndarray | None:
         return self._scalars
 
     @scalars.setter
-    def scalars(self, vals:np.ndarray):
+    def scalars(self, vals: np.ndarray):
         self._scalars = vals
 
     @property
-    def vectors(self)->np.ndarray|None:
+    def vectors(self) -> np.ndarray | None:
         return self._vectors
 
     @vectors.setter
-    def vectors(self, vals:np.ndarray):
+    def vectors(self, vals: np.ndarray):
         self._vectors = vals
 
     @property
-    def matrices(self)->np.ndarray|None:
+    def matrices(self) -> np.ndarray | None:
         return self._matrices
 
     @matrices.setter
-    def matrices(self, vals:np.ndarray): 
+    def matrices(self, vals: np.ndarray):
         self._matrices = vals
 
     @property

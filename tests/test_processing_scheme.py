@@ -27,7 +27,7 @@ target = np.float32(
 def test_gen_pair_feature_equivalence(fname, atom_pairs, expected_transposes):
     full_path = os.path.join(Path(__file__).parent, fname)
     cwd = os.path.abspath("./")
-    os.chdir(os.path.join(Path(__file__).parent,'general_test_dir'))
+    os.chdir(os.path.join(Path(__file__).parent, "general_test_dir"))
 
     mol = Molecule(full_path, "xtbopt.xyz")
     mol.read_hessian("hessian")
@@ -51,6 +51,7 @@ def test_gen_pair_feature_equivalence(fname, atom_pairs, expected_transposes):
 
     os.chdir(cwd)
 
+
 @pytest.mark.parametrize(
     "fname, atom_pair, expected_transpose",
     [
@@ -63,7 +64,7 @@ def test_gen_pair_feature_same_element_diff_dipm(fname, atom_pair, expected_tran
     mol = Molecule(full_path, "xtbopt.xyz")
     mol.read_hessian("hessian")
     cwd = os.path.abspath("./")
-    os.chdir(os.path.join(Path(__file__).parent,'general_test_dir'))
+    os.chdir(os.path.join(Path(__file__).parent, "general_test_dir"))
     calc = Calculator(mol)
     calc.compute_feature()
 

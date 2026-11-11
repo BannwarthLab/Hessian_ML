@@ -106,7 +106,6 @@ def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
     Features_temp.extend(Quantity_AB[0])
     Features_temp.extend(Quantity_AB[1])
 
-
     # atom pair information
 
     r_BA = -r_AB
@@ -171,7 +170,7 @@ def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
     return np.array(Features_temp), transpose, R_MI_APF
 
 
-def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
+def new_gen_pair_features(atom_pair: tuple[int, int], *args) -> tuple:
     """Generate features for an atom pair.
 
     Args:
@@ -185,17 +184,33 @@ def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
     """
     Features_temp = []
 
-    atomic_numbers,dipm_norm,xyz,distance_mat,q,at_dipole,qm,scalars,vectors,matrices,etot_idx,C6_params,wbo = args[0]
+    (
+        atomic_numbers,
+        dipm_norm,
+        xyz,
+        distance_mat,
+        q,
+        at_dipole,
+        qm,
+        scalars,
+        vectors,
+        matrices,
+        etot_idx,
+        C6_params,
+        wbo,
+    ) = args[0]
 
     sup_vector = supporting_vector(at_dipole, atom_pair)
-    
+
     R_MI_APF = get_atom_pair_rot_mat(xyz, sup_vector, atom_pair)
 
-    R_MI_APF,atom_pair,transpose = adapt_rotation_matrix(R_MI_APF,atom_pair,atomic_numbers,dipm_norm)
+    R_MI_APF, atom_pair, transpose = adapt_rotation_matrix(
+        R_MI_APF, atom_pair, atomic_numbers, dipm_norm
+    )
 
-    r_AB,R_AB = compute_rab(xyz,R_MI_APF,atom_pair,distance_mat)
+    r_AB, R_AB = compute_rab(xyz, R_MI_APF, atom_pair, distance_mat)
 
-    A,B = atom_pair 
+    A, B = atom_pair
 
     Quantity_AB: list[list[float]] = [[], []]
 
@@ -224,7 +239,6 @@ def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
         Quantity_AB[j].extend(scalars[atom])
         Quantity_AB[j].extend(scalars[atom] / scalars[atom][etot_idx[0]])
 
-
     Quantity_AB_arr = np.array(Quantity_AB)
 
     # Feature_Arith = ((Quantity_AB_arr[0] + Quantity_AB_arr[1]) / 2).tolist()
@@ -250,7 +264,6 @@ def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
 
     order1_aes = q_A * np.dot(dipm_B, r_BA.T) + q_B * np.dot(dipm_A, r_AB.T)
     order1_aes /= R_AB**3
-
 
     qm_A = qm[A]
     qm_A = rotate_matrix(R_MI_APF, qm_A)
@@ -297,8 +310,9 @@ def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
     return np.array(Features_temp), transpose, R_MI_APF
 
 
-def adapt_rotation_matrix(R_MI_APF:np.ndarray, atom_pair: tuple[int, int],atomic_numbers,dipm_norm) -> tuple:
-
+def adapt_rotation_matrix(
+    R_MI_APF: np.ndarray, atom_pair: tuple[int, int], atomic_numbers, dipm_norm
+) -> tuple:
     # Performs a rotation around the Y axis by 180 ° if nuclear charge of A
     # is smaller than B to achieve a consistent alignment
     # If A == B rotation depends on dipole moment
@@ -328,11 +342,12 @@ def adapt_rotation_matrix(R_MI_APF:np.ndarray, atom_pair: tuple[int, int],atomic
         elif dipm_norm[A] == dipm_norm[B]:
             print("Nucelar Charge and Dipole moment are the same.")
 
-    atom_pair = A,B 
-    return R_MI_APF,atom_pair,transpose
+    atom_pair = A, B
+    return R_MI_APF, atom_pair, transpose
 
-def compute_rab(xyz,R_MI_APF,atom_pair,distance_mat):
-    A,B = atom_pair
+
+def compute_rab(xyz, R_MI_APF, atom_pair, distance_mat):
+    A, B = atom_pair
     xyz_A = xyz[A, :].copy()
     xyz_B = xyz[B, :].copy()
 
@@ -343,5 +358,5 @@ def compute_rab(xyz,R_MI_APF,atom_pair,distance_mat):
     xyz_A = np.matmul(R_MI_APF, xyz_A)
     xyz_B = np.matmul(R_MI_APF, xyz_B)
     r_AB = (xyz_A - xyz_B).reshape(1, -1)
-    R_AB = distance_mat[A,B]
-    return r_AB,R_AB
+    R_AB = distance_mat[A, B]
+    return r_AB, R_AB

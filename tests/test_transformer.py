@@ -23,7 +23,7 @@ def test_transform_training(fname, atom_pair):
     mol = Molecule(full_path, "coord.xyz")
     mol.read_hessian("hessian")
     cwd = os.path.abspath("./")
-    os.chdir(os.path.join(Path(__file__).parent,'general_test_dir'))
+    os.chdir(os.path.join(Path(__file__).parent, "general_test_dir"))
     a, b = atom_pair
     h_expected = mol.hessian.hessian[a * 3 : a * 3 + 3, b * 3 : b * 3 + 3]
     

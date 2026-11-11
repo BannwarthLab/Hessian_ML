@@ -18,7 +18,9 @@ def _extract_toml_array(text: str, key: str) -> list[str]:
     tomllib (Python 3.11+) since this script also runs on the shell-tagged
     runner host, whose Python version is unknown.
     """
-    match = re.search(rf"^{re.escape(key)}\s*=\s*\[(.*?)\]", text, re.DOTALL | re.MULTILINE)
+    match = re.search(
+        rf"^{re.escape(key)}\s*=\s*\[(.*?)\]", text, re.DOTALL | re.MULTILINE
+    )
     if not match:
         raise ValueError(f"Could not find '{key} = [...]' in {PYPROJECT_PATH}")
     return [item.strip() for item in re.findall(r'"([^"]+)"', match.group(1))]
@@ -37,9 +39,11 @@ def get_mlhess_pip_packages() -> list[str]:
         + _extract_toml_array(text, "docs")
     )
     return [
-        p for p in packages
+        p
+        for p in packages
         if not any(p.lower().startswith(excluded) for excluded in _EXCLUDED_FROM_IMAGE)
     ]
+
 
 # Configuration mappings for each component
 OS_CONFIG = {
@@ -50,13 +54,23 @@ OS_CONFIG = {
 COMPILER_CONFIG = {
     "gnu": {
         "packages": "gcc-gfortran",
-        "env": {"CC": "gcc", "CXX": "g++", "FC": "gfortran", "F77": "gfortran", "F90": "gfortran"},
+        "env": {
+            "CC": "gcc",
+            "CXX": "g++",
+            "FC": "gfortran",
+            "F77": "gfortran",
+            "F90": "gfortran",
+        },
     },
     "intel2023.2.0": {
         "repo": True,
         "packages": "intel-oneapi-compiler-dpcpp-cpp-2023.2.0 intel-oneapi-compiler-fortran-2023.2.0",
         "env": {
-            "CC": "icx", "CXX": "icpx", "FC": "ifx", "F77": "ifx", "F90": "ifx",
+            "CC": "icx",
+            "CXX": "icpx",
+            "FC": "ifx",
+            "F77": "ifx",
+            "F90": "ifx",
             "PATH": "/opt/intel/oneapi/compiler/2023.2.0/linux/bin:$PATH",
             "TBBROOT": "/opt/intel/oneapi/tbb/2021.10.0",
             "COMPILERROOT": "/opt/intel/oneapi/compiler/2023.2.0",
@@ -66,7 +80,11 @@ COMPILER_CONFIG = {
         "repo": True,
         "packages": "intel-oneapi-compiler-dpcpp-cpp-2025.3.0 intel-oneapi-compiler-fortran-2025.3.0",
         "env": {
-            "CC": "icx", "CXX": "icpx", "FC": "ifx", "F77": "ifx", "F90": "ifx",
+            "CC": "icx",
+            "CXX": "icpx",
+            "FC": "ifx",
+            "F77": "ifx",
+            "F90": "ifx",
             "PATH": "/opt/intel/oneapi/compiler/2025.3.0/linux/bin:$PATH",
             "TBBROOT": "/opt/intel/oneapi/tbb/2022.3",
             "COMPILERROOT": "/opt/intel/oneapi/compiler/2025.3",
@@ -119,6 +137,7 @@ GPU_CONFIG = {
     },
 }
 
+
 def get_cuda_repo(os_name: str, gpu: str) -> str:
     """Get the appropriate CUDA repo URL based on OS and GPU version."""
     if gpu == "none":
@@ -126,24 +145,35 @@ def get_cuda_repo(os_name: str, gpu: str) -> str:
     rhel_version = "9" if os_name == "rl9" else "10"
     return f"https://developer.download.nvidia.com/compute/cuda/repos/rhel{rhel_version}/x86_64/cuda-rhel{rhel_version}.repo"
 
+
 def parse_recipe_name(name: str) -> Tuple[str, str, str, str]:
     """Parse recipe name in format: OS-COMPILER-LAPACK-GPU"""
     parts = name.lower().split("-")
     if len(parts) != 4:
-        raise ValueError(f"Invalid recipe name format. Expected: OS-COMPILER-LAPACK-GPU, got: {name}")
+        raise ValueError(
+            f"Invalid recipe name format. Expected: OS-COMPILER-LAPACK-GPU, got: {name}"
+        )
     return tuple(parts)
 
 
 def validate_config(os_name: str, compiler: str, lapack: str, gpu: str) -> None:
     """Validate that all configuration values are supported."""
     if os_name not in OS_CONFIG:
-        raise ValueError(f"Unknown OS: {os_name} (supported: {', '.join(OS_CONFIG.keys())})")
+        raise ValueError(
+            f"Unknown OS: {os_name} (supported: {', '.join(OS_CONFIG.keys())})"
+        )
     if compiler not in COMPILER_CONFIG:
-        raise ValueError(f"Unknown compiler: {compiler} (supported: {', '.join(COMPILER_CONFIG.keys())})")
+        raise ValueError(
+            f"Unknown compiler: {compiler} (supported: {', '.join(COMPILER_CONFIG.keys())})"
+        )
     if lapack not in LAPACK_CONFIG:
-        raise ValueError(f"Unknown lapack: {lapack} (supported: {', '.join(LAPACK_CONFIG.keys())})")
+        raise ValueError(
+            f"Unknown lapack: {lapack} (supported: {', '.join(LAPACK_CONFIG.keys())})"
+        )
     if gpu not in GPU_CONFIG:
-        raise ValueError(f"Unknown gpu: {gpu} (supported: {', '.join(GPU_CONFIG.keys())})")
+        raise ValueError(
+            f"Unknown gpu: {gpu} (supported: {', '.join(GPU_CONFIG.keys())})"
+        )
 
 
 def generate_recipe(name: str) -> str:
@@ -163,7 +193,7 @@ def generate_recipe(name: str) -> str:
     lines.append("    export DEBIAN_FRONTEND=noninteractive")
     lines.append("    export TZ=Europe/Berlin")
     lines.append("    dnf -y update")
-    lines.append("    dnf groupinstall -y \"Development Tools\"")
+    lines.append('    dnf groupinstall -y "Development Tools"')
     lines.append("    dnf install -y wget git python3-pip python3.11 python3.11-pip")
     lines.append("    dnf install -y epel-release")
     lines.append("    dnf config-manager --set-enabled crb")
@@ -172,7 +202,9 @@ def generate_recipe(name: str) -> str:
     lines.append("")
 
     # Intel OneAPI repo if needed (for compiler or MKL)
-    needs_oneapi_repo = COMPILER_CONFIG[compiler].get("repo") or LAPACK_CONFIG[lapack].get("repo")
+    needs_oneapi_repo = COMPILER_CONFIG[compiler].get("repo") or LAPACK_CONFIG[
+        lapack
+    ].get("repo")
     if needs_oneapi_repo:
         lines.append("    # Intel OneAPI Repository")
         lines.append("    dnf install -y procps-ng")
@@ -183,7 +215,9 @@ def generate_recipe(name: str) -> str:
         lines.append("enabled=1")
         lines.append("gpgcheck=1")
         lines.append("repo_gpgcheck=1")
-        lines.append("gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB")
+        lines.append(
+            "gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB"
+        )
         lines.append("EOF")
         lines.append("    mv /tmp/oneAPI.repo /etc/yum.repos.d")
         lines.append("")

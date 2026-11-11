@@ -18,7 +18,7 @@ from tblite.interface import Calculator as TBCalculator
 from mlhess.management.base_settings import PACKAGE_DIR
 from mlhess.utils.io.parser import parse_dftd4_output
 
-bohr_in_m, _, _ = physical_constants["Bohr radius"] # type: ignore
+bohr_in_m, _, _ = physical_constants["Bohr radius"]  # type: ignore
 Bohr = bohr_in_m * 1e10
 
 if TYPE_CHECKING:
@@ -82,7 +82,7 @@ for string in strings_uhf:
 pattern_uhf = pattern_uhf[:-1]
 
 
-#response     E_eht     E_rep  E_ies_ixc     E_axc     E_aes   E_disp2       E_disp3     E_tot
+# response     E_eht     E_rep  E_ies_ixc     E_axc     E_aes   E_disp2       E_disp3     E_tot
 class Calculator:
     """Wrapper class for tblite calculations and processing its features."""
 
@@ -95,32 +95,31 @@ class Calculator:
         self._mol = mol
         self.new_keys: None | list = None
         self.xtbml_toml = self.set_xtbmol_toml()
-    
+
     def set_xtbmol_toml(self):
         if os.path.isfile("xtbml.toml"):
             return "xtbml.toml"
         else:
-            return os.path.join(PACKAGE_DIR,"calculator/default_xtbml.toml")
+            return os.path.join(PACKAGE_DIR, "calculator/default_xtbml.toml")
 
-    def filter_wbos(self,wbo):
-
-        if wbo.ndim == 3 and wbo.shape[-1]==2:
+    def filter_wbos(self, wbo):
+        if wbo.ndim == 3 and wbo.shape[-1] == 2:
             nat = wbo.shape[0]
             wbo = wbo.reshape(-1).reshape((nat, nat, 2), order="F")
-            wbo_total = wbo[:, :, 0]   # = old unsplit WBO
-            
+            wbo_total = wbo[:, :, 0]  # = old unsplit WBO
+
         else:
             wbo_total = wbo[:, :, 0]
 
         return wbo_total
-        
+
     def compute_feature(self):
         """Calculate features from tblite and processes."""
 
         try:
             faulthandler.enable()
 
-            #os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
+            # os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
 
             calc = TBCalculator(
                 "GFN2-xTB",
@@ -129,7 +128,7 @@ class Calculator:
                 numbers=np.array(self._mol.atomic_numbers),
                 positions=self._mol.xyz * 1 / Bohr,
             )
-        
+
             if self._mol.solvent is not None:
                 calc.add("alpb-solvation", self._mol.solvent)
 
@@ -168,7 +167,7 @@ class Calculator:
             self._get_dftd4_params()
 
             self._filter_features()
-            
+
         except:  # noqa: E722
             self._mol.calc_succeeded = False
             calc = None
@@ -204,7 +203,7 @@ class Calculator:
 
     def _get_dftd4_params_old(self):
         fxyz = os.path.join(self._mol.path, self._mol.fxyz)
-        result = subprocess.run( #noQA: PLW1510 UP022
+        result = subprocess.run(  # noQA: PLW1510 UP022
             ["dftd4", fxyz], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
         )
 
@@ -241,17 +240,15 @@ class Calculator:
         matrix = []
         scalar = []
 
-
         for orb in ["s", "p", "d", "A"]:  # , "e", "Z"]:
             if orb not in {"s", "p", "d"}:
-
                 self.dipm[f"delta_{orb}"] = self.ml_feat.loc[
                     :, self.ml_feat.columns.str.contains(f"ext_dipm_{orb}_")
                 ].to_numpy()
 
                 if len(self.dipm[f"delta_{orb}"][0]) == 0:
-                    self.dipm[f"delta_{orb}"] = np.zeros([self.nat,3])
-                    print(f"delta_{orb} set s" )
+                    self.dipm[f"delta_{orb}"] = np.zeros([self.nat, 3])
+                    print(f"delta_{orb} set s")
 
                 for idx in range(0, (self.dipm[f"delta_{orb}"]).shape[1], 3):
                     vector.append(self.dipm[f"delta_{orb}"][:, idx : idx + 3])
@@ -261,10 +258,10 @@ class Calculator:
 
                 # self.qm[f"delta_{orb}"] = self._transform_sym_mat_array(self.qm[f"delta_{orb}"])
 
-                #matrix.append(self.qm[f"delta_{orb}"])
+                # matrix.append(self.qm[f"delta_{orb}"])
 
                 # self.matrix_keys.append(f"delta_qm_{orb}")
-                
+
                 self.vector_keys.append(f"delta_dipm_{orb}")
 
                 for key in [f"ext_dipm_{orb}"]:  # ,f"delta_qm_{orb}"
@@ -274,24 +271,22 @@ class Calculator:
                     self.scalar_keys.append("delta" + key[3:])
                     self.norms["delta" + key[3:]] = temp
 
-                    #print(f"ext_dipm_{orb} adapted" )
+                    # print(f"ext_dipm_{orb} adapted" )
 
             if orb not in {"e", "Z"}:
-                
                 self.dipm[f"{orb}"] = self.ml_feat.loc[
                     :, self.ml_feat.columns.str.startswith(f"dipm_{orb}_")
                 ].to_numpy()
 
-
                 if len(self.dipm[f"{orb}"][0]) == 0:
-                    self.dipm[f"{orb}"] = np.zeros([self.nat,3])
+                    self.dipm[f"{orb}"] = np.zeros([self.nat, 3])
 
                 self.qm[f"{orb}"] = self.ml_feat.loc[
                     :, self.ml_feat.columns.str.startswith(f"qm_{orb}_")
                 ].to_numpy()
 
                 if len(self.qm[f"{orb}"][0]) == 0:
-                    self.qm[f"{orb}"] = np.zeros([self.nat,3,3])
+                    self.qm[f"{orb}"] = np.zeros([self.nat, 3, 3])
                 else:
                     self.qm[f"{orb}"] = self._transform_sym_mat_array(self.qm[f"{orb}"])
 
@@ -302,7 +297,6 @@ class Calculator:
                 self.matrix_keys.append(f"qm_{orb}")
 
                 if orb != "A":
-
                     if f"p_{orb}" in self.tblite_keys:
                         self.p[f"{orb}"] = self.ml_feat.loc[
                             :, self.ml_feat.columns.str.contains(f"p_{orb}")
@@ -314,7 +308,6 @@ class Calculator:
                     self.scalar_keys.append(f"p_{orb}")
 
                 for key in [f"dipm_{orb}", f"qm_{orb}"]:
-
                     if key in self.tblite_keys:
                         temp = self.ml_feat.loc[:, key].to_numpy()
                     else:
@@ -326,8 +319,7 @@ class Calculator:
 
         self.dipm_norm = np.linalg.norm(self.dipm["A"], axis=1)
 
-
-        if "response_alpha" in self.ml_feat.keys(): #noQA: SIM118
+        if "response_alpha" in self.ml_feat.keys():  # noQA: SIM118
             self.energy_based = self.ml_feat.loc[
                 :, self.ml_feat.columns.str.contains(pattern_uhf)
             ].to_numpy()
@@ -338,23 +330,22 @@ class Calculator:
                 :, self.ml_feat.columns.str.contains(pattern)
             ].to_numpy()
             use_strings = strings
-            #self.energy_based = (self.ml_feat[pattern.split("|")]).to_numpy()
+            # self.energy_based = (self.ml_feat[pattern.split("|")]).to_numpy()
 
-        #print(len(self.scalar_keys),len(scalar))
+        # print(len(self.scalar_keys),len(scalar))
 
         self.scalar_keys.extend(use_strings)
-        
-        #[0,1,2,6,7,3,4,5,8]
-        #[0,1,2,5,6,7,3,4,8]
-        #[0,1,2,7,6,3,4,5,8]
-        #[2,1,6,7,3,4,5,8,0]
-        #[0,1,2,6,7,5,3,4,8]
-        #[0,1,2,6,7,5,4,3,8]
-        #[0,1,2,6,7,3,4,5,8]
 
-        self.energy_based = self.energy_based[:,:]
+        # [0,1,2,6,7,3,4,5,8]
+        # [0,1,2,5,6,7,3,4,8]
+        # [0,1,2,7,6,3,4,5,8]
+        # [2,1,6,7,3,4,5,8,0]
+        # [0,1,2,6,7,5,3,4,8]
+        # [0,1,2,6,7,5,4,3,8]
+        # [0,1,2,6,7,3,4,5,8]
+
+        self.energy_based = self.energy_based[:, :]
         scalar.extend(self.energy_based.T)
-
 
         self.cn["default"] = self.ml_feat.loc[:, "CN_A"].to_numpy()
         self.cn["delta"] = self.ml_feat.loc[
@@ -389,7 +380,8 @@ class Calculator:
         self._mol.scalar_keys = self.scalar_keys
 
         self._mol.feature.wbo = self.wbo
-        (   self._mol.feature.scalars,
+        (
+            self._mol.feature.scalars,
             self._mol.feature.vectors,
             self._mol.feature.matrices,
         ) = self._transform_arrays(np.array(scalar), np.array(vector), np.array(matrix))
@@ -430,4 +422,3 @@ class Calculator:
         temp_mat = temp_mat + temp_mat.T - np.diag(np.diag(temp_mat))
 
         return temp_mat
-

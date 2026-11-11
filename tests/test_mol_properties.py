@@ -43,6 +43,13 @@ def test_molecule_class(fname, data):
         mol.nuclear_properties.print_center_of_mass()
     s = f.getvalue()
 
-    msg = "Center of mass is at:\n"+"x:  0.0 \n"+"\n"+"y:  0.0 \n"+"\n"+"z:  1.0 \n"+"\n"
+    msg = (
+        "Center of mass is at:\n"
+        + "x:  0.0 \n"
+        + "\n"
+        + "y:  0.0 \n"
+        + "\n"
+        + "z:  1.0 \n"
+        + "\n"
+    )
     assert s == msg
- 

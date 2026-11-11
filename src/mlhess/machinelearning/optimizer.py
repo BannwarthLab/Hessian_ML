@@ -57,8 +57,8 @@ class PyTorchRegressor(BaseEstimator, RegressorMixin):
         lr=0.0002,
         gamma=0.99,
         epochs=100,
-        model: nn.Module = MLH_s(), #noQA: B008
-        criterion: nn.Module = nn.HuberLoss(delta=5e-2),  #noQA: B008
+        model: nn.Module = MLH_s(),  # noQA: B008
+        criterion: nn.Module = nn.HuberLoss(delta=5e-2),  # noQA: B008
         batch_size: int = 1024,
     ):
         torch.set_num_threads(globals.NUM_THREADS)

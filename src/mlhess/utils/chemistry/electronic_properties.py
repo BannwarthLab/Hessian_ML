@@ -82,7 +82,7 @@ class ElectronicProperties:
         Args:
             atomic_dipole (np.ndarray): Atomic dipole moments.
         """
-        assert len(atomic_dipole) == self._mol.nat, (
-            "Dimension of gradient does not correspond to number of atoms."
-        )
+        assert (
+            len(atomic_dipole) == self._mol.nat
+        ), "Dimension of gradient does not correspond to number of atoms."
         self.atomic_dipole = atomic_dipole

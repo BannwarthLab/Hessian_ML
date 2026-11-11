@@ -129,15 +129,15 @@ class FittingDataHandler:
         feature_files = sorted(feature_files)
         target_files = sorted(target_files)
 
-        assert len(feature_files) == len(target_files), (
-            "Mismatch of number of target and feature files."
-        )
+        assert len(feature_files) == len(
+            target_files
+        ), "Mismatch of number of target and feature files."
 
         for ffeature, ftarget in zip(feature_files, target_files):
             print(ffeature, ftarget)
-            assert ffeature[-8:-4] == ftarget[-8:-4], (
-                "Mismath of names of feature and target files."
-            )
+            assert (
+                ffeature[-8:-4] == ftarget[-8:-4]
+            ), "Mismath of names of feature and target files."
 
         with open(feature_files[0], "rb") as f:
             features = np.load(f)

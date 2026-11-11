@@ -15,18 +15,17 @@ def set_num_threads():
     return 1
 
 
-global NUM_THREADS #noQA: PLW0604
+global NUM_THREADS  # noQA: PLW0604
 NUM_THREADS: int = set_num_threads()
 
-global DEVICE #noQA: PLW0604
+global DEVICE  # noQA: PLW0604
 DEVICE: str = "cpu"
 if torch.cuda.is_available():
     DEVICE = "cuda:0"
     torch.cuda.set_device(DEVICE)
 
-global PROCESSED_DATA_FOLDER #noQA: PLW0604
+global PROCESSED_DATA_FOLDER  # noQA: PLW0604
 PROCESSED_DATA_FOLDER: str = "processed_data"
 
-global PACKAGE_DIR #noQA: PLW0604
+global PACKAGE_DIR  # noQA: PLW0604
 PACKAGE_DIR = os.path.abspath(Path(__file__).resolve().parent.parent)
-

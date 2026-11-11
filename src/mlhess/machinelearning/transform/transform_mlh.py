@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 def init_worker(meta_list):
     global GLOBAL_ARRAYS, GLOBAL_SHMS
 
-   # if num_threads > 1:
+    # if num_threads > 1:
     GLOBAL_ARRAYS = []
     GLOBAL_SHMS = []
 
@@ -33,41 +33,59 @@ def init_worker(meta_list):
         GLOBAL_ARRAYS.append(arr)
         GLOBAL_SHMS.append(shm)
 
+
 def set_shared_memory_array(self):
     # your data
     dipm_key = "A"
-    
+
     atomic_numbers = np.array(self.atomic_numbers)
     dipm_norm = np.array(self.feature.dipm_norm)
     xyz = self.xyz
     distance_mat = np.array(self.feature.distance_mat)
-    q = np.array(self.feature.q['default'])
+    q = np.array(self.feature.q["default"])
     dipm = np.array(self.feature.dipm[dipm_key])
     qm_key = "A"
     qm = np.array(self.feature.qm[qm_key])
     scalars = self.feature.scalars
     vectors = self.feature.vectors
     matrices = self.feature.matrices
-    etot_idx = np.array([self.scalar_keys.index("E_tot")])#np.array(self.feature.scalar_keys)
+    etot_idx = np.array(
+        [self.scalar_keys.index("E_tot")]
+    )  # np.array(self.feature.scalar_keys)
     C6_params = self.feature.C6_params
-    
+
     wbo = self.feature.wbo
-    arrays = atomic_numbers,dipm_norm,xyz,distance_mat,q,dipm,qm,scalars,vectors,matrices,etot_idx,C6_params,wbo
+    arrays = (
+        atomic_numbers,
+        dipm_norm,
+        xyz,
+        distance_mat,
+        q,
+        dipm,
+        qm,
+        scalars,
+        vectors,
+        matrices,
+        etot_idx,
+        C6_params,
+        wbo,
+    )
     return arrays
+
 
 def init_memory(arrays):
     meta = []
     shms = []
     for arr in arrays:
         shm = shared_memory.SharedMemory(create=True, size=arr.nbytes)
-        #resource_tracker.unregister(shm.name, 'shared_memory')
+        # resource_tracker.unregister(shm.name, 'shared_memory')
         shared_arr = np.ndarray(arr.shape, dtype=arr.dtype, buffer=shm.buf)
         shared_arr[:] = arr[:]
 
         meta.append((shm.name, arr.shape, arr.dtype))
         shms.append(shm)
-    return meta,shms
-    
+    return meta, shms
+
 
 # def transform_prediction(self: Molecule, num_threads):
 #     """Processes the features to ML readable."""
@@ -83,7 +101,7 @@ def init_memory(arrays):
 
 #         init_worker(self)
 #         with Pool(processes=num_threads) as pool:
-#             results_iterator = pool.map(_transform_block_prediction, atom_pairs) 
+#             results_iterator = pool.map(_transform_block_prediction, atom_pairs)
 #             pool.terminate()
 #             pool.join()
 #         pool.close()
@@ -125,7 +143,7 @@ def init_memory(arrays):
 
 #         init_worker(mol)
 #         with Pool(processes=num_threads) as pool:
-#             results_iterator = pool.map(_transform_block_training, atom_pairs) 
+#             results_iterator = pool.map(_transform_block_training, atom_pairs)
 #             pool.terminate()
 #             pool.join()
 #         pool.close()
@@ -195,7 +213,7 @@ def init_memory(arrays):
 #     return H_APF.flatten(), Feature_AB, transpose
 
 
-def process_results(results:list) -> tuple[list, list, list]:
+def process_results(results: list) -> tuple[list, list, list]:
     # Process and release memory for results incrementally
     processed_features: list[np.ndarray] = []
     processed_target: list[np.ndarray] = []
@@ -203,15 +221,17 @@ def process_results(results:list) -> tuple[list, list, list]:
     processed_target.extend(result[0] for result in results)
     processed_features.extend(result[1] for result in results)
     transposes: list[list | None] = [result[2] for result in results]
-        # Release memory for results
+    # Release memory for results
     del results
 
     return processed_features, processed_target, transposes
 
-GLOBAL_ARRAYS :np.ndarray |None = None
-GLOBAL_SHMS:np.ndarray |None  = None
-GLOBAL_HESS:np.ndarray |None  = None 
-GLOBAL_SHM_HESS:np.ndarray |None  = None 
+
+GLOBAL_ARRAYS: np.ndarray | None = None
+GLOBAL_SHMS: np.ndarray | None = None
+GLOBAL_HESS: np.ndarray | None = None
+GLOBAL_SHM_HESS: np.ndarray | None = None
+
 
 def attach_shared_memory(meta):
     global GLOBAL_ARRAYS, GLOBAL_SHMS
@@ -228,13 +248,14 @@ def attach_shared_memory(meta):
                 GLOBAL_ARRAYS.append(arr)
                 GLOBAL_SHMS.append(shm)
 
+
 def detach_shared_memory():
     global GLOBAL_SHMS, GLOBAL_ARRAYS
-    
+
     if GLOBAL_SHMS is not None:
         for shm in GLOBAL_SHMS:
-            shm.close()   
-        
+            shm.close()
+
     GLOBAL_SHMS = None
     GLOBAL_ARRAYS = None
 
@@ -243,7 +264,7 @@ def attach_shared_memory_hessian(meta):
     global GLOBAL_HESS, GLOBAL_SHM_HESS
     if sys.platform == "darwin":
         # Single-thread fallback: meta contains actual array
-        GLOBAL_HESS = meta[0]   # just pass ndarray directly
+        GLOBAL_HESS = meta[0]  # just pass ndarray directly
         GLOBAL_SHM_HESS = None
         return meta, None
     else:
@@ -251,17 +272,19 @@ def attach_shared_memory_hessian(meta):
         shm = shared_memory.SharedMemory(name=name)
         GLOBAL_HESS = np.ndarray(shape, dtype=dtype, buffer=shm.buf)
         GLOBAL_SHM_HESS = shm
-        return meta,shm 
+        return meta, shm
+
 
 def detach_shared_memory_hessian():
     global GLOBAL_HESS, GLOBAL_SHM_HESS
-    
+
     if GLOBAL_SHM_HESS is not None:
         shm = GLOBAL_SHM_HESS
-        shm.close()   
+        shm.close()
 
-    GLOBAL_HESS = None 
-    GLOBAL_SHM_HESS = None 
+    GLOBAL_HESS = None
+    GLOBAL_SHM_HESS = None
+
 
 def transform_prediction(self: Molecule, num_threads):
     """Processes the features to ML readable."""
@@ -270,30 +293,31 @@ def transform_prediction(self: Molecule, num_threads):
         self.calc_succeeded = False
 
     if self.calc_succeeded:
-
         temp_dist_mat = self.feature.distance_mat.copy()
         temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-        atom_pairs:list = list(np.argwhere(temp_dist_mat < 20))
+        atom_pairs: list = list(np.argwhere(temp_dist_mat < 20))
         self.computed_atom_pairs = atom_pairs
 
-        
         arrays = set_shared_memory_array(self)
 
-        if sys.platform =="darwin":
-            backend = 'threading'
+        if sys.platform == "darwin":
+            backend = "threading"
             meta = arrays
             shms: list[shared_memory.SharedMemory] = []
         else:
-            meta,shms = init_memory(arrays)
-            backend = 'loky'
+            meta, shms = init_memory(arrays)
+            backend = "loky"
 
         parallel = Parallel(n_jobs=num_threads, backend=backend)
-        output_generator = parallel(delayed(_transform_block_prediction)(atom_pair,meta) for atom_pair in atom_pairs)
+        output_generator = parallel(
+            delayed(_transform_block_prediction)(atom_pair, meta)
+            for atom_pair in atom_pairs
+        )
         R_MI_APFs, processed_feature, transposes = zip(*deepcopy(output_generator))
 
         self.feature.processed = processed_feature
 
-        transposes = list(transposes) # type: ignore
+        transposes = list(transposes)  # type: ignore
 
         for val in transposes:
             if val is not None:
@@ -315,7 +339,7 @@ def transform_prediction(self: Molecule, num_threads):
 
 def transform_training(mol: Molecule, num_threads: int = 4):
     """Transforms the Hessian matrix and features of a molecule into a target-descriptor relation for training."""
- 
+
     if mol.nat == 1:
         mol.calc_succeeded = False
 
@@ -324,41 +348,43 @@ def transform_training(mol: Molecule, num_threads: int = 4):
 
         temp_dist_mat = mol.feature.distance_mat.copy()
         temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-        atom_pairs:list = list(np.argwhere(temp_dist_mat < 20))
+        atom_pairs: list = list(np.argwhere(temp_dist_mat < 20))
 
         mol.computed_atom_pairs = atom_pairs
 
         arrays = set_shared_memory_array(mol)
 
+        if isinstance(mol.hessian, NuclearHessianPM):
+            a, b = mol.hessian.hessian.shape
+            hessian = np.zeros((2, a, b))
 
-        if isinstance(mol.hessian,NuclearHessianPM):
-            a,b = mol.hessian.hessian.shape
-            hessian = np.zeros((2,a,b))
-
-            hessian[0,:,:] = mol.hessian.hess_p
-            hessian[1,:,:] = mol.hessian.hess_m
+            hessian[0, :, :] = mol.hessian.hess_p
+            hessian[1, :, :] = mol.hessian.hess_m
 
         else:
             hessian = mol.hessian.hessian
 
-
-        if sys.platform =="darwin":
-            backend = 'threading'
+        if sys.platform == "darwin":
+            backend = "threading"
             meta = arrays
             meta_hess = [hessian]
             shms: list[shared_memory.SharedMemory] = []
             shm_hess: list[shared_memory.SharedMemory] = []
         else:
-            meta,shms = init_memory(arrays)
-            meta_hess,shm_hess =init_memory([hessian])
-            backend = 'loky'
+            meta, shms = init_memory(arrays)
+            meta_hess, shm_hess = init_memory([hessian])
+            backend = "loky"
 
-        
-        with Parallel(n_jobs=num_threads, backend=backend, prefer="processes") as parallel:
-            output_generator = parallel(delayed(_transform_block_training)(atom_pair,meta,meta_hess) for atom_pair in atom_pairs)
+        with Parallel(
+            n_jobs=num_threads, backend=backend, prefer="processes"
+        ) as parallel:
+            output_generator = parallel(
+                delayed(_transform_block_training)(atom_pair, meta, meta_hess)
+                for atom_pair in atom_pairs
+            )
             parallel._backend.terminate()
 
-        mol.feature.processed, mol.processed_target, transposes = process_results(   # type: ignore
+        mol.feature.processed, mol.processed_target, transposes = process_results(  # type: ignore
             output_generator
         )
 
@@ -377,11 +403,12 @@ def transform_training(mol: Molecule, num_threads: int = 4):
             shm.unlink()
 
         del arrays
-        del hessian             
+        del hessian
 
     mol.feature.processed = np.array(mol.feature.processed)
 
-def _transform_block_training(atom_pair: tuple[int,int],meta,meta_hess) -> tuple:
+
+def _transform_block_training(atom_pair: tuple[int, int], meta, meta_hess) -> tuple:
     """Rotation of an AB Hessian matrix block and construction of its feature vector.
 
     Args:
@@ -398,21 +425,30 @@ def _transform_block_training(atom_pair: tuple[int,int],meta,meta_hess) -> tuple
 
     try:
         atom_A, atom_B = atom_pair
-        Feature_AB, transpose, R_MI_APF = new_gen_pair_features(atom_pair,GLOBAL_ARRAYS)
-        if len(GLOBAL_HESS.shape)==3: #type: ignore 
-            H_APF_p = get_rotated_33_block_matrix(R_MI_APF,GLOBAL_HESS[0], atom_A, atom_B, transpose) #type: ignore 
-            H_APF_m = get_rotated_33_block_matrix(R_MI_APF,GLOBAL_HESS[1], atom_A, atom_B, transpose) #type: ignore 
-            H_APF = np.array([H_APF_p,H_APF_m])
-        else:        
-            H_APF = get_rotated_33_block_matrix(R_MI_APF,GLOBAL_HESS, atom_A, atom_B, transpose) #type: ignore 
+        Feature_AB, transpose, R_MI_APF = new_gen_pair_features(
+            atom_pair, GLOBAL_ARRAYS
+        )
+        if len(GLOBAL_HESS.shape) == 3:  # type: ignore
+            H_APF_p = get_rotated_33_block_matrix(
+                R_MI_APF, GLOBAL_HESS[0], atom_A, atom_B, transpose
+            )  # type: ignore
+            H_APF_m = get_rotated_33_block_matrix(
+                R_MI_APF, GLOBAL_HESS[1], atom_A, atom_B, transpose
+            )  # type: ignore
+            H_APF = np.array([H_APF_p, H_APF_m])
+        else:
+            H_APF = get_rotated_33_block_matrix(
+                R_MI_APF, GLOBAL_HESS, atom_A, atom_B, transpose
+            )  # type: ignore
 
     finally:
-        detach_shared_memory() 
+        detach_shared_memory()
         detach_shared_memory_hessian()
 
     return H_APF.flatten(), Feature_AB, transpose
 
-def _transform_block_prediction(atom_pair:tuple[int,int],meta) -> tuple:
+
+def _transform_block_prediction(atom_pair: tuple[int, int], meta) -> tuple:
     """Construction of the feature vector for the prediction of an AB Hessian matrix block.
 
     Args:
@@ -425,9 +461,10 @@ def _transform_block_prediction(atom_pair:tuple[int,int],meta) -> tuple:
 
     attach_shared_memory(meta)
     try:
-        Feature_AB, transpose, R_MI_APF = new_gen_pair_features(atom_pair,GLOBAL_ARRAYS)
+        Feature_AB, transpose, R_MI_APF = new_gen_pair_features(
+            atom_pair, GLOBAL_ARRAYS
+        )
     finally:
-        detach_shared_memory() 
+        detach_shared_memory()
 
     return R_MI_APF, Feature_AB, transpose
-

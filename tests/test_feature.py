@@ -16,11 +16,10 @@ target = np.float32(
 
 @pytest.mark.parametrize("fname, feature_class", [("single_mol_data/0002", Feature)])
 def test_feature(fname, feature_class):
-
     full_path = os.path.join(Path(__file__).parent, fname)
     mol = Molecule(full_path, "coord.xyz")
     cwd = os.path.abspath("./")
-    os.chdir(os.path.join(Path(__file__).parent,'general_test_dir'))
+    os.chdir(os.path.join(Path(__file__).parent, "general_test_dir"))
 
     mol.feature_class = feature_class
     calc = Calculator(mol)

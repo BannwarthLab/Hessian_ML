@@ -15,7 +15,6 @@ if TYPE_CHECKING:
 
 class DummyTransformer:
     def __init__(self):
-
         self.is_fitted_ = True
 
     def fit(*args, **kwargs):
