@@ -428,6 +428,10 @@ def _transform_block_training(atom_pair: tuple[int, int], meta, meta_hess) -> tu
         Feature_AB, transpose, R_MI_APF = new_gen_pair_features(
             atom_pair, GLOBAL_ARRAYS
         )
+        
+        if GLOBAL_HESS is None:
+            raise RuntimeError("Hessian shared memory not attached.")
+                
         if len(GLOBAL_HESS.shape) == 3:  # type: ignore
             H_APF_p = get_rotated_33_block_matrix(
                 R_MI_APF, GLOBAL_HESS[0], atom_A, atom_B, transpose
