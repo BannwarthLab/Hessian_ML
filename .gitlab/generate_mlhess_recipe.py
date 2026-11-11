@@ -1,7 +1,6 @@
 import re
 import sys
 from pathlib import Path
-from typing import Tuple
 
 PYPROJECT_PATH = Path(__file__).resolve().parent.parent / "pyproject.toml"
 
@@ -126,7 +125,7 @@ def get_cuda_repo(os_name: str, gpu: str) -> str:
     rhel_version = "9" if os_name == "rl9" else "10"
     return f"https://developer.download.nvidia.com/compute/cuda/repos/rhel{rhel_version}/x86_64/cuda-rhel{rhel_version}.repo"
 
-def parse_recipe_name(name: str) -> Tuple[str, str, str, str]:
+def parse_recipe_name(name: str) -> tuple[str, str, str, str]:
     """Parse recipe name in format: OS-COMPILER-LAPACK-GPU"""
     parts = name.lower().split("-")
     if len(parts) != 4:

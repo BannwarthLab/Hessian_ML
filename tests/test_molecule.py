@@ -1,10 +1,12 @@
 import os
 import sys
-import pytest
-import numpy as np
 from pathlib import Path
-from mlhess.utils.chemistry.molecule import Molecule
+
+import numpy as np
+import pytest
+
 from mlhess.machinelearning.target.hessian import NuclearHessianPM
+from mlhess.utils.chemistry.molecule import Molecule
 
 os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
 

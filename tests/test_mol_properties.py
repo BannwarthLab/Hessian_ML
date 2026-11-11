@@ -1,12 +1,13 @@
+import io
 import os
-
-import pytest
-import numpy as np
+from contextlib import redirect_stdout
 from pathlib import Path
+
+import numpy as np
+import pytest
+
 from mlhess.utils.chemistry.molecule import Molecule
 from mlhess.utils.io.reader import read_xyz
-import io
-from contextlib import redirect_stdout
 
 os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
 

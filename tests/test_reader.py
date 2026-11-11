@@ -1,9 +1,10 @@
 import os
-import pytest
-import numpy as np
-
-from mlhess.utils.io.reader import read_txt_file, read_dftd4
 from pathlib import Path
+
+import numpy as np
+import pytest
+
+from mlhess.utils.io.reader import read_dftd4, read_txt_file
 
 
 @pytest.mark.parametrize(

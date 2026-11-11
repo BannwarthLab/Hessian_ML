@@ -1,16 +1,16 @@
 import os
-import torch
-import numpy as np
-
 from pathlib import Path
 
-from mlhess.scripts.data_handling import FittingDataHandler
-from mlhess.scripts.training_handler import TrainingHandler
-from mlhess.management.config import Configurator
-import mlhess.management.base_settings as base_settings
+import numpy as np
+import torch
+from sklearn.preprocessing import StandardScaler
+
 from mlhess.machinelearning.architecture.base_model import MachineLearningModel
 from mlhess.machinelearning.architecture.neural_nets import MLH_s
-from sklearn.preprocessing import StandardScaler
+from mlhess.management import base_settings
+from mlhess.management.config import Configurator
+from mlhess.scripts.data_handling import FittingDataHandler
+from mlhess.scripts.training_handler import TrainingHandler
 
 
 def test_xy():

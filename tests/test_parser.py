@@ -1,9 +1,10 @@
 import os
+from pathlib import Path
+
 import pytest
 
-from pathlib import Path
-import mlhess.utils.io.parser as parser
 from mlhess.management.config import Configurator
+from mlhess.utils.io import parser
 
 
 @pytest.mark.parametrize(

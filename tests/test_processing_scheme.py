@@ -1,11 +1,12 @@
 import os
-
-import pytest
-import numpy as np
 from pathlib import Path
-from mlhess.utils.chemistry.molecule import Molecule
+
+import numpy as np
+import pytest
+
 from mlhess.calculator.tblite_wrapper import Calculator
 from mlhess.machinelearning.feature.processing_schemes import gen_pair_features
+from mlhess.utils.chemistry.molecule import Molecule
 from mlhess.utils.math.geometrical import get_atom_pair_rot_mat, supporting_vector
 
 feature = np.float32(

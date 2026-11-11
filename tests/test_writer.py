@@ -1,9 +1,10 @@
 import os
+from pathlib import Path
+
 import pytest
 
 from mlhess.utils.io.reader import read_txt_file
 from mlhess.utils.io.writer import list_to_txt, truncate_file
-from pathlib import Path
 
 
 @pytest.mark.parametrize(

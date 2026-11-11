@@ -1,5 +1,7 @@
+import sys
+
 import pytest
-import sys 
+
 from mlhess.management.config import Configurator
 
 

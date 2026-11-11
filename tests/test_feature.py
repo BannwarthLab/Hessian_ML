@@ -1,9 +1,11 @@
 import os
-import pytest
-import numpy as np
 from pathlib import Path
-from mlhess.machinelearning.feature.base_class import Feature
+
+import numpy as np
+import pytest
+
 from mlhess.calculator.tblite_wrapper import Calculator
+from mlhess.machinelearning.feature.base_class import Feature
 from mlhess.utils.chemistry.molecule import Molecule
 
 feature = np.float32(

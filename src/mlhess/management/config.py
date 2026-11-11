@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import os
-import sys 
+import sys
+
 from mlhess.management.base_settings import PACKAGE_DIR
 from mlhess.utils.io import parser
 
