@@ -1,61 +1,51 @@
+"""Transformation of molecules into (feature, target) pairs per atom pair.
+
+All atom pairs of a molecule are processed batch-wise with vectorized numpy
+operations (see `gen_pair_features_batched`). The pairs are split into chunks of
+`CHUNK_SIZE` to keep the memory bounded for large molecules.
+"""
+
 from __future__ import annotations
 
-import sys
-from copy import deepcopy
-from multiprocessing import shared_memory
 from typing import TYPE_CHECKING
 
 import numpy as np
-from joblib import Parallel, delayed
 
-from mlhess.machinelearning.feature.processing_schemes import new_gen_pair_features
+from mlhess.machinelearning.feature.processing_schemes import gen_pair_features_batched
 from mlhess.machinelearning.target.hessian import NuclearHessianPM
-from mlhess.utils.math.matrix_operation import get_rotated_33_block_matrix
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from mlhess.utils.chemistry.molecule import Molecule
 
+# Number of atom pairs processed at once (~ CHUNK_SIZE * 369 * 8 B = 60 MB of features).
+CHUNK_SIZE = 20_000
 
-# def init_worker(mol: Molecule):
-#     global GLOBAL_MOL
-#     GLOBAL_MOL = mol  # type: ignore[name-defined]
-def init_worker(meta_list):
-    global GLOBAL_ARRAYS, GLOBAL_SHMS
-
-    # if num_threads > 1:
-    GLOBAL_ARRAYS = []
-    GLOBAL_SHMS = []
-
-    for name, shape, dtype in meta_list:
-        shm = shared_memory.SharedMemory(name=name)
-        arr = np.ndarray(shape, dtype=dtype, buffer=shm.buf)
-
-        GLOBAL_ARRAYS.append(arr)
-        GLOBAL_SHMS.append(shm)
+# Atom pairs with a distance below this cutoff (in Bohr) are considered.
+PAIR_CUTOFF = 20.0
 
 
-def set_shared_memory_array(self):
-    # your data
+def collect_feature_arrays(mol: Molecule) -> tuple:
+    """Collect the molecular arrays needed for the pair features."""
     dipm_key = "A"
-
-    atomic_numbers = np.array(self.atomic_numbers)
-    dipm_norm = np.array(self.feature.dipm_norm)
-    xyz = self.xyz
-    distance_mat = np.array(self.feature.distance_mat)
-    q = np.array(self.feature.q["default"])
-    dipm = np.array(self.feature.dipm[dipm_key])
     qm_key = "A"
-    qm = np.array(self.feature.qm[qm_key])
-    scalars = self.feature.scalars
-    vectors = self.feature.vectors
-    matrices = self.feature.matrices
-    etot_idx = np.array(
-        [self.scalar_keys.index("E_tot")]
-    )  # np.array(self.feature.scalar_keys)
-    C6_params = self.feature.C6_params
 
-    wbo = self.feature.wbo
-    arrays = (
+    atomic_numbers = np.array(mol.atomic_numbers)
+    dipm_norm = np.array(mol.feature.dipm_norm)
+    xyz = mol.xyz
+    distance_mat = np.array(mol.feature.distance_mat)
+    q = np.array(mol.feature.q["default"])
+    dipm = np.array(mol.feature.dipm[dipm_key])
+    qm = np.array(mol.feature.qm[qm_key])
+    scalars = mol.feature.scalars
+    vectors = mol.feature.vectors
+    matrices = mol.feature.matrices
+    etot_idx = np.array([mol.scalar_keys.index("E_tot")])
+    C6_params = mol.feature.C6_params
+    wbo = mol.feature.wbo
+
+    return (
         atomic_numbers,
         dipm_norm,
         xyz,
@@ -70,405 +60,127 @@ def set_shared_memory_array(self):
         C6_params,
         wbo,
     )
-    return arrays
 
 
-def init_memory(arrays):
-    meta = []
-    shms = []
-    for arr in arrays:
-        shm = shared_memory.SharedMemory(create=True, size=arr.nbytes)
-        # resource_tracker.unregister(shm.name, 'shared_memory')
-        shared_arr = np.ndarray(arr.shape, dtype=arr.dtype, buffer=shm.buf)
-        shared_arr[:] = arr[:]
-
-        meta.append((shm.name, arr.shape, arr.dtype))
-        shms.append(shm)
-    return meta, shms
+def select_atom_pairs(mol: Molecule, cutoff: float = PAIR_CUTOFF) -> np.ndarray:
+    """Atom pairs (A < B) closer than `cutoff`, shape (P, 2)."""
+    temp_dist_mat = mol.feature.distance_mat.copy()
+    temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
+    return np.argwhere(temp_dist_mat < cutoff)
 
 
-# def transform_prediction(self: Molecule, num_threads):
-#     """Processes the features to ML readable."""
-#     if self.nat == 1:
-#         self.calc_succeeded = False
-
-#     if self.calc_succeeded:
-#         temp_dist_mat = self.feature.distance_mat.copy()
-#         temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-#         atom_pairs:list = list(np.argwhere(temp_dist_mat < 20))
-
-#         self.computed_atom_pairs = atom_pairs
-
-#         init_worker(self)
-#         with Pool(processes=num_threads) as pool:
-#             results_iterator = pool.map(_transform_block_prediction, atom_pairs)
-#             pool.terminate()
-#             pool.join()
-#         pool.close()
-
-#         R_MI_APFs, processed_feature, transposes = zip(*deepcopy(results_iterator))
-
-#         self.feature.processed = processed_feature
-
-#         transposes = list(transposes) # type: ignore
-
-#         for val in transposes:
-#             if val is not None:
-#                 self.transpose_list.append(val)
-
-#         for atom_pair, rot_mat in zip(atom_pairs, R_MI_APFs):
-#             atom_A, atom_B = atom_pair
-#             i0 = 3 * atom_A
-#             i3 = 3 * atom_A + 3
-#             j0 = 3 * atom_B
-#             j3 = 3 * atom_B + 3
-
-#             self.R_MI_APF_mat[i0:i3, j0:j3] = rot_mat
+def _chunks(n: int, size: int = CHUNK_SIZE) -> Iterator[slice]:
+    for start in range(0, n, size):
+        yield slice(start, min(start + size, n))
 
 
-# def _transform_training(mol: Molecule, num_threads: int = 4):
-#     """Transforms the Hessian matrix and features of a molecule into a target-descriptor relation for training."""
+def rotate_hessian_blocks(
+    hessian: np.ndarray,
+    R: np.ndarray,
+    A: np.ndarray,
+    B: np.ndarray,
+    swap: np.ndarray,
+) -> np.ndarray:
+    """Rotated 3x3 Hessian blocks H_AB of all pairs (batched `get_rotated_33_block_matrix`).
 
-#     if mol.nat == 1:
-#         mol.calc_succeeded = False
+    Args:
+        hessian (np.ndarray): (3nat, 3nat), or (n, 3nat, 3nat) for several
+            Hessians (e.g. H+ and H- for NuclearHessianPM).
+        R (np.ndarray): (adapted) rotation matrices, (P, 3, 3).
+        A, B (np.ndarray): ORIGINAL atom indices of the pairs (before the canonical
+            reordering), (P,). The block is taken at H[3A:3A+3, 3B:3B+3].
+        swap (np.ndarray): True where A and B were swapped -> block is transposed, (P,).
 
-#     if mol.calc_succeeded:
-#         mol.transpose_list = []
+    Returns:
+        np.ndarray: flattened blocks, (P, 9) or (P, n * 9).
+    """
+    nat = hessian.shape[-1] // 3
+    P = len(A)
 
-#         temp_dist_mat = mol.feature.distance_mat.copy()
-#         temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-#         atom_pairs:list = list(np.argwhere(temp_dist_mat < 20))
+    # (n, 3nat, 3nat) -> (n, nat, 3, nat, 3) -> (nat, nat, n, 3, 3) -> pick (P, n, 3, 3)
+    H = hessian.reshape(-1, nat, 3, nat, 3).transpose(1, 3, 0, 2, 4)
+    blocks = H[A, B]
 
-#         mol.computed_atom_pairs = atom_pairs
+    Rn = R[:, None]  # broadcast over the n Hessians
+    blocks = Rn @ blocks @ Rn.swapaxes(-1, -2)
+    blocks[swap] = blocks[swap].swapaxes(-1, -2)
 
-#         init_worker(mol)
-#         with Pool(processes=num_threads) as pool:
-#             results_iterator = pool.map(_transform_block_training, atom_pairs)
-#             pool.terminate()
-#             pool.join()
-#         pool.close()
-
-#         mol.feature.processed, mol.processed_target, transposes = process_results(   # type: ignore
-#             results_iterator
-#         )
-
-#         for val in transposes:
-#             if val is not None:
-#                 mol.transpose_list.append(val)
-
-#         del atom_pairs, pool, results_iterator
-
-#     mol.feature.processed = np.array(mol.feature.processed)
-
-
-# def _transform_block_prediction(atom_pair:tuple[int,int]) -> tuple:
-#     """Construction of feature vector for the prediction of the an AB Hessian matrix block.
-
-#     Args:
-#         index (int): index of for the list of atom pairs.
-#         atom_pairs (list[tuple]): list of atom pairs for the comp. of the rotation matrix.
-
-#     Returns:
-#         tuple: Rotation Matrix, Features, transpose info
-#     """
-#     mol = GLOBAL_MOL  # type: ignore[name-defined]
-#     sup_vector = supporting_vector(mol.feature.dipm["A"], atom_pair)
-
-#     R_MI_APF = get_atom_pair_rot_mat(mol.xyz, sup_vector, atom_pair)
-
-#     Feature_AB, transpose, R_MI_APF = gen_pair_features(
-#         mol.feature,
-#         R_MI_APF,
-#         atom_pair,  # type: ignore[arg-type]
-#     )
-
-#     return R_MI_APF, Feature_AB, transpose
+    return blocks.reshape(P, -1)
 
 
-# def _transform_block_training(atom_pair: tuple[int,int]) -> tuple:
-#     """Rotation of an AB Hessian matrix block and the construction its feature vector.
-
-#     Args:
-#         atom_pair (tuple[int, int]): Index of atom A and atom B.
-#     """
-#     mol = GLOBAL_MOL  # type: ignore[name-defined]
-
-#     atom_A, atom_B = atom_pair
-#     sup_vector = supporting_vector(mol.feature.dipm["A"], atom_pair)
-
-#     R_MI_APF = get_atom_pair_rot_mat(
-#         mol.xyz,
-#         sup_vector,
-#         atom_pair,
-#     )
-
-#     Feature_AB, transpose, R_MI_APF = gen_pair_features(
-#         mol.feature,
-#         R_MI_APF,  # type: ignore[arg-type]
-#         atom_pair,  # type: ignore[arg-type]
-#     )
-
-#     H_APF = mol.hessian.get_rotated_matrix(R_MI_APF, atom_A, atom_B, transpose)
-
-#     return H_APF.flatten(), Feature_AB, transpose
+def _transpose_entries(pairs: np.ndarray, swap: np.ndarray) -> list[list[int]]:
+    """Original (A, B) of swapped pairs, the format of `Molecule.transpose_list`."""
+    return pairs[swap].tolist()
 
 
-def process_results(results: list) -> tuple[list, list, list]:
-    # Process and release memory for results incrementally
-    processed_features: list[np.ndarray] = []
-    processed_target: list[np.ndarray] = []
+def transform_prediction(self: Molecule, num_threads: int = 1) -> None:
+    """Processes the features to ML readable.
 
-    processed_target.extend(result[0] for result in results)
-    processed_features.extend(result[1] for result in results)
-    transposes: list[list | None] = [result[2] for result in results]
-    # Release memory for results
-    del results
-
-    return processed_features, processed_target, transposes
-
-
-GLOBAL_ARRAYS: np.ndarray | None = None
-GLOBAL_SHMS: np.ndarray | None = None
-GLOBAL_HESS: np.ndarray | None = None
-GLOBAL_SHM_HESS: np.ndarray | None = None
-
-
-def attach_shared_memory(meta):
-    global GLOBAL_ARRAYS, GLOBAL_SHMS
-    if GLOBAL_ARRAYS is None:
-        GLOBAL_ARRAYS = []
-        GLOBAL_SHMS = []
-        if sys.platform == "darwin":
-            GLOBAL_ARRAYS.extend(meta)
-            GLOBAL_SHMS = None
-        else:
-            for name, shape, dtype in meta:
-                shm = shared_memory.SharedMemory(name=name)
-                arr = np.ndarray(shape, dtype=dtype, buffer=shm.buf)
-                GLOBAL_ARRAYS.append(arr)
-                GLOBAL_SHMS.append(shm)
-
-
-def detach_shared_memory():
-    global GLOBAL_SHMS, GLOBAL_ARRAYS
-
-    if GLOBAL_SHMS is not None:
-        for shm in GLOBAL_SHMS:
-            shm.close()
-
-    GLOBAL_SHMS = None
-    GLOBAL_ARRAYS = None
-
-
-def attach_shared_memory_hessian(meta):
-    global GLOBAL_HESS, GLOBAL_SHM_HESS
-    if sys.platform == "darwin":
-        # Single-thread fallback: meta contains actual array
-        GLOBAL_HESS = meta[0]  # just pass ndarray directly
-        GLOBAL_SHM_HESS = None
-        return meta, None
-    else:
-        name, shape, dtype = meta[0]
-        shm = shared_memory.SharedMemory(name=name)
-        GLOBAL_HESS = np.ndarray(shape, dtype=dtype, buffer=shm.buf)
-        GLOBAL_SHM_HESS = shm
-        return meta, shm
-
-
-def detach_shared_memory_hessian():
-    global GLOBAL_HESS, GLOBAL_SHM_HESS
-
-    if GLOBAL_SHM_HESS is not None:
-        shm = GLOBAL_SHM_HESS
-        shm.close()
-
-    GLOBAL_HESS = None
-    GLOBAL_SHM_HESS = None
-
-
-def transform_prediction(self: Molecule, num_threads):
-    """Processes the features to ML readable."""
-
+    Args:
+        self (Molecule): molecule with computed features.
+        num_threads (int): unused, kept for API compatibility (the transformation
+            is vectorized instead of parallelized).
+    """
     if self.nat == 1:
         self.calc_succeeded = False
 
-    if self.calc_succeeded:
-        temp_dist_mat = self.feature.distance_mat.copy()
-        temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-        atom_pairs: list = list(np.argwhere(temp_dist_mat < 20))
-        self.computed_atom_pairs = atom_pairs
+    if not self.calc_succeeded:
+        return
 
-        arrays = set_shared_memory_array(self)
+    pairs = select_atom_pairs(self)
+    self.computed_atom_pairs = list(pairs)
+    arrays = collect_feature_arrays(self)
 
-        if sys.platform == "darwin":
-            backend = "threading"
-            meta = arrays
-            shms: list[shared_memory.SharedMemory] = []
-        else:
-            meta, shms = init_memory(arrays)
-            backend = "loky"
+    nat = self.nat
+    # View of R_MI_APF_mat as (nat, nat, 3, 3): R4[a, b] is the block [3a:3a+3, 3b:3b+3]
+    R4 = self.R_MI_APF_mat.reshape(nat, 3, nat, 3).transpose(0, 2, 1, 3)
 
-        parallel = Parallel(n_jobs=num_threads, backend=backend)
-        output_generator = parallel(
-            delayed(_transform_block_prediction)(atom_pair, meta)
-            for atom_pair in atom_pairs
-        )
-        R_MI_APFs, processed_feature, transposes = zip(*deepcopy(output_generator))
+    features = []
+    for chunk in _chunks(len(pairs)):
+        A0, B0 = pairs[chunk, 0], pairs[chunk, 1]
+        feats, R, _, _, swap = gen_pair_features_batched(A0, B0, arrays)
 
-        self.feature.processed = processed_feature
+        features.append(feats)
+        self.transpose_list.extend(_transpose_entries(pairs[chunk], swap))
+        R4[A0, B0] = R  # stored at the original (A, B) position
 
-        transposes = list(transposes)  # type: ignore
-
-        for val in transposes:
-            if val is not None:
-                self.transpose_list.append(val)
-
-        for atom_pair, rot_mat in zip(atom_pairs, R_MI_APFs):
-            atom_A, atom_B = atom_pair
-            i0 = 3 * atom_A
-            i3 = 3 * atom_A + 3
-            j0 = 3 * atom_B
-            j3 = 3 * atom_B + 3
-
-            self.R_MI_APF_mat[i0:i3, j0:j3] = rot_mat
-
-        for shm in shms:
-            shm.close()
-            shm.unlink()
+    self.feature.processed = np.concatenate(features)
 
 
-def transform_training(mol: Molecule, num_threads: int = 4):
-    """Transforms the Hessian matrix and features of a molecule into a target-descriptor relation for training."""
+def transform_training(mol: Molecule, num_threads: int = 1) -> None:
+    """Transforms the Hessian matrix and features of a molecule into a target-descriptor relation for training.
 
+    Args:
+        mol (Molecule): molecule with computed features and Hessian.
+        num_threads (int): unused, kept for API compatibility (the transformation
+            is vectorized instead of parallelized).
+    """
     if mol.nat == 1:
         mol.calc_succeeded = False
 
     if mol.calc_succeeded:
         mol.transpose_list = []
 
-        temp_dist_mat = mol.feature.distance_mat.copy()
-        temp_dist_mat[np.tril_indices_from(temp_dist_mat)] = np.inf
-        atom_pairs: list = list(np.argwhere(temp_dist_mat < 20))
-
-        mol.computed_atom_pairs = atom_pairs
-
-        arrays = set_shared_memory_array(mol)
+        pairs = select_atom_pairs(mol)
+        mol.computed_atom_pairs = list(pairs)
+        arrays = collect_feature_arrays(mol)
 
         if isinstance(mol.hessian, NuclearHessianPM):
-            a, b = mol.hessian.hessian.shape
-            hessian = np.zeros((2, a, b))
-
-            hessian[0, :, :] = mol.hessian.hess_p
-            hessian[1, :, :] = mol.hessian.hess_m
-
+            hessian = np.stack([mol.hessian.hess_p, mol.hessian.hess_m])
         else:
             hessian = mol.hessian.hessian
 
-        if sys.platform == "darwin":
-            backend = "threading"
-            meta = arrays
-            meta_hess = [hessian]
-            shms: list[shared_memory.SharedMemory] = []
-            shm_hess: list[shared_memory.SharedMemory] = []
-        else:
-            meta, shms = init_memory(arrays)
-            meta_hess, shm_hess = init_memory([hessian])
-            backend = "loky"
+        features, targets = [], []
+        for chunk in _chunks(len(pairs)):
+            A0, B0 = pairs[chunk, 0], pairs[chunk, 1]
+            feats, R, _, _, swap = gen_pair_features_batched(A0, B0, arrays)
 
-        with Parallel(
-            n_jobs=num_threads, backend=backend, prefer="processes"
-        ) as parallel:
-            output_generator = parallel(
-                delayed(_transform_block_training)(atom_pair, meta, meta_hess)
-                for atom_pair in atom_pairs
-            )
-            parallel._backend.terminate()
+            features.append(feats)
+            # block at the original (A0, B0) position, as in the per-pair version
+            targets.append(rotate_hessian_blocks(hessian, R, A0, B0, swap))
+            mol.transpose_list.extend(_transpose_entries(pairs[chunk], swap))
 
-        mol.feature.processed, mol.processed_target, transposes = process_results(  # type: ignore
-            output_generator
-        )
-
-        for val in transposes:
-            if val is not None:
-                mol.transpose_list.append(val)
-
-        del atom_pairs, output_generator
-
-        for shm in shms:
-            shm.close()
-            shm.unlink()
-
-        for shm in shm_hess:
-            shm.close()
-            shm.unlink()
-
-        del arrays
-        del hessian
+        mol.feature.processed = np.concatenate(features)
+        mol.processed_target = np.concatenate(targets)
 
     mol.feature.processed = np.array(mol.feature.processed)
-
-
-def _transform_block_training(atom_pair: tuple[int, int], meta, meta_hess) -> tuple:
-    """Rotation of an AB Hessian matrix block and construction of its feature vector.
-
-    Args:
-        atom_pair (tuple[int, int]): Index of atom A and atom B.
-        meta: Shared-memory metadata (or arrays) used to attach the feature arrays.
-        meta_hess: Shared-memory metadata (or array) used to attach the Hessian.
-
-    Returns:
-        tuple: Flattened rotated Hessian block, features, and transpose info.
-    """
-
-    attach_shared_memory(meta)
-    attach_shared_memory_hessian(meta_hess)
-
-    try:
-        atom_A, atom_B = atom_pair
-        Feature_AB, transpose, R_MI_APF = new_gen_pair_features(
-            atom_pair, GLOBAL_ARRAYS
-        )
-
-        if GLOBAL_HESS is None:
-            raise RuntimeError("Hessian shared memory not attached.")
-                
-        if len(GLOBAL_HESS.shape) == 3:  
-            H_APF_p = get_rotated_33_block_matrix(
-                R_MI_APF, GLOBAL_HESS[0], atom_A, atom_B, transpose
-            ) 
-            H_APF_m = get_rotated_33_block_matrix(
-                R_MI_APF, GLOBAL_HESS[1], atom_A, atom_B, transpose
-            ) 
-            H_APF = np.array([H_APF_p, H_APF_m])
-        else:
-            H_APF = get_rotated_33_block_matrix(
-                R_MI_APF, GLOBAL_HESS, atom_A, atom_B, transpose
-            ) 
-
-    finally:
-        detach_shared_memory()
-        detach_shared_memory_hessian()
-
-    return H_APF.flatten(), Feature_AB, transpose
-
-
-def _transform_block_prediction(atom_pair: tuple[int, int], meta) -> tuple:
-    """Construction of the feature vector for the prediction of an AB Hessian matrix block.
-
-    Args:
-        atom_pair (tuple[int, int]): Index of atom A and atom B.
-        meta: Shared-memory metadata (or arrays) used to attach the feature arrays.
-
-    Returns:
-        tuple: Rotation matrix, features, transpose info.
-    """
-
-    attach_shared_memory(meta)
-    try:
-        Feature_AB, transpose, R_MI_APF = new_gen_pair_features(
-            atom_pair, GLOBAL_ARRAYS
-        )
-    finally:
-        detach_shared_memory()
-
-    return R_MI_APF, Feature_AB, transpose

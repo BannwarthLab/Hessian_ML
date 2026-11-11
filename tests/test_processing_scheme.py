@@ -5,9 +5,18 @@ import numpy as np
 import pytest
 
 from mlhess.calculator.tblite_wrapper import Calculator
-from mlhess.machinelearning.feature.processing_schemes import gen_pair_features
+from mlhess.machinelearning.feature.processing_schemes import (
+    gen_pair_features,
+    gen_pair_features_batched,
+    new_gen_pair_features,
+)
+from mlhess.machinelearning.transform.transform_mlh import (
+    collect_feature_arrays,
+    rotate_hessian_blocks,
+)
 from mlhess.utils.chemistry.molecule import Molecule
 from mlhess.utils.math.geometrical import get_atom_pair_rot_mat, supporting_vector
+from mlhess.utils.math.matrix_operation import get_rotated_33_block_matrix
 
 feature = np.float32(
     np.loadtxt(os.path.join(Path(__file__).parent, "single_mol_data/0002/feature.txt"))
@@ -76,3 +85,38 @@ def test_gen_pair_feature_same_element_diff_dipm(fname, atom_pair, expected_tran
 
     assert transpose == expected_transpose
     os.chdir(cwd)
+
+
+@pytest.mark.parametrize(
+    "fname, xyz_file",
+    [
+        ("single_mol_data/0001", "xtbopt.xyz"),
+        ("single_mol_data/0002", "coord.xyz"),  # linear: degenerate frame
+        ("single_mol_data/0003", "xtbopt.xyz"),
+        ("single_mol_data/0004", "xtbopt.xyz"),  # same elements, different dipoles
+    ],
+)
+def test_gen_pair_features_batched_equals_per_pair(fname, xyz_file, monkeypatch):
+    """Batched features, rotations, swaps and Hessian blocks == per-pair versions."""
+    monkeypatch.chdir(os.path.join(Path(__file__).parent, "general_test_dir"))
+
+    mol = Molecule(os.path.join(Path(__file__).parent, fname), xyz_file)
+    mol.read_hessian("hessian")
+    Calculator(mol).compute_feature()
+
+    arrays = collect_feature_arrays(mol)
+    A, B = np.triu_indices(mol.nat, 1)
+
+    features, R, _, _, swap = gen_pair_features_batched(A, B, arrays)
+    blocks = rotate_hessian_blocks(mol.hessian.hessian, R, A, B, swap)
+
+    for p, (a, b) in enumerate(zip(A, B)):
+        feature_ref, transpose_ref, R_ref = new_gen_pair_features((a, b), arrays)
+        block_ref = get_rotated_33_block_matrix(
+            R_ref, mol.hessian.hessian, a, b, transpose_ref
+        )
+
+        np.testing.assert_allclose(features[p], feature_ref, rtol=1e-12, atol=1e-14)
+        np.testing.assert_allclose(R[p], R_ref, rtol=0, atol=1e-14)
+        np.testing.assert_allclose(blocks[p], block_ref.flatten(), rtol=0, atol=1e-14)
+        assert swap[p] == (transpose_ref is not None)
