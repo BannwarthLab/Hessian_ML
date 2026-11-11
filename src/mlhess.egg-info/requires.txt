@@ -6,13 +6,13 @@ numpy
 pandas
 scikit_learn==1.8.0
 scipy
-torch>=1.1.0
+torch==2.3.0
 cffi
 pkgconfig
 tomli
-tblite==0.6.0
+tblite==0.4.0
 dftd4==4.2.0
-tcgm_lib @ git+https://git.rwth-aachen.de/bannwarthlab/open_tcgm_lib_py.git
+tcgm_lib @ git+https://gitlab.git.nrw/rwth-bannwarthlab/open_tcgm_lib_py.git
 
 [dev]
 pytest

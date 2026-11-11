@@ -15,13 +15,13 @@ Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: scikit_learn==1.8.0
 Requires-Dist: scipy
-Requires-Dist: torch>=1.1.0
+Requires-Dist: torch==2.3.0
 Requires-Dist: cffi
 Requires-Dist: pkgconfig
 Requires-Dist: tomli
-Requires-Dist: tblite==0.6.0
+Requires-Dist: tblite==0.4.0
 Requires-Dist: dftd4==4.2.0
-Requires-Dist: tcgm_lib @ git+https://git.rwth-aachen.de/bannwarthlab/open_tcgm_lib_py.git
+Requires-Dist: tcgm_lib @ git+https://gitlab.git.nrw/rwth-bannwarthlab/open_tcgm_lib_py.git
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: pytest-cov; extra == "dev"

@@ -81,6 +81,7 @@ for string in strings_uhf:
     pattern_uhf += string + "|"
 pattern_uhf = pattern_uhf[:-1]
 
+
 #response     E_eht     E_rep  E_ies_ixc     E_axc     E_aes   E_disp2       E_disp3     E_tot
 class Calculator:
     """Wrapper class for tblite calculations and processing its features."""
@@ -100,13 +101,27 @@ class Calculator:
             return "xtbml.toml"
         else:
             return os.path.join(PACKAGE_DIR,"calculator/default_xtbml.toml")
+
+    def filter_wbos(self,wbo):
+
+        if wbo.ndim == 3 and wbo.shape[-1]==2:
+            nat = wbo.shape[0]
+            wbo = wbo.reshape(-1).reshape((nat, nat, 2), order="F")
+            wbo_total = wbo[:, :, 0]   # = old unsplit WBO
+            
+        else:
+            wbo_total = wbo[:, :, 0]
+
+        return wbo_total
         
     def compute_feature(self):
         """Calculate features from tblite and processes."""
 
         try:
             faulthandler.enable()
+
             #os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
+
             calc = TBCalculator(
                 "GFN2-xTB",
                 uhf=self._mol.electronic_properties.uhf,
@@ -128,7 +143,7 @@ class Calculator:
 
             X: dict = deepcopy(res.get("post-processing-dict"))
 
-            self.wbo = deepcopy(res.get("bond-orders"))
+            self.wbo = self.filter_wbos(deepcopy(res.get("bond-orders")))
 
             self.energy = deepcopy(res.get("energy"))
 
@@ -154,7 +169,6 @@ class Calculator:
 
             self._filter_features()
             
-
         except:  # noqa: E722
             self._mol.calc_succeeded = False
             calc = None
@@ -260,7 +274,7 @@ class Calculator:
                     self.scalar_keys.append("delta" + key[3:])
                     self.norms["delta" + key[3:]] = temp
 
-                    print(f"ext_dipm_{orb} adapted" )
+                    #print(f"ext_dipm_{orb} adapted" )
 
             if orb not in {"e", "Z"}:
                 

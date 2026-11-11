@@ -282,7 +282,7 @@ def new_gen_pair_features(atom_pair: tuple[int, int],*args) -> tuple:
     Features_temp.append(C6_A)
     Features_temp.append(C6_B)
 
-    Features_temp.append(wbo[A, B][0])
+    Features_temp.append(wbo[A, B])
 
     Features_temp.extend(order1_aes[0])
     Features_temp.extend(order2_aes[0])

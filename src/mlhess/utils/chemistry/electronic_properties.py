@@ -9,8 +9,8 @@ class ElectronicProperties:
     def __init__(self, mol) -> None:
         self._mol = mol
         self._atomic_dipole: np.ndarray | None = None
-        self._uhf: int | None = None
-        self._charge: int | None = None
+        self._uhf: int | None = self._mol.multiplicity
+        self._charge: int | None = self._mol.charge
 
     @property
     def charge(self):
