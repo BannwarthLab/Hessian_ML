@@ -42,7 +42,7 @@ def main() -> None:
     fxyz = arguments.xyz or arguments.xyz_file
 
     if fxyz is not None:
-        comp_hessian_from_xyz_cli(fxyz)
+        comp_hessian_from_xyz_cli(fxyz,arguments.charge,arguments.uhf)
     else:
         config = Configurator(arguments.input)
 

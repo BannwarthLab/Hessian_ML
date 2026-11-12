@@ -8,9 +8,9 @@ from mlhess.machinelearning.target.hessian import NuclearHessianPM
 from mlhess.utils.chemistry.molecule import Molecule
 
 
-def comp_hessian_from_xyz_cli(fxyz):
+def comp_hessian_from_xyz_cli(fxyz,charge=None,uhf=None):
     model = load_model()
-    mol = Molecule(path="", fxyz=fxyz, symmetry=(None, None))
+    mol = Molecule(path="", fxyz=fxyz, symmetry=(None, None),multiplicity=uhf,charge=charge)
     mol.hess_class = NuclearHessianPM
     mol.prepare_prediction()
     hessian = mol.predict(model)
