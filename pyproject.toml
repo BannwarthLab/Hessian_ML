@@ -24,7 +24,7 @@ dependencies = [
     "pandas",
     "scikit_learn==1.8.0",
     "scipy",
-    "torch==2.3.0",
+    "torch==2.13.0",
     "cffi",
     "pkgconfig",
     "tomli",

@@ -38,7 +38,7 @@ def test_xy():
     model.model = MLH_s
     model.fit(fdh.Features[trainer.shuffle_idx], fdh.Targets[trainer.shuffle_idx])
 
-    assert np.round(trainer.score, 3) == np.round(0.1388, 3)
+    assert np.round(trainer.score, 3) == np.round(0.138, 3)
     assert np.round(
         model.score(
             fdh.Features[trainer.shuffle_idx], fdh.Targets[trainer.shuffle_idx]

@@ -15,8 +15,9 @@ from scipy.constants import physical_constants
 from scipy.spatial import distance_matrix
 from tblite.interface import Calculator as TBCalculator
 
-from mlhess.management.base_settings import PACKAGE_DIR
+from mlhess.management.base_settings import NUM_THREADS,PACKAGE_DIR
 from mlhess.utils.io.parser import parse_dftd4_output
+from threadpoolctl import threadpool_limits
 
 bohr_in_m, _, _ = physical_constants["Bohr radius"]  # type: ignore
 Bohr = bohr_in_m * 1e10
@@ -119,8 +120,6 @@ class Calculator:
         try:
             faulthandler.enable()
 
-            # os.environ["LD_PRELOAD"] = "/usr/lib/x86_64-linux-gnu/libgomp.so.1"
-
             calc = TBCalculator(
                 "GFN2-xTB",
                 uhf=self._mol.electronic_properties.uhf,
@@ -138,7 +137,8 @@ class Calculator:
 
             calc.add(self.xtbml_toml)
 
-            res = calc.singlepoint()
+            with threadpool_limits(limits=NUM_THREADS):
+                res = calc.singlepoint()
 
             X: dict = deepcopy(res.get("post-processing-dict"))
 

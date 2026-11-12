@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import numpy as np
-from numpy import linalg
 
 from mlhess.utils.decorator import checkTiming
 
