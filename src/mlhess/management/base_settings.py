@@ -1,8 +1,9 @@
 import os
-import sys 
+import sys
 from pathlib import Path
 
 import torch
+
 torch.ones(1 << 16).sum()
 
 def set_num_threads():

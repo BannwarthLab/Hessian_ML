@@ -6,7 +6,7 @@ This module can be used to collect data, train models, and predict new targets.
 from __future__ import annotations
 
 import os
-import sys 
+import sys
 import time
 
 import numpy as np

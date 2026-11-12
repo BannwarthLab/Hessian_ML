@@ -14,10 +14,10 @@ from dftd4.interface import DispersionModel
 from scipy.constants import physical_constants
 from scipy.spatial import distance_matrix
 from tblite.interface import Calculator as TBCalculator
-
-from mlhess.management.base_settings import NUM_THREADS,PACKAGE_DIR
-from mlhess.utils.io.parser import parse_dftd4_output
 from threadpoolctl import threadpool_limits
+
+from mlhess.management.base_settings import NUM_THREADS, PACKAGE_DIR
+from mlhess.utils.io.parser import parse_dftd4_output
 
 bohr_in_m, _, _ = physical_constants["Bohr radius"]  # type: ignore
 Bohr = bohr_in_m * 1e10
