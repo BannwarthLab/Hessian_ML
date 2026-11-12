@@ -1,12 +1,21 @@
 import numpy as np
 
-from mlhess.utils.math.geometrical import get_atom_pair_rot_mat, supporting_vector
+from mlhess.utils.math.geometrical import (
+    get_atom_pair_rot_mat,
+    get_atom_pair_rot_mat_batched,
+    supporting_vector,
+    supporting_vector_batched,
+)
 from mlhess.utils.math.matrix_operation import rotate_matrix, rotate_vector_array
 
 # if TYPE_CHECKING:
 #     from mlhess.machinelearning.feature.base_class import Feature
 
 TRIL = np.tril_indices(3)          # module level, computed once
+
+# Powers of R_AB used as features. The 6 (instead of -6) and the duplicated -12 are
+# unintended, but existing models were trained with them -> keep for compatibility.
+R_AB_POWERS = np.array([-12, 6, 1, -1, -3, -6, -12])
 
 
 def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
@@ -167,7 +176,7 @@ def gen_pair_features(self, R_MI_APF, atom_pair: tuple[int, int]) -> tuple:
     Features_temp.extend(Feature_Prod)
     Features_temp.extend(Feature_AbsDiff)
 
-    Features_temp.extend(R_AB ** np.array([-12, 6, 1, -1, -3, -6, -12]))
+    Features_temp.extend(R_AB**R_AB_POWERS)
 
     return np.array(Features_temp), transpose, R_MI_APF
 
@@ -307,7 +316,7 @@ def new_gen_pair_features(atom_pair: tuple[int, int], *args) -> tuple:
     Features_temp.extend(Feature_Prod)
     Features_temp.extend(Feature_AbsDiff)
 
-    Features_temp.extend(R_AB ** np.array([-12, 6, 1, -1, -3, -6, -12]))
+    Features_temp.extend(R_AB**R_AB_POWERS)
 
     return np.array(Features_temp), transpose, R_MI_APF
 
@@ -362,3 +371,176 @@ def compute_rab(xyz, R_MI_APF, atom_pair, distance_mat):
     r_AB = (xyz_A - xyz_B).reshape(1, -1)
     R_AB = distance_mat[A, B]
     return r_AB, R_AB
+
+
+# ______________________________________________________________________________
+# Batched versions: all functions below take index arrays A, B of shape (P,) and
+# process all P atom pairs at once. They reproduce `adapt_rotation_matrix` and
+# `new_gen_pair_features` exactly (same values, same feature column order).
+# ______________________________________________________________________________
+
+
+def adapt_rotation_matrix_batched(
+    R: np.ndarray,
+    A: np.ndarray,
+    B: np.ndarray,
+    atomic_numbers: np.ndarray,
+    dipm_norm: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Batched `adapt_rotation_matrix`.
+
+    Swaps A and B if Z_A < Z_B, or if Z_A == Z_B and |mu_A| < |mu_B|, and rotates
+    the frame of swapped pairs by 180 deg around y.
+
+    Args:
+        R (np.ndarray): rotation matrices, (P, 3, 3).
+        A, B (np.ndarray): atom indices, (P,).
+        atomic_numbers (np.ndarray): (nat,).
+        dipm_norm (np.ndarray): norms of the atomic dipole moments, (nat,).
+
+    Returns:
+        tuple: adapted R (P, 3, 3), new A (P,), new B (P,), swap mask (P,) bool.
+    """
+    zA, zB = atomic_numbers[A], atomic_numbers[B]
+    swap = (zA < zB) | ((zA == zB) & (dipm_norm[A] < dipm_norm[B]))
+
+    n_same = int(np.sum((zA == zB) & (dipm_norm[A] == dipm_norm[B])))
+    if n_same:
+        print(f"Nuclear charge and dipole moment are the same for {n_same} atom pair(s).")
+
+    A_new = np.where(swap, B, A)
+    B_new = np.where(swap, A, B)
+
+    R = R.copy()
+    R[swap] *= np.array([-1.0, 1.0, -1.0])[:, None]  # = -R, then row 1 negated back
+    return R, A_new, B_new, swap
+
+
+def _rotate_matrices_batched(R: np.ndarray, M: np.ndarray) -> np.ndarray:
+    """R M R^T for every pair. R: (P, 3, 3), M: (P, 3, 3) or (P, n, 3, 3)."""
+    if M.ndim == 4:
+        R = R[:, None]  # broadcast over the n matrices of each pair
+    return R @ M @ R.swapaxes(-1, -2)
+
+
+def _atom_quantities_batched(
+    R: np.ndarray,
+    X: np.ndarray,
+    scalars: np.ndarray,
+    vectors: np.ndarray,
+    matrices: np.ndarray,
+    etot_idx: np.ndarray,
+) -> np.ndarray:
+    """Rotated atom-specific quantities of atom X for every pair (= `Quantity_AB[j]`).
+
+    Returns:
+        np.ndarray: (P, n_atom_features) with columns
+            [matrices (lower triangle) | vectors | scalars | scalars / E_tot]
+    """
+    P = len(X)
+
+    quad = _rotate_matrices_batched(R, matrices[X])  # (P, 4, 3, 3)
+    quad = quad[:, :, TRIL[0], TRIL[1]].reshape(P, -1)  # (P, 4 * 6)
+
+    dip = (vectors[X] @ R.swapaxes(-1, -2)).reshape(P, -1)  # (P, n_vec * 3)
+
+    sc = scalars[X]  # (P, n_scalar)
+    sc_rel = sc / sc[:, etot_idx[0], None]
+
+    return np.concatenate([quad, dip, sc, sc_rel], axis=1)
+
+
+def gen_pair_features_batched(
+    A: np.ndarray, B: np.ndarray, arrays: tuple
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Batched `new_gen_pair_features` for P atom pairs.
+
+    Args:
+        A, B (np.ndarray): atom indices of the pairs, (P,).
+        arrays (tuple): molecular arrays (atomic_numbers, dipm_norm, xyz,
+            distance_mat, q, dipm, qm, scalars, vectors, matrices, etot_idx,
+            C6_params, wbo), see `transform_mlh.collect_feature_arrays`.
+
+    Returns:
+        tuple: features (P, n_feat), rotation matrices (P, 3, 3), A and B after the
+            canonical reordering (P,), swap mask (P,) (True where A and B were swapped).
+    """
+    (
+        atomic_numbers,
+        dipm_norm,
+        xyz,
+        distance_mat,
+        q,
+        at_dipole,
+        qm,
+        scalars,
+        vectors,
+        matrices,
+        etot_idx,
+        C6_params,
+        wbo,
+    ) = arrays
+
+    A = np.asarray(A)
+    B = np.asarray(B)
+
+    # ____Rotation into the atom pair frame (computed with the original order)____
+    sup = supporting_vector_batched(at_dipole, A, B)
+    R = get_atom_pair_rot_mat_batched(xyz, sup, A, B)
+    R, A, B, swap = adapt_rotation_matrix_batched(R, A, B, atomic_numbers, dipm_norm)
+
+    # ____compute_rab: R (xyz_A - s) - R (xyz_B - s) = R (xyz_A - xyz_B)____
+    r_AB = np.einsum("pij,pj->pi", R, xyz[A] - xyz[B])  # (P, 3)
+    R_AB = distance_mat[A, B]  # (P,)
+
+    # ____Atom specific information____
+    Q_A = _atom_quantities_batched(R, A, scalars, vectors, matrices, etot_idx)
+    Q_B = _atom_quantities_batched(R, B, scalars, vectors, matrices, etot_idx)
+
+    # ____Atom pair information____
+    r_BA = -r_AB
+
+    dipm_A = np.einsum("pij,pj->pi", R, at_dipole[A])  # (P, 3)
+    dipm_B = np.einsum("pij,pj->pi", R, at_dipole[B])
+
+    q_A = q[A]
+    q_B = q[B]
+
+    order1_aes = q_A * np.einsum("pi,pi->p", dipm_B, r_BA)
+    order1_aes += q_B * np.einsum("pi,pi->p", dipm_A, r_AB)
+    order1_aes /= R_AB**3
+
+    qm_A = _rotate_matrices_batched(R, qm[A])  # (P, 3, 3)
+    qm_B = _rotate_matrices_batched(R, qm[B])
+
+    dA_r = np.einsum("pi,pi->p", dipm_A, r_AB)
+    dB_r = np.einsum("pi,pi->p", dipm_B, r_AB)
+
+    order2_aes = q_A * np.einsum("pi,pij,pj->p", r_AB, qm_B, r_AB)
+    order2_aes += q_B * np.einsum("pi,pij,pj->p", r_AB, qm_A, r_AB)
+    order2_aes -= 3 * dA_r * dB_r
+    order2_aes += R_AB**2 * np.einsum("pi,pi->p", dipm_A, dipm_B)
+    order2_aes /= R_AB**5
+
+    C6_A = C6_params[A].astype(np.float64)  # stored as float32; float() in the per-pair version
+    C6_B = C6_params[B].astype(np.float64)
+
+    potE = q_A * q_B / R_AB
+
+    pair_terms = np.stack(
+        [potE, C6_A, C6_B, wbo[A, B], order1_aes, order2_aes], axis=1
+    )  # (P, 6)
+
+    features = np.concatenate(
+        [
+            Q_A,
+            Q_B,
+            pair_terms,
+            Q_A * Q_B,  # Feature_Prod
+            Q_A - Q_B,  # Feature_AbsDiff
+            R_AB[:, None] ** R_AB_POWERS,  # (P, 7)
+        ],
+        axis=1,
+    )
+
+    return features, R, A, B, swap

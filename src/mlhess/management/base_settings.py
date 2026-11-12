@@ -1,19 +1,24 @@
 import os
+import sys
 from pathlib import Path
 
 import torch
 
+torch.ones(1 << 16).sum()
 
 def set_num_threads():
     # torch, sklearn, and tblite each bundle their own libomp.dylib on macOS,
     # which crashes with "OMP: Error #15" when more than one gets loaded.
-    os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+    if sys.platform == "darwin":
+        os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
     omp_threads = os.environ.get("OMP_NUM_THREADS")
+    n_threads = 1
+    msg = f"OMP_NUM_THREADS is not set. Falling back to {n_threads} thread/s."
     if omp_threads:
         return int(omp_threads)
-    print("OMP_NUM_THREADS is not set. Falling back to one thread.")
-    return 1
-
+    print(msg)
+    return n_threads
 
 global NUM_THREADS  # noQA: PLW0604
 NUM_THREADS: int = set_num_threads()

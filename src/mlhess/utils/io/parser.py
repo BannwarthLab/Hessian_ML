@@ -36,9 +36,30 @@ def parse_cmd_line_input() -> ArgumentParser:
     )
 
     arg_parser.add_argument(
+        "xyz_file",
+        nargs="?",
+        default=None,
+        help="coordinate file in xyz-format (same as --xyz)",
+    )
+
+    arg_parser.add_argument(
         "--xyz",
         type=str,
-        help="computes the Hessian of a given xyz",
+        help="coordinate file in xyz-format",
+    )
+
+    arg_parser.add_argument(
+        "--uhf",
+        type=int,
+        help="number of unpaired electrons",
+    )
+
+    arg_parser.add_argument(
+        "--charge",
+        "--chrg",
+        dest="charge",
+        type=int,
+        help="molecular charge",
     )
 
     return arg_parser

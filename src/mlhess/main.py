@@ -6,6 +6,7 @@ This module can be used to collect data, train models, and predict new targets.
 from __future__ import annotations
 
 import os
+import sys
 import time
 
 import numpy as np
@@ -25,9 +26,8 @@ from mlhess.scripts.predicting_handler import PredictionHandling
 from mlhess.scripts.training_handler import TrainingHandler
 from mlhess.utils.io import parser
 
-# has to be beneath tblite to circumvent conflicts
-os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
-
+if sys.platform == "darwin":
+    os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
 
 def main() -> None:
     """
@@ -37,9 +37,12 @@ def main() -> None:
     arg_parser = parser.parse_cmd_line_input()
     arguments = arg_parser.parse_args()
 
-    if arguments.xyz is not None:
-        comp_hessian_from_xyz_cli(arguments.xyz)
+    if arguments.xyz is not None and arguments.xyz_file is not None:
+        arg_parser.error("give the xyz file either positionally or via --xyz")
+    fxyz = arguments.xyz or arguments.xyz_file
 
+    if fxyz is not None:
+        comp_hessian_from_xyz_cli(fxyz,arguments.charge,arguments.uhf)
     else:
         config = Configurator(arguments.input)
 

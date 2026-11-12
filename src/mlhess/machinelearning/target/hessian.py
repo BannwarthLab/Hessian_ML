@@ -3,10 +3,7 @@ import numpy as np
 # from typing import TYPE_CHECKING
 from tcgm_lib.molecule.nuclear_hessian import NuclearHessian as AbstractNuclearHessian
 
-from mlhess.utils.math.matrix_operation import (
-    get_rotated_33_block_matrix,
-    restructure_hessian_rotation_mat,
-)
+from mlhess.utils.math.matrix_operation import get_rotated_33_block_matrix
 
 # if TYPE_CHECKING:
 #     from mlhess.utils.chemistry.molecule import Molecule
@@ -28,62 +25,46 @@ class NuclearHessian(AbstractNuclearHessian):
     def damping(self, dist):
         return 1 / (np.exp((dist - 13.0) / 0.1) + 1)
 
-    def gen_hess_from_vec_pred_damped(self):
-        hess_vec_ab = self._mol.target
-        R_MI_APF_mat = self._mol.R_MI_APF_mat
-        transpose_list = self._mol.transpose_list
-        atom_pairs = np.array(self._mol.computed_atom_pairs)
-        dist_mat = self._mol.feature.distance_mat
+    def gen_hess_from_vec_pred_damped(self) -> np.ndarray:
+        """Build the full Hessian from the predicted 3x3 blocks of all atom pairs.
 
-        # Convert transpose_list to a set for faster membership checking
-        transpose_set = set(map(tuple, transpose_list))
+        Inverse of `transform_mlh.rotate_hessian_blocks`, batched over all pairs:
+            1. reshape predicted vectors to 3x3 blocks, transpose swapped pairs
+            2. rotate back to the molecular frame: R^T H_APF R
+            3. damp by distance and place H_AB and H_BA = H_AB^T
+            4. diagonal blocks from the sum rule H_AA = -sum_{B != A} H_AB, symmetrized
+        """
+        nat = self._mol.nat
+        atom_pairs = np.asarray(self._mol.computed_atom_pairs).reshape(-1, 2)
+        A, B = atom_pairs[:, 0], atom_pairs[:, 1]
+        P = len(A)
 
-        # Use vectorized comparison to check if each (atom_A, atom_B) pair is in transpose_set
-        transposes = np.array([tuple(pair) in transpose_set for pair in atom_pairs])
+        # 1. blocks in the atom-pair frame, (P, 3, 3)
+        hess_ab = np.asarray(self._mol.target, dtype=np.float64).reshape(P, 3, 3).copy()
 
-        rabs, hess_ab = restructure_hessian_rotation_mat(
-            np.array(hess_vec_ab), atom_pairs, R_MI_APF_mat, np.array(transposes)
-        )
+        # transpose_list holds the original (A, B) of swapped pairs -> boolean mask via
+        # unique pair ids A * nat + B
+        transpose_ids = np.asarray(self._mol.transpose_list, dtype=np.int64).reshape(-1, 2)
+        swap = np.isin(A * nat + B, transpose_ids[:, 0] * nat + transpose_ids[:, 1])
+        hess_ab[swap] = hess_ab[swap].swapaxes(-1, -2)
 
-        hess_ab = np.einsum("mij,mjk,mlk->mil", rabs, hess_ab, rabs)
+        # 2. back-rotation with R = R_MI_APF_mat[3A:3A+3, 3B:3B+3]: R^T H R
+        R = self._mol.R_MI_APF_mat.reshape(nat, 3, nat, 3).transpose(0, 2, 1, 3)[A, B]
+        hess_ab = R.swapaxes(-1, -2) @ hess_ab @ R
 
-        Hessian = np.zeros([self._mol.nat * 3, self._mol.nat * 3])
+        # 3. damping and placement; H4[a, b] is the block [3a:3a+3, 3b:3b+3]
+        hess_ab *= self.damping(self._mol.feature.distance_mat[A, B])[:, None, None]
 
-        for ite_hetero, (atom_A, atom_B) in enumerate(
-            zip(atom_pairs[:, 0], atom_pairs[:, 1])
-        ):
-            Hessian[
-                3 * atom_A : 3 * atom_A + 3,
-                3 * atom_B : 3 * atom_B + 3,
-            ] = hess_ab[ite_hetero] * self.damping(dist_mat[atom_A, atom_B])
+        H4 = np.zeros((nat, nat, 3, 3))
+        H4[A, B] = hess_ab
+        H4[B, A] = hess_ab.swapaxes(-1, -2)
 
-            Hessian[
-                3 * atom_B : 3 * atom_B + 3,
-                3 * atom_A : 3 * atom_A + 3,
-            ] = Hessian[
-                3 * atom_A : 3 * atom_A + 3,
-                3 * atom_B : 3 * atom_B + 3,
-            ].T
+        # 4. sum rule (diagonal blocks are still zero here), then symmetrize
+        diag = -H4.sum(axis=1)  # (nat, 3, 3)
+        idx = np.arange(nat)
+        H4[idx, idx] = 0.5 * (diag + diag.swapaxes(-1, -2))
 
-        for atom_A in range(self._mol.nat):
-            for atom_B in range(self._mol.nat):
-                if atom_A != atom_B:
-                    Hessian[
-                        3 * atom_A : 3 * atom_A + 3,
-                        3 * atom_A : 3 * atom_A + 3,
-                    ] -= Hessian[
-                        3 * atom_A : 3 * atom_A + 3,
-                        3 * atom_B : 3 * atom_B + 3,
-                    ]
-
-            Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3] = (
-                Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3]
-                + np.transpose(
-                    Hessian[3 * atom_A : 3 * atom_A + 3, 3 * atom_A : 3 * atom_A + 3],
-                )
-            ) / 2
-
-        return Hessian
+        return H4.transpose(0, 2, 1, 3).reshape(3 * nat, 3 * nat)
 
     def get_processed_target(self):
         self.hessian = self.gen_hess_from_vec_pred_damped()

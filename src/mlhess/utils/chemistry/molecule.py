@@ -24,7 +24,6 @@ from mlhess.utils.io.reader import read_xyz
 if TYPE_CHECKING:
     from sklearn.dummy import DummyRegressor
 
-
 class Molecule(AbstractMolecule):
     def __init__(
         self,
@@ -187,6 +186,7 @@ class Molecule(AbstractMolecule):
         calc = calc_class(self)
         calc.compute_feature()
         transform_prediction(self, num_threads)
+
 
     def predict(self, model: DummyRegressor):
         self.target = model.predict(self.feature.processed)
